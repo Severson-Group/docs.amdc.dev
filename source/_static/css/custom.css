@@ -1,0 +1,14 @@
+/* These settings fix the MathJAX output to look
+ * better in the rendered HTML */
+
+mjx-assistive-mml {
+    height: 0;
+}
+
+span.eqno {
+    float: right;
+}
+
+span.eqno a.headerlink {
+    display: none;
+}

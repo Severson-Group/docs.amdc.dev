@@ -1,0 +1,141 @@
+===========================
+AMDC Platform Documentation
+===========================
+
+Welcome to the AMDC Platform documentation.
+This is an ever-growing collection of knowledge about the AMDC.
+Browse the documentation using the links in the sidebar on the left.
+
+.. figure:: /hardware/revisions/rev-d/images/amdc-rev-d-cover.jpg
+   :align: center
+
+   Flagship AMDC circuit board forms the core of the AMDC Platform.
+
+**************************
+What is the AMDC Platform?
+**************************
+
+AMDC stands for Advanced Motor Drive Controller.
+
+The AMDC Platform is a collection of modular open-source hardware and software used for electric drive control.
+At the core is the flagship AMDC circuit board which acts as the "brains" of the control platform.
+On top of the AMDC hardware, extensive firmware is provided to bring the hardware to life.
+Finally, the core AMDC is augmented with introductory tutorials, examples, and auxiliary circuit boards to create a rich learning environment for both researchers and students.
+
+.. admonition:: AMDC Vision
+
+   The AMDC empowers motor control students, researchers, and designers by providing an open-source sandbox for exploring and creating electric motor control platforms.
+
+
+************
+Key Features
+************
+
+- **Open-Source:** All hardware design files and firmware are freely available.
+- **Easy-to-Use:** Specializes in extreme performance drives but is sufficiently simple to be used as a learning tool for implementing standard motor drives.
+- **High-Performance:** Supports high-performance Xilinx real-time processors and programmble logic.
+- **Flexible:** Capability (computation power, I/O, proper abstraction layers) to actuate new types of motors, but also standard types of motors.
+- **Documentation:** Extensive documentation for understanding all layers of the AMDC.
+- **Research-Oriented:** Designed to be used in the research environment.
+
+
+********
+Research
+********
+
+The AMDC Platform is designed explicitly for the research environment use-case where flexibility and customizability are critical.
+Some example research applications are given below:
+
+*  Levitated motor systems
+
+   *  Bearingless motors
+   *  Magnetic bearings
+
+*  Multi-phase motors (m > 3)
+*  Advanced control algorithms
+
+   *  Field oriented control
+   *  Sensorless control
+   *  Harmonic current regulation
+
+*  Wide-bandgap power electronics
+
+   *  PWM switching up to MHz range
+  
+*  Data logging
+
+********************************
+Frequently Asked Questions (FAQ)
+********************************
+
+What is the AMDC platform?
+   The AMDC platform accelerates development of motor drives, allowing you to reach a working solution faster, while still maintaining complete control of the entire hardware / firmware stack.
+
+Is the AMDC free?
+   Yes. The full AMDC platform (both hardware and firmware) is open-source.
+
+Can I use it for commercial projects?
+   Yes. Please follow the license provided in the hardware and firmware design source.
+
+Do you offer technical support?
+   No. Since the AMDC platform is not a paid project, we do not have the resources to provide 1:1 support. Please read the extensive documentation available in the open-source repositories.
+
+Who created the AMDC Platform?
+   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the hardware and firmware and built the documentation website.
+
+Who maintains the AMDC Platform?
+   The AMDC Platform is actively maintained by students in the `Severson Research Group <https://severson.wempec.wisc.edu/>`_ at the `University of Wisconsin, Madison <https://www.wisc.edu/>`_.
+
+
+*******
+License
+*******
+
+The AMDC project is split into two distinct open-source repositories, hosted on GitHub:
+
+- `AMDC-Firmware <https://github.com/Severson-Group/AMDC-Firmware>`_ is licensed under the **BSD 3-Clause License**.
+- `AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>`_ does not include any explicit license.
+
+.. Table of Contents for the entire site:
+   NOTE: these are marked hidden so they are not
+   rendered on the home page, but must be here so
+   the side bar works!
+
+.. toctree::
+   :hidden:
+   :caption: GitHub Repositories
+
+   AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>
+   AMDC-Firmware <https://github.com/Severson-Group/AMDC-Hardware>
+
+.. toctree::
+   :hidden:
+   :caption: Getting Started
+
+   getting-started/onboarding
+   getting-started/tutorials/index
+
+.. toctree::
+   :hidden:
+   :caption: Hardware
+
+   hardware/index
+   hardware/subsystems/index
+   hardware/revisions/index
+
+.. toctree::
+   :hidden:
+   :caption: Firmware
+
+   firmware/index
+   firmware/xilinx-tools/index
+   firmware/arch/index
+   firmware/modules/index
+
+.. toctree::
+   :hidden:
+   :caption: Accessories
+
+   accessories/amds/index
+   accessories/uinverter/index
+   accessories/test-board/index
