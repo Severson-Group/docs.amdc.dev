@@ -21,9 +21,9 @@ jobs:
     # ===============================
     - name: Commit documentation changes
       run: |
-        mkdir gh-pages
-        cp -rf build/html/* gh-pages/
-        cd gh-pages
+        mkdir docs
+        cp -rf build/html/* docs/
+        cd docs
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
@@ -34,7 +34,7 @@ jobs:
       with:
         branch: gh-pages
         force: true
-        directory: gh-pages
+        directory: docs
         github_token: ${{ secrets.GITHUB_TOKEN }}
     # ===============================
 
