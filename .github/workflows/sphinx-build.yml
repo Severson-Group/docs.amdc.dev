@@ -15,7 +15,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Build docs using Sphinx
-      make html
+      run: make html
 
     # Publish built docs to gh-pages branch.
     # ===============================
