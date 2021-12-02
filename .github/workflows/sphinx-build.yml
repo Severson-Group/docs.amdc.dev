@@ -24,6 +24,7 @@ jobs:
         mkdir docs
         cp -rf build/html/* docs/
         cd docs
+        echo "docs.amdc.dev" > CNAME
         touch .nojekyll # need this due to "_*" dirs getting ignored by GitHub
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
