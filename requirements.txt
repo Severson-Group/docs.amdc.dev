@@ -1,5 +1,5 @@
 sphinx
-furo
+furo>2021.11.16
 myst_parser
 sphinx_design
 sphinx-last-updated-by-git
