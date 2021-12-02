@@ -4,3 +4,5 @@ myst_parser
 sphinx_design
 sphinx-last-updated-by-git
 sphinx-copybutton
+
+pygments>=2.7.0
