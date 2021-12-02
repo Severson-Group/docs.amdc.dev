@@ -11,7 +11,7 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 | [Blink](blink/index.md) | Run the baseline firmware on the AMDC hardware. |
 | [Hardware Commands](hw-commands/index.md) | Run built-in commands to control the AMDC drive I/O. |
 | [Voltage Source Inverter](vsi/index.md) | Develop control code for 3-phase voltage source inverter (VSI). |
-| [Profiling Tasks](profiling-tasks/index.md) | TODO: write this. |
+%| [Profiling Tasks](profiling-tasks/index.md) | TODO: write this. |
 
 ```{toctree}
 :hidden:
@@ -19,5 +19,5 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 blink/index
 hw-commands/index
 vsi/index
-profiling-tasks/index
+%profiling-tasks/index
 ```
