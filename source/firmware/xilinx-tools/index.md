@@ -14,5 +14,6 @@ building-and-running-firmware
 flashing/index
 create-private-repo
 create-user-app
+dual-core
 low-level-debugging
 ```
