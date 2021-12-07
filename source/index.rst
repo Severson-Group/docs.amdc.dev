@@ -128,6 +128,7 @@ The AMDC project is split into two distinct open-source repositories, hosted on 
    :caption: Firmware
 
    firmware/index
+   firmware/host-interface/index
    firmware/xilinx-tools/index
    firmware/arch/index
    firmware/modules/index
