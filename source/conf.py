@@ -59,6 +59,8 @@ html_theme = 'furo'
 
 html_title = "AMDC Platform"
 
+html_favicon = '_static/favicon.png'
+
 html_show_sphinx = True
 
 # Add any paths that contain custom static files (such as style sheets) here,
