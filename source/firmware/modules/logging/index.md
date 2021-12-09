@@ -1,4 +1,4 @@
-# Variable Logging
+# Signal Logging
 
 This document describes and documents the "logging" functionality that is designed into the AMDC system firmware. At the highest level, logging simply means recording variables over time from inside the firmware and retreiving the sampled values. This functionality is so fundamental to working with embedded systems that it is included directly from the main `AMDC-Firmware` code distribution -- the user does not have to reinvent the wheel.
 

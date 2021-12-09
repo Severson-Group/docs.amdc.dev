@@ -12,3 +12,15 @@ span.eqno {
 span.eqno a.headerlink {
     display: none;
 }
+
+/* Prevent the fig captions to show the ID link by default.
+ * Only show on mouse hover.
+ */
+
+figcaption:hover a.headerlink {
+    display: inline;
+}
+
+figcaption a.headerlink {
+    display: none;
+}
