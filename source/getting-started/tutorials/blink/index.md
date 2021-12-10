@@ -2,7 +2,7 @@
 
 - **Goal:** Run the baseline firmware on the AMDC hardware.
 - **Complexity:** 1 / 5
-- **Estimated Time:** 10 min
+- **Estimated Time:** 20 min
 
 This tutorial goes over:
 

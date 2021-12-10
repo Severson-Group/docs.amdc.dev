@@ -3,9 +3,7 @@
 The AMDC is more than just a blank embedded platform for running control algorithms.
 The open-source firmware provides many libraries and frameworks which can be used to greatly accelerate control development time.
 
-```{important}
-Invest your time in learning the capabilites already built into the AMDC firmware. Do not reinvent the wheel!
-```
+**Invest your time in learning the capabilites already built into the AMDC firmware!**
 
 For example:
 
