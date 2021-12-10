@@ -31,7 +31,8 @@ extensions = [
     'myst_parser',
     'sphinx_design',
     'sphinx_last_updated_by_git',
-    'sphinx_copybutton'
+    'sphinx_copybutton',
+    'sphinx_sitemap'
 ]
 
 myst_enable_extensions = [
@@ -49,14 +50,8 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-#html_theme = 'alabaster'
-#html_theme = 'sphinx_book_theme'
 html_theme = 'furo'
 
 html_title = "AMDC Platform"
@@ -64,6 +59,15 @@ html_title = "AMDC Platform"
 html_favicon = '_static/favicon.png'
 
 html_show_sphinx = True
+
+html_theme_options = {
+    'navigation_with_keys': True,
+}
+
+html_baseurl = 'https://docs.amdc.dev/'
+sitemap_filename = 'sitemap.xml'
+
+html_extra_path = ['robots.txt']
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

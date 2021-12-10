@@ -10,8 +10,9 @@ This tutorial goes over:
 
 ## Tutorial Requirements
 
-1. Completion of the [blink tutorial](../blink/index.md)
-2. Multimeter and/or oscilloscope for validation of I/O
+1. Working AMDC hardware
+2. Completion of the [blink tutorial](../blink/index.md)
+3. Multimeter and/or oscilloscope for validation of I/O
 
 ## Background
 

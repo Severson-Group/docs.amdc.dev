@@ -11,8 +11,9 @@ This tutorial goes over creating:
 
 ## Tutorial Requirements
 
-1. Completion of the [hardware commands tutorial](../hw-commands/index.md)
-2. Multimeter and/or oscilloscope for validation of I/O
+1. Working AMDC hardware
+2. Completion of the [hardware commands tutorial](../hw-commands/index.md)
+3. Multimeter and/or oscilloscope for validation of I/O
 
 ## Introduction
 

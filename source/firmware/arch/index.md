@@ -1,4 +1,4 @@
-# Architecture
+# Firmware Architecture
 
 ## Motivation
 

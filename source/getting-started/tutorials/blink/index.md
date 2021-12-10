@@ -114,7 +114,7 @@ The `init` and `deinit` sub-commands are used here to start and stop the blink s
 
 Try out the `stats` sub-commands. Notice that the output is always zero.
 By default, the code does not enable task timing statistic measurment.
-A future tutorial will go over profiling code executation time.
+A [future tutorial](../profiling-tasks/index.md) will go over profiling code executation time.
 
 ## Conclusion
 
