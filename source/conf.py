@@ -39,6 +39,8 @@ myst_enable_extensions = [
     'amsmath'
 ]
 
+git_last_updated_timezone = 'US/Central'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 

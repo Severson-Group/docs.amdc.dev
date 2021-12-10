@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        # Number of commits to fetch. 0 indicates all history for all branches and tags.
+        fetch-depth: '0'
 
     - name: Install Sphinx packages
       run: pip install -r requirements.txt
@@ -21,6 +24,7 @@ jobs:
     # ===============================
     - name: Commit documentation changes
       run: |
+        rm -rf docs # not sure if this is needed...
         mkdir docs
         cp -rf build/html/* docs/
         cd docs
