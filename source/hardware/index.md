@@ -14,3 +14,14 @@ To contribute and modify PCB designs, the user needs a valid license for Alitum.
 However, to order and use the PCBs, the "compiled" design files are provided in the open-source repo.
 This includes all the files needed to build the AMDC and get it working.
 Therefore, no users of the AMDC Platform need to have access to Altium, only designers and contributors.
+
+## Supported Hardware
+
+There are several revisions of the flagship AMDC PCB design which are compatible with the supplied firmware.
+The hardware revisions are denoted by single letters: ``A`` is the first revision, ``B`` is the second, etc.
+Each AMDC hardware revision improves and changes the design, striving towards a more robust hardware platform.
+
+The latest revision is the ``REV E`` PCB design.
+This is the 5th revision and is considered stable.
+Note that the AMDC firmware supports both ``REV D`` and ``REV E`` hardware.
+Previous hardware revisions (i.e. ``REV A``, ``REV B``, and ``REV C``) are no longer supported.

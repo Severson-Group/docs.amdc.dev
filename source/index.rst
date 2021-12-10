@@ -81,7 +81,7 @@ Do you offer technical support?
    No. Since the AMDC platform is not a paid project, we do not have the resources to provide 1:1 support. Please read the extensive documentation on this site.
 
 Who created the AMDC Platform?
-   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the hardware and firmware and built the documentation website.
+   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the hardware and firmware and built this documentation website you are reading.
 
 Who maintains the AMDC Platform?
    The AMDC Platform is actively maintained by students in the `Severson Research Group <https://severson.wempec.wisc.edu/>`_ at the `University of Wisconsin, Madison <https://www.wisc.edu/>`_ in the USA.
@@ -114,6 +114,7 @@ The AMDC project is split into two distinct open-source repositories, hosted on 
 
    getting-started/onboarding
    getting-started/tutorials/index
+   getting-started/user-guide/index
 
 .. toctree::
    :hidden:
@@ -128,15 +129,13 @@ The AMDC project is split into two distinct open-source repositories, hosted on 
    :caption: Firmware
 
    firmware/index
-   firmware/host-interface/index
    firmware/xilinx-tools/index
    firmware/arch/index
-   firmware/modules/index
 
 .. toctree::
    :hidden:
    :caption: Accessories
 
-   accessories/amds/index
+   AMDS <accessories/amds/index>
    accessories/uinverter/index
    accessories/test-board/index

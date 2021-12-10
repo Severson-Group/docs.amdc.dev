@@ -1,4 +1,4 @@
-# AMDS
+# Advanced Motor Drive Sensing (AMDS)
 
 Advanced motor drives often require a lot of sensors.
 Cue the AMDS.

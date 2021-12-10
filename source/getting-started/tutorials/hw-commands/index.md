@@ -1,4 +1,4 @@
-# Hardware Commands
+# Tutorial: Hardware Commands
 
 - **Goal:** Run built-in commands to control the AMDC drive I/O.
 - **Complexity:** 2 / 5
@@ -37,16 +37,16 @@ Per the `help` message, the included sub-commands are:
 
 Common commands:
 
-- `pwm` sub-commands control the PWM outputs
-- `anlg` sub-command reads the integrated ADC values
-- `enc` sub-commands read the incremental encoder input
+- `hw pwm ...` sub-commands control the PWM outputs
+- `hw anlg ...` sub-command reads the integrated ADC values
+- `hw enc ...` sub-commands read the incremental encoder input
 
 Uncommon commands:
 
-- `led` sub-command sets the RGB LED colors
-- `timer` sub-command prints the current time from either the CPU or FPGA timer
-- `ild` sub-command reads the value of a laser position sensor
-- `mux` sub-command sets the mapping of signal muxes in the FPGA
+- `hw led ...` sub-command sets the RGB LED colors
+- `hw timer ...` sub-command prints the current time from either the CPU or FPGA timer
+- `hw ild ...` sub-command reads the value of a laser position sensor
+- `hw mux ...` sub-command sets the mapping of signal muxes in the FPGA
 
 ## Explanation of common `hw` sub-commands
 
@@ -67,7 +67,10 @@ This command requires two parameters: the switching frequency (in Hz) and the de
 By default, the PWM switching parameters are 100 kHz and 100 ns of dead-time.
 The allowable range for switching frequency is from about 1.5 kHz to many MHz.
 Dead-time is limited to a minimum of 25 ns, but can be arbitarily high.
-Note that the switching parameters can only be changed when the PWM output is off.
+
+```{tip}
+The PWM switching parameters can only be changed when the PWM output is off.
+```
 
 To set the duty ratio of a particular PWM output, the `hw pwm duty ...` command can be used.
 The PWM driver in the FPGA is set up to output signals for half-bridges, meaning that a single command of `hw pwm duty ...` will update two output pins on the AMDC.
@@ -125,7 +128,10 @@ The FPGA also provides a **position** output, analgous to the steps output, but 
 In other words, when the `Z` pulse is seen, the FPGA resets the position variable back to 0.
 This means the position output can be used as an absolute position signal.
 To print this variable, call `hw enc pos`.
-Note that this signal is not defined until the `Z` pulse is seen by the FPGA -- the command will output `-1` until a valid position is available.
+
+```{warning}
+The encoder position signal is not defined until the `Z` pulse is seen by the FPGA -- the command (i.e. driver) will output `-1` until a valid position is available.
+```
 
 See the [encoder hardware documentation](/hardware/subsystems/encoder.md) for more info on the hardware capabilities.
 
@@ -156,7 +162,9 @@ hw led set 2 0 0 10
 hw led set 3 10 10 10
 ```
 
-*Warning: the LEDs are VERY bright! Full brightness is not recommended! The above example uses 10/255 = about 4% power for each color channel. Note that the perceived brightness is not linearly related to the color value and power.* 
+```{danger}
+The LEDs are VERY bright! Full brightness is not recommended! The above example uses 10/255 = about 4% power for each color channel. Note that the perceived brightness is not linearly related to the color value and power.
+```
 
 ## Conclusion
 

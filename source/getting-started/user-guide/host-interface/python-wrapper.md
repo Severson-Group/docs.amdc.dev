@@ -1,4 +1,4 @@
-# Python Classes
+# Python Wrapper
 
 For programmatic interaction with the AMDC, a basic Python class is provided.
 
@@ -18,7 +18,7 @@ from AMDC import AMDC
 amdc = AMDC()
 ```
 
-Next, required configuration is needed depending on if UART or Ethernet is used.
+Next, configure the `amdc` object based on if UART or Ethernet is used.
 
 ### Configuring UART Mode
 
@@ -60,6 +60,11 @@ For UART, this opens and closes the serial connection.
 For Ethernet, connect does nothing since sockets are opened at creation.
 Disconnect closes all open sockets.
 
+```{warning}
+Running `amdc.disconnect()` while using Ethernet will also close the default command socket, thus disabling the Ethernet interface.
+To reconnect, you need to set up a new `ascii_cmd` socket and set the default command socket (as shown earlier).
+```
+
 ### Sending Commands
 
 After the initial configuration above, the AMDC object can be used without knowledge of the physical link.
@@ -95,13 +100,3 @@ Customize the class after creating the `amdc` object.
 #### Delays
 
 - `amdc.comm_cmd_delay_cmd` -- delay after sending commands for given seconds (default: `0.001`)
-
-## `AMDC_Logger.py`
-
-This class wraps the variable / signal logging module.
-
-View the comprehensive documentation: [](/firmware/modules/logging/index.md).
-
-## `AMDC_LivePlot.py`
-
-This class implements real-time plotting of signals from the AMDC via Ethernet streaming.

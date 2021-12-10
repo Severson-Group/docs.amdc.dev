@@ -9,6 +9,10 @@ Users can easily build numerous injection points into their controller code.
 
 The remainder of this document explains how to add injection points, how to use the injection module, and example use cases.
 
+```{seealso}
+Injections pair nicely with [](../logging/index.md)!
+```
+
 ## What Are Injections?
 
 Injections refer to adding or modifying signals in a control algorithm.

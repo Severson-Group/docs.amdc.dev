@@ -1,4 +1,4 @@
-# Blink
+# Tutorial: Blink
 
 - **Goal:** Run the baseline firmware on the AMDC hardware.
 - **Complexity:** 1 / 5
@@ -7,7 +7,7 @@
 This tutorial goes over:
 
 - Building the baseline firmware and programming the AMDC hardware
-- Communicating to the AMDC via the command interface
+- Communicating to the AMDC via UART and the command interface
 - Changing AMDC state via commands
 
 ## Tutorial Requirements
@@ -29,7 +29,7 @@ Since it is a common task, a dedicated self-contained document is provided: [fol
 After completing the steps in the linked document, the AMDC should be running the compiled code, and the RGB LEDs should be blinking continuously.
 If the LEDs are not on, do not proceed; debug until they start blinking!
 
-## Step 2: Communicating to the AMDC via the command interface
+## Step 2: Communicating to the AMDC via UART and the command interface
 
 Now that the firmware is running, you need to connect to the AMDC via the command interface.
 The command interface allows users to interact with the AMDC by running commands to get/set system state.

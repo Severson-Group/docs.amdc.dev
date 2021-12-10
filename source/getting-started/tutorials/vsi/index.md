@@ -1,4 +1,4 @@
-# Voltage Source Inverter
+# Tutorial: Voltage Source Inverter
 
 - **Goal:** Develop control code for 3-phase voltage source inverter (VSI).
 - **Complexity:** 3 / 5
@@ -365,7 +365,9 @@ void app_controller_init(void)
 #endif // APP_CONTROLLER
 ```
 
+```{important}
 Do not forget to add your app init function to the main `user_apps.c` file!
+```
 
 ## Expected File System Structure
 

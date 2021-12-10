@@ -87,11 +87,13 @@ There are many other host software options available.
 
 Follow the [Blink tutorial](/getting-started/tutorials/blink/index.md) for more detailed instructions on using the manual terminal interface via UART.
 
-### Programmatic Interface Via Python
+### Programmatic Interface With Python
 
 For complex experiments and systems (i.e., most users), the programmatic interface method is preferred and should be used.
 This can be done via either UART or Ethernet, and is typically done using a Jupyter Notebook environment.
-The `AMDC-Firmware` repo contains Python classes which encapsulate the base functionality for AMDC-host interfacing.
+The `AMDC-Firmware` repo contains Python classes which encapsulate the functionality of AMDC-host interfacing.
+
+The Python wrapper class for the AMDC is documented [here](./python-wrapper.md).
 
 The most basic way to think about the programmatic method is simply automating typing commands on the serial terminal.
 For example, typing `hw pwm on` and `[ENTER]` into the terminal program is the same as running `amdc.cmd("hw pwm on")` in Python.
@@ -117,5 +119,5 @@ However, Python scripting makes it easy.
 ```{toctree}
 :hidden:
 
-python-classes
+python-wrapper
 ```

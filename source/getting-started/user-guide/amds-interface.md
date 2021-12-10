@@ -2,7 +2,9 @@
 
 This document describes the built-in AMDC drivers which can be used to interface with the AMDS.
 
-*Before attempting to use these drivers, make sure to read about the AMDS in [its documentation](/accessories/amds/index.md).*
+```{attention}
+Before attempting to use these drivers, make sure to read about the AMDS in [its documentation](/accessories/amds/index.md).
+```
 
 ## Enable AMDS Support
 

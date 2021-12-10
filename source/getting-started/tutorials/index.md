@@ -3,6 +3,10 @@
 The AMDC Platform can be intimidating for newcomers due to the complexity of the hardware and firmware.
 Tutorials are provided to introduce users to the platform in a structured way so that they can ease into the depths of the system.
 
+```{seealso}
+After completing these tutorials, check out the [](../user-guide/index.md) for more advanced features!
+```
+
 These tutorials are intended to be followed early in one's adventures with the AMDC Platform.
 Each tutorial has a clear singular aim and can often be completed within an hour.
 
@@ -15,7 +19,7 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 ```{toctree}
 :hidden:
 
-blink/index
-hw-commands/index
-vsi/index
+Blink <blink/index>
+Hardware Commands <hw-commands/index>
+Voltage Source Inverter <vsi/index>
 ```

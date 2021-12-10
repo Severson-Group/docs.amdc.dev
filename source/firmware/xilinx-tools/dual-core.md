@@ -50,9 +50,11 @@ Then, create two BSP projects as usual, but append `_cpuX` to each:
 - `amdc_bsp_cpu0` should target CPU0
 - `amdc_bsp_cpu1` should target CPU1
 
-```{important} 
 Update `amdc_bsp_cpu1` to build with extra compiler flags: `-DUSE_AMP=1`.
 Using the "Board Support Package" window, append this flag to the "extra_compiler_flags" via the "drivers > ps7_cortexa9_1" tab.
+
+```{warning}
+Forgetting to set the extra compiler flag will result in a dual-core program that does not work!
 ```
 
 ### Create the Applications
@@ -71,6 +73,14 @@ To avoid this, manually update the linker script `lscript.ld` for each applicati
 - `app_cpu1`: update `ps7_ddr_0` memory region: base address: `0x20080000`, size: `0x1FF80000`
 
 The size is computed as half the default size of the RAM.
+
+For advanced users, feel free to split the address space as two non-equal parts if one core has higher memory requirements (e.g. for buffered logging of an insane amount of data).
+
+```{warning}
+Forgetting to split the memory address space will cause undefined behavior.
+
+The programs will run on the processor, but the memory will become corrupt!
+```
 
 #### Disable OCM Caching
 
