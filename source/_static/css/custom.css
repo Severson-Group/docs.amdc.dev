@@ -24,3 +24,8 @@ figcaption:hover a.headerlink {
 figcaption a.headerlink {
     display: none;
 }
+
+div.google-analytics-tracking-info {
+    padding: 0 0.75rem 1rem;
+    font-size: small;
+}

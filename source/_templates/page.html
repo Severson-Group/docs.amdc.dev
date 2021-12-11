@@ -1,0 +1,20 @@
+{% extends "!page.html" %}
+
+{% block footer %}
+{{ super() }}
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+{% endblock %}
