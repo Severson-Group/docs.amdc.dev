@@ -40,22 +40,56 @@ The AMDC also supports [Gigabit Ethernet](https://en.wikipedia.org/wiki/Gigabit_
 Compared to the UART interface, Ethernet is much faster and very robust.
 It is the preferred host interface.
 
-#### Setting Up Ethernet on Host PC
-
 Setting up Ethernet from the host side is a bit harder than UART.
+
+#### Gigabit Ethernet Adapter
 
 First, you will need a dedicated Gigabit Ethernet jack.
 Using a USB-to-Ethernet adapter is recommended for portability, but make sure it supports the link speeds you want to use (e.g., try [this](https://www.amazon.com/Cable-Matters-Ethernet-Adapter-Supporting/dp/B00BBD7NFU/) USB 3.0 to Ethernet adapter which supports 10/100/1000 Mbps).
+
+#### Adapter Name
+
+For ease-of-use, consider renaming the network exposed from the dedicated network adapter as "AMDC" so it is clear on your PC what is what.
+
+In Windows 10, update the name of the network connection to the AMDC:
+
+1. Plug in the Ethernet adapter and ensure its drivers are installed (most likely this will be automatic)
+2. Open `Control Panel` > `Network and Internet` > `Network and Sharing Center`
+3. Find the network in the list of "Active Networks" -- it will probably be labeled "Unidentified network" and will say it is connected via "Ethernet X"
+4. On the left side bar, go to `Change adapter settings`
+5. Click once on the "Ethernet X" entry which you found in step 3
+6. In the top tool bar, select "Rename this connection"
+7. Type in "AMDC" -- if you already did this for another Ethernet adapter on your PC, you will have to pick a new name
+
+#### Adapter IP Settings
 
 When using the Ethernet interface to the AMDC, the AMDC acts as the server and the host PC is the client.
 The AMDC server does not use DHCP, meaning you must give a static IP address to your host PC on the dedicated network adapter.
 The AMDC server is hard-coded to IP address `192.168.1.10`.
 You must statically define your client PC IP address to an address which is *not* the AMDC address, e.g., `192.168.1.8`.
 
-For ease-of-use, consider renaming the network exposed from the dedicated network adapter as "AMDC" so it is clear on your PC what is what.
+In Windows 10, set the Ethernet network settings for the AMDC:
+
+1. Open `Network status`
+2. The AMDC network should appear under your Wi-Fi and will be labeled "AMDC" if you renamed it per the above section
+3. Select `Properties` for the AMDC network
+4. Under `IP settings`, it will default to `IP assignment: Automatic (DHCP)`
+5. Click `Edit` under `IP settings`
+6. Change to `Manual`
+7. Turn on `IPv4`
+8. Set the following settings:
+   - `IP address`: `192.168.1.8`
+   - `Subnet prefix length`: `24`
+   - `Gateway`: `192.168.1.1`
+9. Click `Save`
+
+#### Adapter Link Speed
+
+The Ethernet adapter link speed is determined automatically via the Ethernet PHY on the AMDC.
+It will try to use the highest possible link speed that the Ethernet adapter supports (up to 1000 Mbps).
 
 To determine the link speed used by the AMDC and the host network adapter, check the UART output a few seconds after boot-up of the AMDC firmware.
-If the Ethernet link is successful, the link speed will be printed in Mbps (1000 means Gigabit Ethernet speeds).
+If the Ethernet link is successful, the link speed will be printed in Mbps where 1000 means Gigabit Ethernet speeds.
 
 ## Usage
 
