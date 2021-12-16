@@ -7,8 +7,8 @@ This repo stores all the raw source used to build the [docs.amdc.dev](https://do
 ## Getting Started
 
 [Sphinx](https://www.sphinx-doc.org/en/master/) is used to build the docs.
-If you want to do advanced things, you will need to read the Sphinx docs.
-For most people, just read a few pages to get a sense of how this works, then edit away.
+If you want to do advanced things with the docs (i.e., add complicated features), you will need to read the Sphinx docs.
+For most people, just read a few pages of the already-written docs to get a sense of how it works, then edit away.
 
 Most of the pages are written in markdown (`*.md`).
 A few pages are written in reStructuredText (`*.rst`).
