@@ -38,7 +38,7 @@ For the majority of use cases, your user application(s) will be private and resi
 2. In this repo:
     1. Add a git submodule for the `AMDC-Firmware` repo: `git submodule add https://github.com/Severson-Group/AMDC-Firmware`
     2. Optional (and suggested): add `branch = develop` to `.gitmodules` so your submodule will track the develop branch by default
-    3. **Copy** `AMDC-Firmware/sdk/bare/user` to your repo's root directory, and rename (perhaps as "my-AMDC-private-C-code")
+    3. **Copy** `AMDC-Firmware/sdk/app_cpu1/user` to your repo's root directory, and rename (perhaps as "my-AMDC-private-C-code")
 
 You should now have a master repo with two subfolders:
 
@@ -125,6 +125,16 @@ Xilinx SDK (referred to as just SDK) is used to program the DSPs on the Zynq-700
 
 ### Create BSP Project
 
+```{attention}
+To run dual-core programs, you need to make a seperate BSP project targeting **each core individually**.
+Follow the below steps *twice*, but change the `Target Processor` for each one to CPU0/CPU1.
+Name each BSP project: `amdc_bsp_cpu0` and `amdc_bsp_cpu1`.
+
+After creating both BSPs, you must update the settings for `amdc_bsp_cpu1` to add an extra compiler flag: `-DUSE_AMP=1`.
+
+See the [](./dual-core.md) docs for more information.
+```
+
 1. `File` > `New` > `Board Support Package`
 2. Set `Project name` to "amdc_bsp"
 3. `Finish`
@@ -165,40 +175,40 @@ Once it fails to build your new imported project, follow the steps below to fix 
 
 This section explains how to configure the SDK build system to correctly use the AMDC `common` code from the submodule.
 
-**Only complete these steps if the build failed after you imported the user project!!!** If there were no errors, skip this section. There should be no errors if you have imported the `bare` project as an open-source project (i.e. not a private user application).
+**Only complete these steps if the build failed after you imported the user project!!!** If there were no errors, skip this section. There should be no errors if you have imported the `app_cpu1` project as an open-source project (i.e. not a private user application).
 
 Link `common` folder to project:
-1. In the `Project Explorer`, delete `common` folder from `bare` project (if present)
-2. Open `bare` project properties
+1. In the `Project Explorer`, delete `common` folder from `app_cpu1` project (if present)
+2. Open `app_cpu1` project properties
 3. `C/C++ General` > `Paths and Symbols` > `Source Location` > `Link Folder...`
 4. Check the `Link to folder in the file system` box
-5. Browse to `$REPO_DIR\sdk\bare\common`
+5. Browse to `$REPO_DIR\sdk\app_cpu1\common`
 6. `OK`
 
 Fix compiler includes to reference `common`:
 
 7. Change to `Includes` tab
-8. `Edit...` on `/bare/common`
-9. Click `Workspace...` and select `bare` / `common`
+8. `Edit...` on `/app_cpu1/common`
+9. Click `Workspace...` and select `app_cpu1` / `common`
 10. `OK`
 11. `OK`
 
 Fix strange SDK issue:
 
-12. `Edit...` on `/bare/bare`
-13. Change directory to `/bare`
+12. `Edit...` on `/app_cpu1/app_cpu1`
+13. Change directory to `/app_cpu1`
 14. `OK`
 
 Fix another strange SDK issue:
 
-15. `Edit...` on `/bare/amdc_bsp/ps7_cortexa9_0/include`
-16. Change directory to `/amdc_bsp/ps7_cortexa9_0/include`
+15. `Edit...` on `/app_cpu1/amdc_bsp_cpu1/ps7_cortexa9_1/include`
+16. Change directory to `/amdc_bsp_cpu1/ps7_cortexa9_1/include`
 17. `OK`
 
 Add library path for BSP:
 
 18. Change to `Library Paths` tab
-19. `Add...` > `Workspace...` > `amdc_bsp` / `ps7_cortex9_0` / `lib`
+19. `Add...` > `Workspace...` > `amdc_bsp_cpu1` / `ps7_cortex9_1` / `lib`
 20. `OK`
 
 Update linker library options:
@@ -215,7 +225,7 @@ Update linker library options:
 
 SDK will attempt to build the projects you just imported. Wait until all projects are done compiling... Could take a few minutes...
 
-There shouldn't be any errors. Ensure there are no errors for `amdc_bsp` and your desired application project (i.e. `bare`)
+There shouldn't be any errors. Ensure there are no errors for `amdc_bsp` and your desired application project (i.e. `app_cpu1`)
 
 All done! Ready to program AMDC!
 
@@ -248,9 +258,9 @@ Ensure the AMDC JTAG / UART is plugged into your PC and AMDC main power is suppl
 
 ### Setup SDK Project Debug Configuration
 
-1. Right-click on the project you are trying to debug, e.g. `bare`
+1. Right-click on the project you are trying to debug, e.g. `app_cpu0`
 2. `Debug As` > `Debug Configurations...`
-3. Ensure you have a `System Debugger using Debug_bare.elf on Local` launch configuration ready for editing. _If not:_
+3. Ensure you have a `System Debugger using Debug_foo.elf on Local` launch configuration ready for editing. _If not:_
     1. Right-click on `Xilinx C/C++ application (System Debugger)` from left pane > `New`
     2. A new panel should appear on the right half of popup
 4. Ensure the `Target Setup` tab is open
@@ -260,11 +270,19 @@ Ensure the AMDC JTAG / UART is plugged into your PC and AMDC main power is suppl
 8. Click `Apply`
 9. Click `Close`
 
+```{attention}
+If you are targeting dual-core operation, you must manually specify the `*.elf` file for both cores.
+
+In the second tab, browse for the ELF files which are located under the `Debug/` sub-folder.
+
+Uncheck the "stop on main" checkbox to ensure both cores start running right away during debug.
+```
+
 ### Running Project on AMDC
 
 Now, you are ready to start the code on AMDC!
 
-1. Right-click on application, e.g. `bare`
+1. Right-click on application, e.g. `app_cpu0`
 2. `Debug As` > `Launch on Hardware (System Debugger)`
 3. `SDK Log` panel in the GUI will show stream of message as AMDC is programmed
     1. System reset will occur
