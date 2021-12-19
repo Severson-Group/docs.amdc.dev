@@ -121,6 +121,7 @@ The AMDC project is split into two distinct open-source repositories, hosted on 
    :caption: Hardware
 
    hardware/index
+   hardware/obtaining-hardware
    hardware/subsystems/index
    hardware/revisions/index
 
