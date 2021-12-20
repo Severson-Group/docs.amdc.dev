@@ -68,7 +68,7 @@ You will need to specify the circuit board parameters when ordering the PCB, suc
 All the required details are listed in table format in the `REVxxxx` folder README file.
 In general, no special parameters are needed; the defaults will work.
 
-### 3. sOrdering components (BOM)
+### 3. Ordering components (BOM)
 
 After ordering the blank PCBs, you need to buy the components to solder onto the PCB.
 All the parts are listed in the *Bill of Materials (BOM)*.
