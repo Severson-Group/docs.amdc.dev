@@ -236,7 +236,7 @@ At this point, you are done generating code / importing / exporting / etc. Now w
 
 ### Discard changes to AMDC-Firmware
 
-Your submodule `AMDC-Firmeware` should be clean, i.e. no changes. Chances are, this is not true. Please revert your local changes to `AMDC-Firmware` to make it match the remote version.
+Your submodule `AMDC-Firmware` should be clean, i.e. no changes. Chances are, this is not true. Please revert your local changes to `AMDC-Firmware` to make it match the remote version.
 
 Vivado probably updated the `*.bd` file... Simply run: `git restore ...` to put this file back to a clean state.
 
