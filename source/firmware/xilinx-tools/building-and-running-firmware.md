@@ -242,7 +242,7 @@ Vivado probably updated the `*.bd` file... Simply run: `git restore ...` to put 
 
 ### Add `.gitignore` as needed (private user code only)
 
-Run `git status` in your private user repo. You should not see compiled output. If git sees changes to the following folders, create a gitignore file so that they are ignored. Note that if the above steps were perfectly followed, you shouldn't have to add any gitignores.
+Run `git status` in your private user repo. If git sees changes to the following folders, create a gitignore file so that they are ignored.
 
 - `.metadata/`
 - `Debug/`
