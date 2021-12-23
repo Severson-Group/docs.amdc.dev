@@ -2,6 +2,52 @@
 AMDC Platform Documentation
 ===========================
 
+.. Table of Contents for the entire site:
+   NOTE: these are marked hidden so they are not
+   rendered on the home page, but must be here so
+   the side bar works!
+
+.. toctree::
+   :hidden:
+   :caption: GitHub Repositories
+
+   AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>
+   AMDC-Firmware <https://github.com/Severson-Group/AMDC-Hardware>
+
+.. toctree::
+   :hidden:
+   :caption: Getting Started
+
+   getting-started/onboarding
+   getting-started/tutorials/index
+   getting-started/user-guide/index
+
+.. toctree::
+   :hidden:
+   :caption: Hardware
+
+   hardware/index
+   hardware/obtaining-hardware
+   hardware/subsystems/index
+   hardware/revisions/index
+
+.. toctree::
+   :hidden:
+   :caption: Firmware
+
+   firmware/index
+   Architecture <firmware/arch/index>
+   firmware/xilinx-tools/index
+
+.. toctree::
+   :hidden:
+   :caption: Accessories
+
+   AMDS <accessories/amds/index>
+   accessories/uinverter/index
+   accessories/test-board/index
+
+
 Welcome to the AMDC Platform documentation.
 This is an ever-growing collection of knowledge about the AMDC.
 Browse the documentation using the links in the sidebar on the left.
@@ -95,48 +141,3 @@ The AMDC project is split into two distinct open-source repositories, hosted on 
 
 - `AMDC-Firmware <https://github.com/Severson-Group/AMDC-Firmware>`_ is licensed under the **BSD 3-Clause License**.
 - `AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>`_ does not include any explicit license.
-
-.. Table of Contents for the entire site:
-   NOTE: these are marked hidden so they are not
-   rendered on the home page, but must be here so
-   the side bar works!
-
-.. toctree::
-   :hidden:
-   :caption: GitHub Repositories
-
-   AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>
-   AMDC-Firmware <https://github.com/Severson-Group/AMDC-Hardware>
-
-.. toctree::
-   :hidden:
-   :caption: Getting Started
-
-   getting-started/onboarding
-   getting-started/tutorials/index
-   getting-started/user-guide/index
-
-.. toctree::
-   :hidden:
-   :caption: Hardware
-
-   hardware/index
-   hardware/obtaining-hardware
-   hardware/subsystems/index
-   hardware/revisions/index
-
-.. toctree::
-   :hidden:
-   :caption: Firmware
-
-   firmware/index
-   Architecture <firmware/arch/index>
-   firmware/xilinx-tools/index
-
-.. toctree::
-   :hidden:
-   :caption: Accessories
-
-   AMDS <accessories/amds/index>
-   accessories/uinverter/index
-   accessories/test-board/index
