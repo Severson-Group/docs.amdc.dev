@@ -25,13 +25,13 @@ Xilinx provides a First-Stage Bootloader application project which we will use t
 1.  Right click on the `fsbl` project directory in SDK
 2.  Select `Create Boot Image`
 
-![Dropdown menu from First Stage Bootloader (FSBL) project](images/img1.png)
+![Dropdown menu from First Stage Bootloader (FSBL) project](images/flashing/img1.png)
 
 4. Ensure popup menu settings look like the following.
 
 Explaination of settings: `.MCS` is the file format which is supported for QSPI flashing. The list of three items for "Boot image partitions" must always be the following in this order: fsbl.elf, FPGA bitstream .bit file, your user *.elf file.
 
-![Popup menu settings](images/img2.png)
+![Popup menu settings](images/flashing/img2.png)
 
 5. Click `Create Image`
 6. If it warns that another file already exists, click `OK`
@@ -43,16 +43,16 @@ After generating the boot image `*.MCS`file, we need to program the flash device
 
 1. Ensure you powered up the board in the correct boot mode. This is selected via the switches on the PicoZed PCB. See image below for switch positions for JTAG mode (what you want).
 
-![PicoZed switch positions for JTAG mode](images/sw-jtag.jpg)
+![PicoZed switch positions for JTAG mode](images/flashing/sw-jtag.jpg)
  
 2. Click `Xilinx Tools` from the main dropdown in the SDK
 3. Click `Program Flash`
 
-![SDK menu button to click](images/img3.png)
+![SDK menu button to click](images/flashing/img3.png)
 
 4. Ensure popup window looks like the following:
 
-![Program Flash Memory popup window settings](images/img4.png)
+![Program Flash Memory popup window settings](images/flashing/img4.png)
 
 5. Click `Program`
 6. It will start flashing the board. This will take ~3 minutes...
@@ -67,7 +67,7 @@ Now the boot image has been loaded onto the PicoZed flash device. We need to con
 
 1. Set PicoZed switch positions to the flash boot mode (see image below).
 
-![PicoZed switch positions for flash boot mode](images/sw-flash.jpg)
+![PicoZed switch positions for flash boot mode](images/flashing/sw-flash.jpg)
 
 ## Test
 
