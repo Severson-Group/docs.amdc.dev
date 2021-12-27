@@ -36,6 +36,7 @@ AMDC Platform Documentation
    :caption: Firmware
 
    firmware/index
+   firmware/development
    Architecture <firmware/arch/index>
    firmware/xilinx-tools/index
 
