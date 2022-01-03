@@ -16,7 +16,7 @@ This document explains the steps needed to set-up a private repo for AMDC firmwa
     4. `amdc_rev*_wrapper.hdf`
     5. `fsbl/`
 
-*Note that the `fsbl` project will only exist if you have previously created a bootloader program, as outlined in the [Flashing AMDC](./flashing/index.md) document.*
+*Note that the `fsbl` project will only exist if you have previously created a bootloader program, as outlined in the [Flashing AMDC](./flashing.md) document.*
 
 Now, your private repo contains all needed files. Each time you clone it, you will need to follow the following steps to use it.
 

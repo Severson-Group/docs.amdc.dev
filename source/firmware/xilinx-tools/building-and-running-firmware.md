@@ -221,6 +221,15 @@ Update linker library options:
 26. Add `m` under `Libraries`
 27. Click `OK` to exit properties dialog
 
+#### Expected `Paths and Symbols` Settings
+
+After following the above steps, the project build settings should resemble the following screenshots:
+
+![](./images/sdk/screenshot1.png)
+![](./images/sdk/screenshot2.png)
+![](./images/sdk/screenshot3.png)
+![](./images/sdk/screenshot4.png)
+
 ### Build SDK Projects
 
 SDK will attempt to build the projects you just imported. Wait until all projects are done compiling... Could take a few minutes...

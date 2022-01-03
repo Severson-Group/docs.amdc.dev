@@ -11,7 +11,7 @@ Be sure to bookmark these pages; you may be coming back to them regularly during
 
 installing-xilinx-tools
 building-and-running-firmware
-flashing/index
+flashing
 create-private-repo
 create-user-app
 dual-core

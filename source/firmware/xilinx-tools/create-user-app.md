@@ -6,7 +6,7 @@ Guidelines for generating custom user app code for the AMDC
 
 This document gives an overview of generating custom user app code for use with the AMDC. 
 
-AMDC utilizes an RTOS to coordinate system resources for the various tasks that need to be performed. It's important to understand these concepts and can be reviewed [here](https://github.com/Severson-Group/AMDC-Firmware/blob/develop/docs/Firmware-Arch-System.md).
+AMDC utilizes an RTOS to coordinate system resources for the various tasks that need to be performed. It's important to understand these concepts and can be reviewed [here](/firmware/arch/index.md).
 
 In short our _application_ has some _task_ (where the work actually gets done) and we, the end user manage the task via serial _commands_. This structure requires 3 files to be constructed in a manner that the AMDC RTOS will recognize. In order to do that we will be basing our custom application off of the Blink application that is included on a clean clone of the AMDC repo.
 
