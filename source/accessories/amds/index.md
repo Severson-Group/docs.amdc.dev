@@ -41,4 +41,5 @@ However, it is a complete system which could be interfaced to any other host dev
 firmware/index
 mainboard/index
 sensor-cards/index
+amds-in-action/index
 ```
