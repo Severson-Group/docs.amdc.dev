@@ -12,7 +12,7 @@ AMDC Platform Documentation
    :caption: GitHub Repositories
 
    AMDC-Hardware <https://github.com/Severson-Group/AMDC-Hardware>
-   AMDC-Firmware <https://github.com/Severson-Group/AMDC-Hardware>
+   AMDC-Firmware <https://github.com/Severson-Group/AMDC-Firmware>
 
 .. toctree::
    :hidden:
