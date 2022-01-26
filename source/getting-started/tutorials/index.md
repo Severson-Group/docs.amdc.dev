@@ -12,6 +12,7 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 
 | Tutorial Name | Aim / Goal / Outcome |
 |---|---|
+| [Meet the AMDC](meet-amdc/index.md) | Power on the AMDC and explore the I/O. |
 | [Blink](blink/index.md) | Run the baseline firmware on the AMDC hardware. |
 | [Hardware Commands](hw-commands/index.md) | Run built-in commands to control the AMDC drive I/O. |
 | [Voltage Source Inverter](vsi/index.md) | Develop control code for 3-phase voltage source inverter (VSI). |
@@ -20,6 +21,7 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 ```{toctree}
 :hidden:
 
+Meet the AMDC <meet-amdc/index>
 Blink <blink/index>
 Hardware Commands <hw-commands/index>
 Voltage Source Inverter <vsi/index>
