@@ -12,10 +12,9 @@ This tutorial goes over:
 
 ## Tutorial Requirements
 
-This is the first tutorial, so the only requirements are that the user has:
-
 1. Working AMDC hardware
-2. Access to Xilinx tools for building firmware
+2. Completion of the ["Meet the AMDC" tutorial](../meet-amdc/index.md)
+3. Access to Xilinx tools for building firmware
 
 ## Step 1: Building baseline firmware and programming the AMDC hardware
 
@@ -47,14 +46,18 @@ The minimal host software required to use the AMDC is a simple serial terminal. 
 
 The SDK provides a terminal via the `SDK Terminal` pane:
 
-![](images/sdk-terminal.png)
+```{image} images/sdk-terminal.png
+:height: 10em
+```
 
 To use this, you'll need to click the `+` button to set up a new connection.
 
 The settings should match the following screenshot, but you must select the correct port for your AMDC.
 Find the port using the "Device Manager" software on your computer.
 
-![](images/sdk-terminal-settings.png)
+```{image} images/sdk-terminal-settings.png
+:height: 15em
+```
 
 #### Option 2: Tera Term
 
