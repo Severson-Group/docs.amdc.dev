@@ -44,7 +44,7 @@ amdc.setup_comm_defaults('eth')
 amdc.eth_init()
 
 # Set up the default ASCII command socket
-s0 = amdc.eth_new_socket('ascii_cmd')
+s0, s0_id = amdc.eth_new_socket('ascii_cmd')
 amdc.eth_set_default_ascii_cmd_socket(s0)
 ```
 
