@@ -74,11 +74,19 @@ Only source files and IP is version controlled which mean you must generate a lo
 
 Upon successful project generation, the block diagram will open. If the block diagram does not open, fix the errors and try reimporting project. See the errors by opening the `Tcl Console` pane in Vivado.
 
+```{attention}
+Make sure the block diagram automatically opens after running the import script! **No automatic block diagram opening means it will not work!**
+
+If the block diagram does not open automatically, check the `Messages` or `Tcl Console` panels for more information.
+```
+
 #### Common Errors
 
-Having spaces in the file system path for the Vivado project is not supported. For example, if your repo is located in your user directory and your username has a space in it: `C:\Users\**John Doe**\Documents\GitHub\AMDC-Firmare`. If this is the case, the project import will fail. Move the repo elsewhere and try again.
+- Having spaces in the file system path for the Vivado project is not supported. For example, if your repo is located in your user directory and your username has a space in it: `C:\Users\**John Doe**\Documents\GitHub\AMDC-Firmare`. If this is the case, the project import will fail. Move the repo elsewhere and try again.
 
-The import script **will not** overwrite the `amdc/` Vivado project folder on disk. If you are trying to regenerate the Vivado project, you must delete the old `amdc/` folder before running the script.
+- The import script **will not** overwrite the `amdc/` Vivado project folder on disk. If you are trying to regenerate the Vivado project, you must delete the old `amdc/` folder before running the script.
+
+- Vivado will fail during import of the project if the IP cores are "locked". This can happen if you checkout a new branch of code and try to rebuild Vivado without deleting all the temporary files. The easiest way to fix this is to always delete and reclone the `AMDC-Firmware` folder when changing code versions.
 
 ### Generating Bitstream
 
