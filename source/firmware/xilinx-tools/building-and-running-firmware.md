@@ -174,6 +174,7 @@ Follow these steps to import projects from your private user repo:
 2. `Directory...`
 3. Select: `your master user repo` / `my-AMDC-private-C-code`
 4. `Finish`
+5. Repeat steps 1 - 4, but this time in step 3 select `$REPO_DIR\sdk\app_cpu0`
 
 After clicking `Finish`, the SDK will attempt to build the new private user applications. The compilation will fail. If it doesn't, you did not import your private user application project correctly -- delete the project from the SDK and try again until it fails to build.
 
