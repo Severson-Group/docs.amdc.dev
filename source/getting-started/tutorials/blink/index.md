@@ -109,7 +109,7 @@ Try typing `blink hello bob` and observe the response.
 Now, try typing `blink hello nathan`; notice the response is different.
 Type `blink hello fred`; again, notice a different response.
 
-To understand the differences in responses from the AMDC, explore the `AMDC-Firmware` code base to find the `blink` [command handler function](https://github.com/Severson-Group/AMDC-Firmware/blob/develop/sdk/bare/user/usr/blink/cmd/cmd_blink.c#L37-L126).
+To understand the differences in responses from the AMDC, explore the `AMDC-Firmware` code base to find the `blink` [command handler function](https://github.com/Severson-Group/AMDC-Firmware/blob/develop/sdk/app_cpu1/user/usr/blink/cmd/cmd_blink.c#L37-L126).
 
 Now, try typing `blink deinit`. The RGB LEDs stopped blinking!
 Turn them back on by typing `blink init`.
