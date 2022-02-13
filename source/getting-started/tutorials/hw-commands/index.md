@@ -146,6 +146,10 @@ hw enc pos
 
 ### RGB LEDs
 
+```{danger}
+The LEDs are VERY bright! Full brightness is not recommended! The below example uses 10/255 = about 4% power for each color channel. Note that the perceived brightness is not linearly related to the color value and power.
+```
+
 The AMDC includes 4 RGB LEDs on the PCB.
 By default, the firmware cycles blinking patterns on the LEDs to indicate the firmware is running.
 The `hw led set ...` command can set an arbilitary color to one LED.
@@ -161,10 +165,6 @@ hw led set 0 10 0 0
 hw led set 1 0 10 0
 hw led set 2 0 0 10
 hw led set 3 10 10 10
-```
-
-```{danger}
-The LEDs are VERY bright! Full brightness is not recommended! The above example uses 10/255 = about 4% power for each color channel. Note that the perceived brightness is not linearly related to the color value and power.
 ```
 
 ## Conclusion
