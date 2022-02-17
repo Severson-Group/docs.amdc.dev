@@ -13,14 +13,14 @@ In short our _application_ has some _task_ (where the work actually gets done) a
 ## Procedure
 
 1. Define the application in the compiler symbols list
-    1. In the _Project Explorer_ pane right click on _bare_ and select _Properties_
+    1. In the _Project Explorer_ pane right click on _app_cpu1_ and select _Properties_
     2. Expand _C/C++ Build_ and select _Settings_
     3. Under _ARM v7 gcc compiler_ select _Symbols_ 
     4. Click the _+_ icon in the upper right portion of the _Defined Symbols (-D)_ pane
     5. Enter `APP_APPNAME` where `APPNAME` relates to our application purpose or function
     6. Click _OK_, then click _OK_ in the lower right of the Build Properties window 
 2. Add the application in user_apps.c
-    1. In the _Project Explorer_ pane locate user_apps.c under _bare -> usr -> user_apps.c_
+    1. In the _Project Explorer_ pane locate user_apps.c under _app_cpu1 -> usr -> user_apps.c_
     2. Using `APP_BLINK` as an example copy the `#ifdef APP_BLINK` section and paste it below, replacing `BLINK` with `APPNAME.` Don't worry the folders and files don't exist yet, we'll be adding them shortly. 
         ```C
         #ifdef APP_APPNAME
