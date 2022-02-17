@@ -143,7 +143,7 @@ int task_controller_set_amplitude(double amplitude);
 ```C
 #ifdef APP_CONTROLLER
 
-#include "usr/task_controller.h"
+#include "usr/controller/task_controller.h"
 #include "sys/scheduler.h"
 #include "drv/pwm.h"
 #include <math.h>
@@ -184,9 +184,9 @@ void task_controller_callback(void *arg)
     theta = fmod(theta, 2.0 * M_PI);
     
     // Calculate desired duty ratios
-    duty_a = 0.5 + Do/2.0 * cos(theta);
-    duty_b = 0.5 + Do/2.0 * cos(theta - 2.0*M_PI/3.0);
-    duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
+    double duty_a = 0.5 + Do/2.0 * cos(theta);
+    double duty_b = 0.5 + Do/2.0 * cos(theta - 2.0*M_PI/3.0);
+    double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 
     // Update PWM peripheral in FPGA
     pwm_set_duty(0, duty_a); // Set HB1 duty ratio (INV1, PWM1 and PWM2)
@@ -255,11 +255,11 @@ int cmd_ctrl(int argc, char **argv);
 ```C
 #ifdef APP_CONTROLLER
 
-#include "usr/cmd/cmd_ctrl.h"
+#include "usr/controller/cmd/cmd_ctrl.h"
 #include "sys/commands.h"
 #include "sys/defines.h"
 #include "sys/util.h"
-#include "usr/task_controller.h"
+#include "usr/controller/task_controller.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -275,7 +275,7 @@ static command_help_t cmd_help[] = {
     { "amplitude <amp>", "Set amplitude of voltage output (0 to 1)" },
 };
 
-void cmd_blink_register(void)
+void cmd_ctrl_register(void)
 {
     commands_cmd_init(&cmd_entry, "ctrl", "Controller commands", 
                         cmd_help, ARRAY_SIZE(cmd_help), cmd_ctrl);
@@ -303,7 +303,7 @@ int cmd_ctrl(int argc, char **argv)
     if (argc == 3 && STREQ("freq", argv[1])) {
         double new_freq = strtod(argv[2], NULL);
 
-        if (task_controller_set_freq(new_freq) != SUCCESS) {
+        if (task_controller_set_frequency(new_freq) != SUCCESS) {
             return CMD_FAILURE;
         }
 
@@ -333,7 +333,7 @@ This involves making a new user app folder to house our code, so as to keep it s
 
 We will call the new user app `controller` in this tutorial.
 
-For detailed instructions on creating a new user app, see [this document](/firmware/xilinx-tools/create-user-app.md).
+Read the detailed instructions on creating a new user app in [this document](/firmware/xilinx-tools/create-user-app.md).
 
 ### Template App `*.h` File
 
@@ -367,7 +367,7 @@ void app_controller_init(void)
 ```
 
 ```{important}
-Do not forget to add your app init function to the main `user_apps.c` file!
+Do not forget to add your app init function to the main `user_apps.c` file and a compiler define for APP_CONTROLLER to enable your app!
 ```
 
 ## Expected File System Structure
