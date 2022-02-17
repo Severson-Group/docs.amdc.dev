@@ -333,7 +333,7 @@ This involves making a new user app folder to house our code, so as to keep it s
 
 We will call the new user app `controller` in this tutorial.
 
-For detailed instructions on creating a new user app, see [this document](/firmware/xilinx-tools/create-user-app.md).
+Read the detailed instructions on creating a new user app in [this document](/firmware/xilinx-tools/create-user-app.md).
 
 ### Template App `*.h` File
 
@@ -367,7 +367,7 @@ void app_controller_init(void)
 ```
 
 ```{important}
-Do not forget to add your app init function to the main `user_apps.c` file!
+Do not forget to add your app init function to the main `user_apps.c` file and a compiler define for APP_CONTROLLER to enable your app!
 ```
 
 ## Expected File System Structure
