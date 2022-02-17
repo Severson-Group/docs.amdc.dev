@@ -82,7 +82,7 @@ Users can simply upload the BOM file to Digi-Key and it will populate the cart a
 Most likely, there will be some out-of-stock parts in the BOM which are not available on Digi-Key.
 Users should first try to find alternative distributors which have stock.
 If there is a global shortage of the specific part, users will need to find suitable alternative parts.
-For help, create a GitHub Issue.
+For help, create a post using the GitHub Discussions feature.
 ```
 
 ### 4. Assembling the AMDC
@@ -106,3 +106,16 @@ With lots of patience, the 100-pin connectors are actually not too bad and can b
 
 Make sure to test for shorts before power up!
 ```
+
+### 5. Powering the AMDC
+
+The AMDC requires a 24V DC power supply.
+Benchtop supplies can be used, but it is often easier to use a dedicated wall wart supply.
+The recommended wall wart supply and adapters are listed below.
+Note that only one of the adapters are needed.
+
+| Description | Digi-Key P/N |
+|---|---|
+| 24V DC supply | 364-1283-ND |
+| Barrel to screw post adapter | 1528-1386-ND  |
+| Barrel to alligator clip adapter | 1528-1393-ND  |
