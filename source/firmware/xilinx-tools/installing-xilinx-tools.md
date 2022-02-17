@@ -54,7 +54,7 @@ Ensure you have no Xilinx tools previously installed on your PC (i.e. make sure 
 
 18. At some point, the installer will prompt you to install "WinPcap". Do this with the defaults.
 
-19. At some point, the installer will prompt you to set-up MATLAB for the System Generator. Do this. It can be changed later.
+19. At some point, the installer will prompt you to set-up MATLAB for the System Generator. This is optional and can be changed later.
 
 20. Finally, the installation will be complete.
 
