@@ -140,6 +140,8 @@ Name each BSP project: `amdc_bsp_cpu0` and `amdc_bsp_cpu1`.
 
 After creating both BSPs, you must update the settings for `amdc_bsp_cpu1` to add an extra compiler flag: `-DUSE_AMP=1`.
 
+![](images/sdk/dual-core-use-amp-flag.png)
+
 See the [](./dual-core.md) docs for more information.
 ```
 
