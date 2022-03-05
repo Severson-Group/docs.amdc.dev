@@ -53,7 +53,7 @@ To enable, set the following define to `1` in the `usr/user_config.h` file:
 
 This tells the scheduler to automatically record timing statistics for each task.
 Note that, in addition to user tasks, this will profile all system-level tasks as well.
-Since addition code must be executed to record the timing statistics, profiling the code necessarily has some timing overhead.
+Since additional code must be executed to record the timing statistics, profiling the code necessarily has some timing overhead.
 
 ```{attention}
 Profiling code introduces a small overhead to the system scheduler timing, resulting in slightly less overall timing slack.
