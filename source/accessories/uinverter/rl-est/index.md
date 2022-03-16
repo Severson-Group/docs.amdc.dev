@@ -70,8 +70,8 @@ Example Frequency Response Function of the `R-L load`:
 estimated as a purely resistive load and for higher frequencies, the load can be estimated as a purely inductive load
 
 5. Estimated resistance, $R_{estimated}$ can be found by taking the inverse of the curve fitted value of `FRF` at low frequencies and 
-estimated inductive reactance, $X_{L-estimated}$ can be found by taking the inverse of the curve fitted value of FRF at low frequencies.
-The value of inductance can be subsequently found using the $X_L$ value
+estimated inductive reactance, $X_{L-estimated}$ can be found by taking the inverse of the curve fitted value of FRF at high frequencies.
+The value of inductance can be subsequently found using the $X_L$ value.
  
 
 The datasheet values for the `R` and `L` in the example case were `0.25 Ohm` and `100 uH` respectively. However, as it turns out, after performing 
