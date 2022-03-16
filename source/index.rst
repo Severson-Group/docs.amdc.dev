@@ -46,6 +46,7 @@ AMDC Platform Documentation
 
    AMDS <accessories/amds/index>
    accessories/uinverter/index
+   DAC <accessories/dac/index>
    accessories/test-board/index
 
 
