@@ -6,6 +6,16 @@ This document describes the built-in AMDC drivers which can be used to interface
 Before attempting to use these drivers, make sure to read about the AMDS in [its documentation](/accessories/amds/index.md).
 ```
 
+## Configure AMDS Hardware
+
+First, the AMDS hardware needs to be configured:
+
+1. Supply 24V power to the AMDS via the screw terminals (LEDs should illuminate)
+2. Install the four jumpers which select "daisy-chain" operation of the sensor cards. The daisy-chain mode is marked as `D` on the silkscreen.
+3. Install the sensor cards. Since each SPI input is configured as daisy-chain, you need to populate the lower-number sensor cards before the higher, i.e., install 1 before 5. If you do not install the lower-number sensor card, the second sensor card in the daisy chain will not work!
+
+Now that the hardware is configured, the AMDC firmware must be configured.
+
 ## Enable AMDS Support
 
 By default, the AMDS drivers are not compiled into the C-code.
@@ -15,6 +25,12 @@ To enable, update the `usr/user_config.h` file and set the following define to `
 ```C
 #define USER_CONFIG_ENABLE_MOTHERBOARD_SUPPORT (1)
 ```
+
+## Configure GPIO Mux
+
+Since the AMDS can be plugged into any of the GPIO ports, the AMDC needs to be configured for the appropriate GPIO port.
+
+Use the `gpio_mux` FPGA IP block to configure.
 
 ## Trigger Sampling
 
