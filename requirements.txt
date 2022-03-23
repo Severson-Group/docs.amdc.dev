@@ -6,3 +6,4 @@ sphinx-last-updated-by-git
 sphinx-copybutton
 sphinx-sitemap
 pygments>=2.7.0
+matplotlib

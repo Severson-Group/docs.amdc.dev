@@ -32,7 +32,8 @@ extensions = [
     'sphinx_design',
     'sphinx_last_updated_by_git',
     'sphinx_copybutton',
-    'sphinx_sitemap'
+    'sphinx_sitemap',
+    'matplotlib.sphinxext.plot_directive'
 ]
 
 myst_enable_extensions = [
@@ -79,3 +80,10 @@ html_static_path = ['_static']
 html_css_files = [
     'css/custom.css',
 ]
+
+
+# Matplotlib options
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = ['svg']
+plot_rcparams = {'font.size' : 12}
