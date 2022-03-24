@@ -7,13 +7,15 @@ The bane of all control engineers since the dawn of time (or rather since the fi
 discovered to mitigate the effects of noise, including using filters, observers etc., the best solution is always to minimize (or eliminate) the root
 cause of the problem. The AMDS (Adavanced Motor Design Sensing) board was designed with this goal in mind. By sampling signals (current, voltage) 
 right at the sensor output, great reductions in external field coupling can be achieved, leading to a much cleaner waveform. This information can then
-be communicated to the AMDC, or any other controller, via a digital interface to facilitate high-integrity data transmission. Subsequent sections will 
-demonstrate the benefits of using the AMDS with the aid of test results obtained from the closed loop field oriented current control on a 3 phase R-L 
-load with and without the AMDS.
+be communicated to the AMDC, or any other controller, via a digital interface to facilitate high-integrity data transmission. 
+
+Subsequent sections will demonstrate the benefits of using the AMDS with the aid of test results obtained from the field oriented current 
+control on a 3 phase R-L load with and without the AMDS.
 
 ## Required Hardware
 
 To run this experiment, the following hardware was employed:
+
 1. AMDC: to run the control loop and log data (qty 1)
 2. AMDS: for obvious reasons (qty 1)
 3. Current cards: to measure currents flowing all phases (qty 3)
@@ -24,21 +26,23 @@ To run this experiment, the following hardware was employed:
 
 ## Test Setup
 
-As mentioned previously, the goal of this experiment is to showcase the benefits of using the AMDS. To do so, `d-q current control` on a 3-phase R-L 
-load was conducted under two conditions: 1) with the currents sampled using the AMDC on-board Analog to Digital Converters and 2) with the currents 
-sampled on the AMDS and communicated to the AMDC via a digital interface. Everything else, including the current cards, the voltage source inverter, 
-the control algorithm etc. was kept identical between both tests to ensure that the changes observed are due to the AMDS alone. A block diagram 
-showing the test setup under both conditions, as well as pictures of the hardware setup, are provided below. The difference between the test setups 
-have been made apparent in both sets of figures.
+As mentioned previously, the goal of this experiment is to showcase the benefits of using the AMDS. To do so, field oriented current control was 
+implemented on a 3-phase R-L load under two conditions: 1) with the currents sampled using the AMDC on-board Analog to Digital Converters and 2) with 
+the currents sampled on the AMDS and communicated to the AMDC via a digital interface. Everything else, including the current cards, the voltage 
+source inverter, the control algorithm etc. was kept identical between both tests to ensure that the changes observed are due to the AMDS alone. A 
+block diagram showing the test setup under both conditions, as well as pictures of the hardware setup, are provided below. The difference between the 
+test setups have been made apparent in both sets of figures.
 
 ![](images/woAMDS.svg) ![](images/withAMDS.svg)
+<br>
+<br>
 
 ```{figure} images/test_setup1.jpg
 :alt: hw1
 :class: bg-primary
 :width: 500px
 
-Test Setup 1
+Test Setup 1: Analog Interface
 ```
 <br>
 
@@ -47,11 +51,25 @@ Test Setup 1
 :class: bg-primary
 :width: 500px
 
-Test Setup 2
+Test Setup 2: Digital Interface
 ```
 
+```{note}
+Observe the far more convoluted path taken by the analog signals to get to the point of sampling (AMDC) in test setup 1 when compared to test setup 2
+(AMDS)
+```
 
 ## Results
+
+This section compares the results obtained from both test setups. The plots shown on the left are from the analog interface test setup and those shown
+on the right are from the digital interface or AMDS test setup. 
+
+
+```{warning}
+Before using AMDS sampled signals as part of your control algorithm, make sure you know some of what is happening behind the scenes on the AMDS. For
+eg: when does the AMDS sample the signal?; what sample data instance is sent by the AMDS to your controller upon request? etc. More information can
+be found in the [AMDS firmware section](/accessories/amds/firmware/index.md).
+```
 
 ### Phase Currents
 
@@ -81,3 +99,8 @@ observed with the AMDS, which can be correlated directly to the improvements obt
 The AMDS is capable of sampling and communicating data obtained from upto 8 sensor signals at a time. This combined with the significant noise 
 reductions in the sensor signals, as presented above, makes the AMDS the ideal companion to the AMDC for Advanced Motor Drive Control algorithm 
 implementation. 
+
+```{note}
+While the tests shown here were conducted at a low DC bus voltage, leading to simulation-esque, almost noise free current waveforms 
+when using the AMDS, similar levels of improvement in terms of signal to noise ratios can be expected at higher bus voltages as well. 
+```
