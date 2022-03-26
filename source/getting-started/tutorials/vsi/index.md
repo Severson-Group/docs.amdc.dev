@@ -260,6 +260,7 @@ int cmd_ctrl(int argc, char **argv);
 #include "sys/defines.h"
 #include "sys/util.h"
 #include "usr/controller/task_controller.h"
+#include "drv/pwm.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -288,6 +289,9 @@ int cmd_ctrl(int argc, char **argv)
         if (task_controller_init() != SUCCESS) {
             return CMD_FAILURE;
         }
+        if (pwm_enable() != SUCCESS) {
+			return CMD_FAILURE;
+		}
 
         return CMD_SUCCESS;
     }
@@ -296,6 +300,9 @@ int cmd_ctrl(int argc, char **argv)
         if (task_controller_deinit() != SUCCESS) {
             return CMD_FAILURE;
         }
+        if (pwm_disable() != SUCCESS) {
+			return CMD_FAILURE;
+		}
 
         return CMD_SUCCESS;
     }
