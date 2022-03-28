@@ -3,7 +3,7 @@
 This document explains how to use the buffered logging features in the firmware.
 
 The instructions pick up where the [](/getting-started/user-guide/logging/index.md) document left off.
-Before starting the instructions below, make sure you have completed the common logging steps desribed in [](/getting-started/user-guide/logging/index.md).
+Before starting the instructions below, make sure you have completed the common logging steps described in [](/getting-started/user-guide/logging/index.md).
 
 ```{attention}
 The buffered logging instructions below assume you have already:
