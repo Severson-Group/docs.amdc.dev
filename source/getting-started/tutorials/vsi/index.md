@@ -290,8 +290,8 @@ int cmd_ctrl(int argc, char **argv)
             return CMD_FAILURE;
         }
         if (pwm_enable() != SUCCESS) {
-			return CMD_FAILURE;
-		}
+            return CMD_FAILURE;
+        }
 
         return CMD_SUCCESS;
     }
@@ -301,8 +301,8 @@ int cmd_ctrl(int argc, char **argv)
             return CMD_FAILURE;
         }
         if (pwm_disable() != SUCCESS) {
-			return CMD_FAILURE;
-		}
+            return CMD_FAILURE;
+        }
 
         return CMD_SUCCESS;
     }
