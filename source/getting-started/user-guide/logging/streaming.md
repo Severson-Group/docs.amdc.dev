@@ -56,14 +56,28 @@ Simply registering the variables is enough.
 from AMDC_LivePlot import AMDC_LivePlot
 ```
 
-### 3. Change Jupyter Notebook to support interactive plotting
+### 3. Change Jupyter Notebook/Lab to support interactive plotting
 
-The live plotting capabilities require interactive plots in Jupyter notebooks.
+The live plotting capabilities require interactive plots in Jupyter. This is enabled by running a magic command prior to creating plots.
 
-Run the following magic:
+If using Jupyter Notebook, run the following magic:
 
 ```Python
 %matplotlib notebook
+```
+
+If using Jupyter Lab, run this magic instead:
+
+```Python
+%matplotlib widget
+```
+
+```{attention}
+If you receive an error when running your magic command
+
+1. Confirm whether you are using Jupyter Notebook or Lab (see [here](https://stackoverflow.com/questions/50982686/what-is-the-difference-between-jupyter-notebook-and-jupyterlab))
+2. Ensure that you have installed `ipympl`
+3. Exit Jupyter, close all notebook sessions, and re-open.
 ```
 
 To go back to static inline plots:
