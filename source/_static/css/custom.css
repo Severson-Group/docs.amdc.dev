@@ -26,6 +26,7 @@ figcaption a.headerlink {
 }
 
 div.google-analytics-tracking-info {
-    padding: 0 0.75rem 1rem;
-    font-size: small;
+    padding: 0.75rem 0;
+    font-size: smaller;
+    color: var(--color-foreground-secondary);
 }
