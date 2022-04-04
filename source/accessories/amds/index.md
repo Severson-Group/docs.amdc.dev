@@ -38,6 +38,7 @@ However, it is a complete system which could be interfaced to any other host dev
 ```{toctree}
 :hidden:
 
+amds-in-action/index
 firmware/index
 mainboard/index
 sensor-cards/index
