@@ -185,12 +185,10 @@ V_\text{amp} &= (\text{amplifier gain}) \times (\text{current} \times R_\text{se
 When the DC supply voltage exceeds 12V, the phase current increases significantly and may push the current sense amplifier in saturation.
 To aviod any damage to components on the AMDC board, the DC supply voltage must be limited to no more than 12V.  
 
-**DC link voltage sensing filter:**
+### DC link voltage sensing filter
 
 A resistive potential divider ($R_1$ and $R_2$) is provided for DC bus voltage sensing. 
-To filter out high frequency noise in DC link voltage measurement, a capacitor can be placed at the voltage sensing point. 
-This additional capacitor along with the potential divider network of DC bus voltage sensing will form a low pass filter (see image) 
-and this should not affect the nominal sampling operation of the DC bus voltage, i.e. we should still be able to capture actual variations in DC link voltage.
+To filter out high frequency noise in DC link voltage measurement, an additional capacitor can be placed at the voltage sensing point to form a low pass filter (see image). This filter should not affect the nominal sampling operation of the DC bus voltage, i.e. we should still be able to capture actual variations in DC link voltage.
 
 ![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
 
