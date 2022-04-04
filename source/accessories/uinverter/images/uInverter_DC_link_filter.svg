@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.90509668"
-     inkscape:cx="114.35243"
-     inkscape:cy="333.11359"
+     inkscape:zoom="1.28"
+     inkscape:cx="-161.32813"
+     inkscape:cy="273.82813"
      inkscape:window-width="1920"
      inkscape:window-height="991"
      inkscape:window-x="-9"
@@ -59,17 +59,17 @@
        ry="0" />
     <text
        xml:space="preserve"
-       style="font-size:3.47007px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
-       x="31.853474"
-       y="45.907368"
+       style="font-size:5.6px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
+       x="30.775591"
+       y="47.344318"
        id="text188800"
        transform="scale(0.95885101,1.0429149)"><tspan
          sodipodi:role="line"
          id="tspan188798"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.47007px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
-         x="31.853474"
-         y="45.907368">C<tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.25555px;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.6px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
+         x="30.775591"
+         y="47.344318">C<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
    id="tspan51703">filter</tspan></tspan></text>
     <g
        id="g12662-7-8"
@@ -181,18 +181,18 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:3.47007px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
+       style="font-size:5.6px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
        x="8.5753641"
        y="6.6440287"
        id="text188800-8"
        transform="scale(0.95885101,1.0429149)"><tspan
          sodipodi:role="line"
          id="tspan188798-7"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.47007px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.6px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
          x="8.5753641"
          y="6.6440287">V<tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.25555px;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
-   id="tspan56803">DC</tspan></tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub"
+   id="tspan3099">dc</tspan></tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.43376;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 11.134826,35.350927 H 33.644059"
@@ -206,45 +206,45 @@
        ry="0.42070737" />
     <text
        xml:space="preserve"
-       style="font-size:3.47007px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
+       style="font-size:5.6px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
        x="29.25038"
        y="31.090315"
        id="text188800-6"
        transform="scale(0.95885101,1.0429149)"><tspan
          sodipodi:role="line"
          id="tspan188798-4"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.47007px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.6px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
          x="29.25038"
          y="31.090315">V<tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.25555px;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
    id="tspan54869">dc_sense</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:3.47007px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
-       x="4.6265311"
+       style="font-size:5.6px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
+       x="1.7162486"
        y="22.773125"
        id="text188800-0"
        transform="scale(0.95885101,1.0429149)"><tspan
          sodipodi:role="line"
          id="tspan188798-5"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.47007px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
-         x="4.6265311"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.6px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
+         x="1.7162486"
          y="22.773125">R<tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.25555px;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
    id="tspan67710">1</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:3.47007px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
-       x="4.2112675"
+       style="font-size:5.6px;line-height:1.25;font-family:lmroman;-inkscape-font-specification:lmroman;letter-spacing:0px;stroke-width:0.0765102"
+       x="1.9477144"
        y="45.201962"
        id="text188800-0-1"
        transform="scale(0.95885101,1.0429149)"><tspan
          sodipodi:role="line"
          id="tspan188798-5-7"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.47007px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
-         x="4.2112675"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.6px;font-family:LMRoman10;-inkscape-font-specification:'LMRoman10 Italic';stroke-width:0.0765102"
+         x="1.9477144"
          y="45.201962">R<tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.25555px;font-family:LMRoman10;-inkscape-font-specification:LMRoman10;baseline-shift:sub;stroke-width:0.0765102"
-   id="tspan69722">2</tspan></tspan></text>
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan15395">2</tspan></tspan></text>
   </g>
 </svg>
