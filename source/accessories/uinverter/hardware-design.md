@@ -191,13 +191,13 @@ A filter capacitor is provided at the voltage sensing point (see image) to filte
 
 ![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
 
-An important thing to consider while placing this capacitor is its sizing. Bandwidth of the low pass filter in this particular configuration is given by:
+It is important to consider sizing of this capacitor and bandwidth of the low pass filter in this particular configuration is given by:
 
 \begin{align}
 \omega_b &= \frac{1}{R_1C_{filter}} + \frac{1}{R_2C_{filter}}\\
 \end{align}
 
-Desired bandwaidth of the filter should be high enough to capture actual DC link voltage variations. For, $R_1\ =\ 4.4\ k\Omega$ and $R_1\ =\ 2.2\ k\Omega$ and a desired filter bandwith of 1 kHz, the filter capacitor value is approximately 100 nF.
+For, $R_1\ =\ 4.4\ k\Omega$ and $R_1\ =\ 2.2\ k\Omega$ and a desired filter bandwith of 1 kHz, the filter capacitor value is approximately 100 nF. Desired bandwidth of the filter should be high enough to capture actual DC link voltage variations. 
 
 ## Pinouts
 
