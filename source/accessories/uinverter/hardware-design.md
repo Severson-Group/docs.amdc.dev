@@ -187,8 +187,7 @@ To aviod any damage to components on the AMDC board, the DC supply voltage must 
 
 ### DC link voltage sensing filter
 
-A resistive potential divider ($R_1$ and $R_2$) is provided for DC bus voltage sensing. 
-To filter out high frequency noise in DC link voltage measurement, an additional capacitor can be placed at the voltage sensing point to form a low pass filter (see image). This filter should not affect the nominal sampling operation of the DC bus voltage, i.e. we should still be able to capture actual variations in DC link voltage.
+A filter capacitor is provided at the voltage sensing point (see image) to filter out high frequency noise in DC link voltage measurement.
 
 ![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
 
@@ -198,7 +197,7 @@ An important thing to consider while placing this capacitor is its sizing. Bandw
 \omega_b &= \frac{1}{R_1C_{filter}} + \frac{1}{R_2C_{filter}}\\
 \end{align}
 
-For, $R_1\ =\ 4.4\ k\Omega$ and $R_1\ =\ 2.2\ k\Omega$ and a desired filter bandwith of 1 kHz, the capacitor value comes out to be around 100 nF
+Desired bandwaidth of the filter should be high enough to capture actual DC link voltage variations. For, $R_1\ =\ 4.4\ k\Omega$ and $R_1\ =\ 2.2\ k\Omega$ and a desired filter bandwith of 1 kHz, the filter capacitor value is approximately 100 nF.
 
 ## Pinouts
 
