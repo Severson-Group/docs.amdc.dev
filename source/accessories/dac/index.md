@@ -126,7 +126,7 @@ Components were placed on the top layer in positions with the intent to maximize
 
 - {download}`DAC60508MC <datasheets/dac60508.pdf>`
 - {download}`OPA4192IDR <datasheets/opa4192.pdf>`
-- {download}`ESD protection devices <datasheets/SMDA03C-4_THRU_SMDA24C-4_N0298_REV_A.pdf>`
+- {download}`ESD protection devices <datasheets/SMDA03C-THRU-SMDA24C-N0297-REV-B.pdf>`
 
 
 ```{toctree}
