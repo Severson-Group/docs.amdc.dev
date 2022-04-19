@@ -187,17 +187,18 @@ To aviod any damage to components on the AMDC board, the DC supply voltage must 
 
 ### DC link voltage sensing filter
 
-A filter capacitor is provided at the voltage sensing point (see image) to filter out high frequency noise in DC link voltage measurement.
+A filter capacitor is connected to the voltage sensing node (see image below) to filter out high frequency noise in DC link voltage measurement.
 
 ![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
 
-It is important to consider sizing of this capacitor and bandwidth of the low pass filter in this particular configuration is given by:
+The bandwidth of the low pass filter formed by this capacitor and the voltage divider resistors is computed as:
 
 \begin{align}
-\omega_b &= \frac{1}{R_1C_{filter}} + \frac{1}{R_2C_{filter}}\\
+\omega_b &= \frac{1}{R_1 C_\mathrm{filter}} + \frac{1}{R_2 C_\mathrm{filter}}\\
 \end{align}
 
-For, $R_1\ =\ 4.4\ k\Omega$ and $R_1\ =\ 2.2\ k\Omega$ and a desired filter bandwith of 1 kHz, the filter capacitor value is approximately 100 nF. Desired bandwidth of the filter should be high enough to capture actual DC link voltage variations. 
+The desired bandwidth of the filter should be high enough to capture the actual DC link voltage variations but low enough to surpress noise.
+The default values specified in the BOM are: $R_1 = 4.4~\mathrm{k\Omega}$, $R_2 = 2.2~\mathrm{k\Omega}$, and $C_\mathrm{filter} = 100~\mathrm{nF}$, giving a filter bandwidth of 1 kHz.
 
 ## Pinouts
 
