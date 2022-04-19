@@ -116,7 +116,7 @@ The LPF's cutoff frequency is set to 130kHz (a resistor with _R_ = 120Ω and a c
 
 ### BNC Connectors / Screw Terminal 
 
-There are eight BNC connectors in total (one for each DAC channel) which act as the main output connection for the analog signals. Additionally, there are twelve screw terminals, one for each channel output, and four that are ground connections. The analog voltages for each channel are linked to a single BNC connector as well as a single screw terminal. There are also {download}`ESD protection devices <datasheets/SMDA03C-4_THRU_SMDA24C-4_N0298_REV_A.pdf>` connected to the channel outputs.
+There are eight BNC connectors in total (one for each DAC channel) which act as the main output connection for the analog signals. Additionally, there are twelve screw terminals, one for each channel output, and four that are ground connections. The analog voltages for each channel are linked to a single BNC connector as well as a single screw terminal. There are also {download}`ESD protection devices <datasheets/SMDA03C-THRU-SMDA24C-N0297-REV-B.pdf>` connected to the channel outputs.
 
 ## PCB Layout
 
