@@ -129,7 +129,7 @@ Do you offer technical support?
    No. Since the AMDC platform is not a paid project, we do not have the resources to provide 1:1 support. Please read the extensive documentation on this site.
 
 Who created the AMDC Platform?
-   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the hardware and firmware and built this documentation website you are reading.
+   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the `hardware <https://github.com/Severson-Group/AMDC-Hardware>`_ and `firmware <https://github.com/Severson-Group/AMDC-Firmware>`_ and built this `documentation website <https://github.com/Severson-Group/docs.amdc.dev>`_ you are reading.
 
 Who maintains the AMDC Platform?
    The AMDC Platform is actively maintained by students in the `Severson Research Group <https://severson.wempec.wisc.edu/>`_ at the `University of Wisconsin, Madison <https://www.wisc.edu/>`_ in the USA.
