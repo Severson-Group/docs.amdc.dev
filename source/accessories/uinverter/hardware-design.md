@@ -185,6 +185,21 @@ V_\text{amp} &= (\text{amplifier gain}) \times (\text{current} \times R_\text{se
 When the DC supply voltage exceeds 12V, the phase current increases significantly and may push the current sense amplifier in saturation.
 To aviod any damage to components on the AMDC board, the DC supply voltage must be limited to no more than 12V.  
 
+### DC link voltage sensing filter
+
+A filter capacitor is connected to the voltage sensing node (see image below) to filter out high frequency noise in DC link voltage measurement.
+
+![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
+
+The bandwidth of the low pass filter formed by this capacitor and the voltage divider resistors is computed as:
+
+\begin{align}
+\omega_b &= \frac{1}{R_1 C_\mathrm{filter}} + \frac{1}{R_2 C_\mathrm{filter}}\\
+\end{align}
+
+The desired bandwidth of the filter should be high enough to capture the actual DC link voltage variations but low enough to surpress noise.
+The default values specified in the BOM are: $R_1 = 4.4~\mathrm{k\Omega}$, $R_2 = 2.2~\mathrm{k\Omega}$, and $C_\mathrm{filter} = 100~\mathrm{nF}$, giving a filter bandwidth of 1 kHz.
+
 ## Pinouts
 
 For detailed descriptions of the pinouts of the uInverter connectors and connections with AMDC, refer to [](./connections.md) document.
