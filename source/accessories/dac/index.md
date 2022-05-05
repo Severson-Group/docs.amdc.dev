@@ -67,12 +67,13 @@ There are a total of eight jumpers on the DAC board, along with a single 6-chann
 
 All eight jumpers are critical to the operation of the DAC board and must be installed on the appropriate side of the jumper blocks as designated by the silkscreen. An example installation of the Power Stack Inverter configuration can be seen below:
 
-<img src="images/amdc-dac-jmp1.jpg" style="max-width:580px">
+```{image} images/amdc-dac-jmp1.jpg
+:width: 20em
+```
 
-<br>
-<br>
-
-<img src="images/amdc-dac-jmp2.jpg" style="max-width:580px">
+```{image} images/amdc-dac-jmp2.jpg
+:width: 20em
+```
 
 The 6-channel DIP switch ```S2``` is also essential. Its purpose is to protect the GPIO mode's Signal-Differentiator from the PWM signals when connected to the Power Stack. When connected to the AMDC via the Power Stack connection, all six DIP switch channels should be disconnected by moving the switches to the **OFF** position. When connected to the AMDC via the GPIO connectors, reconnect these signal lines by moving the switches to the **ON** position. The required positions for each connection mode are also marked on the silkscreen.
 
