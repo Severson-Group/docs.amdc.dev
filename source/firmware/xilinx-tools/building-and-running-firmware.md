@@ -298,6 +298,10 @@ In the second tab, browse for the ELF files which are located under the `Debug/`
 Uncheck the "stop on main" checkbox to ensure both cores start running right away during debug.
 ```
 
+After following the above steps for dual-core operation, the debug configuration should resemble the following screenshots:
+![](./images/sdk/debug-config-dual-core-1.png)
+![](./images/sdk/debug-config-dual-core-2.png)
+
 ### Running Project on AMDC
 
 Now, you are ready to start the code on AMDC!
