@@ -18,6 +18,21 @@ from AMDC import AMDC
 amdc = AMDC()
 ```
 
+```{attention}
+If you receive an error when trying to import AMDC, ensure that:
+1. `pyserial` is installed (`conda install pyserial`)
+2. `AMDC-Firmware/scripts/` is on your system path.
+
+The `os.getcwd()` and `sys.path.insert()` commands can be particularly helpful for resolving path issues. In an example private user repository with two subfolders:
+- `AMDC-Firmware` (the AMDC-Firmware git submodule)
+- `notebooks` (your Jupyter notebook or Python script lives here)
+Running the following commands at the start of the notebook / Python script will properly configure the path:
+`import os`
+`import sys`
+`sys.path.insert(0, os.path.dirname(os.getcwd()) + '\\AMDC-Firmware\\scripts')`
+`from AMDC import AMDC`
+```
+
 Next, configure the `amdc` object based on if UART or Ethernet is used.
 
 ### Configuring UART Mode
