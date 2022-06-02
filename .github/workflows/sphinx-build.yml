@@ -7,18 +7,31 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         # Number of commits to fetch. 0 indicates all history for all branches and tags.
         fetch-depth: '0'
 
+    - name: Install packages
+      run: |
+        sudo apt update
+        sudo apt upgrade -y
+        sudo apt install -y git make python3-pip python3-venv
+
+    - name: Create venv
+      run: |
+        python3 -m venv venv
+        source venv/bin/active
+
     - name: Install Sphinx packages
       run: pip install -r requirements.txt
 
     - name: Build docs using Sphinx
-      run: make html
+      run: |
+        make clean
+        make html
 
     # Publish built docs to gh-pages branch.
     # ===============================
