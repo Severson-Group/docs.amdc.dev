@@ -18,12 +18,12 @@ jobs:
       run: |
         sudo apt update
         sudo apt upgrade -y
-        sudo apt install -y git make python3-pip python3-venv
+        sudo apt install -y git make python3-pip python3-virtualenv
 
     - name: Create venv
       run: |
-        python3 -m venv venv
-        source venv/bin/active
+        virtualenv .venv
+        source .venv/bin/active
 
     - name: Install Sphinx packages
       run: pip install -r requirements.txt
