@@ -22,8 +22,8 @@ jobs:
 
     - name: Create venv
       run: |
-        virtualenv .venv
-        source .venv/bin/active
+        virtualenv ./.venv
+        source ./.venv/bin/active
 
     - name: Install Sphinx packages
       run: pip install -r requirements.txt
