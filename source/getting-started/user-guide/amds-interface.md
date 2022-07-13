@@ -29,31 +29,33 @@ To enable, update the `usr/user_config.h` file and set the following define to `
 
 Once the above #define is declared, the hardware will enable an AMDS interface app, this will show up as a set of "mb' commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
 
-### AMDC Rev D HW ###
+#### AMDC Rev-D HW ####
 * `<port>` is `1-2` 
     * For Rev-D hardware utilizing this command interface, the AMDS should be connected to the top #1 port!
 * `<device>` should be set to `2` for the AMDS connection
     
-### AMDC Rev E HW ###
+#### AMDC Rev-E HW ####
 * `<port>` is `1-4` 
 * `<device>` should be set to `1` for the AMDS connection
     
 Once the `gpio_mux` is routed we can now make inquiries to the AMDS for data. This is done through the `mb <idx> XXXX` command structure described in the `help` interface. 
 
-### AMDC Rev D HW ###
+#### AMDC Rev-D HW ####
 *  `<idx>` should be set to `0`
 
-### AMDC Rev E HW ###
+#### AMDC Rev-E HW ####
 *  `<idx>` ranges from  `0-3` and should correspond to the port #-1 
+
 
 Try `mb 0 adc on` followed by the `mb 0 samples` command for the latest ADC poll. 
 The `counters` command is helpful for debugging connection issues, the `V` and `C` should be non-zero if the connection is active!
+
 
 ## Configure GPIO/GP3IO Mux in Code
 
 Since the AMDS can be plugged into any of the GPIO ports, the AMDC needs to be configured for the appropriate GPIO port.
 
-### AMDC Rev D and earlier ###
+#### AMDC Rev-D and earlier ####
 
 Use the `gpio_mux` FPGA IP block to configure the routing path. 
 
@@ -66,16 +68,16 @@ Place the code below into your custom user app init function. Modify the the fir
 
 ```C
     // Configure GPIO mux
-	// 0: top port on AMDC
+    // 0: top port on AMDC
     // 1: bot port on AMDC, ect
-	// GPIO_MUX_DEVICE1: Eddy current I/O IP block in the FPGA
+    // GPIO_MUX_DEVICE1: Eddy current I/O IP block in the FPGA
     // GPIO_MUX_DEVICE2: AMDS interface I/O IP block in the FPGA
-	gpio_mux_set_device(0, GPIO_MUX_DEVICE2);
+       gpio_mux_set_device(0, GPIO_MUX_DEVICE2);
 ```
 
-### AMDC Rev E and later ###
+#### AMDC Rev-E and later ####
 
-Similar process as above, except the file and function call are now `gp3io`. 
+Similar process as above, except the file and function call are now `gp3io`, and the `_DEVICE#` has swapped.
 
 Place the header file in the custom user app .c file
 
@@ -86,10 +88,10 @@ Place the code below into your custom user app init function. Modify the `GP3IO_
 
 ```C
     // Set up GPIO mux for the AMDS board
-	// GP3IO_MUX_1_BASE_ADDR means top AMDC port
-	// GP3IO_MUX_DEVICE1 is AMDS IP block
-	// GP3IO_MUX_DEVICE2 is Eddy Current Sensor IP block
-	gp3io_mux_set_device(GP3IO_MUX_2_BASE_ADDR, GP3IO_MUX_DEVICE1);
+    // GP3IO_MUX_1_BASE_ADDR means top AMDC port
+    // GP3IO_MUX_DEVICE1 is AMDS IP block
+    // GP3IO_MUX_DEVICE2 is Eddy Current Sensor IP block
+       gp3io_mux_set_device(GP3IO_MUX_2_BASE_ADDR, GP3IO_MUX_DEVICE1);
 ```
 
 ## Trigger Sampling
