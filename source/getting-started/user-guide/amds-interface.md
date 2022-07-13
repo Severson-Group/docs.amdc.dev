@@ -27,7 +27,7 @@ To enable, update the `usr/user_config.h` file and set the following define to `
 ```
 ## Command Line Interface
 
-Once the above #define is declared, the hardware will enable an AMDS interface app, this will show up as a set of "mb' commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
+Once the above #define is declared, the hardware will enable an AMDS interface app, this will show up as a set of `mb` commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
 
 #### AMDC Rev-D HW ####
 * `<port>` is `1-2` 
