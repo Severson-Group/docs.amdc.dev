@@ -45,7 +45,7 @@ For dual core projects, there will be multiple *.elf files*. The order is import
 * Navigate to your `app_cpu1` location, usually this is located in the `$REPO_ROOT\AMDC-Private\Debug` folder.
     * Add the *.elf* file to your _Boot Image Partitions_ after the `app_cpu0.elf` file. 
 
-![Popup menu settings](images/flashing/img2-2.png)
+![Popup menu settings](images/flashing/img2-2.PNG)
 
 5. Click `Create Image`
 6. If it warns that another file already exists, click `OK`
@@ -66,7 +66,7 @@ After generating the boot image `*.MCS`file, we need to program the flash device
 
 4. Ensure popup window looks like the following:
 
-![Program Flash Memory popup window settings](images/flashing/img4-2.png)
+![Program Flash Memory popup window settings](images/flashing/img4-2.PNG)
 
 5. Click `Program`
 6. It will start flashing the board. This will take ~3 minutes...
