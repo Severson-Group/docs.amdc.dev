@@ -2,11 +2,13 @@
 
 During development, JTAG will be the primary interface for programming and debugging the AMDC firmware. Once code is stable, an image can be programed into the AMDC non-volatile memory (NVM). This allows board to boot itself when powered up.
 
-The following steps outline how to create a boot image and flash the AMDC NVM.
+The following steps outline how to create a boot image and flash the AMDC NVM. 
+
+This process varies slightly between single core, and dual core projects. Differences will be noted in the appropriate steps.
 
 ## Generating boot image file
 
-The PicoZed system-on-module (SoM) on AMDC includes a flash memory device which stores the boot image for start-up. We need to first generate the appropriate image which will be loaded into this memory.
+The PicoZed system-on-module (SoM) on AMDC includes a flash memory device which stores the boot image for start-up. We need to first generate the appropriate image which will be loaded into this memory. This process is the same for both single core, and dual core projects.
 
 ### Ensure you have `fsbl` project in SDK
 
@@ -30,6 +32,9 @@ Xilinx provides a First-Stage Bootloader application project which we will use t
 4. Ensure popup menu settings look like the following.
 
 Explaination of settings: `.MCS` is the file format which is supported for QSPI flashing. The list of three items for "Boot image partitions" must always be the following in this order: fsbl.elf, FPGA bitstream .bit file, your user *.elf file.
+
+For dual core projects, there will be multiple *.elf files*. The order is important! 
+* Navigate to your $REPO_DIR/sdk folder and 
 
 ![Popup menu settings](images/flashing/img2.png)
 
