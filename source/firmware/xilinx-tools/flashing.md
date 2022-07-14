@@ -39,13 +39,16 @@ Skip below for dual core project procedure.
 
 ![Popup menu settings](images/flashing/img2.png)
 
+```{attention}
 For dual core projects, there will be multiple *.elf files*. The order is important! 
 * Navigate to your `$REPO_ROOT\AMDC-Firmware\sdk\app_cpu0\Debug` folder and locate the file `app_cpu0.elf`. 
     * Add this to the _Boot Image Partitions_ area
 * Navigate to your `app_cpu1` location, usually this is located in the `$REPO_ROOT\AMDC-Private\Debug` folder.
     * Add the *.elf* file to your _Boot Image Partitions_ after the `app_cpu0.elf` file. 
+```
 
 ![Popup menu settings](images/flashing/img2-2.PNG)
+
 
 5. Click `Create Image`
 6. If it warns that another file already exists, click `OK`
@@ -88,8 +91,11 @@ Now the boot image has been loaded onto the PicoZed flash device. We need to con
 AMDC should now be programed and ready to go! Time to test.
 
 1.  Power cycle the board.
-2.  Ensure that `FPGA DONE` yellow LED comes on after ~1 second of powering up, or the blink app begins and you see flashing LEDs
-3. If so, you are good to go!
+2.  Ensure that `FPGA DONE` yellow LED comes on after ~1 second of powering up, and your loaded code is running. 
+
+```{attention}
+If you see the `FPGA DONE` LED turn on, but your program appears to not be running, check the order of the boot partition with the above steps.
+```
 
 ## Notes
 
