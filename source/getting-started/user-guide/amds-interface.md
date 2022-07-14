@@ -79,7 +79,7 @@ Place the code below into your custom user app init function. Modify the the fir
     // GPIO_MUX_DEVICE2: AMDS interface I/O IP block in the FPGA
        gpio_mux_set_device(0, GPIO_MUX_DEVICE2);
 ```
-```
+
 ```{important}
 AMDC Rev-E and later utilizing gp3io_mux
 
@@ -99,7 +99,7 @@ Place the code below into your custom user app init function. Modify the `GP3IO_
     // GP3IO_MUX_DEVICE2 is Eddy Current Sensor IP block
        gp3io_mux_set_device(GP3IO_MUX_2_BASE_ADDR, GP3IO_MUX_DEVICE1);
 ```
-```
+
 
 ## Trigger Sampling
 
