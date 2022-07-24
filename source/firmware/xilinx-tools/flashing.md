@@ -2,11 +2,15 @@
 
 During development, JTAG will be the primary interface for programming and debugging the AMDC firmware. Once code is stable, an image can be programed into the AMDC non-volatile memory (NVM). This allows board to boot itself when powered up.
 
-The following steps outline how to create a boot image and flash the AMDC NVM.
+The following steps outline how to create a boot image and flash the AMDC NVM. 
+
+This process varies slightly between single core, and dual core projects. Differences will be noted in the appropriate steps.
+
+Going through this process for the first time, the "create boot image" dialogs may differ slightly from the ones shown below. Use good judgement here and it should be evident what the appropriate steps are. Once you have created an initial boot image - even if it is incorrect and needs to be fixed, you can then match the dialogs exactly to the ones shown below. 
 
 ## Generating boot image file
 
-The PicoZed system-on-module (SoM) on AMDC includes a flash memory device which stores the boot image for start-up. We need to first generate the appropriate image which will be loaded into this memory.
+The PicoZed system-on-module (SoM) on AMDC includes a flash memory device which stores the boot image for start-up. We need to first generate the appropriate image which will be loaded into this memory. This process is the same for both single core, and dual core projects.
 
 ### Ensure you have `fsbl` project in SDK
 
@@ -29,9 +33,22 @@ Xilinx provides a First-Stage Bootloader application project which we will use t
 
 4. Ensure popup menu settings look like the following.
 
-Explaination of settings: `.MCS` is the file format which is supported for QSPI flashing. The list of three items for "Boot image partitions" must always be the following in this order: fsbl.elf, FPGA bitstream .bit file, your user *.elf file.
+Explaination of settings: `.MCS` is the file format which is supported for QSPI flashing. The list of three items for "Boot image partitions" must always be the following in this order: fsbl.elf, FPGA bitstream .bit file, your user *.elf file. 
+
+Skip below for dual core project procedure.
 
 ![Popup menu settings](images/flashing/img2.png)
+
+```{attention}
+For dual core projects, there will be multiple *.elf files*. The order is important! 
+* Navigate to your `$REPO_ROOT\AMDC-Firmware\sdk\app_cpu0\Debug` folder and locate the file `app_cpu0.elf`. 
+    * Add this to the _Boot Image Partitions_ area
+* Navigate to your `app_cpu1` location, usually this is located in the `$REPO_ROOT\AMDC-Private\Debug` folder.
+    * Add the *.elf* file to your _Boot Image Partitions_ after the `app_cpu0.elf` file. 
+```
+
+![Popup menu settings](images/flashing/img2-2.PNG)
+
 
 5. Click `Create Image`
 6. If it warns that another file already exists, click `OK`
@@ -52,7 +69,7 @@ After generating the boot image `*.MCS`file, we need to program the flash device
 
 4. Ensure popup window looks like the following:
 
-![Program Flash Memory popup window settings](images/flashing/img4.png)
+![Program Flash Memory popup window settings](images/flashing/img4-2.PNG)
 
 5. Click `Program`
 6. It will start flashing the board. This will take ~3 minutes...
@@ -74,8 +91,11 @@ Now the boot image has been loaded onto the PicoZed flash device. We need to con
 AMDC should now be programed and ready to go! Time to test.
 
 1.  Power cycle the board.
-2.  Ensure that `FPGA DONE` yellow LED comes on after ~1 second of powering up
-3. If so, you are good to go!
+2.  Ensure that `FPGA DONE` yellow LED comes on after ~1 second of powering up, and your loaded code is running. 
+
+```{attention}
+If you see the `FPGA DONE` LED turn on, but your program appears to not be running, check the order of the boot partition with the above steps.
+```
 
 ## Notes
 
