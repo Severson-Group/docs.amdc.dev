@@ -49,3 +49,5 @@ make html
 ```
 
 3. Browse local docs in your browser by opening: `build/html/index.html`
+
+See [this discussion thread](https://github.com/Severson-Group/docs.amdc.dev/discussions/56) for more information on local development.
