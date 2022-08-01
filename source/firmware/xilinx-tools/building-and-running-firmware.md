@@ -222,6 +222,18 @@ Fix another strange SDK issue:
 16. Change directory to `/amdc_bsp_cpu1/ps7_cortexa9_1/include`
 17. `OK`
 
+Fix another strange SDK issue:
+
+18.  `Edit...`  on  `/app_cpu1/src`
+19.  Change directory to  `/app_cpu1`
+20.  `OK`
+    
+Fix another strange SDK issue:
+
+21.  `Edit...`  on  `/app_cpu1/src/common`
+22.  Change directory to  `/app_cpu1/common`
+23.  `OK`
+
 Add library path for BSP:
 
 18. Change to `Library Paths` tab
@@ -344,3 +356,19 @@ If you are getting compilation errors in the SDK (especially during the linking 
 NOTE: Pushing the `RESET` button on PCB **is NOT** exactly the same as doing a full power cycle of board. The `RESET` button performs a different type of reset (it keeps around debug configurations, etc). During development, you may need to perform a full power cycle, while other times, a simple `RESET` button push will work. 
 
 Xilinx tools also have **many** quirks. Good luck getting everything working!
+
+## Copying Xilinx Files/Projects
+
+When copying files from one Xilinx project to another, they may not show up in the Project Explorer after importing via File -> Open Projects from File System. Solution 1 relies on you to delete a  `.project`  file and Xilinx to regenerate it. Solution 2 seems to overwrite  `.project`  files.
+
+#### Solution 1:
+
+This can be fixed by Navigating to the folder you want to import and deleting the  `.project`  file found within that folder. Now it should import via File -> Open Projects from File System.
+
+#### Solution 2:
+
+Another solution is to start in Vivado. After getting a successful block diagram and generating a bitstream, select File -> Export -> Export Hardware, Leave 'Include Bitstream' unchecked, and select the folder that contains the code you want to modify (If you are following these [instructions](https://docs.amdc.dev/firmware/xilinx-tools/building-and-running-firmware.html#fix-common-code-compilation),  `my-AMDC-private-C-code`  is the folder that you should select). 
+
+Click OK, and select File -> Launch SDK. Your Exported Location should be the same folder as before (`my-AMDC-private-C-code`), and your workspace should be the  `SDK`  folder found inside  `AMDC-Firmware`. 
+
+Click OK and close the welcome tab in Xilinx when it loads. There should only be  `amdc_rev*_wrapper_hw_platform_0`  in your Project Explorer. Now you can import files from the folders you selected earlier (`my-AMDC-private-C-code`  and  `SDK`) via File -> Open Projects from File System.
