@@ -18,9 +18,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="8.1655106"
-     inkscape:cx="104.525"
-     inkscape:cy="44.332806"
+     inkscape:zoom="4.4589649"
+     inkscape:cx="95.444341"
+     inkscape:cy="21.447028"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -38,11 +38,13 @@
        id="path4440"
        class="cls-1"
        d="M139.48,23H97.22"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <path
        id="path4463"
        class="cls-2"
        d="M65,23.88h6.92l1.8-6.47L77,29.21l3.26-12,3.14,12,3.14-11.91,3.13,11.93,3-12,3,12.12L97.22,23h6.08"
+       style="stroke-width:1.42;stroke-miterlimit:4;stroke-dasharray:none;fill:none"
        transform="translate(-1.79 -1.38)" />
     <g
        id="text4515"
@@ -50,24 +52,30 @@
       <text
          class="cls-4"
          transform="translate(16.09 15.05)"
-         id="text72">V</text>
+         id="text72"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">V</text>
       <text
          class="cls-5"
          transform="translate(23.92 21.05)"
-         id="text74">out</text>
+         id="text74"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">out</text>
     </g>
     <path
        id="path4519"
        class="cls-1"
        d="M65,23.88H20.18"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <g
        id="text4543"
        class="cls-3">
       <text
          class="cls-6"
          transform="translate(66.2,11.67)"
-         id="text78">10kΩ</text>
+         id="text78"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"><tspan
+           style="fill:#ffffff;fill-opacity:1"
+           id="tspan29684">10kΩ</tspan></text>
     </g>
     <g
        id="text5334"
@@ -75,43 +83,51 @@
       <text
          class="cls-7"
          transform="translate(0 35.72)"
-         id="text85">(f<tspan
+         id="text85"
+         style="stroke:#000000;stroke-opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">(f<tspan
    class="cls-8"
    x="7.18"
    y="0"
-   id="tspan81">r</tspan><tspan
+   id="tspan81"
+   style="stroke:#000000;stroke-opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">r</tspan><tspan
    x="11.17"
    y="0"
-   id="tspan83">om op amp)</tspan></text>
+   id="tspan83"
+   style="stroke:#000000;stroke-opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">om op amp)</tspan></text>
     </g>
     <path
        id="path5358"
        class="cls-1"
        d="M153.34,46.76H124.23"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <path
        id="path5360"
        class="cls-1"
        d="M153.34,51.26H124.23"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <g
        id="text5364"
        class="cls-3">
       <text
          class="cls-6"
          transform="translate(155.32,52.56)"
-         id="text90">0.1μF</text>
+         id="text90"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">0.1μF</text>
     </g>
     <path
        id="path5366"
        class="cls-1"
        d="M138.78,47.27v-25"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <path
        id="path5368"
        class="cls-1"
        d="M138.78,76.38v-25"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.42;stroke-miterlimit:11.34000015;stroke-dasharray:none" />
     <path
        id="path5370"
        class="cls-9"
@@ -123,14 +139,17 @@
       <text
          class="cls-6"
          transform="translate(143.13 14.21)"
-         id="text100">AN<tspan
+         id="text100"
+         style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">AN<tspan
    class="cls-10"
    x="18.25"
    y="0"
-   id="tspan96">L</tspan><tspan
+   id="tspan96"
+   style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">L</tspan><tspan
    x="25.66"
    y="0"
-   id="tspan98">G_OUT</tspan></text>
+   id="tspan98"
+   style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">G_OUT</tspan></text>
     </g>
     <g
        id="text5378"
@@ -138,14 +157,17 @@
       <text
          class="cls-7"
          transform="translate(162.84 34.78)"
-         id="text107">(<tspan
+         id="text107"
+         style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">(<tspan
    class="cls-11"
    x="4.15"
    y="0"
-   id="tspan103">t</tspan><tspan
+   id="tspan103"
+   style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">t</tspan><tspan
    x="7.45"
    y="0"
-   id="tspan105">o BNC)</tspan></text>
+   id="tspan105"
+   style="stroke:#000000;stroke-opacity:1;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:1">o BNC)</tspan></text>
     </g>
     <path
        id="path4487"
@@ -160,7 +182,8 @@
        id="path4152"
        class="cls-14"
        d="M49.22,23.92l-4.9,2.83V21.08Z"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.6;stroke-miterlimit:2.26999998;stroke-dasharray:none" />
     <path
        id="path7378"
        class="cls-15"
@@ -174,11 +197,36 @@
        id="path7490"
        class="cls-14"
        d="M175.94,23,171,25.83V20.16Z"
-       transform="translate(-1.79 -1.38)" />
+       transform="translate(-1.79 -1.38)"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.6;stroke-miterlimit:2.26999998;stroke-dasharray:none" />
     <path
        id="path7488"
        class="cls-15"
        d="M172.67,23"
        transform="translate(-1.79 -1.38)" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 18.39,22.5 h 51.74 l 1.8,-6.47 3.28,11.8 3.26,-12 3.14,12 3.14,-11.91 3.13,11.93 3,-12 3,12.12 1.55,-6.35 h 89.18"
+       id="path73729" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 151.55,45.38 H 122.44"
+       id="path74127" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 151.55,49.88 H 122.44"
+       id="path74129" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.394108;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 136.99,21.621138 V 45.89"
+       id="path74667" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.395428;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 136.99,50 V 74.431799"
+       id="path75277" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 137.21,88.04 7.6,-13.74 h -15.72 z"
+       id="path75806" />
   </g>
 </svg>
