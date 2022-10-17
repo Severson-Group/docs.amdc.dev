@@ -219,7 +219,9 @@ from AMDC_Logger import AMDC_Logger, find_mapfile
 # SETUP LOGGER
 ####################
 
-amdc = AMDC(port = uart_port)
+amdc = AMDC()
+amdc.setup_comm_defaults('uart')
+amdc.uart_init(uart_port)
 amdc.connect()
 
 mapfile_path = find_mapfile(repo_dir)
