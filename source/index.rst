@@ -48,6 +48,7 @@ AMDC Platform Documentation
    accessories/uinverter/index
    DAC <accessories/dac/index>
    accessories/test-board/index
+   accessories/knob-encoder/index
 
 
 Welcome to the AMDC Platform documentation.
