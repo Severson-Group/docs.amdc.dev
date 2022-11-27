@@ -67,7 +67,7 @@ However, each user application will most likely require its own commands in addi
 
 ## Examples
 
-To fully grasp the AMDC firmware architecture, examples are provided which concretely show the ideas presented above. See the example application: [`blink`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/bare/user/usr/blink).
+To fully grasp the AMDC firmware architecture, examples are provided which concretely show the ideas presented above. See the example application: [`blink`](https://github.com/Severson-Group/AMDC-Firmware/tree/v1.0.x/sdk/app_cpu1/user/usr/blink).
 
 ```{toctree}
 :hidden:
