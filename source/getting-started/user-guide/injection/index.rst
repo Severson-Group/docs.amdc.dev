@@ -124,8 +124,8 @@ For example, in :code:`task_foo.c`:
     // ...
 
 
-.. hint::
-    If you receive code complilation errors, make sure you have enabled the injection module in `app_cpu1/usr/user_config.h` by editting the `USER_CONFIG_ENABLE_INJECTION` define.
+.. seealso::
+    If you receive code complilation errors, make sure you have enabled the injection module in ``app_cpu1/usr/user_config.h`` by editting the ``USER_CONFIG_ENABLE_INJECTION`` define.
     
     
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
