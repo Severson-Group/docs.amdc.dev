@@ -32,7 +32,7 @@ Each injection point can be visualized like this:
 Each :code:`Function Generator` block in the stack implements one type of function: constant, white noise, triangle, square, chirp, sine, etc.
 The output is formed via the mux selecting either: (i) just the function generator output, or (ii) a sum/difference of the function generator output with the input signal.
 
-These blocks are generic and be used many times through-out a control algorithm.
+These blocks are generic and can be used many times through-out a control algorithm.
 
 **Note that, by default, the injection point is "disabled" and acts as a pass-through -- the output signal is the input signal.**
 **The user must manually enable the injection during operation.**
@@ -114,6 +114,8 @@ For example, in :code:`task_foo.c`:
 
 .. sourcecode:: c
 
+    #include "sys/injection.h"
+    
     // ...
 
     // Array of 4 contexts (i.e., 4 injection points)
@@ -121,6 +123,11 @@ For example, in :code:`task_foo.c`:
 
     // ...
 
+
+.. hint::
+    If you receive code complilation errors, make sure you have enabled the injection module in ``app_cpu1/usr/user_config.h`` by editting the ``USER_CONFIG_ENABLE_INJECTION`` define.
+    
+    
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Step 2: Initialize and Register Context
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
