@@ -114,6 +114,8 @@ For example, in :code:`task_foo.c`:
 
 .. sourcecode:: c
 
+    #include "sys/injection.h"
+    
     // ...
 
     // Array of 4 contexts (i.e., 4 injection points)
