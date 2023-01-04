@@ -7,7 +7,9 @@ A block diagram is presented and each component is discussed in detail. Specific
 
 REV C
 
-![image](images/currentCard3D.PNG)
+```{image} images/amds_current_card.png
+:height: 500px
+```
 
 ## Design Requirements and Considerations
 

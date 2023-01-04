@@ -7,6 +7,10 @@ This document describes the design considerations and implementation details for
 - REV A
 - REV B
 
+```{image} images/amds_lv_card.png
+:height: 500px
+```
+
 ## Design Requirements and Considerations
 
 The analog input card was designed to the following specifications:
