@@ -174,7 +174,7 @@ Note that in the text that follows, `REPO_DIR` is an alias for the file path to 
 
 ### 1. Import needed modules:
 
-To use logging in Python, you must `import` the `AMDC` and `AMDC_Logger` modules from the `scipts` folder of the AMDC-Firmware.
+To use logging in Python, you must `import` the `AMDC` and `AMDC_Logger` modules from the `scripts` folder of the AMDC-Firmware.
 There are two main classes of interest:
 
 1. `AMDC`: class that is found in the `AMDC` module. Responsible for communicating with the AMDC over the physical link
