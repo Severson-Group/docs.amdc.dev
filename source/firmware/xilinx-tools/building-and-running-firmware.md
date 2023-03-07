@@ -247,6 +247,16 @@ After following the above steps, the project build settings should resemble the 
 ![](./images/sdk/screenshot3.png)
 ![](./images/sdk/screenshot4.png)
 
+### Target Correct Hardware Revision
+
+The AMDC C code is configurable to be built for either the `REV D` or `REV E` hardware revision. By default, it targets the latest version: `REV E`.
+
+If you are using `REV D`, change the hardware target define in your `usr/user_config.h` file to `AMDC_REV_D`:
+
+```C
+#define USER_CONFIG_HARDWARE_TARGET (AMDC_REV_D)
+```
+
 ### Build SDK Projects
 
 SDK will attempt to build the projects you just imported. Wait until all projects are done compiling... Could take a few minutes...
