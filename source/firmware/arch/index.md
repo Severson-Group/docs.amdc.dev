@@ -9,7 +9,14 @@ This document outlines the AMDC firmware architecture. By understanding the high
 
 A good software system has many layers of abstraction. The client of one subsystem does not need to know how that subsystem works interally -- she/he simply uses the interface provided and expects that it works as specified. The AMDC firmware is structured in this manner.
 
-![block-diagram](images/block-diagram.svg)
+<br/>
+
+```{figure} images/block-diagram.svg
+:alt: block-diagram
+:figwidth: 100%
+:width: 600px
+:align: left
+```
 
 
 ## Hardware
