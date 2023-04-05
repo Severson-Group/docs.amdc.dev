@@ -52,8 +52,11 @@ Once the `gpio_mux` is routed we can now make inquiries to the AMDS for data. Th
 ```
 
 Try `mb 0 adc on` followed by the `mb 0 samples` command for the latest ADC poll. 
-The `counters` command is helpful for debugging connection issues, the `V` and `C` should be non-zero if the connection is active!
-
+The `counters` command is helpful for debugging connection issues. AMDC keeps several counters to indicate how the hardware is performing. For each byte of data transmitted from the AMDS to AMDC, on counter is incremented within the AMDC's FPGA.
+Try `mb 0 counters` and see the outputs. The value of `V` should be non-zero if the connection is active!
+`V` is "valid" means the byte of data recieved is valid.
+`C` is "corrupt" when the full data byte was recieved, but the UART parity check fails (typically due to noise, emi, etc).
+`T` is "timeout" when the AMDC expected a byte from the AMDS, but it never showed up! Thhis happens continuously when the cable is unplugged.
 
 ## Configure GPIO/GP3IO Mux in Code
 
