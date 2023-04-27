@@ -371,11 +371,11 @@ Xilinx tools also have **many** quirks. Good luck getting everything working!
 
 When copying files from one Xilinx project to another, they may not show up in the Project Explorer after importing via File -> Open Projects from File System. Solution 1 relies on you to delete a  `.project`  file and Xilinx to regenerate it. Solution 2 seems to overwrite  `.project`  files.
 
-#### Solution 1:
+### Solution 1:
 
 This can be fixed by Navigating to the folder you want to import and deleting the  `.project`  file found within that folder. Now it should import via File -> Open Projects from File System.
 
-#### Solution 2:
+### Solution 2:
 
 Another solution is to start in Vivado. After getting a successful block diagram and generating a bitstream, select File -> Export -> Export Hardware, Leave 'Include Bitstream' unchecked, and select the folder that contains the code you want to modify (If you are following these [instructions](https://docs.amdc.dev/firmware/xilinx-tools/building-and-running-firmware.html#fix-common-code-compilation),  `my-AMDC-private-C-code`  is the folder that you should select). 
 
