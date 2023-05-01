@@ -130,6 +130,75 @@ For example, when only logging 4 variables for short durations:
 #define USER_CONFIG_LOGGING_SAMPLE_DEPTH_PER_VARIABLE (1000)
 ```
 
+## Advanced System Firmware Changes
+
+```{caution}
+This section instructs you to update the core AMDC system code.
+Only attempt these changes if you are able to revert your code base back to a known working version, i.e., you are appropriately using version control.
+```
+
+Due to the time triggered cooperative scheduler in the AMDC firmware, there can be needless timing collisions based on the phasing of different tasks.
+
+Consider 10 independent tasks which need to run every second, i.e., 1 Hz, and each takes 5 usec to execute.
+This means all 10 tasks require 50 usec of computation time.
+If all the tasks run during the same time slice, this could overrun the scheduler for system tick frequencies faster than $1 / 50~\mu\text{s} = 20~\text{kHz}$.
+The clever reader will realize this overrun could easily be prevented by phase shifting the execution of each task by 1 time slice so that the computational load is split more evenly.
+
+By default, each task has an initial phase shift in timing of 0, meaning the above example is prone to happening. However, the user can update the timing offsets of each task to help reduce the chance of scheduler overruns.
+
+### How to update task execution timing offset
+
+Each scheduler `task_control_block_t` struct has a field `last_run_usec` which directly maps to the timing offset. To add a timing offset, simply override this field during initialization. The field has units of usec.
+
+For example, to add an offset of 100 usec to the task:
+
+```C
+// task_controller.c
+
+// Scheduler TCB which holds task "context"
+static task_control_block_t tcb;
+
+int task_controller_init(void)
+{
+    if (scheduler_tcb_is_registered(&tcb)) {
+        return FAILURE;
+    }
+
+    // Fill TCB with parameters
+    scheduler_tcb_init(&tcb, task_controller_callback, 
+                        NULL, "controller", TASK_CONTROLLER_INTERVAL_USEC);
+
+    // Override the task timing offset
+    tcb.last_run_usec = 100;
+
+    // Register task with scheduler
+    return scheduler_tcb_register(&tcb);
+}
+```
+
+Note that the `scheduler_tcb_init()` function resets the `last_run_usec` field to 0, so the user must update the task struct after calling the init function.
+
+### Which tasks to update
+
+Tasks which execute at the system tick frequency should not be updated to add an offset--it makes no sense to update them since they run every time slice no matter what.
+
+All other tasks could be updated to add an execution timing phase shift.
+
+There are numerous system tasks which run on the AMDC in addition to user tasks.
+To find all tasks, use the file search feature within the SDK to locate calls to `scheduler_tcb_register()`.
+
+### Good values for the execution timing phase shifts
+
+For the best spread of computational load, each task should be offset so that it runs in its own time slice.
+It can be complicated to find suitable offsets for a system with many tasks which all run at different rates.
+
+Consider a simple example system with $N$ tasks which all run at interval $T_{task}$. The system tick interval $T_{sys} < \frac{1}{N} T_{task}$ so that it is possible to schedule the tasks with no collisions.
+The offset for task $i$ is denoted $t_i$ and $i = 0,~1,~\ldots,~N-1$.
+
+Then, one offset configuration which eliminates timing collisions is
+$t_i = T_{sys}i$
+which means each task has its own time slice in which to run.
+
 ## PWM Requirements
 
 For `v1.0` AMDC firmware (which is all that exists today), try to keep the PWM switching frequency greater than 2-5x the control rate.
