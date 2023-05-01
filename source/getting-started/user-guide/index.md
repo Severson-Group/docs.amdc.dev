@@ -26,6 +26,6 @@ Submit a GitHub Issue via the [`AMDC-Firmware`](https://github.com/Severson-Grou
 host-interface/index
 logging/index
 injection/index
-code-profiling
+task-profiling
 amds-interface
 ```
