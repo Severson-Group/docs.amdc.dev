@@ -13,12 +13,13 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import datetime
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'AMDC Platform'
-copyright = '2021, Severson Research Group'
+copyright = '2018-' + str(datetime.date.today().year) + ', Severson Research Group'
 author = 'Severson Research Group'
 
 

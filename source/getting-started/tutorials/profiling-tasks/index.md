@@ -29,7 +29,7 @@ Estimating the embedded code timing performance is very hard to do via simulatio
 
 The AMDC firmware has built-in support for profiling task execution timing.
 
-Before continuing with this tutorial, read the [](/getting-started/user-guide/code-profiling.md) document.
+Before continuing with this tutorial, read the [](/getting-started/user-guide/task-profiling.md) document.
 This will explain the capabilites and process of profiling code on the AMDC.
 
 ## Step 2: Turn on profiling for the VSI task
