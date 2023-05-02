@@ -135,6 +135,26 @@ Who maintains the AMDC Platform?
    The AMDC Platform is actively maintained by students in the `Severson Research Group <https://severson.wempec.wisc.edu/>`_ at the `University of Wisconsin, Madison <https://www.wisc.edu/>`_ in the USA.
 
 
+********
+Citation
+********
+
+If you use the AMDC in your research, please cite the following paper about the AMDC:
+
+``N. Petersen and E.L. Severson, "AMDC: Open-Source Control and Sensing Platform for Advanced Electric Motor Drives," 2023 IEEE International Electric Machines and Drives Conference (IEMDC), 2023.``
+
+.. code:: none
+
+   @inproceedings{petersen2023amdc,
+     author={Petersen, Nathan and Severson, Eric},
+     booktitle={2023 IEEE International Electric Machines and Drives Conference (IEMDC)}, 
+     title={AMDC: Open-Source Control and Sensing Platform for Advanced Electric Motor Drives}, 
+     year={2023},
+     volume={},
+     number={},
+     pages={1-7}
+   }
+
 *******
 License
 *******
