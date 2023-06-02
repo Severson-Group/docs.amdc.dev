@@ -1,10 +1,33 @@
 # Hardware Overview
 
-The AMDC hardware is a collection of circuit board designs which are used to control advanced motor systems. The hardware design is open-source, modular, and research-oriented.
+**The AMDC hardware is a collection of circuit board designs which are used to control advanced motor systems. The hardware design is open-source, modular, and research-oriented.**
 
-The flagship circuit board is the main AMDC (see latest design [here](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/REV20210325E)) which is a carrier board for the [PicoZed System-on-Module](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/picozed/). The PicoZed is a module itself which contains the core requirements for the [Xilinx Zynq-7000](https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html) System-on-Chip. The Xilinx Zynq-7000 SoC is a powerful processor with dual-core DSPs and a tightly integrated FPGA.
+```{image} /hardware/revisions/rev-d/images/amdc-rev-d-cover.jpg
+:width: 250px
+:align: right
+```
 
-Extensive firmware support is provided in the [AMDC-Firmware](https://github.com/Severson-Group/AMDC-Firmware) repo which targets this architecture.
+The AMDC PCB is a carrier board for the [PicoZed System-on-Module](/hardware/subsystems/picozed). The PicoZed is a module PCB which contains the core requirements for the [Xilinx Zynq-7000](https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html) System-on-Chip. The Xilinx Zynq-7000 SoC is a powerful processor with dual-core DSPs and a tightly integrated FPGA.
+
+<!--Extensive firmware support is provided in the [AMDC-Firmware](https://github.com/Severson-Group/AMDC-Firmware) repo which targets this architecture.-->
+
+<div style="clear:left;"></div>
+
+## Hardware Parameters
+
+These are for the latest hardware revision: `REV20210325E`.
+
+| Parameter | Value | Note |
+| --- | --- | --- |
+| System-on-chip | Xilinx `XC7Z030-1SBG485C` | dual-core ARM Cortex-A9 with Kintex-7 FPGA |
+| Clock frequency (DSP, FPGA) | 666 MHz, 200 MHz | firmware configurable |
+| Nominal input voltage | 24 V | typical 10 W power consumption |
+| Host interface | Ethernet and USB serial | supports 1 Gbps Ethernet |
+| Digital PWM outputs | 48 | arranged for 8 three-phase two-level inverters |
+| Integrated analog inputs | 8 | differential bipolar $\pm$10 V with high CMRR |
+| Encoder inputs | 2 | incremental type (differential `A`, `B`, and `Z` signals) |
+| Expansion ports | 4 | 3/3 differential I/O per port |
+| Approximate unit cost | \$1500 | fully assembled with PicoZed, ordered in quantity 10 |
 
 ## Design Software / Licenses
 
