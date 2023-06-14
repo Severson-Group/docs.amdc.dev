@@ -353,7 +353,7 @@ Make sure to run the `IP Status Report` to ensure the new changes have propagate
 
 ### 6. Adding Custom Adder
 
-We will now follow the [steps from above](#edit-the-ip-core) to add the `my_custom_adder` Verilog module to the new IP core.
+We will now follow the [steps from above](#editing-ip-cores) to add the `my_custom_adder` Verilog module to the new IP core.
 
 #### Create Source File
 
@@ -443,7 +443,7 @@ To the user, `slv_reg2` has become a "read-only" register, as desired!
 
 ### 7. Re-Package IP Core
 
-Following the [steps from above](#edit-the-ip-core), re-package `my_custom_adder` IP core and return to the top-level FPGA block design.
+Following the [steps from above](#editing-ip-cores), re-package `my_custom_adder` IP core and return to the top-level FPGA block design.
 
 1. Ensure all Verilog source files are saved
 2. Go back to the `Package IP` pane
@@ -456,7 +456,7 @@ Following the [steps from above](#edit-the-ip-core), re-package `my_custom_adder
 
 ### 8. Upgrade the IP
 
-Follow the [above steps](#edit-the-ip-core) to upgrade the IP status.
+Follow the [above steps](#editing-ip-cores) to upgrade the IP status.
 
 ### 9. Generate the Bitstream
 
