@@ -144,11 +144,11 @@ These files are visible directly in the [AMDC-Firmware](https://github.com/Sever
 ### Block Design File
 
 The block design `.bd` file is the top-level visual representation of the FPGA design.
-Below is an example screenshot which shows off-chip inputs and outputs (I/O), IP cores (light blue), and hiearchary containers (dark blue) which are simply a way of making the block design appear cleaner.
+Below is an example screenshot which shows off-chip inputs and outputs (I/O), IP cores (light blue), and hierarchy containers (dark blue) which are simply a way of making the block design appear cleaner.
 
 ![Example labeled block design](images/vivado_bd_labeled.png)
 
-Vivado can also support plain HDL module blocks in the block design (i.e., not IP cores, just an instaniated Verilog file), but the AMDC-Firmware project does not use this approach. Plain modules are "static" meaning their I/O cannot be dynamically updated from the C code. Therefore, their functionality is rather limited.
+Vivado can also support plain HDL module blocks in the block design (i.e., not IP cores, just an instantiated Verilog file), but the AMDC-Firmware project does not use this approach. Plain modules are "static" meaning their I/O cannot be dynamically updated from the C code. Therefore, their functionality is rather limited.
 
 Notice that each IP core has three common inputs:
 
@@ -317,7 +317,7 @@ Think of the blank IP core as exposing 4 additional read/write (R/W) variables t
 ### 5. Editing IP Cores
 
 The "empty" IP core which comes from the IP wizard is not very useful.
-Unfortunantely, it is rather difficult to edit the IP core to add custom features.
+Unfortunately, it is rather difficult to edit the IP core to add custom features.
 The following steps must be followed in order to edit the contents of the IP core.
 
 The next sections will give concrete examples of these steps and provide screenshots as we add the `my_custom_adder` module.
@@ -450,7 +450,7 @@ Following the [steps from above](#edit-the-ip-core), re-package `my_custom_adder
 3. Notice that the `File Groups` step is not a green checkbox
 4. Click the `File Groups` step and click `Merge changes from File Groups Wizard`
 5. Now, all the steps are green except the last
-6. Select the `Reivew and Package` step
+6. Select the `Review and Package` step
 7. Click `Re-Package IP`
 8. Click `Yes` to close the temporary project
 
@@ -516,9 +516,8 @@ uint32_t somehow_access_my_custom_adder(uint32_t in1, uint32_t in2) {
     base_addr[0] = in1;
     base_addr[1] = in2;
     
-    // No need to wait for the IP core to finish
-    // since the adder logic only takes one clock
-    // cycle to run and compute the value.
+    // No need to wait for the IP core to finish since the adder logic
+    // only takes one clock cycle to run and compute the value.
     //
     // The AXI transactions themselves take multiple clock cycles!
 
@@ -530,12 +529,12 @@ uint32_t somehow_access_my_custom_adder(uint32_t in1, uint32_t in2) {
 ## Testing
 
 Let's test on hardware to ensure the new IP core works as expected.
-Futhermore, let's profile the executation time from the C code side and see if our new IP core adder can accelerate the processor version.
+Futhermore, let's profile the execution time from the C code side and see if our new IP core adder can accelerate the processor version.
 
 ### Code Performance Timing
 
 Add a new command to the AMDC user code which allows us to profile the code.
-If adding commands is unfirmilar, review the template code provided in the [VSI tutorial](/getting-started/tutorials/vsi/index).
+If adding commands is unfamiliar, review the template code provided in the [VSI tutorial](/getting-started/tutorials/vsi/index).
 
 The command will require the two number inputs from the user and return the computed output.
 It will compute the output `N` times and return the average execution time.
