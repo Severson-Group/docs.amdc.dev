@@ -522,7 +522,7 @@ uint32_t somehow_access_my_custom_adder(uint32_t in1, uint32_t in2) {
     // The AXI transactions themselves take multiple clock cycles!
 
     // Return output
-    return base_addr[3];
+    return base_addr[2];
 }
 ```
 
@@ -578,7 +578,7 @@ int cmd_adder(int argc, char **argv) {
                 // Compute result using FPGA
                 base_addr[0] = in1;
                 base_addr[1] = in2;
-                out = base_addr[3];
+                out = base_addr[2];
 
                 now_stop = cpu_timer_now();
                 total_time += (now_stop - now_start);    
