@@ -7,6 +7,10 @@
 This tutorial goes over the procedure to create and add a custom FPGA IP core in Vivado.
 Step by step instructions are given which walk the user through each part.
 
+> This tutorial goes over a toy C code accelerator application of IP cores.
+> 
+> For a real-life example tutorial of IP cores used to drive external hardware devices, check out [this blog post](https://nathanpetersen.com/2020/07/17/designing-a-firmware-driver-for-serially-addressable-leds-for-xilinx-zynq-7000/) which explains how the firmware drivers for the RGB LEDs are implemented in the AMDC.
+
 ## Tutorial Requirements
 
 1. Working AMDC hardware for testing
@@ -15,21 +19,30 @@ Step by step instructions are given which walk the user through each part.
 4. Working knowledge of digital logic and Verilog
     - UW-Madison courses ECE 551/552
     - Online tutorials, e.g., [1](https://nandland.com/fpga-101/), [2](https://fpgatutorial.com/verilog/), [3](http://www.asic-world.com/verilog/veritut.html), etc
+5. Working knowledge of programming and embedded C code
+    - UW-Madison courses ECE [353](https://ece353.engr.wisc.edu/)/354 and/or CS 400
+    - Online tutorials, e.g., [1](https://www.w3schools.com/c/), [2](https://www.tutorialspoint.com/cprogramming/index.htm), [3](https://www.mygreatlearning.com/blog/embedded-c/), [4](https://www.electronicshub.org/basics-of-embedded-c-program/), etc
 
 ## Background
 
-The AMDC processor is the Xilinx Zynq-7000 SoC---see its [Technical Reference Manual](https://docs.xilinx.com/v/u/en-US/ug585-Zynq-7000-TRM).
-It includes a "Processing System" (PS) and "Programmable Logic" (PL). In the other AMDC docs besides this tutorial, the PS is referred to as the DSP, and PL means FPGA.
-Keep in mind that this tutorial is applicable to any system built on top of Xilinx's system-on-chip (PL + PS) architecture family, not just the AMDC/PicoZed/Zynq-7000 combination.
+The AMDC processor is the Xilinx Zynq-7000 system-on-chip (SoC)---see its 1800 page [Technical Reference Manual](https://docs.xilinx.com/v/u/en-US/ug585-Zynq-7000-TRM).
+It includes a dual-core digital signal processor (DSP) and tightly coupled FPGA.
+
+```{note}
+In the official Xilinx documentation, the DSP part of the Zynq-7000 is referred to as the "Processing System" (PS), and the FPGA is called the "Programmable Logic" (PL).
+These names can be used interchangeably.
+```
 
 Xilinx provides extensive documentation for exactly the aim of this tutorial: FPGA IP cores.
 Seriously, there are over 20 PDFs/videos/resources provided specifically for this from Xilinx, see [here](https://www.xilinx.com/support/documentation-navigation/design-hubs/2019-1/dh0003-vivado-designing-with-ip-hub.html).
 The main Xilinx resources are this [tutorial](https://www.xilinx.com/content/dam/xilinx/support/documents/sw_manuals/xilinx2019_1/ug1119-vivado-creating-packaging-ip-tutorial.pdf) and this [user guide](https://www.xilinx.com/content/dam/xilinx/support/documents/sw_manuals/xilinx2019_1/ug1118-vivado-creating-packaging-custom-ip.pdf).
 Unfortunately, these two PDFs alone are a combined 178 pages long, which can make it hard/overwhelming for new users.
 
-The goal of this tutorial is to walk advanced AMDC users who care about using the FPGA through the process of creating a basic IP core.
+The goal of this tutorial is to walk advanced AMDC users---who care about using the FPGA---through the process of creating a basic IP core.
 The tutorial does not try to help the user understand every single piece of the system.
-If you want to truly understand FPGA design for the Xilinx PL+PS architecture, you need to invest the hours to read the official documentation.
+If you want to truly understand FPGA design for the Xilinx Zynq-7000 architecture, you need to invest the hours to read the official documentation.
+
+Keep in mind that this tutorial is applicable to any system built on top of Xilinx's system-on-chip (DSP + FPGA) architecture family, not just the AMDC + PicoZed + Zynq-7000 combination.
 
 ## Motivation
 
@@ -107,6 +120,30 @@ For example, an Ethernet MAC, HDMI interface, FFT calculation engine, video tran
 The term "IP" refers to the custom logic and "smarts" that are contained within the digital logic.
 Users of the logic block do not have to understand the "IP" baked within to use the module, simply the block interface and I/O requirements.
 
+### Hard vs. Soft IP
+
+Due to the heterogeneous architecture of the Zynq-7000, the notion of "soft" and "hard" IP becomes relevant.
+The Zynq-7000 SoC includes hard IP, akin to standard DSPs from, e.g., TI, ST, NXP, etc.
+Think of hard IP as digital logic that is etched into the silicon---it cannot be altered or changed.
+Typically, hard IP runs faster than soft IP since there is less extraneous support circuitry to allow for customization at run-time.
+Examples of typical hard IP include CPU cores (e.g., [ARM Cortex-M0](https://developer.arm.com/Processors/Cortex-M0)) and peripherals like UART/SPI/I2C/USB/etc.
+
+Soft IP is logic that is dynamically configurable, i.e., FPGA logic.
+For example, a soft processor is a processor that is implemented in the FPGA.
+It still runs code and acts like a hard processor, but tends to be slower, albeit, infinitely configurable.
+Xilinx provides its [MicroBlaze Soft Processor Core](https://www.xilinx.com/products/design-tools/microblaze.html) IP which makes it easy to create additional processors (e.g., DSPs) in the FPGA.
+ARM provides the [Cortex-M1](https://developer.arm.com/Processors/Cortex-M1) designed specifically for FPGAs.
+These can be instantiated many times to create a custom parallel architecture in the FPGA.
+Note that these soft processors run slower than the hard ARM cores in the Zynq-7000 SoC---around 3-10x slower clock frequencies.
+
+How do the IP cores in this tutorial and the AMDC-Firmware relate to soft/hard logic?
+By definition, all IP cores in the FPGA that have custom Verilog are soft IPs---the FPGA was dynamically configured at run-time to implement the desired logic functions.
+However, under the hood, if an IP core uses the "hard" logic in the FPGA (e.g., DSP slices, high-speed dedicated transceiver circuitry, etc), then the full IP core would be composed of both soft and hard IP, but overall, still be considered a soft IP.
+
+Note that soft IP provided by third-parties (e.g., Xilinx and others, see below) is generally not editable---the source code is often locked and must be implemented as a "black-box".
+Commercial IP usually has strict licensing agreements which must be followed.
+All AMDC-Firmware IP cores (named as `amdc_***`) are open-source and editable by anyone.
+
 ### Example IP Cores for Sale
 
 Designers can purchase pre-made IP cores from many companies.
@@ -158,7 +195,7 @@ Notice that each IP core has three common inputs:
 
 ### AXI Interconnect
 
-The [AXI interconnect](https://www.xilinx.com/support/documentation/ip_documentation/ug761_axi_reference_guide.pdf) is the bus that goes between IP cores and the main processor.
+The [AXI interconnect](https://www.xilinx.com/support/documentation/ip_documentation/ug761_axi_reference_guide.pdf) is the bus that connects the DSP (processor) and the IP cores in the FPGA (the programmable logic).
 AXI is part of [ARM AMBA](https://en.wikipedia.org/wiki/Advanced_Microcontroller_Bus_Architecture), a family of microcontroller buses first introduced in 1996.
 AMBA 4.0, released in 2010, includes the second version of AXI, AXI4.
 Xilinx has adopted the Advanced eXtensible Interface (AXI) protocol for Intellectual Property (IP) cores.
@@ -169,8 +206,31 @@ There are three types of AXI4 interfaces:
 2. AXI4-Stream---for high-speed streaming data.
 3. AXI4-Lite---for simple, low-throughput memory-mapped communication (e.g., to and from control and status registers)
 
+The AXI interconnect is the method by which the C code driver is able to read, write, and interact with the IP cores in the FPGA.
 Most IP cores in the AMDC-Firmware use **AXI4-Lite** since it implements a simple register interface for low-throughput data transfer.
 The remainder of this tutorial will walk through creating and testing a basic IP core using AXI4-Lite.
+
+### IP Core Inputs and Outputs
+
+There are two types of input and output to/from an IP core: signal I/O and DSP-FPGA register I/O.
+
+#### Signal I/O
+
+Vivado shows the signal inputs to an IP core on the left of the block and the IP core outputs on its right.
+Think of these inputs and outputs as the I/O which goes to/comes from a Verilog `module`.
+
+For example, notice that the `amdc_leds` IP core in the screenshot above has one output signal: `led_data`.
+This signal is wired directly to a port `user_led_din` which goes "off-chip".
+This signal eventually appears at the actual LEDs on the AMDC hardware, and can be measured by a logic analyzer or oscilloscope.
+
+Similarly, the `amdc_adc` IP core has both inputs and outputs that go off-chip since it drives the external ADC via a SPI interface (`cnv`, `sclk`, `sdo[7:0]`).
+However, the `amdc_adc` IP core also has inputs which come from other FPGA IP cores (i.e., not off-chip)---the `pwm_carrier_high` and `pwm_carrier_low` signals are generated by another IP core. This concept of inputs and outputs matches that of normal HDL modules.
+
+#### DSP-FPGA Register I/O
+
+Since IP cores have registers which can be read/written from the DSP C code, there is another notion of input and output, this time at a register level.
+Setting an IP core register from the C code feels like another input to the IP core, however, this is not visible from the block design view.
+All DSP-FPGA interactions and registers are contained within the IP core---the only indication of DSP-FPGA interaction is the `S00_AXI` bus going to the IP core left side.
 
 ## Creating AXI4-Lite IP Core in Vivado
 
@@ -320,7 +380,11 @@ The "empty" IP core which comes from the IP wizard is not very useful.
 Unfortunately, it is rather difficult to edit the IP core to add custom features.
 The following steps must be followed in order to edit the contents of the IP core.
 
-The next sections will give concrete examples of these steps and provide screenshots as we add the `my_custom_adder` module.
+```{note}
+The next sections in this tutorial will give concrete examples of these steps and provide screenshots as we add the `my_custom_adder` module.
+
+This section is meant to be a reference guide for future projects.
+```
 
 1. In the block design, right-click on the instantiated IP core and select `Edit in IP Packager`
 2. In the pop-up, leave the defaults and click `OK`
@@ -351,7 +415,7 @@ If you make changes to the IP core but it doesn't seem to change/fix anything, V
 Make sure to run the `IP Status Report` to ensure the new changes have propagated to the instantiated IP cores in the block design.
 ```
 
-### 6. Adding Custom Adder
+### 6. Adding Custom Adder Logic to IP Core
 
 We will now follow the [steps from above](#editing-ip-cores) to add the `my_custom_adder` Verilog module to the new IP core.
 
@@ -474,7 +538,7 @@ Per the above section and discussion, you should now be aware that the access to
 
 ### Memory-Mapped FPGA Registers
 
-The core "magic" of the AXI4-Lite interface to the FPGA is the hardware support in the PS for memory operations.
+The core "magic" of the AXI4-Lite interface to the FPGA is the hardware support in the DSP for memory operations.
 When the C code reads/writes to memory addresses near the IP core base address, this causes an AXI read/write transaction to occur.
 The template Verilog from the IP Wizard implements the slave side for the transaction response.
 
@@ -501,6 +565,17 @@ base_addr[3] = 0x123;
 uint32_t slv_reg3_from_fpga;
 slv_reg3_from_fpga = *slv_reg3; // should return 0x123
 slv_reg3_from_fpga = base_addr[3]; // should also return 0x123
+```
+
+Note that above, the IP core base address was hardcoded to `0x43DB0000`.
+This is not a good practice since Vivado manages the addresses and might change them if new IP cores are added to the block design.
+Instead, once the SDK environment is set up (i.e., the BSP project is created), all IP core base addresses (and other related info) are available as auto-generated defines in the `xparameters.h` file.
+
+```C
+#include "xparameters.h"
+
+// Now, access the base address:
+volatile uint32_t *base_addr = (volatile uint32_t *) XPAR_MY_CUSTOM_ADDER_S00_AXI_BASEADDR;
 ```
 
 ### Access `my_custom_adder` from C Code
@@ -601,11 +676,13 @@ int cmd_adder(int argc, char **argv) {
 
 ### Results
 
-Run on hardware and get results
+Run on hardware and get results.
+
+*This section will be updated soon with actual numbers of execution time from lab hardware testing.*
 
 ## Conclusion
 
 **Congrats!** If you made it this far, be proud of yourself.
-Getting custom Verilog code into the FPGA via an IP core and accessing it from C code memory-mapped operations in quite the feat.
+Getting custom Verilog code into the FPGA via an IP core and accessing it from C code memory-mapped operations is quite the feat.
 
 You can now add custom logic to the FPGA. [The world is your oyster!](https://nosweatshakespeare.com/quotes/famous/the-worlds-your-oyster/)
