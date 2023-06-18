@@ -54,7 +54,7 @@ The pin mappings for each DB-15 connector is shown below:
 | 14 | D2_O_P |
 | 15 | D2_O_N |
 
-The isoSPI signals that connect to the PicoZed pins and Zynq-7000 FPGA module can be found at the isoSPI section of the [pin mapping document](RevD-PinMapping.md#encoder).
+The isoSPI signals that connect to the PicoZed pins and Zynq-7000 FPGA module can be found at the isoSPI section of the [pin mapping document](../revisions/rev-d/rev-d-pin-mapping.md#isospi).
 
 ### 2. IsoSPI communication interface
 

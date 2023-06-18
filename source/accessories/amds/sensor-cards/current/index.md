@@ -93,7 +93,7 @@ A user may want to change some of the passive components based on the range requ
 
 
 ## Datasheets
-- [Current Sensor](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/datasheets/LA55P_Current%20Sensor.pdf)
-- [Op Amp](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/datasheets/OPA320_OpAmp.pdf)
-- [Voltage Reference (LDO)](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/datasheets/REF5045_LDO.pdf)
-- [Analog to Digital Converter](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/datasheets/ADS_8860_ADC.pdf)
+- [Current Sensor](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/LA55P_Current%20Sensor.pdf)
+- [Op Amp](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/OPA320_OpAmp.pdf)
+- [Voltage Reference (LDO)](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/REF5045_LDO.pdf)
+- [Analog to Digital Converter](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/ADS_8860_ADC.pdf)

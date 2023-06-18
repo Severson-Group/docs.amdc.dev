@@ -34,7 +34,7 @@ Ensure only one jumper (or no jumper) is installed across JP1 to JP6. This jumpe
 
 ## Use Case #1: PCB Hardware Validation
 
-[See documentation about this here...](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/bare/common/usr/pcbtest)
+[See documentation about this here...](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/usr/pcbtest)
 
 ## Use Case #2: TestBoard as DAC
 

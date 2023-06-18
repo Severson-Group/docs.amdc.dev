@@ -12,7 +12,7 @@ Logging simply means recording variables over time from inside the firmware and 
 The capability to log variables from inside the C-code is absolutely essential to debugging complex control algorithms, as well as validating correct behavior.
 
 ```{seealso}
-Signal logging pairs nicely with [](../injection/index.md)!
+Signal logging pairs nicely with [](../injection/index.rst)!
 ```
 
 ## Types of Logging
@@ -70,7 +70,7 @@ Simply uncomment the slots and sample depth defines to override the default valu
 Note that the maximum memory available is limited, so users must keep the product of `slots` and `sample depth` reasonable (i.e. less than 100s of MB).
 For example, the user could change the settings to be 128 variables at 25k sample depth.
 
-
+(c-code-modifications)=
 ## C-Code Modifications
 
 The logging framework has been designed specifically to limit the amount of changes users have to make to their C-code to log variables of interest. The only modifications that users need to make to their C-code are as follows:
