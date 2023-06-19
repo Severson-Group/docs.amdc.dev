@@ -15,6 +15,14 @@ This is the first tutorial, so the only requirements are:
 
 1. Working AMDC hardware
 
+## Step 0: Check hardware revision
+
+Currently, two hardware revisions are supported: [REV D](/hardware/revisions/rev-d/index.md) and [REV E](/hardware/revisions/rev-e/index.md).
+
+Figure out which one you have by looking at your PCB:
+
+![](images/hardware_rev_label.png)
+
 ## Step 1: Hook up power connections to the AMDC
 
 For the AMDC to function, it needs external power.
