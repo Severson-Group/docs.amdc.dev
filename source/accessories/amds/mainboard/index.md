@@ -73,7 +73,7 @@ There are two interfacing DB-15 connectors on the measurement board. The first c
 | 14 | GND | - |
 | 15 | GND | - |
 
-Implementation details of [IsoSPI](#IsoSPI-Communication-Interface) and [Differential IO](#Differential-IO-Isolated-Transceiver) is described later in the document.
+Implementation details of [IsoSPI](#isospi_comm_interface) and [Differential IO](#diff-io-transceiver) is described later in the document.
 
 ## Systems on Board
 
@@ -83,6 +83,7 @@ Per the block diagram above, the mainboard is made of several systems, as explai
 
 STM32F7 microcontroller is used as an interface between the daughter card and an external controller. This MCU has a core ARM 32-bit Cortex M7 CPU. This IC can operate at a supply voltage of 1.7 V to 3.6 V. JTAG / SWD interface is used for debugging and programming the MCU. It has 6 SPIs which is used for daughter card and AMDC isoSPI interfaces. The maximum speed of the MCU SPI interface is 54 Mbps. It has 4 USART with a maximum baud rate of 26 Mbps, which are used to transmit daughter card data to the AMDC. GPIO pins of the MCU can be accessed using GPIO connector. More information on this MCU can be found [here](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf).
 
+(diff-io-transceiver)=
 ### Differential IO Isolated Transceiver
 
 The MCU transmits sensor data via USART communication. These USART signals are converted to differential IO using differential transceiver [ISO3086T](https://www.ti.com/lit/ds/symlink/iso3086t.pdf?HQS=TI-null-null-digikeymode-df-pf-null-wwe&ts=1596613093516). Differential IO has the ability to communicate over long distances and at faster communication rate compared to standard USART. This IC has an in-built isolation barrier. A signaling rate of up to 20 Mbps is obtained from this IC. The operating voltage is provided in the following table.
@@ -95,6 +96,7 @@ The MCU transmits sensor data via USART communication. These USART signals are c
 
 The maximum supply current consumed by the IC including to drive currents for differential lines is 60 mA, which corresponds to 300 mW for 5 V supply. 
 
+(isospi_comm_interface)=
 ### IsoSPI Communication Interface
 
 The isoSPI communication interface is implemented using [LTC6820](https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6820.pdf). This IC provides a bi-directional interface between standard SPI signals and differential pulses. The operating conditions are provided in the following table.

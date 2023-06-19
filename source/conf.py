@@ -39,8 +39,11 @@ extensions = [
 
 myst_enable_extensions = [
     'dollarmath',
-    'amsmath'
+    'amsmath',
 ]
+
+# https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#auto-generated-header-anchors
+myst_heading_anchors = 3
 
 git_last_updated_timezone = 'US/Central'
 
@@ -64,6 +67,9 @@ html_show_sphinx = True
 
 html_theme_options = {
     'navigation_with_keys': True,
+    "source_repository": "https://github.com/Severson-Group/docs.amdc.dev/",
+    "source_branch": "main",
+    "source_directory": "source/",    
 }
 
 html_baseurl = 'https://docs.amdc.dev/'

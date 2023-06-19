@@ -195,7 +195,7 @@ Notice that each IP core has three common inputs:
 
 ### AXI Interconnect
 
-The [AXI interconnect](https://www.xilinx.com/support/documentation/ip_documentation/ug761_axi_reference_guide.pdf) is the bus that connects the DSP (processor) and the IP cores in the FPGA (the programmable logic).
+The [AXI interconnect](https://docs.xilinx.com/v/u/en-US/ug761_axi_reference_guide) is the bus that connects the DSP (processor) and the IP cores in the FPGA (the programmable logic).
 AXI is part of [ARM AMBA](https://en.wikipedia.org/wiki/Advanced_Microcontroller_Bus_Architecture), a family of microcontroller buses first introduced in 1996.
 AMBA 4.0, released in 2010, includes the second version of AXI, AXI4.
 Xilinx has adopted the Advanced eXtensible Interface (AXI) protocol for Intellectual Property (IP) cores.
@@ -374,6 +374,7 @@ The IP core has no custom functionality since it is only composed of the templat
 
 Think of the blank IP core as exposing 4 additional read/write (R/W) variables to the C code that are not standard RAM---these new "variables" are actually 32-bit wide registers in the FPGA. We will unpack what this means in the remainder of the tutorial.
 
+(editing-ip-cores)=
 ### 5. Editing IP Cores
 
 The "empty" IP core which comes from the IP wizard is not very useful.
