@@ -1008,8 +1008,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.4584712"
-     inkscape:cx="300.81683"
-     inkscape:cy="160.6677"
+     inkscape:cx="301.00003"
+     inkscape:cy="146.01158"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1303,7 +1303,7 @@
          sodipodi:role="line"
          id="tspan4044"
          x="86.002785"
-         y="289.88293">I controller</tspan><tspan
+         y="289.88293">Integrator</tspan><tspan
          sodipodi:role="line"
          id="tspan4046"
          x="86.002785"
