@@ -15,7 +15,7 @@ The AMDC PCB is a carrier board for the [PicoZed System-on-Module](/hardware/sub
 
 ## Hardware Parameters
 
-These are for the latest hardware revision: `REV20210325E`.
+These are for the latest hardware revision: `REV20231005F`.
 
 | Parameter | Value | Note |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ There are several revisions of the flagship AMDC PCB design which are compatible
 The hardware revisions are denoted by single letters: ``A`` is the first revision, ``B`` is the second, etc.
 Each AMDC hardware revision improves and changes the design, striving towards a more robust hardware platform.
 
-The latest revision is the ``REV E`` PCB design.
-This is the 5th revision and is considered stable.
-Note that the AMDC firmware supports both ``REV D`` and ``REV E`` hardware.
+The latest revision is the ``REV F`` PCB design.
+This is the 6th revision and is considered stable.
+Note that the AMDC firmware supports ``REV D``, ``REV E``, and ``REV F`` hardware.
 Previous hardware revisions (i.e. ``REV A``, ``REV B``, and ``REV C``) are no longer supported.

@@ -32,7 +32,7 @@ However, it is easy to set up and use.
 The only required set-up is the drivers for converting the USB device into a serial port:
 
 - On `REV D` hardware, follow the instructions outlined near the end of [this document](/firmware/xilinx-tools/building-and-running-firmware.md).
-- On `REV E` hardware, the host should already have the drivers installed.
+- On `REV E` and beyond, the host should already have the drivers installed.
 
 ### Ethernet
 

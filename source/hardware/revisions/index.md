@@ -19,9 +19,9 @@ These directories contain the *Gerber*, *Drill (Excellon format)*, *Bill of Mate
 ## GitHub Issues and Milestones
 
 The AMDC hardware development is done using GitHub Issues and GitHub Milestones.
-Each hardware revision (e.g., `REV E`) has an associated milestone.
+Each hardware revision (e.g., `REV F`) has an associated milestone.
 Explore the milestones and the related issues in the [GitHub repo](https://github.com/Severson-Group/AMDC-Hardware/milestones?state=open).
-For example, check out the issues resolved for the `REV E` hardware design [via the milestone](https://github.com/Severson-Group/AMDC-Hardware/milestone/5?closed=1).
+For example, check out the issues resolved for the `REV F` hardware design [via the milestone](https://github.com/Severson-Group/AMDC-Hardware/milestone/8?closed=1).
 
 ## Change Log
 
@@ -34,4 +34,5 @@ Browse the [full change log here](https://github.com/Severson-Group/AMDC-Hardwar
 firmware-upgrades-per-hardware-target
 rev-d/index
 rev-e/index
+rev-f/index
 ```

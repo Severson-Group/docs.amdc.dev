@@ -30,14 +30,14 @@ To enable, update the `usr/user_config.h` file and set the following define to `
 
 Once the above #define is declared, the hardware will enable an AMDS interface app, this will show up as a set of `mb` commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
 
-#### AMDC REV D Hardware
+#### AMDC REV D
 
 - `<port>` is `1-2` -- for REV D hardware utilizing this command interface, the AMDS should be connected to the top #1 port.
 - `<device>` should be set to `2` for the AMDS connection
 
 Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `mb <idx> XXXX` command structure described in the `help` interface. Note that `<idx>` should be set to `0`.
 
-#### AMDC REV E Hardware
+#### AMDC REV E and beyond
 
 - `<port>` is `1-4` 
 - `<device>` should be set to `1` for the AMDS connection
@@ -48,7 +48,7 @@ Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. T
 
 Since the AMDS can be plugged into any of the GPIO ports, the AMDC needs to be configured for the appropriate GPIO port.
 
-#### AMDC REV D Hardware
+#### AMDC REV D
 
 Use the `gpio_mux` FPGA IP block to configure the routing path. 
 
@@ -69,7 +69,7 @@ Place the code below into your custom user app init function. Modify the the fir
 gpio_mux_set_device(0, GPIO_MUX_DEVICE2);
 ```
 
-#### AMDC REV E Hardware
+#### AMDC REV E and beyond
 
 Similar process as above, except the file and function call are now `gp3io`, and the `_DEVICE#` has swapped.
 
