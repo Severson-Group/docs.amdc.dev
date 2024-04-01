@@ -20,8 +20,8 @@ The method described below assumes that the user is in the process of commisioni
 1. Note down the sensor reading as well as the true current flowing through phase U cable using the current clamp.
 1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U cable
 1. Tabulate the measurements as shown in table below.
-1. Fit a linear expression of the form $ \text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]} $ to the obtained measurements
-1. For the data presented, the fitted equation is $ \text{Reading [V]} = 0.6228 \times \text{Current [A]} + 4.7303 $.
+1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements
+1. For the data presented, the fitted equation is $\text{Reading [V]} = 0.6228 \times \text{Current [A]} + 4.7303$.
 1. Now the obtained gain and offset can be used in the control code to convert the sensor reading into the actual current measurement.
 1. Repeat the exercise for phases U and V of the system
 
