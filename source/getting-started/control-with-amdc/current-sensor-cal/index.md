@@ -6,39 +6,45 @@ Current sensors provide the necessary current measurement feedback to the contro
 
 ## Current Measurement System
 
-Current sensor is a transducer which produces a voltage signal proportional to the current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as a shunt and hall-effect type current sensors. For the purpose of this document no assumption is made on the type of sensor system used. However, it is worth noting that the AMDS accessory board along with the current sensor card makes for a ready sensing solution to be paired with the AMDC.
+Current sensor is a transducer which produces a voltage signal proportional to the current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as a shunt resistor and hall-effect type current sensors. For the purpose of this document no assumption is made on the type of sensor system used. However, it is worth noting that the [AMDS](https://docs.amdc.dev/accessories/amds/index.html) accessory board along with the current sensor card makes for a ready sensing solution to be paired with the AMDC.
 
 ## Method
 
-The method described below assumes that the user is in the process of commisioninig a three phase motor drive and is hence wanting to calibrate the current sensors. Typically, each phase is 3 phase motor will have a current sensor associated with it. Hence each of the current sensor needs to be calibrated. The same method maybe extended to any multi-phase machines.
+The method described below assumes that the user is in the process of commisioninig a three phase motor drive and hence wants to calibrate the current sensors. Typically, each phase in a 3 phase motor will have a current sensor associated with it. Hence each of the three current sensors need to be calibrated. The same method maybe extended to any multi-phase machines. The method is described below
 
-1. Connect a current clamp to the phase U of the motor.
-1. Hook up the current clamp to an oscilloscope so that the reading of the current clamp maybe monitored in real-time.
-1. Log the raw reading of the current sensor. Incase of using AMDS, the AMDS driver functions can be used to get the sensor reading.
-1. First, note the sensor reading when no current is flowing through phase A.
-1. Next, apply a differential open loop voltage on phase A to result in some current flowing through phase A. The value of voltage is left to the discretion of the user based on the system they are using.
-1. Note down the sensor reading as well as the true current flowing through the cable using the current clamp
-1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of current is flowing through phase cable
-1. Tabulate the measurements as shown in table.
-1. Fit a linear expression of the form $ \text{Reading [V]} = \text{Gain} \times \text{Current [A]} + \text{Offset [V]}$
-1. For the data presented
+1. Connect a current clamp to the phase U cable of the motor. A typical current clamp which can be used for this experiment is pictured below.
+1. Hook up the current clamp to an oscilloscope so that the reading of the current clamp can be monitored in real-time.
+1. Log the raw reading of the current sensor using the logging functionality in the AMDS. Incase the user is using AMDS, the AMDS driver functions can be used to get the sensor reading.
+1. First, note the sensor reading when no current is flowing through phase U.
+1. Next, apply a differential open loop voltage on phase A to cause some some current to flow through phase U cable. The value of voltage is left to the discretion of the user based on the system nominal ratings.
+1. Note down the sensor reading as well as the true current flowing through phase U cable using the current clamp.
+1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U cable
+1. Tabulate the measurements as shown in table below.
+1. Fit a linear expression of the form $ \text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]} $ to the obtained measurements
+1. For the data presented, the fitted equation is $ \text{Reading [V]} = 0.6228 \times \text{Current [A]} + 4.7303 $.
+1. Now the obtained gain and offset can be used in the control code to convert the sensor reading into the actual current measurement.
+1. Repeat the exercise for phases U and V of the system
+
+<img src="./images/MFG_CP030.jpg" width="40%" align="right"/>
 
 
 | Actual Current [A]|Sensor Reading [V]|
 | --- | --- |
  | 0 |4.703 |
- | 2.952 |6.602|
+ | 2.95 |6.60|
 | 6.06 |8.53 |
-| 9.44 |10.584|
-| 16.68 |15.1 |
-| 24.5 |20 |
+| 9.44 |10.58|
+| 16.68 |15.10 |
+| 24.5 |20.00 |
 
 ```{tip}
-It is a good idea to have negative currents in the data points as well.
+It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor due to directionality of current.
 ```
+
+```{tip}
+For the current cards which are used with the AMDS system, it is recommended to calibrate the offset everytime at the start of an experiment. The gain however, is found to be stable over time.
+```
+
 ## Conclusion
 
-
-
-
-
+A method to calibrate the current sensors has been presented. The user is also given hints on how the output of the calibration process maybe used in the control code.
