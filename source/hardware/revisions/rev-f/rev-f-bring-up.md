@@ -1,21 +1,20 @@
-# REV D Bring-Up
+# REV F Bring-Up
 
-New hardware bring-up is a critical step in the development process. A systematic method must be followed to ensure the PCB functions as expected. This document describes these steps and should be followed when bringing up a new REV D AMDC board.
+New hardware bring-up is a critical step in the development process. A systematic method must be followed to ensure the PCB functions as expected. This document describes these steps and should be followed when bringing up a new REV F AMDC board.
 
-For reference, the AMDC REV D schematics are available [here](https://github.com/Severson-Group/AMDC-Hardware/raw/develop/REV20200129D/AMDC_v4_sch.pdf).
+For reference, the AMDC REV F schematics are available [here](https://github.com/Severson-Group/AMDC-Hardware/raw/develop/REV20231005F/Schematics_RevF.pdf).
 
 ## Read background information
 
 1. Read all subsystem documentation so you understand the different parts of hardware design / implementation. Pay special attention to the power distribution document as we will be referencing it later.
     1. [Analog](/hardware/subsystems/analog.md)
     2. [Encoder](/hardware/subsystems/encoder.md)
+    2. [PicoZed](/hardware/subsystems/picozed.md)
     3. [Power Distribution](/hardware/subsystems/power-distribution.md)
     4. [Power Stack](/hardware/subsystems/power-stack.md)
-    5. [isoSPI](/hardware/subsystems/expansion-port.md)
+    5. [Expansion Port](/hardware/subsystems/expansion-port.md)
 
 ## Rework hardware
-
-2. Read about design errata and ensure the required rework has been completed on the PCB (see [this document](rev-d-errata.md)).
 
 3. Inspect board for obvious issues and resolve them:
     1. Unwanted solder bridges between pads / pins
@@ -28,36 +27,38 @@ For reference, the AMDC REV D schematics are available [here](https://github.com
 
 5. Print serial number label for both the AMDC PCB and PicoZed and update board log.
 
-```{image} images/bring-up/amdc-rev-d-label-sn.jpg
+```{image} images/bring-up/amdc-rev-f-label-sn.jpg
 :height: 15em
 ```
 
 6. Install miscellaneous hardware parts:
     1. PicoZed heatsink (e.g. [P/N on Digi-Key](https://www.digikey.com/products/en?keywords=1528-1697-ND))
 
-    ```{image} images/bring-up/amdc-rev-d-heatsink2.jpg
+    ```{image} ../rev-d/images/bring-up/amdc-rev-d-heatsink2.jpg
     :height: 15em
     ```
     
     2. All jumpers
 
-    ```{image} images/bring-up/amdc-rev-d-jumpers1.jpg
+    ```{image} ../rev-e/images/bring-up/amdc-rev-e-jumpers1.jpg
     :height: 15em
     ```
 
-    ```{image} images/bring-up/amdc-rev-d-jumpers2.jpg
+    ```{image} ../rev-e/images/bring-up/amdc-rev-e-jumpers2.jpg
     :height: 15em
     ```
 
-    ```{image} images/bring-up/amdc-rev-d-jumpers3.jpg
+    ```{image} ../rev-e/images/bring-up/amdc-rev-e-jumpers3.jpg
     :height: 15em
     ```
+
     
     3. All stand-offs (do not leave any off since board flexes when PicoZed is installed)
 
-    ```{image} images/bring-up/amdc-rev-d-standoffs.jpg
+    ```{image} ../rev-d/images/bring-up/amdc-rev-d-standoffs.jpg
     :height: 15em
     ```
+
 
 7. Set jumpers for bring-up: when you first apply power to a board, you should isolate each power supply (if possible) and ensure they function as expected. See the [Power Distribution document](/hardware/subsystems/power-distribution.md) for a diagram of the jumper locations in the power flow path. Remove the jumpers after the DC/DC converters, before the LDOs (i.e. remove JP8, JP9, JP10).
 
@@ -77,15 +78,13 @@ The output of LDO `U16` should be 0V since the PicoZed is not installed. This is
 
 12. Once you have validated all LDO voltage rails, put on all jumpers and make note of the power draw. It should be around 5W.
 
-## Validate USB interfaces (JTAG and UART)
+## Validate USB interface (JTAG and UART)
 
-13. With AMDC powered on, plug in JTAG USB cable to PC. You should hear a ding from your PC indicating it recognized the JTAG interface. If an error appears on your PC for the JTAG USB device (i.e. failed USB enumeration), you did not successfully swap the JTAG USB data lines. Rework and try again.
-
-14. With AMDC powered on, plug in the USB UART cable to your PC. It should successfully enumerate and appear as the Silicon Labs CP210x interface bridge. If not, make sure you have the [correct drivers](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) installed.
+13. With AMDC powered on, plug in the USB cable to your PC. You should hear a ding from your PC indicating it recognized the interface. If an error appears on your PC for the USB device (i.e. failed USB enumeration), something is wrong. Debug and try again.
 
 ## Validate PicoZed power draw
 
-15. Turn board back off and carefully plug in the PicoZed.
+15. Turn the board back off and carefully plug in the PicoZed.
 
 16. Power on AMDC. Make sure power draw is still reasonable (~5W).
 
@@ -95,6 +94,6 @@ The output of LDO `U16` should be 0V since the PicoZed is not installed. This is
 
 ## Bring-up complete
 
-*Congratulations!* If you made it this far, you have successfully brought up a new REV D AMDC! At this point, you are ready to compile the firmware required by the Xilinx Zynq-7000 SoC on the PicoZed and program the AMDC.
+*Congratulations!* If you made it this far, you have successfully brought up a new REV F AMDC! At this point, you are ready to compile the firmware required by the Xilinx Zynq-7000 SoC on the PicoZed and program the AMDC.
 
 For comprehensive instructions, see the [Building and Running Firmware](/firmware/xilinx-tools/building-and-running-firmware.md) document.

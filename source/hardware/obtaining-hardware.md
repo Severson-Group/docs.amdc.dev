@@ -26,7 +26,7 @@ These steps outline how to find the compiled design files from the git repo, ord
 
 Each version of the AMDC hardware is released as a revision labeled with the snapshot date and a sequential letter.
 The format is: `REVyyyymmdd*` where `yyyymmdd` is the date and `*` is the sequential letter.
-For example, the 5th revision is called `REV20210325E`.
+For example, the 6th revision is called `REV20231005F`.
 
 Each revision of the AMDC hardware has its own `REVxxxx` folder in the git repo.
 Within the folder is the compiled design files:
@@ -40,7 +40,7 @@ Within the folder is the compiled design files:
 
 These files are all that is required to order and build a complete AMDC.
 
-For example, the `REVxxxx` folder for the 5th revision, `REV E`, is located on GitHub [at this link](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/REV20210325E).
+For example, the `REVxxxx` folder for the 6th revision, `REV F`, is located on GitHub [at this link](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/REV20231005F).
 
 ### 2. Ordering blank PCBs
 

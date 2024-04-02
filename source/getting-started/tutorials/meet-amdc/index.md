@@ -17,7 +17,10 @@ This is the first tutorial, so the only requirements are:
 
 ## Step 0: Check hardware revision
 
-Currently, two hardware revisions are supported: [REV D](/hardware/revisions/rev-d/index.md) and [REV E](/hardware/revisions/rev-e/index.md).
+Currently, three hardware revisions are supported: 
+- [Hardware REV D](/hardware/revisions/rev-d/index.md)
+- [Hardware REV E](/hardware/revisions/rev-e/index.md)
+- [Hardware REV F](/hardware/revisions/rev-f/index.md)
 
 Figure out which one you have by looking at your PCB:
 
@@ -72,9 +75,9 @@ The E-STOP input is used to enable/disable PWM output.
 
 An *open circuit* between the two E-STOP terminals *disables* the PWM outputs.
 
-- **REV D Hardware:** the PWM outputs are disabled and will remain `LOW` unless the two terminals of the E-STOP input are shorted together.
+- **Hardware REV D:** the PWM outputs are disabled and will remain `LOW` unless the two terminals of the E-STOP input are shorted together.
 
-- **REV E Hardware:** same as REV D, except the external E-STOP input can be bypassed and the PWM enabled via jumper `JP11`. Note that `JP11` is required to select between external or bypassed E-STOP input--no jumper means no PWM output.
+- **Hardware REV E & REV F:** same as REV D, except the external E-STOP input can be bypassed and the PWM enabled via jumper `JP11`. Note that `JP11` is required to select between external or bypassed E-STOP input--no jumper means no PWM output.
 
 ### `VDRIVE` terminals
 
@@ -83,8 +86,8 @@ In other words, when PWM is active, the physical voltage signal level will switc
 
 The valid input range for `VDRIVE` is 5V to 18V.
 
-- **REV D Hardware:** this input is required for PWM output to function.
-- **REV E Hardware:** Jumper `JP12` is used to select `VDRIVE` source: external (`EXT`) input or internal 5V.
+- **Hardware REV D:** this input is required for PWM output to function.
+- **Hardware REV E & REV F:** Jumper `JP12` is used to select `VDRIVE` source: external (`EXT`) input or internal 5V.
 
 ### `VINPS` terminals
 
@@ -104,8 +107,8 @@ These connectors are located on the rear of the AMDC board:
 :height: 15em
 ```
 
-- **REV D Hardware:** Two micro-USB connectors are used, one for JTAG, one for serial UART
-- **REV E Hardware:** One USB-B connector is used for both JTAG and serial UART
+- **Hardware REV D:** Two micro-USB connectors are used, one for JTAG, one for serial UART
+- **Hardware REV E and beyond:** One USB-B connector is used for both JTAG and serial UART
 
 [Read more about the host interface](/getting-started/user-guide/host-interface/index).
 
@@ -118,8 +121,8 @@ These connectors are located on the rear of the AMDC board:
 The AMDC is designed to implement the core functionality needed for a motor drive.
 To augment the available features, *expansion ports* are included (sometimes called GPIO ports).
 
-- **REV D Hardware:** two total GPIO ports: one stacked set of two expansion ports
-- **REV E Hardware:** four total GPIO ports: two stacked sets of two expansion ports
+- **Hardware REV D:** two total GPIO ports: one stacked set of two expansion ports
+- **Hardware REV E & REV F:** four total GPIO ports: two stacked sets of two expansion ports
 
 [Read more about the expansion ports in the hardware documentation](/hardware/subsystems/expansion-port).
 
