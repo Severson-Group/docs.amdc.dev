@@ -6,33 +6,23 @@ Current sensors provide the necessary current measurement feedback to the contro
 
 ## Method
 
-<img src="./resources/current_sesnor_drawing.svg" width="100%" align="center"/>
+<img src="./resources/current_sesnor_drawing.svg" width="50%" align="center"/>
 
-The method described below assumes that the user is in the process of commisioninig a three phase motor drive and hence wants to calibrate the current sensors. Typically, each phase in a 3 phase motor will have a current sensor associated with it. Hence each of the three current sensors need to be calibrated. The same method maybe extended to any multi-phase machines. The method is described below
+A method is provided to calibrate the current sesnsors connected to a three phase motor drive as shown in the figure. Typically, each phase in a 3 phase motor will have a current sensor associated with it. Hence each of the three current sensors need to be calibrated. The same method maybe extended to any multi-phase machines. The method is described below
 
-1. Connect a current clamp to the phase U cable of the motor. A typical current clamp which can be used for this experiment is pictured below.
+1. Connect a current clamp to the phase U cable of the motor. The measurement provided by the current clamp can be considered a reference current measurement.
 1. Hook up the current clamp to an oscilloscope so that the reading of the current clamp can be monitored in real-time.
-1. Log the raw reading of the current sensor using the logging functionality in the AMDS. Incase the user is using AMDS, the AMDS driver functions can be used to get the sensor reading.
-1. First, note the sensor reading when no current is flowing through phase U.
-1. Next, apply a differential open loop voltage on phase U to cause some some current to flow through phase U cable. The value of voltage is left to the discretion of the user based on the system nominal ratings.
-1. Note down the sensor reading as well as the true current flowing through phase U cable using the current clamp.
-1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U cable
-1. Tabulate the measurements as shown in table below.
-1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements
+1. Log the raw reading of the current sensor using the logging functionality in the AMDC. 
+1. First, note the sensor reading when thre is no current is flowing through phase U.
+1. Next, apply a differential open loop voltage on phase U to cause some some current to flow through phase U. The value of voltage is left to the discretion of the user based on the system nominal ratings.
+1. Note down the sensor reading as well as the reference current flowing through phase U cable.
+1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U.
+1. Tabulate the measurements as shown in `exp_data.csv` file [here](./resources/exp_data.csv).
+1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements.
 1. For the data presented, the fitted equation is $\text{Reading [V]} = 0.6228 \times \text{Current [A]} + 4.7303$.
 1. Now the obtained gain and offset can be used in the control code to convert the sensor reading into the actual current measurement.
 1. Repeat the exercise for phases U and V of the system
 
-
-
-| Actual Current [A]|Sensor Reading [V]|
-| --- | --- |
- | 0 |4.703 |
- | 2.95 |6.60|
-| 6.06 |8.53 |
-| 9.44 |10.58|
-| 16.68 |15.10 |
-| 24.5 |20.00 |
 
 ```{tip}
 It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor due to directionality of current.
