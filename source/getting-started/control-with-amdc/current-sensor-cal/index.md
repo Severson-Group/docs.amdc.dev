@@ -2,7 +2,8 @@
 
 ## Background
 
-Current sensors provide the necessary current measurement feedback to the control system in a motor drive. This document describes a method to calibrate the current sensors during commissioning of the motor drive, and arrive at the calibration parameters, gain and offset .Current sensor is a transducer which produces a voltage signal proportional to the current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as a shunt resistor and hall-effect type current sensors. For the purpose of this document no assumption is made on the type of sensor system used. The current sensor needs to be calibrated against an appropriate reference before they can be used in the control system. While the manufacturer datasheet maybe relied up on to get nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
+Current sensors provide the necessary current measurement feedback to the control system in a motor drive. This document describes a method to calibrate the current sensors during commissioning of the motor drive, and arrive at the calibration parameters, gain and offset.
+Current sensor is a transducer which produces a voltage signal proportional to the current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as a shunt resistor and hall-effect type current sensors. For the purpose of this document no assumption is made on the type of sensor system used. The current sensor needs to be calibrated against an appropriate reference before they can be used in the control system. While the manufacturer datasheet maybe relied up on to get nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
 
 ## Method
 
