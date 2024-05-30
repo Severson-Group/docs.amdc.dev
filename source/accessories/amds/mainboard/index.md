@@ -4,7 +4,7 @@ This document describes the design consideration, implementation details, and bo
 
 ## Relevant Hardware Versions
 
-REVD
+AMDS REV D
 
 ## Application / Purpose
 
@@ -31,29 +31,31 @@ The daughter cards can be connected in daisy chain pair configuration (D) or sin
 
 ## External Connections
 
-There are two interfacing DB-15 connectors on the measurement board. The first connector is used for interfacing with the external controller via isoSPI and differential IO communication. The second connector is intended as an expansion port connection, which is connected to the GPIO port of the MCU.
+There are two interfacing DB-15 connectors on the measurement board. The first connector is used for interfacing with the controller (the AMDC driver) via differential I/O. The second connector is intended to connect to an external expansion for the AMDS, and is connected back to the GPIO port of the MCU on the AMDS mainboard.
 
-### DB15 Connector 1: IsoSPI and Differential IO 
+### DB15 Connector 1: AMDC Link (connects to a GPIO port on the AMDC) 
 
 | Pin number | Signal name | Voltage level | Protocol |
 |------------|--------|--------|--------|
 | 1 | 5V_IN | 5V | - |
-| 2 | D2_I_P | 5V | Differential IO |
-| 3 | D2_I_N | 5V | Differential IO |
-| 4 | D3_I_P | 5V | Differential IO |
-| 5 | D3_I_N | 5V | Differential IO |
+| 2 | DATA0_P | 5V | Differential IO |
+| 3 | DATA0_N | 5V | Differential IO |
+| 4 | DATA1_P | 5V | Differential IO |
+| 5 | DATA1_N | 5V | Differential IO |
 | 6 | NC | - | - |
-| 7 | isoSPI2_P | 5V | IsoSPI |
-| 8 | isoSPI2_N | 5V | IsoSPI |
-| 9 | isoSPI3_P | 5V | IsoSPI |
+| 7  | isoSPI2_P | 5V | IsoSPI |
+| 8  | isoSPI2_N | 5V | IsoSPI |
+| 9  | isoSPI3_P | 5V | IsoSPI |
 | 10 | isoSPI3_N | 5V | IsoSPI |
 | 11 | GND | - | - |
-| 12 | D2_O_P | 5V | Differential IO |
-| 13 | D2_O_N | 5V | Differential IO |
-| 14 | D3_O_P | 5V | Differential IO |
-| 15 | D3_O_N | 5V | Differential IO |
+| 12 | SYNC_ADC_P | 5V | Differential IO |
+| 13 | SYNC_ADC_N | 5V | Differential IO |
+| 14 | SYNC_TX_P  | 5V | Differential IO |
+| 15 | SYNC_TX_N  | 5V | Differential IO |
 
-### DB15 Connector 2: GPIO
+> **NOTE:** The IsoSPI interface on pins 7-10 is a legacy interface used when connecting an AMDS to a REV D AMDC. Newer AMDC hardware revisions use the differential I/O pins for signals between the AMDC and AMDS. Additionally, since the release of AMDC Firmware v1.3, the `SYNC_TX` connection on the AMDS no longer serves any purpose. However, the connection trace remains on the AMDS.
+
+### DB15 Connector 2: AMDS GPIO Link
 
 | Pin number | Signal name | Voltage level |
 |------------|--------|--------|
@@ -96,7 +98,6 @@ The MCU transmits sensor data via USART communication. These USART signals are c
 
 The maximum supply current consumed by the IC including to drive currents for differential lines is 60 mA, which corresponds to 300 mW for 5 V supply. 
 
-(isospi_comm_interface)=
 ### IsoSPI Communication Interface
 
 The isoSPI communication interface is implemented using [LTC6820](https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6820.pdf). This IC provides a bi-directional interface between standard SPI signals and differential pulses. The operating conditions are provided in the following table.
@@ -120,7 +121,7 @@ The maximum supply current consumed by the IC including to drive currents for di
 
 A transformer is required for implementing isoSPI. This will provide an isolation barrier to the differential SPI signals. This is implemented by adding pulse transformer HX1188NLT, which has 1:1 turns ratio. More information on the pulse transformer is found in the [datasheet](https://media.digikey.com/pdf/Data%20Sheets/Pulse%20PDFs/10_100BASE-T%20Single%20Port%20SMD%20Magnetics_Rev2008.pdf).
 
-## Daugter Card Interface
+## Daughter Card Interface
 
 In order to design a daugter card, the interface information provided in this section will be useful. Each daughter card slot has two headers, where the daughter card can be plugged in. See the following figure.
 

@@ -26,7 +26,7 @@ The `SYNC_ADC` signal is used to trigger ADC sampling, which is followed by data
 
 After all sensorcards have been sampled, the AMDS streams all sampled data back to the master (see below for data format).
 
-#### TX Signals: `DATA0` and `DATA0`
+#### TX Signals: `DATA0` and `DATA1`
 
 The two TX signals are controlled by the AMDS and go to the master. These are only used to send ADC sample data to the master. As soon as all ADCs are sampled, the AMDS starts sending the latest data to the master using the two TX wires. Two lanes are used so that the data can be transmitted at twice the speed, thus reducing latency.
 
@@ -106,4 +106,4 @@ The AMDS firmware works, albeit with limitations as described above. Some ideas 
 
 3. There is no robust CRC error detection on the data transmission from the AMDS to the master device, although the UART parity is used. Future improvements could add a footer CRC to ensure the received message at the master is valid. Error correction codes could also be used to further increase the communication robustness in high EMI environments (e.g. SECDED). There is no free lunch: all of these methods would increase the data transmission latency from the AMDS.
 
-4. There is no need to transmit the data from all eight sensor cards if they are not all populated. Theorhetically, a user could run the AMDS interface MUCH faster with fewer sensor cards installed, if changes are made such that only real data acquired from a populated sensor card are transmitted back to the master.
+4. There is no need to transmit the data from all eight sensor cards if they are not all populated. Theorhetically, a user could run the AMDS interface MUCH faster with fewer sensor cards installed, if changes are made such that only real data acquired from populated sensor cards are transmitted back to the master.
