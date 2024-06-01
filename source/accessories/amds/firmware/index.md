@@ -68,22 +68,25 @@ _NOTE: there is no full CRC included in the transmission. The simple protocol re
 
 After start-up, the AMDS firmware is completely interrupt driven. This means that all processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
 
-The typical flow is as follows:
-
-- The master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. Therefore, the ADCs on the sensor cards have been read and the latest data is stored in the AMDS memory.
-- Once all the latest data is stored in memory, the AMDS sends the data back to the master. Once the data is sent, the AMDS waits for the next `SYNC_ADC` interrupt.
+In the typical flow, the master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. The ADCs on the sensor cards start their conversions and store the latest data in the AMDS memory. Once this is complete, the AMDS sends the data back to the master. Then the AMDS will wait for the next `SYNC_ADC` interrupt.
 
 ### Performance Limitations
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
 
-The maximum ADC sampling rate is limited to about 280kHz, or about 3.6usec. The latency for data transmission back to the master over the `DATAx` signals is about 6usec total. When factoring in additional delay between the trigger, as well as delay between sampling and transmission, the total time to sample and transmit data is just under 12usec.
+The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1usec. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 4usec. The latency for data transmission back to the master over the `DATAx` signals is about 6usec. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 11usec.
 
-This means that each edge of `SYNC_ADC` can occur every 12usec, for a total period of 24usec, or a frequency of 41666 kHz. This means that the AMDS cannot "keep up with" a PWM switching frequency of 100 kHz. 
+This can be seen in the timing block diagram and scope capture below.
+
+```{image} images/sampling_timing.svg
+:width: 75%
+```
+
+```{image} images/scope_single.jpg
+:width: 75%
+```
 
 Note that the AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
-
- This means that all eight sensor cards can be read at more than 100kHz. Practically, the bandwidth of transmitting data is not the issue since control typically only runs at 10-20kHz. However, the 6usec latency is important. This means that, for 10kHz control (i.e. Ts = 100usec), at least 6% of the control period is taken by simply transmitting data back to the master. This does not include the delay in sampling from the ADC devices, which is about 1.3usec. Therefore, a conservative estimate of the latency from the AMDS is the 12usec mentioned above.
 
 #### Performance Specifications
 
@@ -106,4 +109,4 @@ The AMDS firmware works, albeit with limitations as described above. Some ideas 
 
 3. There is no robust CRC error detection on the data transmission from the AMDS to the master device, although the UART parity is used. Future improvements could add a footer CRC to ensure the received message at the master is valid. Error correction codes could also be used to further increase the communication robustness in high EMI environments (e.g. SECDED). There is no free lunch: all of these methods would increase the data transmission latency from the AMDS.
 
-4. There is no need to transmit the data from all eight sensor cards if they are not all populated. Theorhetically, a user could run the AMDS interface MUCH faster with fewer sensor cards installed, if changes are made such that only real data acquired from populated sensor cards are transmitted back to the master.
+4. There is no need to transmit the data from all eight sensor cards if they are not all populated. Theoretically, a user could run the AMDS interface MUCH faster with fewer sensor cards installed, if changes are made such that only real data acquired from populated sensor cards are transmitted back to the master.
