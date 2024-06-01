@@ -98,6 +98,7 @@ The MCU transmits sensor data via USART communication. These USART signals are c
 
 The maximum supply current consumed by the IC including to drive currents for differential lines is 60 mA, which corresponds to 300 mW for 5 V supply. 
 
+(isospi_comm_interface)=
 ### IsoSPI Communication Interface
 
 The isoSPI communication interface is implemented using [LTC6820](https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6820.pdf). This IC provides a bi-directional interface between standard SPI signals and differential pulses. The operating conditions are provided in the following table.
