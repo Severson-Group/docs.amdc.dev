@@ -1,6 +1,6 @@
 # High Voltage
 
-This document describes the design consideration and implementation details for the high voltage card, which serves as a daughter card for the AMDS mainboard.
+This document describes the design consideration and implementation details for the high voltage card, a sensor card for the AMDS mainboard.
 A block diagram is presented and each component is discussed in detail. Specifications of each component are provided based on the datasheet.
 
 ## Relevant Hardware Versions
