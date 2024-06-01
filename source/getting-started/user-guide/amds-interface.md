@@ -35,7 +35,7 @@ Once the above #define is declared, the hardware will enable an AMDS interface a
 - `<port>` is `1-2` -- for REV D hardware utilizing this command interface, the AMDS should be connected to the top #1 port.
 - `<device>` should be set to `2` for the AMDS connection
 
-Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `amds <port> XXXX` command structure described in the `help` interface. Note that `<port>` should be set to `0`.
+Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `amds <port> XXXX` command structure described in the `help` interface. Note that `<port>` should be set to `1` for the top #1 port.
 
 #### AMDC REV E and beyond
 
@@ -58,7 +58,7 @@ Place the header file in the custom user app .c file
 #include "drv/gpio_mux.h"
 ```
 
-Place the code below into your custom user app init function. Modify the the first variable in the function call to match the physical port connection joining the AMDC with the AMDS.  Note this is zero-indexed and the GPIO port per the silk screen is one-indexed.
+Place the code below into your custom user app init function. Modify the first variable in the function call to match the physical port connection joining the AMDC with the AMDS.  Note this is zero-indexed and the GPIO port per the silk screen is one-indexed.
 
 ```C
 // Configure GPIO mux
@@ -91,13 +91,13 @@ gp3io_mux_set_device(GP3IO_MUX_2_BASE_ADDR, GP3IO_MUX_DEVICE1);
 
 ## Requesting and Retrieving Data from the AMDS
 
-Triggering data acquisition on the AMDS is done via the AMDC Timing Manager. After enabling the AMDS (on the correct port) via the Timing Manager, the AMDS will be included when all enabled sensors are triggered by the Timing Manager. Sensors are triggered in sync with the peaks and/or valleys of the PWM carrier. To learn more about how to enable sensors and how to configure triggering, please read the documentation for the [Timing Manager](/firmware/arch/systems.md).
+Triggering data acquisition on the AMDS is done via the AMDC Timing Manager. After enabling the AMDS (on the correct port) via the Timing Manager, the AMDS will be included when all enabled sensors are triggered by the Timing Manager. Sensors are triggered as aligned with the peaks and/or valleys of the PWM carrier, or at a sub-rate of these events. To learn more about how to enable sensors and how to configure triggering, please read the documentation for the [Timing Manager](/firmware/arch/systems.md).
 
-After the AMDS is triggered to begin sampling, each sensor card populated on the AMDS will sample and provide the data the the processor on the mainboard. As soon as the mainboard has collected all the data from the sensor cards, the mainboard will automatically send all the data back to the AMDC, where the data for each sensor card will be made available in the corresponding channel's data register. To learn more about the firmware interface between the AMDC and AMDS please see the [AMDS Firmware documentation](/accessories/amds/firmware/index.md), and the AMDC driver code ([FPGA code](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/ip_repo/amdc_amds_1.0) and [C driver](https://github.com/Severson-Group/AMDC-Firmware/blob/develop/sdk/app_cpu1/common/drv/amds.c)). 
+After the AMDS is triggered to begin sampling, each sensor card populated on the AMDS will sample and provide the data the processor on the mainboard. As soon as the mainboard has collected all the data from the sensor cards, the mainboard will automatically send all the data back to the AMDC, where the data for each sensor card will be made available in the corresponding channel's data register. To learn more about the firmware interface between the AMDC and AMDS please see the [AMDS Firmware documentation](/accessories/amds/firmware/index.md), and the AMDC driver code in the [AMDC-Firmware repository](https://github.com/Severson-Group/AMDC-Firmware). The FPGA code can be found in `ip_repo/amdc_amds_1.0`, and C code can be found in `sdk/app_cpu1/common/drv/amds.c`.
 
 ## Use Sampled Data
 
-After the data has been transmitted back to the AMDC from the AMDC, it can be used by the user application.
+After the data has been transmitted back to the AMDC from the AMDS, it can be used by the user application.
 User code can read the raw 16-bit signed integer value as sampled on the AMDS sensor cards by using the following driver:
 
 ```C
@@ -114,27 +114,76 @@ Therefore, the user should also make use of the `check_data_validity()` function
 uint8_t amds_check_data_validity(uint8_t port)
 ```
 
-For example, in a task callback:
+To check the validity of all eight channels' data, consider using the following code in a task callback:
 
 ```C
 void task_callback(void)
 {
     // ...
 
-    int32_t out;
+    const uint8_t amds_port = 2;
+    int32_t out_ch_1, out_ch_2, out_ch_3, out_ch_4;
+    int32_t out_ch_5, out_ch_6, out_ch_7, out_ch_8;
 
-    // Check validity of latest data for the AMDS plugged into GPIO port 2
-    uint8_t valid = amds_check_data_validity(2);
+    // Check validity of latest data for the AMDS plugged into your GPIO port
+    uint8_t valid = amds_check_data_validity(amds_port);
 
-    if (valid & AMDS_CH_1_VALID_MASK != 0) {
-        // Yay! Channel 1's data is valid
-        // Read in integer value sampled on the AMDS (plugged into GPIO port 2) from channel 1:
-        int err = amds_get_data(2, AMDS_CH_1, &out);
+    if (valid == 0xFF) {
+        // Yay! 0xFF means the bits for all channels are valid!
+        // Read in values sampled on the AMDS (plugged into your GPIO port) from all channels:
+        int err;
+        err = amds_get_data(amds_port, AMDS_CH_1, &out_ch_1);
+        err = amds_get_data(amds_port, AMDS_CH_2, &out_ch_2);
+        err = amds_get_data(amds_port, AMDS_CH_3, &out_ch_3);
+        err = amds_get_data(amds_port, AMDS_CH_4, &out_ch_4);
+        err = amds_get_data(amds_port, AMDS_CH_5, &out_ch_5);
+        err = amds_get_data(amds_port, AMDS_CH_6, &out_ch_6);
+        err = amds_get_data(amds_port, AMDS_CH_7, &out_ch_7);
+        err = amds_get_data(amds_port, AMDS_CH_8, &out_ch_8);
 
-        // Now, "out" contains the sign-extended 16-bit sampled value
+        // Now, "out" variables contain the sign-extended 16-bit
+        // sample value for each channel
     }
     else {
-        // Else, you decide what to do if a given channel did not provide valid data this cycle
+        // Else, you decide what to do if there was invalid data this cycle
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+To check the validity of only certain channels' data, consider the following instead:
+
+```C
+void task_callback(void)
+{
+    // ...
+
+    const uint8_t amds_port = 2;
+
+    int32_t out_ch_1, out_ch_3, out_ch_5, out_ch_6;
+
+    uint8_t my_channels = AMDS_CH_1_VALID_MASK | AMDS_CH_3_VALID_MASK | AMDS_CH_5_VALID_MASK | AMDS_CH_6_VALID_MASK;
+
+    // Check validity of latest data for the AMDS plugged into your GPIO port
+    uint8_t valid = amds_check_data_validity(amds_port);
+
+    if ((valid & my_channels) == my_channels) {
+        // Yay! Valid check matched
+        // Read in values sampled on the AMDS (plugged into your GPIO port) from your channels:
+        int err;
+        err = amds_get_data(amds_port, AMDS_CH_1, &out_ch_1);
+        err = amds_get_data(amds_port, AMDS_CH_3, &out_ch_3);
+        err = amds_get_data(amds_port, AMDS_CH_5, &out_ch_5);
+        err = amds_get_data(amds_port, AMDS_CH_6, &out_ch_6);
+
+        // Now, "out" variables contain the sign-extended 16-bit
+        // sample value for each channel
+    }
+    else {
+        // Else, you decide what to do if there was invalid data this cycle
 
         // ...
     }
