@@ -28,4 +28,5 @@ logging/index
 injection/index
 task-profiling
 amds-interface
+math-operations
 ```
