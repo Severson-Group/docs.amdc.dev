@@ -74,7 +74,7 @@ In the typical flow, the master is operating its PWM output and thus triggering 
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
 
-The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1usec. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 4usec. The latency for data transmission back to the master over the `DATAx` signals is about 6usec. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 11usec.
+The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1 µs. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 4 µs. The latency for data transmission back to the master over the `DATAx` signals is about 6 µs. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 11 µs.
 
 This can be seen in the timing block diagram and scope capture below.
 
@@ -82,11 +82,20 @@ This can be seen in the timing block diagram and scope capture below.
 :width: 75%
 ```
 
+The figure shown above assumes that the Timing Manager has been configured to sample the sensors only at the valley of the PWM triangle carrier, and attempts to sample every period (i.e., the sampling sub-rate ratio is 1). Also, note that in the figure, the AMDS sensor sampling time consumes about 90% of the total time slice---this leaves a very small time for the control code to run and does not represent practical configuration. Typically, the AMDS sampling time should consume much less of the total cycle time.
+
 ```{image} images/scope_single.jpg
 :width: 75%
 ```
 
-Note that the AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
+The channels in the above scope capture show the following signals from top to bottom:
+
+- <span style="color:gold;font-weight:bold">C1</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
+- <span style="color:limegreen;font-weight:bold">C4</span>: The `DOUT` signal on a sensor card, showing the data streaming from the sensor card to the processor on the AMDS mainboard.
+- <span style="color:deeppink;font-weight:bold">C2</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
+- <span style="color:darkturquoise;font-weight:bold">C3</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
+
+**Note**: The AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
 
 #### Performance Specifications
 
@@ -105,7 +114,7 @@ The AMDS firmware works, albeit with limitations as described above. Some ideas 
 
 1. The AMDS cannot be configured from the master. Improvements could use an additional TX/RX pair to enable simple register protocol for config. This could be used to set digital filter bandwidths, turn on/off sensor card slots for faster sampling, etc.
 
-2. The ADC sampling throughput could be improved above 280kHz. Theoretically, the ADC devices support upwards of 1Msps, or 500ksps in two device daisy chain. This would probably require shortening the delay when the ADC is doing the sampling. The latest AMDS mainboard provides `BUSY` signals for each ADC which can be used for ISRs to end the ADC sampling window. These are not used in the current firmware. Instead, the simpler approach of busy waiting until the max timeout occurs is used (i.e. wait for 1300ns). However, the nominal wait time is only about 50% of this.
+2. The total sampling and data transmission latency as seen by the master (AMDC) could be improved. In the current firmware, the time from when the `SYNC_ADC` line is toggled to when the newly sampled data has fully been received by the master is about 11 µs. This places limitations on the control rate of the master (AMDC). The improvements can come in several parts: 1) the actual ADC sampling time can be shorten by using the `BUSY` signal from each ADC in an ISR to end the ADC sampling window. These are not used in the current firmware. Instead, the simpler approach of busy waiting until the max timeout occurs is used (i.e. wait for 1300 ns). However, the nominal wait time is only about 50% of this. 2) The data transmission time could be shorten by removing/reducing the overhead in the packet format, i.e., removing the header bytes.
 
 3. There is no robust CRC error detection on the data transmission from the AMDS to the master device, although the UART parity is used. Future improvements could add a footer CRC to ensure the received message at the master is valid. Error correction codes could also be used to further increase the communication robustness in high EMI environments (e.g. SECDED). There is no free lunch: all of these methods would increase the data transmission latency from the AMDS.
 
