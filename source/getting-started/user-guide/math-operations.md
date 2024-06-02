@@ -36,7 +36,7 @@ With exception of the common operations, all of these functions come from the <m
 
 ## Casts
 
-Casting tests have not yet been written
+![alt text](math-operations-images/castingOperationsNanoseconds.svg)
 
 ## Results
 
@@ -53,6 +53,7 @@ Quick analysis:
 - By far the slowest operation was pow, which is likely because it takes in two doubles and also allows negative inputs
 - The natural log was quite a bit faster than log base 10.
 - cbrt was significantly slower than sqrt
+- Casting to floats is significantly faster than to doubles or ints
 
 ## Acceleration strategies
 
