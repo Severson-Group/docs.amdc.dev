@@ -8,7 +8,7 @@ Current sensors are transducers which produce an output signal (either current o
 
 ## Calibration Method
 
-<img src="./resources/current_sesnor_drawing.svg" width="50%" align="center"/>
+<img src="./resources/current_sensor_drawing.svg" width="50%" align="center"/>
 
 A method is provided to calibrate the current sesnsors connected to a three phase motor drive as shown in the figure. Typically, each phase in a 3 phase motor will have a current sensor associated with it. Hence, each of the three current sensors need to be calibrated. The same method maybe extended to any multi-phase machines. The method is described below:
 
@@ -20,12 +20,12 @@ A method is provided to calibrate the current sesnsors connected to a three phas
 1. Note down the sensor reading as well as the reference current flowing through phase U cable.
 1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U.
 1. Tabulate the measurements as shown in `exp_data.csv` file [here](./resources/exp_data.csv).
-1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements. A [Jupyter notebook](./resources/Current_sensor_calibration.ipynb) is provided for this purpose.
+1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements. A [Jupyter notebook](./resources/current_sensor_calibration.ipynb) is provided for this purpose.
 1. For the data presented, the fit is shown in the below plot.
 1. Now the obtained gain and offset can be used in the control code to convert the sensor reading into the actual current measurement.
 1. Repeat the exercise for phases U and V of the system
 
-<img src="./resources/Fit.svg" width="50%" align="center"/>
+<img src="./resources/fit.svg" width="50%" align="center"/>
 
 ```{tip}
 It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor reading due to directionality of current.
