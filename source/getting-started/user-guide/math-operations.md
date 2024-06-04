@@ -23,20 +23,24 @@ Additional information:
 ## Results
 
 ### Common Operations
-![alt text](math-operations-images/commonOperationsNanoseconds.svg)
+![alt text](math-operations-images/commonNanoseconds.svg)
 
 The addi, subi, muli, and divi refer to integer addition, subtraction, multiplication, and division.\
 Similarily addf, subf, mulf, and divf refer to 32-bit floating point operations.\
 Finally, the add, sub, mul, and div refer to 64-bit floating point (double) operations.
 
 ### All Operations
-![alt text](math-operations-images/allOperationsNanoseconds.svg)
+![alt text](math-operations-images/allNanoseconds.svg)
 
 With exception of the common operations, all of these functions come from the <math.h> library.
 
 ## Casts
 
-![alt text](math-operations-images/castingOperationsNanoseconds.svg)
+![alt text](math-operations-images/castNanoseconds.svg)
+
+Naming format:
+- castfi refers to a cast from a float (f) to an int (i).
+- castid refers to a cast from an int (i) to a double (d).
 
 ## Results
 
@@ -53,9 +57,17 @@ Quick analysis:
 - By far the slowest operation was pow, which is likely because it takes in two doubles and also allows negative inputs
 - The natural log was quite a bit faster than log base 10.
 - cbrt was significantly slower than sqrt
-- Casting to floats is significantly faster than to doubles or ints
+- I am confused by the results of the casting tests
 
 ## Acceleration strategies
 
-Integer division is so slow. I think it's literally faster to cast both inputs to doubles, do double division, and then cast that back to an integer.
-I think that would still be correct (maybe). I need to finish the casting tests to say for sure though.
+Integer division is so slow. It's faster to cast both inputs to doubles, do double division, and then cast that back to an integer.\
+Likewise, why bother using the slow floor() function when you can just cast the double to an int and then back to a double.
+
+One strange result is the slowness of the hypot() function, which takes in two lengths and returns the hypotenuse as if the two inputs were sides of a right triangle.\
+This function is abnormally slow, given that the formula is sqrt(x * x + y * y). Which should be around 42.615 nanoseconds but instead it takes on average 181.5 nanoseconds.
+
+Perhaps the common cause for these operations taking longer is that there is overhead associated with setting extra variables.\
+In order to find out, I ran some extra tests to see if I could increase the speed of certain operations.
+
+![alt text](math-operations-images/accelNanoseconds.svg)
