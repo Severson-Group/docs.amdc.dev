@@ -4,9 +4,9 @@
 
 Current sensors provide the necessary current measurement feedback to the control system in a motor drive. This document describes a method to calibrate the current sensors during commissioning of the motor drive, and arrive at the calibration parameters: gain and offset.
 
-Current sensor is a transducer which produces a voltage signal proportional to the current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as a shunt resistor and hall-effect type current sensors. For the purpose of this document no assumption is made on the type of sensor system used. The current sensor needs to be calibrated against an appropriate reference before they can be used in the control system. While the manufacturer datasheet maybe relied up on to get nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
+Current sensors are transducers which produce an output signal (either current or voltage) proportional to the primary current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as shunt resistors and hall-effect type current sensors. For the purpose of this document, the specific type of sensor does not matter---just that the output signal is linear versus the primary current, and that it is measurable by the control system. The current sensor needs to be calibrated against an appropriate reference before it can be used in the control system. While the manufacturer datasheet provides nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
 
-## Method
+## Calibration Method
 
 <img src="./resources/current_sesnor_drawing.svg" width="50%" align="center"/>
 
@@ -15,7 +15,7 @@ A method is provided to calibrate the current sesnsors connected to a three phas
 1. Connect a current clamp to the phase U cable of the motor. The measurement provided by the current clamp can be considered as a reference current measurement.
 1. Hook up the current clamp to an oscilloscope so that the reading of the current clamp can be monitored in real-time.
 1. Log the raw reading of the current sensor attached to phase U using the logging functionality in the AMDC. 
-1. First, note the sensor reading when thre is no current is flowing through phase U.
+1. First, note the sensor reading when there is no current flowing through phase U.
 1. Next, apply a differential open loop voltage on phase U to cause some some current to flow through phase U. The value of voltage is left to the discretion of the user based on the system nominal ratings.
 1. Note down the sensor reading as well as the reference current flowing through phase U cable.
 1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U.
