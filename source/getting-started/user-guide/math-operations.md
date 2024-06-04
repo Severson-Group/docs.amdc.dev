@@ -14,7 +14,7 @@ To understand the sequence of events, take the example of the addi test:
 - With the measured and baseline numbers of clock cycles logged, the totals are subtracted from each other. The average number of clock cycles is calculated as (measured - baseline) / 100.0 clock cycles.
 
 Additional information:
-- In some cases, the time taken to perform the operation was less than the baseline, like in the case of addf. This results in a negative number on the graph. I don't know how this is possible but it is safe to say that the operation is extremely fast. Perhaps it was able to do multiple of these in a single clock cycle, or it's using SIMD magic.
+- In some cases, the time taken to perform the operation was less than the baseline, like in the case of addf. This results in a negative number on the graph. I don't know how this is possible but it is safe to say that the operation is extremely fast.
 - Tests were ran on the debug version of the code. This uses the -O2 optimization flag with the gcc compiler
 - The code that ran these tests lives [here](https://github.com/Severson-Group/RyansRepo/blob/math/AMDC-Firmware/sdk/app_cpu1/user/usr/math/cmd/cmd_math.c) and the python driver code is [here](https://github.com/Severson-Group/RyansRepo/blob/math/AMDCmathBenchmarks.py)
 - Different output variables were used for integers, floats, and doubles to avoid implicit casting.
@@ -35,7 +35,6 @@ Finally, the add, sub, mul, and div refer to 64-bit floating point (double) oper
 With exception of the common operations, all of these functions come from the <math.h> library.
 
 ## Casts
-
 ![alt text](math-operations-images/castNanoseconds.svg)
 
 Naming format:
@@ -71,3 +70,5 @@ Perhaps the common cause for these operations taking longer is that there is ove
 In order to find out, I ran some extra tests to see if I could increase the speed of certain operations.
 
 ![alt text](math-operations-images/accelNanoseconds.svg)
+
+The fast functions outperform their standard counterparts in every case.
