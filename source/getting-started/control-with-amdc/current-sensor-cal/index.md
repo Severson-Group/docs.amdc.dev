@@ -30,7 +30,19 @@ A method is provided to calibrate the current sesnsors connected to a three phas
 ```{tip}
 It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor reading due to directionality of current.
 ```
+## Use of Calibration data
 
+The below codeblock can be utilized by the user to convert between raw measurements from the sensor and the actual currents.
+
+```C
+#define GAIN 0.621 // Gain from curve fit
+#define OFFSET 4.739 // Offset from curve fit
+
+double current_measurement; // Actual current measurement, to be used in control algorithm
+
+current_measurement = (sensor_reading - OFFSET)/GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
+
+```
 
 ## Conclusion
 
