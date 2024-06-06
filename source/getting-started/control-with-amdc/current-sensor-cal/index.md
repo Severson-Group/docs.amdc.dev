@@ -16,7 +16,7 @@ A method is provided to calibrate the current sesnsors connected to a three phas
 1. Hook up the current clamp to an oscilloscope so that the reading of the current clamp can be monitored in real-time.
 1. Log the raw reading of the current sensor attached to phase U using the logging functionality in the AMDC. 
 1. First, note the sensor reading when there is no current flowing through phase U.
-1. Next, apply a differential open loop voltage on phase U to cause some some current to flow through phase U. The value of voltage is left to the discretion of the user based on the system nominal ratings.
+1. Next, apply a differential open loop voltage on phase U to cause some current to flow through phase U. The value of voltage is left to the discretion of the user based on the system nominal ratings.
 1. Note down the sensor reading as well as the reference current flowing through phase U cable.
 1. Progressively increase the applied voltage and note down the readings. It is recommended to go up until the rated value of the current is flowing through phase U.
 1. Tabulate the measurements as shown in `exp_data.csv` file [here](./resources/exp_data.csv).
