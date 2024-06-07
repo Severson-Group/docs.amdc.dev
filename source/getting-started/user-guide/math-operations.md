@@ -14,7 +14,7 @@ To understand the sequence of events, take the example of the addi test:
 - With the measured and baseline numbers of clock cycles logged, the totals are subtracted from each other. The average number of clock cycles is calculated as (measured - baseline) / 100.0 clock cycles.
 
 Additional information:
-- In some cases, the time taken to perform the operation was less than the baseline, like in the case of addf. This results in a negative number on the graph. I don't know how this is possible but it is safe to say that the operation is extremely fast.
+- In some cases, the time taken to perform the operation was less than the baseline, like in the case of muli. This results in a negative number on the graph. I don't know how this is possible but it is safe to say that the operation is extremely fast.
 - Tests were ran on the debug version of the code. This uses the -O2 optimization flag with the gcc compiler
 - The code that ran these tests lives [here](https://github.com/Severson-Group/RyansRepo/blob/math/AMDC-Firmware/sdk/app_cpu1/user/usr/math/cmd/cmd_math.c) and the python driver code is [here](https://github.com/Severson-Group/RyansRepo/blob/math/AMDCmathBenchmarks.py)
 - Different output variables were used for integers, floats, and doubles to avoid implicit casting.
@@ -28,6 +28,8 @@ Additional information:
 The addi, subi, muli, and divi refer to integer addition, subtraction, multiplication, and division.\
 Similarily addf, subf, mulf, and divf refer to 32-bit floating point operations.\
 Finally, the add, sub, mul, and div refer to 64-bit floating point (double) operations.
+
+A few of these results are negative, which indicates that this operation performed faster than the baseline. This shouldn't happen, but there are likely factors that I didn't account for or extra optimizations that the compiler figured out that results in this behaviour.
 
 ### All Operations
 ![alt text](math-operations-images/allNanoseconds.svg)
@@ -72,3 +74,5 @@ In order to find out, I ran some extra tests to see if I could increase the spee
 ![alt text](math-operations-images/accelNanoseconds.svg)
 
 The fast functions outperform their standard counterparts in every case.
+
+If you have any other ideas for speeding up operations, feel free to reach out!
