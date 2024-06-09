@@ -10,7 +10,7 @@ Current sensors are transducers which produce an output signal (either current o
 
 <img src="./resources/current_sensor_drawing.svg" width="50%" align="center"/>
 
-A method is now provided to calibrate the current sensors connected to a three phase motor drive as shown in the figure. Typically, each phase will have a current sensor associated with it that needs to be calibrated. The same method can be easily extended to any multi-phase machine.
+A method is now provided to calibrate the current sensors in a motor drive. An example of the assumed system for a three phase motor is shown in the figure above. Typically, each phase has a current sensor associated with it that needs to be calibrated.
 
 1. Connect the reference curent sensor (i.e. precision digital multimeter) to the phase U cable of the motor.
 1. Set up your AMDC system to enable you to log the raw reading of the drive's current sensor attached to phase U. It is recommended to use the AMDC's logging functionality so that data can be collected over a period of time (e.g. 100 ms) and post-processed to find the average value.
@@ -20,7 +20,7 @@ A method is now provided to calibrate the current sensors connected to a three p
 1. Progressively increase the phase U current and record the readings. Do this over the full range of rated current, both positive and negative. 
 1. Tabulate the measurements as shown in this example [`exp_data.csv` file](./resources/exp_data.csv).
 1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements. This [example Jupyter notebook](./resources/current_sensor_calibration.ipynb) is provided to illustrate the process.
-1. Repeat the exercise for phases U and V of the system
+1. Repeat the exercise for the remaining phases of the system.
 
 An example of the results are shown in the plot below. The obtained gain and offset can be used directly in the control code to convert the sensor reading into the actual current measurement.
 
@@ -44,6 +44,13 @@ double current_measurement; // Actual current measurement, to be used in control
 current_measurement = (sensor_reading - OFFSET)/GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
 
 ```
+
+## Recalculate Offset At Startup
+The offset value of the current sensors can drift over time. It is recommended that drive developers include code in their control logic to automatically re-zero the current sensor at startup, as follows:
+
+1. Prior to enabling the PWM, when it is known that there is no current flowing in the motor, record approximately 100 ms of sensor data on each phase. 
+2. For each phase, calculate the average of this data and use it as the new `OFFSET` value.
+3. Proceed with the control start-up procedure.
 
 ## Conclusion
 
