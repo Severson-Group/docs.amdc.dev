@@ -2,18 +2,20 @@
 
 ## Background
 
-Motor drives typically require current sensors to provide feedback to the control system. This document describes a method to calibrate the current sensors to a linear model during commissioning of a motor drive. The calibration is characterized by two parameters, a gain and an offset.
+Motor drives typically require current sensors to provide feedback to the control system. This document describes a method to calibrate the current sensors to a linear model during commissioning of a motor drive. The calibration is characterized by two parameters, a gain and an offset, that describe how the sensed current appears as a voltage to the AMDC.
 
-Current sensors are transducers which produce an output signal (either current or voltage) proportional to the primary current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as shunt resistors and hall-effect. For the purpose of this document, the specific type of sensor does not matter---just that the output signal is linear with the primary current, and that it is measurable by the control system. The current sensor needs to be calibrated against an appropriate reference before it can be used in the control system. This reference is a known, trusted current sensor, such as a precision digital multimeter (preferred), hall-effect current clamp, or the setpoint of a DC power supply. While the manufacturer datasheet provides nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
+Current sensors are transducers which produce an output signal (either current or voltage) proportional to the primary current flowing through the sensor. There are different types of current sensors relying on different physical phenomenons such as shunt resistors and hall-effect. For the purpose of this document, the specific type of sensor does not matter---just that the output signal is linear with the primary current, and that it is measured as a voltage by the control system. The current sensor needs to be calibrated against an appropriate reference before it can be used in the control system. This reference is a known, trusted current sensor, such as a precision digital multimeter (preferred), hall-effect current clamp, or the setpoint of a DC power supply. While the manufacturer datasheet provides nominal parameters, calibration of the current sensor is necessary to get accurate measurements to account for any deviation due to process variation.
 
 ## Calibration Method
 
+A method is now provided to calibrate the current sensors in a motor drive. An example of the assumed system for a three phase motor is shown in the figure below.
+
 <img src="./resources/current_sensor_drawing.svg" width="50%" align="center"/>
 
-A method is now provided to calibrate the current sensors in a motor drive. An example of the assumed system for a three phase motor is shown in the figure above. Typically, each phase has a current sensor associated with it that needs to be calibrated.
+Typically, each phase has a current sensor associated with it that needs to be calibrated. This method assumes that the signal measured by the AMDC for each sensor is a voltage that must be converted into a current value.
 
 1. Connect the reference curent sensor (i.e. precision digital multimeter) to the phase U cable of the motor.
-1. Set up your AMDC system to enable you to log the raw reading of the drive's current sensor attached to phase U. It is recommended to use the AMDC's logging functionality so that data can be collected over a period of time (e.g. 100 ms) and post-processed to find the average value.
+1. Set up your AMDC system to enable you to log the raw reading of the drive's current sensor attached to phase U (presumably, by sampling an ADC channel). It is recommended to use the AMDC's logging functionality so that data can be collected over a period of time (e.g. 100 ms) and post-processed to find the average value.
 1. Record the drive's sensor reading when there is no current flowing through phase U. _Hint:_ remember to calculate this value as the average of a period of time.
 1. Cause a "small" curent to flow through phase U (i.e., apply a voltage across phase U). The value of current is left to the discretion of the user based on the system nominal ratings.
 1. Record the drive's sensor reading as well as the reference sensor's reading of the current flowing through the phase U cable.
