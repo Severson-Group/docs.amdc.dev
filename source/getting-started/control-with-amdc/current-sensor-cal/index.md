@@ -56,4 +56,4 @@ The offset value of the current sensors can drift over time. It is recommended t
 
 ## Conclusion
 
-The current sensor calibration method presented in this article should be viewed as a best-practice for motor drive development.
+The current sensor calibration method presented in this article should be viewed as a best-practice for motor drive development. Readers are welcome to directly use the provided code and Jupyter notebook in their motor drives.
