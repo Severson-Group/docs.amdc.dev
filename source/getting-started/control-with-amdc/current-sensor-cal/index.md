@@ -13,22 +13,24 @@ Current sensors are transducers which produce an output signal (either current o
 A method is now provided to calibrate the current sensors connected to a three phase motor drive as shown in the figure. Typically, each phase will have a current sensor associated with it that needs to be calibrated. The same method can be easily extended to any multi-phase machine.
 
 1. Connect the reference curent sensor (i.e. precision digital multimeter) to the phase U cable of the motor.
-1. Log the raw reading of the drive's current sensor attached to phase U using the logging functionality in the AMDC. 
-1. Record the drive's sensor reading when there is no current flowing through phase U.
-1. Apply a voltage across phase U to cause current to flow through phase U. The value of voltage is left to the discretion of the user based on the system nominal ratings.
+1. Set up your AMDC system to enable you to log the raw reading of the drive's current sensor attached to phase U. It is recommended to use the AMDC's logging functionality so that data can be collected over a period of time (e.g. 100 ms) and post-processed to find the average value.
+1. Record the drive's sensor reading when there is no current flowing through phase U. _Hint:_ remember to calculate this value as the average of a period of time.
+1. Cause a "small" curent to flow through phase U (i.e., apply a voltage across phase U). The value of current is left to the discretion of the user based on the system nominal ratings.
 1. Record the drive's sensor reading as well as the reference sensor's reading of the current flowing through the phase U cable.
-1. Progressively increase the applied voltage and note down the readings. It is recommended to go until the rated value of the current is flowing through phase U.
-1. Tabulate the measurements as shown in `exp_data.csv` file [here](./resources/exp_data.csv).
-1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements. A [Jupyter notebook](./resources/current_sensor_calibration.ipynb) is provided for this purpose.
-1. For the data presented, the fit is shown in the plot below.
-1. Now the obtained gain and offset can be used in the control code to convert the sensor reading into the actual current measurement.
+1. Progressively increase the phase U current and record the readings. Do this over the full range of rated current, both positive and negative. 
+1. Tabulate the measurements as shown in this example [`exp_data.csv` file](./resources/exp_data.csv).
+1. Fit a linear expression of the form $\text{Reading [V]} = \text{Gain [V/A]} \times \text{Current [A]} + \text{Offset [V]}$ to the obtained measurements. This [example Jupyter notebook](./resources/current_sensor_calibration.ipynb) is provided to illustrate the process.
 1. Repeat the exercise for phases U and V of the system
+
+An example of the results are shown in the plot below. The obtained gain and offset can be used directly in the control code to convert the sensor reading into the actual current measurement.
+
 
 <img src="./resources/fit.svg" width="50%" align="center"/>
 
 ```{tip}
-It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor reading due to directionality of current.
+Be sure to conduct the calibration process over the full range of current data (both positive and negative current) to account for any variation in the current sensor reading due to directionality of current.
 ```
+
 ## Use of Calibration data
 
 The below codeblock can be utilized by the user to convert between raw measurements from the sensor and the actual currents.
