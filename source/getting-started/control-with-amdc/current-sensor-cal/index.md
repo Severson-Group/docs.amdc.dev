@@ -16,7 +16,7 @@ Typically, each phase has a current sensor associated with it that needs to be c
 
 1. Connect the reference curent sensor (i.e. precision digital multimeter) to the phase U cable of the motor.
 1. Set up your AMDC system to enable you to log the raw reading of the drive's current sensor attached to phase U (presumably, by sampling an ADC channel). It is recommended to use the AMDC's logging functionality so that data can be collected over a period of time (e.g. 100 ms) and post-processed to find the average value.
-1. Record the drive's sensor reading when there is no current flowing through phase U. _Hint:_ remember to calculate this value as the average of a period of time.
+1. Record the drive's sensor reading when there is no current flowing through phase U. _Hint:_ remember to calculate this value as the average over a period of time.
 1. Cause a "small" curent to flow through phase U (i.e., apply a voltage across phase U). The value of current is left to the discretion of the user based on the system nominal ratings.
 1. Record the drive's sensor reading as well as the reference sensor's reading of the current flowing through the phase U cable.
 1. Progressively increase the phase U current and record the readings. Do this over the full range of rated current, both positive and negative. 
