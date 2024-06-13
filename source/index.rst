@@ -22,6 +22,7 @@ AMDC Platform Documentation
    getting-started/tutorials/index
    getting-started/advanced-tutorials/index
    getting-started/user-guide/index
+   getting-started/applications/index
 
 .. toctree::
    :hidden:
