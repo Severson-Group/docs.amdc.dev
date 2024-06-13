@@ -1,6 +1,6 @@
 # Math Operation Benchmarks
 
-Mathematical operations from the <[math.h](https://pubs.opengroup.org/onlinepubs/009696799/basedefs/math.h.html)> library as well as common operations and casts were timed and benchmarked.
+Mathematical operations from the <[math.h](https://pubs.opengroup.org/onlinepubs/009696799/basedefs/math.h.html)> library as well as common operations and casts were timed and benchmarked on the AMDC.
 
 ## Benchmark Methodology
 
