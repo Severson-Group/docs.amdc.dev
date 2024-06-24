@@ -32,13 +32,7 @@ An example of the results are shown in the plot below. The obtained gain and off
 ```{tip}
 Be sure to conduct the calibration process over the full range of current data (both positive and negative current) to account for any variation in the current sensor reading due to directionality of current.
 ```
-<<<<<<< HEAD
 ## Use of Calibration Data
-=======
-
-## Use of Calibration data
->>>>>>> fb84857399e5fc813378f7df5e6ea5e3ea738bfa
-
 The below codeblock can be utilized by the user to convert between raw measurements from the sensor and the actual currents.
 
 ```C
@@ -48,13 +42,10 @@ The below codeblock can be utilized by the user to convert between raw measureme
 double current_measurement; // Actual current measurement, to be used in control algorithm
 
 current_measurement = (sensor_reading - OFFSET)*INV_GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
-
 ```
-<<<<<<< HEAD
 ```{tip}
 In a real impelementation, it is preferred to re-calibrate the `OFFSET` value each time during boot-up. Hence, it is left to the user to define the `OFFSET` as a variable and set it appropriately during bootup.
 ```
-=======
 
 ## Recalculate Offset At Startup
 The offset value of the current sensors can drift over time. It is recommended that drive developers include code in their control logic to automatically re-zero the current sensor at startup, as follows:
@@ -63,7 +54,6 @@ The offset value of the current sensors can drift over time. It is recommended t
 2. For each phase, calculate the average of this data and use it as the new `OFFSET` value in the code block above.
 3. Proceed with starting-up the drive.
 
->>>>>>> fb84857399e5fc813378f7df5e6ea5e3ea738bfa
 ## Conclusion
 
 The current sensor calibration method presented in this article should be viewed as a best-practice for motor drive development. Readers are welcome to directly use the provided code and Jupyter notebook in their motor drives.
