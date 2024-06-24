@@ -43,9 +43,6 @@ double current_measurement; // Actual current measurement, to be used in control
 
 current_measurement = (sensor_reading - OFFSET)*INV_GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
 ```
-```{tip}
-In a real impelementation, it is preferred to re-calibrate the `OFFSET` value each time during boot-up. Hence, it is left to the user to define the `OFFSET` as a variable and set it appropriately during bootup.
-```
 
 ## Recalculate Offset At Startup
 The offset value of the current sensors can drift over time. It is recommended that drive developers include code in their control logic to automatically re-zero the current sensor at startup, as follows:
