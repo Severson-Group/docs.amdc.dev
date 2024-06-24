@@ -30,20 +30,22 @@ A method is provided to calibrate the current sesnsors connected to a three phas
 ```{tip}
 It is a good idea to have negative currents in the data points as well to account for any variation in the current sensor reading due to directionality of current.
 ```
-## Use of Calibration data
+## Use of Calibration Data
 
 The below codeblock can be utilized by the user to convert between raw measurements from the sensor and the actual currents.
 
 ```C
-#define GAIN 0.621 // Gain from curve fit
+#define INV_GAIN (1.0/0.621) // Inverse of gain obtained from curve fit (1/0.621)
 #define OFFSET 4.739 // Offset from curve fit
 
 double current_measurement; // Actual current measurement, to be used in control algorithm
 
-current_measurement = (sensor_reading - OFFSET)/GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
+current_measurement = (sensor_reading - OFFSET)*INV_GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
 
 ```
-
+```{tip}
+In a real impelementation, it is preferred to re-calibrate the `OFFSET` value each time during boot-up. Hence, it is left to the user to define the `OFFSET` as a variable and set it appropriately during bootup.
+```
 ## Conclusion
 
 A method to calibrate the current sensors has been presented. The user is also given hints on how the output of the calibration process maybe used in the control code.
