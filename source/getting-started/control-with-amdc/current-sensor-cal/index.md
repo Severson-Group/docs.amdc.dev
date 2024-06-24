@@ -33,15 +33,17 @@ An example of the results are shown in the plot below. The obtained gain and off
 Be sure to conduct the calibration process over the full range of current data (both positive and negative current) to account for any variation in the current sensor reading due to directionality of current.
 ```
 ## Use of Calibration Data
+
 The below codeblock can be utilized by the user to convert between raw measurements from the sensor and the actual currents.
 
 ```C
 #define INV_GAIN (1.0/0.621) // Inverse of gain obtained from curve fit (1/0.621)
-#define OFFSET 4.739 // Offset from curve fit
+#define OFFSET 4.739 // Offset from curve fit. Note: This would have to be a variable in real implementation, since it is preferred to re-calibrate the offset during boot-up
 
 double current_measurement; // Actual current measurement, to be used in control algorithm
 
 current_measurement = (sensor_reading - OFFSET)*INV_GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
+
 ```
 
 ## Recalculate Offset At Startup
