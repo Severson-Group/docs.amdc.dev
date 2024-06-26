@@ -1,6 +1,12 @@
 # Math Benchmarks
 
-Mathematical operations from the <[math.h](https://pubs.opengroup.org/onlinepubs/9699919799)> library as well as common operations and casts were timed and benchmarked on the AMDC.
+The AMDC is used for real-time control of motor drive systems: every X seconds, the AMDC samples various sensor input, performs some math on the sampled values, and then updates the PWM outputs based on the math. In the default firmware, the value of X is 100 microseconds, or a control rate of 10 kHz. For this all to work correctly, the firmware must compute the required math operations in a short time, i.e., much less than 100 us.
+
+The AMDC uses a PicoZed system-on-module for its "brains". On this module, it has a AMD Xilinx Zynq-700 system-on-chip which is the main processor. This processor has dual core DSP and FPGA. The code which computes the math operations as described above runs on the DSP. The DSP is a standard ARM Cortex-A9 core. This is a relatively powerful processor.
+
+We are interested in understanding how long various math operations take to complete on the Cortex-A9 processor. For example, sin(), sqrt(), /, etc. In order to get a better idea of the timing budget per callback cycle.
+
+Mathematical operations from the <[math.h](https://pubs.opengroup.org/onlinepubs/9699919799)> library as well as common operations and casts were timed and benchmarked.
 
 ## Benchmark Methodology
 
@@ -50,13 +56,13 @@ The numbers in the graphs are in nanoseconds, not clock cycles. However the conv
 Quick analysis:
 - Integer division and modulo is the slowest common operation by far
 - Both float and double common operations tended to outperform their integer counterparts.
-- the sqrt function was significantly faster than others in a similar complexity group
+- the `sqrt` function was significantly faster than others in a similar complexity group
 - Inverse trig operations outperformed normal trig operations.
-- Normal trig and inverse trig operations outperformed hyperbolic trig and inverse trig operations. With the exception of tanh and atanh which performed much faster than expected.
-- ceiling and floor operations were slower than I thought, being much slower than any floating point common operations and almost as slow as sqrt
-- By far the slowest operation was pow, which is likely because it takes in two doubles and also allows negative inputs
+- Normal trig and inverse trig operations outperformed hyperbolic trig and inverse trig operations. With the exception of `tanh` and `atanh` which performed much faster than expected.
+- ceiling and floor operations were slower than I thought, being much slower than any floating point common operations and almost as slow as `sqrt`
+- By far the slowest operation was `pow`, which is likely because it takes in two doubles and also allows negative inputs
 - The natural log was quite a bit faster than log base 10.
-- cbrt was significantly slower than sqrt
+- `cbrt` was significantly slower than `sqrt`
 - I am confused by the results of the casting tests
 
 ## Acceleration strategies
@@ -87,5 +93,7 @@ Perhaps the common cause for these operations taking longer is that there is ove
 ![alt text](images/accelNanoseconds.svg)
 
 The fast functions outperform their standard counterparts in every case.
+
+Use this page as a reference for ballparking about how many of a certain operation will fit within the allocated 100us timeframe. For instance, using the pow() function 140 times would be the around the limit, or doing 4350 integer divisions.
 
 If you have any other ideas for speeding up operations, feel free to reach out!
