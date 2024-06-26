@@ -10,7 +10,7 @@ Incremental encoders which are typically used with AMDC have a fixed number of c
 
 ### Obtaining encoder count and translating it into rotor position
 
-<img src="./resources/EncoderCodeBlockDiargam.svg" width="60%" align="center"/>
+<img src="./resources/EncoderCodeBlockDiargam.svg" width="100%" align="center"/>
 
 As a first step, the user may use the AMDC `enc` driver function `encoder_get_position()` to get the count of the encoder reading. Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done by manually rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. This document follows the convention of a positive rotor angle in the counter clockwise (CCW) direction of shaft rotation. Using this information, along with the offset and total encoder counts per revolution, the obtained count can be translated into angular position using a simple linear equation. The user must ensure that angle is within the bounds of 0 and 2 $\pi$ by appropriately wrapping the variable using the `mod` function.
 
@@ -74,6 +74,7 @@ To ensure that the obtained encoder offset is correct, the user may perform addi
 ## Computing Speed from Position
 
 The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. A simple and straightforward way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
+
 $$
 \Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s} 
 $$
@@ -93,4 +94,4 @@ $$
 
 This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`
 
-<img src="./resources/ObserverFigure.svg" width="75%" align="center"/>
+<img src="./resources/ObserverFigure.svg" width="100%" align="center"/>
