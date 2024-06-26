@@ -63,12 +63,24 @@ Quick analysis:
 
 Integer division is so slow. It's faster to cast both inputs to doubles, do double division, and then cast that back to an integer.
 ```
-test
+int fastdivi(int arg1, int arg2) {
+	return (int) ((double) arg1 / arg2);
+}
 ```
 
 Likewise, why bother using the slow `floor()` function when you can just cast the double to an int and then back to a double.
+```
+double fastfloor(double arg) {
+	return (double) (int) arg;
+}
+```
 
 One strange result is the slowness of the `hypot()` function, which takes in two lengths and returns the hypotenuse as if the two inputs were sides of a right triangle. This function is abnormally slow, given that the formula is sqrt(x * x + y * y). Which should be around 42.615 nanoseconds but instead it takes on average 181.5 nanoseconds.
+```
+double fasthypot(double arg1, double arg2) {
+	return sqrt(arg1 * arg1 + arg2 * arg2);
+}
+```
 
 Perhaps the common cause for these operations taking longer is that there is overhead associated with setting extra variables. In order to find out, I ran some extra tests to see if I could increase the speed of certain operations.
 
