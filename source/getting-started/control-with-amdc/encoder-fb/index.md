@@ -6,13 +6,13 @@ Encoders provide rotor position feedback to the control system in a motor drive.
 
 ## Calibration
 
-Incremental encoders which are typically used with AMDC have a fixed number of counts per revolution (for example, 1024) and is denoted by `CPR`. The user needs needs to write some code to obtaine the encoder count at a given instance and tconvert the count into usable angular information which can be used within the control code.
+Incremental encoders which are typically used with AMDC have a fixed number of counts per revolution (for example, 1024) and is denoted by `CPR`. The user needs needs to write some code to obtain the encoder count at a given instance and convert the count into usable angular information which can be used within the control code.
 
 ### Obtaining encoder count and translating it into rotor position
 
 <img src="./resources/EncoderCodeBlockDiargam.svg" width="100%" align="center"/>
 
-As a first step, the user may use the AMDC `enc` driver function `encoder_get_position()` to get the count of the encoder reading. Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done by manually rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. This document follows the convention of a positive rotor angle in the counter clockwise (CCW) direction of shaft rotation. Using this information, along with the offset and total encoder counts per revolution, the obtained count can be translated into angular position using a simple linear equation. The user must ensure that angle is within the bounds of 0 and 2 $\pi$ by appropriately wrapping the variable using the `mod` function.
+As a first step, the user may use the AMDC `drv/encoder` driver module `encoder_get_position()` to get the count of the encoder reading. The`drv/encoder` driver module also has a function called `encoder_get_steps()` which gives the incremental change in the encoder position. Whereas, `encoder_get_position()` gives the actual position of the shaft and this can be converted the rotor position in radians. Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done by manually rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. This document follows the convention of a positive rotor angle in the counter clockwise (CCW) direction of shaft rotation. Using this information, along with the offset and total encoder counts per revolution, the obtained count can be translated into angular position using a simple linear equation. The user must ensure that angle is within the bounds of 0 and 2 $\pi$ by appropriately wrapping the variable using the `mod` function.
 
 Example code to convert encoder to angular position in radians:
 ```C
@@ -56,9 +56,9 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes uses of an encoder offset value. It is necessary for the user to find this offset experimentally for their machine. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding of the stator. 
+The example code shown above makes uses of an encoder offset value. It is necessary for the user to find this offset experimentally for their machine. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. 
 
-To get the rotor to align with the phase U winding, the user may have some current flow through phase U and out of phase V and phase W. This can done by using a DC supply, with phase U connected to the positive terminal and phases V and W connected to the negative terminal. Alternately, the user may also inject some current along the d-axis using the AMDC injection function, but with the rotor position overridden by the user to 0. After obtaining the offset, the user needs to set the variable `enc_theta_m_offset` to the appropirate value in the `task_get_theta_m()` function. 
+To get the rotor to align with the phase U winding, the user may have some current flow through phase U and out of phase V and phase W. This can done by using a DC supply, with phase U connected to the positive terminal and phases V and W connected to the negative terminal. Alternately, the user may also inject some current along the d-axis using the AMDC [Signal Injection](https://docs.amdc.dev/getting-started/user-guide/injection/index.html) module. While injecting d-axis current, the user must ensure that the rotor position is set to zero in the control code. After obtaining the offset, the user needs to set the variable `enc_theta_m_offset` to the appropriate value in the `task_get_theta_m()` function. 
 
 To ensure that the obtained encoder offset is correct, the user may perform additional validation. For a permanent magnet synchronous motor, this can be done as follows:
 
@@ -80,7 +80,7 @@ $$
 $$
 
 
-$\Omega_\text{raw}$ will be a choppy and noisy signal due to the derivative operation. A low pass filter may be applied to this signal as shown below to get a filtered speed, $\Omega_\text{lpf}$. The user may select an appropriate bandwidth, $\omega_b$ for the low pass filter to eliminate the noise introduced by the derivative operation. However, this signal will always be a lagging estimate of the actual rotor speed due to the characterstics of a low pass filter. 
+$\Omega_\text{raw}$ will be a choppy and noisy signal due to the derivative operation and the digital nature of the incremental encoder. A low pass filter may be applied to this signal as shown below to get a filtered speed, $\Omega_\text{lpf}$. The user may select an appropriate bandwidth, $\omega_b$ for the low pass filter to eliminate the noise introduced by the derivative operation. A recommended bandwidth for the low pass filter is 10 Hz. However, this signal will always be a lagging estimate of the actual rotor speed due to the characterstics of a low pass filter. 
 
 $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
