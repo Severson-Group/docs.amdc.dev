@@ -6,7 +6,7 @@ Encoders provide rotor position feedback to the control system in a motor drive.
 
 ## Calibration
 
-Incremental encoders which are typically used with AMDC have a fixed number of counts per revolution (for example, 1024) and is denoted by `CPR`. The user needs needs to write some code to obtain the encoder count at a given instance and convert the count into usable angular information which can be used within the control code.
+Incremental encoders are typically used with the AMDC and have a fixed number of counts per revolution `CPR` (for example, `CPR = 1024`). The user needs needs to provide code that interfaces to the AMDC's drivers to read the encoder count and convert it into usable angular information that is suitable for use within the control code.
 
 ### Obtaining encoder count and translating it into rotor position
 
@@ -73,25 +73,44 @@ To ensure that the obtained encoder offset is correct, the user may perform addi
 
 ## Computing Speed from Position
 
-The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. A simple and straightforward way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
+The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. 
+
+### Difference Equation Approach
+
+A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
 
 $$
 \Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s} 
 $$
 
 
-$\Omega_\text{raw}$ will be a choppy and noisy signal due to the derivative operation and the digital nature of the incremental encoder. A low pass filter may be applied to this signal as shown below to get a filtered speed, $\Omega_\text{lpf}$. The user may select an appropriate bandwidth, $\omega_b$ for the low pass filter to eliminate the noise introduced by the derivative operation. A recommended bandwidth for the low pass filter is 10 Hz. This would be a good bandwidth to try for the user. The user can reduce the bandwidth if the filtered signal still has signficant noise for the application. However, $\Omega_\text{lpf}$ will always be a lagging estimate of the actual rotor speed due to the characterstics of a low pass filter. 
+Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder. 
+
+### Low Pass Filter Approach
+
+To solve this, _a low pass filter_ may be applied to this signal. This is shown below to obtain a filtered speed, $\Omega_\text{lpf}$.
 
 $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
 $$
 
-An observer which implements a mechanical model of the rotor as shown below will produce a no-lag estimate of the rotor speed, denoted by $\Omega_\text{sf}$. To implement an observer, the user needs to know the system parameters - `J` - the inertia of the rotor shaft and `b` - the damping coefficient of the rotor shaft. Further, to obtain a no-lag estimate it is necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model. The `P-I` part of the observer closes the loop on the speed with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
+### Observer Approach
 
+To obtain a no-lag estimate of the rotor speed, users may create an observer which implements a mechanical model of the rotor as shown below. 
+
+<img src="./resources/ObserverFigure.svg" width="100%" align="center"/>
+
+
+The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this observer, the user needs to know the system parameters:
+- `J`: the inertia of the rotor  
+- `b` the damping coefficient of the rotor. 
+
+It is also necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model. 
+
+The `PI` portion of the observer closes the loop on the speed, with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
 $$
 K_p = \omega_{sf}b, K_i = \omega_{sf}J
 $$
 
-This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  A recommended bandwidth for the observer is 10 Hz.
+This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  An observer bandwidth of 10 Hz is typical of most systems, but similar to the low pass filter approach, users may need to alter this based on the unique aspects of their system.
 
-<img src="./resources/ObserverFigure.svg" width="100%" align="center"/>
