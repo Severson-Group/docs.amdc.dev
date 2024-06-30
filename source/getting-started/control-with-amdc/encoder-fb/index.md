@@ -12,7 +12,7 @@ Incremental encoders which are typically used with AMDC have a fixed number of c
 
 <img src="./resources/EncoderCodeBlockDiargam.svg" width="100%" align="center"/>
 
-As a first step, the user may use the AMDC `drv/encoder` driver module `encoder_get_position()` to get the count of the encoder reading. The`drv/encoder` driver module also has a function called `encoder_get_steps()` which gives the incremental change in the encoder position. Whereas, `encoder_get_position()` gives the actual position of the shaft and this can be converted the rotor position in radians. Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done by manually rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. This document follows the convention of a positive rotor angle in the counter clockwise (CCW) direction of shaft rotation. Using this information, along with the offset and total encoder counts per revolution, the obtained count can be translated into angular position using a simple linear equation. The user must ensure that angle is within the bounds of 0 and 2 $\pi$ by appropriately wrapping the variable using the `mod` function.
+As a first step, the user may use the AMDC `drv/encoder` driver module `encoder_get_position()` to get the count of the encoder reading. The`drv/encoder` driver module also has a function called `encoder_get_steps()` which gives the incremental change in the encoder position. Whereas, `encoder_get_position()` gives the actual position of the shaft and this can be converted the rotor position in radians. Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done by manually rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. This document follows the convention of a positive rotor angle in the counter clockwise (CCW) direction of shaft rotation. Using this information, along with the offset and total encoder counts per revolution, the obtained count can be translated into angular position using a simple linear equation. The user must ensure that angle is within the bounds of 0 and 2$\pi$ by appropriately wrapping the variable using the `mod` function.
 
 Example code to convert encoder to angular position in radians:
 ```C
@@ -80,7 +80,7 @@ $$
 $$
 
 
-$\Omega_\text{raw}$ will be a choppy and noisy signal due to the derivative operation and the digital nature of the incremental encoder. A low pass filter may be applied to this signal as shown below to get a filtered speed, $\Omega_\text{lpf}$. The user may select an appropriate bandwidth, $\omega_b$ for the low pass filter to eliminate the noise introduced by the derivative operation. A recommended bandwidth for the low pass filter is 10 Hz. However, this signal will always be a lagging estimate of the actual rotor speed due to the characterstics of a low pass filter. 
+$\Omega_\text{raw}$ will be a choppy and noisy signal due to the derivative operation and the digital nature of the incremental encoder. A low pass filter may be applied to this signal as shown below to get a filtered speed, $\Omega_\text{lpf}$. The user may select an appropriate bandwidth, $\omega_b$ for the low pass filter to eliminate the noise introduced by the derivative operation. A recommended bandwidth for the low pass filter is 10 Hz. This would be a good bandwidth to try for the user. The user can reduce the bandwidth if the filtered signal still has signficant noise for the application. However, $\Omega_\text{lpf}$ will always be a lagging estimate of the actual rotor speed due to the characterstics of a low pass filter. 
 
 $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
@@ -92,6 +92,6 @@ $$
 K_p = \omega_{sf}b, K_i = \omega_{sf}J
 $$
 
-This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`
+This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  A recommended bandwidth for the observer is 10 Hz.
 
 <img src="./resources/ObserverFigure.svg" width="100%" align="center"/>
