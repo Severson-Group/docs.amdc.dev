@@ -102,6 +102,8 @@ $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
 $$
 
+10 Hz is a good bandwidth for the low-pass filter to start with, but users may need to alter this based on the unique aspects of their system. However, this approach will always produce a lagging speed estimate.
+
 ### Observer Approach
 
 To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#1), which implements a mechanical model of the rotor as shown below. 
