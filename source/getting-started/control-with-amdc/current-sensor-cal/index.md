@@ -50,7 +50,7 @@ current_measurement = (sensor_reading - offset)*INV_GAIN;  // sensor_reading is 
 The offset value of the current sensors can drift over time. It is recommended that drive developers include code in their control logic to automatically re-zero the current sensor at startup, as follows:
 
 1. Prior to enabling the PWM, when it is known that there is no current flowing in the motor, record approximately 100 ms of sensor data on each phase. 
-2. For each phase, calculate the average of this data and use it as the new `OFFSET` value in the code block above.
+2. For each phase, calculate the average of this data and use it as the new `offset` value in the code block above.
 3. Proceed with starting-up the drive.
 
 ## Conclusion
