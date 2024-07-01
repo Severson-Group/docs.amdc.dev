@@ -38,7 +38,7 @@ The below codeblock can be utilized by the user to convert between raw measureme
 
 ```C
 #define INV_GAIN (1.0/0.621) // Inverse of gain obtained from curve fit (1/0.621)
-double offset 4.739; // [V], offset from curve fit. This is a variable so that the drive can remeasure and adjust the offset at startup 
+double offset = 4.739; // [V], offset from curve fit. This is a variable so that the drive can remeasure and adjust the offset at startup 
 
 double current_measurement; // Actual current measurement, to be used in control algorithm
 
