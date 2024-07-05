@@ -1,14 +1,35 @@
 # Integrator Anti-Windup
 
-This document describes how to think about performance of anti-windup. A windup might occur when the controller with an integrator has a limitation on the manipulated variables. When integrator windup occurs, it can degrade system response and stability.
+This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of anti-windup strategy depends on the duration of the windup and how extreme it is.  Therefore, simulating realistic scenarios of windup and anti-windup performance is crucial to investigate specific scenarios that are likely to be encountered since perfect anti-windup is unachievable.
 
 ## How to think about performance of anti-windup?
 
-Generally, the main components of a control diagram are the controller and plant, as shown in the figure below. The controller provides a manipulated variable to actuate the plant model.
+### Block Diagram with Saturation
 
-```{image} images/control-diagram.svg
+Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. Practically, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the saturation block, demonstrating the physical limitations of the actuator input.
+
+```{image} images/control-diagram-sat.svg
     :align: center
 ```
+
+In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This system can be analyzed from following perspectives:
+
+1. Current regulation: 
+    - Plant input: Voltage reference
+    - Output: Current
+    - Physical limitation: The realistic output voltage is restricted by the capability of the DC power supply
+
+2. Speed control: 
+    - Plant input: q-axis current command
+    - Output: Rotational speed of the electric machinery
+    - Physical limitation: The practical output current is limited by the coil current density, typically 8 A/mm^2 (air-cooling).
+
+3. Temperature control: 
+    - Plant input: Heat
+    - Output: Resulting system temperature
+    - Physical limitation: The heater’s power rating (e.g., 1 kW) limits the actuator.
+
+In this example, the PI controller is employed to achieve the desired system response. The PI gains are set to achieve the first response with a bandwidth of 10 Hz, i.e., $K_p = 2\pi \times 10$, and $K_i = 2\pi \times 10$. 
 
 In practice, the manipulated variables are physically limited: For example, the manipulated variable of  [current regulation](../../../applications/current-control/index.md) is voltage reference with a restriction of DC power supply. As another example, in [speed control](../../../applications/speed-control/index.md), the manipulated variable is the $q$-axis current, which is also limited by the current density of coils. Therefore, the control diagram can be rewritten, separating the plant into a saturation block and plant.
 
