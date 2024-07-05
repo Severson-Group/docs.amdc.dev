@@ -22,7 +22,7 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
 2. Speed control: 
     - Plant input: q-axis current command
     - Output: Rotational speed of the electric machinery
-    - Physical limitation: The practical output current is limited by the coil current density, typically 8 A/mm^2 (air-cooling).
+    - Physical limitation: The practical output current is limited by the coil current density, typically 8 A/mm<sup>2</sup> (air-cooling).
 
 3. Temperature control: 
     - Plant input: Heat
@@ -31,58 +31,111 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
 
 In this example, the PI controller is employed to achieve the desired system response. The PI gains are set to achieve the first response with a bandwidth of 10 Hz, i.e., $K_p = 2\pi \times 10$, and $K_i = 2\pi \times 10$. 
 
-In practice, the manipulated variables are physically limited: For example, the manipulated variable of  [current regulation](../../../applications/current-control/index.md) is voltage reference with a restriction of DC power supply. As another example, in [speed control](../../../applications/speed-control/index.md), the manipulated variable is the $q$-axis current, which is also limited by the current density of coils. Therefore, the control diagram can be rewritten, separating the plant into a saturation block and plant.
+### Technical Challenges on Windup
+This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression. A definition of windup and its mitigation strategy known as anti-windup will be introduced.
 
-```{image} images/control-diagram-sat.svg
+#### Command Tracking without/with Actuator Limitations
+Let us analyze the simulation result with the block diagram above to investigate the technical challenges on windup. Two scenarios are compared here:  one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.  
+
+```{image} images/Output_sat_c.svg
     :align: center
+    :width: 600
+```
+```{image} images/Iout_sat_c.svg
+    :align: center
+    :width: 600
 ```
 
-The difference between these figures is only whether the saturation block exists after the controller. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. 
+As observed, the command can track correctly without saturation block, whereas overshoot with slow response occurs when the saturation block is present. The second figure shows the output of the integrator. With the saturated block, errors are accumulated, leading to delayed convergence, a condition known as an integral windup.
 
-Let’s take a look at the simulation result of current regulation with a three-phase voltage source inverter with/without a DC-link limit of `12 V`. Therefore, the plant has a known input saturation limit as `Limit = 12/2 = 6 V`.  
+Next, let us examine the manipulated variable in the previous and the post saturation block.
 
-```{image} images/compareSat1.svg
+```{image} images/preSat_postSat.svg
     :align: center
+    :width: 600
 ```
 
-In this simulation, a continuous PI controller is used, and a step current of 10 A in the $q$-axis is generated as a reference. Also, the resistance and the inductance are 0.25 $\Omega$ and 500 $\mu$H, respectively. As you can see, the current regulation works right if there is no saturation block, whereas overshoot occurs if a saturation block exists. The following figure shows the output of the integrator. If the saturated block exists, errors are accumulated, and it takes 0.01 sec to converge, a condition known as an integral windup.
+In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, beyond the saturation range of 10. On the other hand, the voltage reference in the post saturation block (`postSat`) is limited to 10.  As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation occurrences. Consequently, the PI controller may provide a higher manipulated variable after getting the higher error, which causes the windup. As a result, the overshoot and delayed convergence of the output.
 
-Now let’s see the voltage reference in the previous and the post saturation block.
+#### Disturbance Suppression without/with Actuator Limitations
+Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine if disturbances affect on the behavior of the integrator. In this scenario, the command is set as 0, and the disturbance of 15 is injected at 0.2 seconds and end at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.   
 
-```{image} images/compareSat2.svg
+```{image} images/Disturbance.svg
     :align: center
+    :width: 600
+```
+```{image} images/Output_sat_d.svg
+    :align: center
+    :width: 600
 ```
 
-The voltage reference in the previous saturation block (denoted as `preSat`) instantaneously goes to around 15 V outside the DC-link range. On the other hand, the voltage reference in the post saturation block (denoted as `postSat`) is limited to 6 V due to the DC-link restriction. Even though the saturation block exists, the controller ignores it. Therefore, there is a possibility the PI controller provides the higher voltage after getting the higher error, which causes the windup. As a result, it takes some time to get the output to converge after the integrator accumulates lots of values.
+In the transient response of `Output` when the disturbance ends, it is observed that with the saturation block, there is a larger negative overshoot and slower convergence to 0 compared to the case without the saturation block. This is because the integrator continues to integrate error caused by the disturbance. 
 
-## Different methods
-
-To avoid the integral windup, the method known as anti-windup needs to be utilized. Now, the PI controller is shown in the figure below. Note that the integrator includes the anti-windup. 
+## Anti-Windup Techniques
+To avoid the integral windup, an anti-windup strategy must be implemented. The block diagram incorporating an integrator with the anti-windup is shown in the figure below. 
 
 ```{image} images/control-diagram-overview.svg
     :align: center
 ```
 
-In the anti-windup methods, if the manipulated variable reaches the `Limit`, the integrator is to keep the integrated value from increasing past the specified limit. There are multiple ways to implement integrator anti-windup, however, two different methods are introduced here, i.e., the integrator should do either:
+In the anti-windup methods, if the manipulated variable reaches the specified `Limit`, the integrator is to keep the integrated value from increasing past the specified limit. There are multiple ways to implement integrator anti-windup, however, two common methods are introduced here:
 
-1. Turn the integrator off to avoid accumulating the value further known as a **clamping method** or
-2. Subtract a specific value from the integrator known as a **back-tracking method**.
+1. Clamping{link}: Turn off the integrator to stop further accumulation of the value. This can be divided into two methods, i.e., simple clamping{link} and advanced clamping{link}. 
 
+2. Back-tracking{link}: Subtract a specific value from the integrator.
 
-## Implementation
+These two methods are now explained in detail.
 
-These two methods of clamping and back-tracking are now explained in detail.
+### Clamping
+Clamping is a straightforward anti-windup strategy where the integrator is simply "clamped" to prevent it from exceeding a certain limitation, which is called simple clamping in this article. Advanced clamping, on the other hand, is a more sophisticated from of simple clamping that engages only under specific conditions.
 
-### clamping (continuous)
+### Simple Clamping
+The simple version of clamping simply stops integrating when `preSat` $\neq$ `postSat`. The block diagram of the integrator with the simple clamping method is shown below.
 
-The block diagram of the continuous integrator with the clamping method is shown below.
-
-```{image} images/anti-windup-clamping_con.svg
-    :scale: 65%
+```{image} images/anti-windup-simple-clamping.svg
     :align: center
 ```
 
- The idea of the clamping method itself is straightforward, i.e., if the manipulated variable reaches the `Limit`, the integrator stops the accumulation of the value. However, the implementation of clamping is slightly complicated. Here is the workflow of clamping:
+Here is a Simulink simulation of the no anti-windup and simple clamping. 
+
+#### Command Tracking
+
+```{image} images/Output_simple_c.svg
+    :align: center
+    :width: 600
+```
+```{image} images/postSat_simple_c.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Iout_simple_c.svg
+    :align: center
+    :width: 600
+```
+
+In the `Output` waveforms, an overshoot is observed when there is no anti-windup. However, with the simple clamping method, the overshoot is eliminated. In the `postSat`, the manipulated variables are saturated up to 10, where the manipulated variable converge more rapidly in the simple clamping. In the integrator output, no overshoots are present when using simple clamping.
+
+#### Disturbance Suppression
+
+```{image} images/Disturbance.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Output_simple_d.svg
+    :align: center
+    :width: 600
+```
+
+From the disturbance suppression simulation results, it is evident that the overshoot and convergence are significantly improved when the simple clamping method is employed.
+
+### Advanced Clamping
+Now, the advanced version of clamping is introduced as shown below the block diagram. 
+
+```{image} images/anti-windup-advanced-clamping.svg
+    :align: center
+```
+
+In the advanced clamping method, the behavior itself is essentially similar to that of simple clamping. However, it includes an additional condition as a trigger of anti-windup, i.e., clamping occurs only when the signs of the `Error` and `preSat` are the same. Here is the workflow of the advanced clamping:
 
 **Step 1.** Compare the sign of the `preSat` and the `Error`. And then, if both signs are equal, the block outputs 1. If not, the block outputs 0.
 
@@ -92,146 +145,87 @@ The block diagram of the continuous integrator with the clamping method is shown
 
 If the `TR` is 1, the input of the integrator becomes 0 as the switch is triggered, i.e., the integrator will effectively shut down the integration during the windup condition.   
 
-```{note}
-**Step 1.** is recommended to do! For example, if both the `preSat` and the `Error` are positive, the integrator still adds the output to make it more positive, which causes a worse result. On the other hand, if the `preSat` is negative and the `Error` is positive, the integrator output brings better results, which works in the direction of canceling the error. Therefore, if the signs of `preSat` and `Error` are opposite, the anti-windup is not necessary.
+Here is a Simulink simulation of the no anti-windup, simple clamping, and advanced clamping. 
+
+```{image} images/Output_advanced_c.svg
+    :align: center
+    :width: 600
+```
+```{image} images/postSat_advanced_c.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Iout_advanced_c.svg
+    :align: center
+    :width: 600
 ```
 
-### clamping (discrete-time)
+Notice that the simple and advanced clamping perform the same in this example. Given that the above assumptions cause the simple and advanced clamping to behave identical. 
+Basen on this, a highly specific scenario is now introduced where advanced clamping demonstrates better performance. Here is simulation scenario to demonstrate the superiority of advanced clamping than simple clamping.
 
-The discrete-time PI controller is shown below, where the I gain of $K_i$ becomes $K_iT_s$, and the integrator block of $1/s$ is replaced by $1/(1-z^{-1})$, as opposed to the continuous time equivalency. Note that the backward-Euler method is used in this document. Also, the delay block of $z^{-1}$ is required after the AND block to avoid the algebraic loop.
+**Initial State**: A disturbance of 5 causes the system to saturate and stabilize at -1 output.
 
-```{image} images/anti-windup-clamping_dis.svg
-    :scale: 65%  
+**Controller Behavior**: At 5 seconds, the controller set point starts toggling around the saturated output.
+
+Here are simulation results based on the above scenarios:
+
+```{image} images/Disturbance_advanced_better.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Output_advanced_better.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Iout_advanced_better.svg
+    :align: center
+    :width: 600
+```
+
+From the Output figure, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. However, this can be observed only if the proportional gain of $K_p$ is very small ($= 0.0002*2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation. 
+Significant differences in the advanced clamping only appear when the system saturates AND signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. Therefore, the highly specific scenario where the system stays in saturation during this flip in signs is necessary to clearly make the advanced method better. This suggests that the effort to implement the advanced clamping version is probably not worth it for the typical motor control systems. 
+
+### Back-tracking
+The idea of back-tracking method is to use a feedback loop to unwind the internal integrator when the manipulated variable hits the `Limit`. The block diagram of the integrator with the back-tracking method is shown below. 
+
+```{image} images/anti-windup-back-tracking.svg
     :align: center
 ```
 
-### back-tracking (continuous)
-
-The block diagram of the continuous integrator with the back-tracking method is shown below. 
-
-```{image} images/anti-windup-back-tracking-con.svg
-    :scale: 65%
-    :align: center
-```
-
-The idea of back-tracking method is to use a feedback loop to unwind the internal integrator when the manipulated variable hits the `Limit`. For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_b$ is a feedback gain of the back-tracking. On the other hand, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
+For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_b$ is a feedback gain of the back-tracking. On the other hand, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
 
 ```{tip}
-In general, the feedback gain of $K_b$ is determined by trial and error, depending on the user’s requirements, such as how much overshoot or response-speed they want. There is a paper that shows an example of how to determine the $K_b$ known as a `conditioned PI controller`. In this literature, the $K_b$ is determined as $K_b = K_i/K_p$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
+The selection of kb is highly nuanced upon the specific event being managed. Making an incorrect choice for kb can lead to the clamping method better. In practice, the feedback gain of $K_b$ is determined by trial and error, depending on the user’s requirements, such as how much overshoot or response-speed they want. There is a paper that shows an example of how to determine the $K_b$ known as a `conditioned PI controller`. In this literature, the $K_b$ is determined as $K_b = K_i/K_p$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
 ```
 
-### back-tracking (discrete-time)
+Here is a Simulink simulation of the no anti-windup, simple clamping, advanced clamping, and back-tracking.
 
-Similarly, in the case of a discrete-time PI controller, the I gain of $K_i$ becomes $K_iT_s$, and the integrator block of $1/s$ is replaced by $1/(1-z^{-1})$. Also, the delay block of $z^{-1}$ is added after the feedback gain $K_b$.
+#### Command Tracking
 
-```{image} images/anti-windup-back-tracking-dis.svg
-    :scale: 65%
+```{image} images/postSat_back_c.svg
     :align: center
+    :width: 600
 ```
-
-## Simulink
-Here is a Simulink simulation of the discrete-time current regulation without anti-windup, back-tracking, and clamping. 
-
-```{image} images/result.svg
+```{image} images/Output_back_c.svg
     :align: center
+    :width: 600
+```
+```{image} images/Iout_back_c.svg
+    :align: center
+    :width: 600
 ```
 
-The sampling time is set as $T_s = 0.0001$ sec. In the voltage reference, the voltages are saturated up to 6 V, where the voltages converge faster in back-tracking and clamping. In the current waveforms, an overshoot occurs without anti-windup. However, in the case of the back-tracking and clamping, the overshoot does not occur, where the response of the back-tracking is comparatively higher. In the integrator output, no overshoots appear in both back-tracking and clamping. Note that accumulation of the value with clamping stops while the voltage is saturated.
+From the Output waveform, it is evident that the back-tracking technique marginally improves its response than clamping.
 
-## Handwritten C code
+#### Disturbance Suppression
 
-If you want to implement the anti-windup in your experiments, you can have the handwritten C code below. Note that the callback function is executed every sample time of $T_s$.
-
-### clamping
-
-```C
-const double Ts = 0.0001; // Sampling time [sec]
-const double Kp = 1.57; // P gain
-const double Ki = 785; // I gain
-double Error;
-double I_out;
-const double Limit;
-double preSat;
-double postSat;
-int Error_sign;
-int preSat_sign;
-int TR;
-
-void task_clamping_callback(void *arg)
-{
-    // clamping
-    if (TR) {
-        I_out = 0;
-    } else {
-        I_out += Ki * Ts * Error;
-    }
-
-    // PI controller
-    preSat = Kp * Error + I_out;
-
-    // Saturate
-    if (preSat > Limit) {
-        postSat = Limit;
-    } else if (preSat < -Limit) {
-        postSat = -Limit;
-    } else {
-        postSat = preSat;
-    }
-
-    //  Sign of the Error
-    if (Error > 0.0) {
-        Error_sign = 1.0;
-    } else if (Error < 0.0) {
-        Error_sign = -1.0;
-    } else {
-        Error_sign = 0;
-    }
-    //   Sign of the preSat
-    if (preSat > 0.0) {
-        preSat_sign = 1.0;
-    } else if (preSat < 0.0) {
-        preSat_sign = -1.0;
-    } else {
-        preSat_sign = 0;
-    }
-
-    // Logic: AND
-    TR = ((Error_sign == preSat_sign) && (preSat != postSat));
-}
+```{image} images/Disturbance.svg
+    :align: center
+    :width: 600
+```
+```{image} images/Output_back_d.svg
+    :align: center
+    :width: 600
 ```
 
-### back-tracking
-
-```C
-const double Ts = 0.0001; // Sampling time [sec]
-const double Kp = 1.57; // P gain
-const double Ki = 785; // I gain
-double Error;
-double I_out;
-const double Limit;
-double preSat;
-double postSat;
-const double Kb = 0.05; // back-tracking gain (= Ki*Ts/Kp)
-double TR;
-
-void task_back_tracking_callback(void *arg)
-{
-    // I controller
-    I_out = (Ki * Ts * Error + I_out) + TR;
-
-    // PI controller
-    preSat = Kp * Error + I_out;
-
-    // Saturate
-    if (preSat > Limit) {
-        postSat = Limit;
-    } else if (preSat < -Limit) {
-        postSat = -Limit;
-    } else {
-        postSat = preSat;
-    }
-
-    // back-tracking
-    TR = (postSat - preSat) * Kb;
-}
-```
+The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_b = K_i/K_p$, which might be required to adjust based on the specific condition and simulation outcomes.
