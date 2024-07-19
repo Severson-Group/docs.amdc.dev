@@ -37,7 +37,7 @@ Finally, the `add`, `sub`, `mul`, and `div` refer to 64-bit floating point (doub
 
 A few of these results are negative, which indicates that this operation performed faster than the baseline. This shouldn't happen, but there are likely factors that not accounted for or extra optimizations that the compiler figured out that results in this behaviour. In any case we can conclude that doing these operations are essentially "free", as it takes as long to compute and output the result as it does to output a constant result.
 
-### All Operations
+### Other Operations
 <!-- START SECTION FOR PLOT WITH TOGGLE BUTTON -->
 
 <script>
@@ -68,7 +68,7 @@ Change plot sorting...
 
 <!-- END SECTION FOR PLOT WITH TOGGLE BUTTON -->
 
-With exception of the common operations, all of these functions come from the <[math.h](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/math.h.html)> library.
+All of these functions come from the <[math.h](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/math.h.html)> library.
 
 ### Casts
 ![alt text](images/castNanoseconds.svg)
@@ -82,7 +82,7 @@ Naming format:
 The numbers in the graphs are in nanoseconds, not clock cycles. However the conversion is simple. At a current frequency of 666.666 MHz, 1 clock cycle equals 1.5 nanoseconds. Changing the frequency of the clock will not change the number of clock cycles needed to complete an operation, but it will change the number of nanoseconds per clock cycle.
 
 Quick analysis:
-- Integer division and modulo is the slowest common operation by far
+- Integer division and integer and double modulo are the slowest common operations by far
 - Both float and double common operations tended to outperform their integer counterparts.
 - the `sqrt` function was significantly faster than others in a similar complexity group
 - Inverse trig operations outperformed normal trig operations.
@@ -124,6 +124,8 @@ Perhaps the common cause for these operations taking longer is that there is ove
 
 The fast functions outperform their standard counterparts in every case.
 
+# Conclusion
+
 Use this page as a reference for ballparking about how many of a certain operation will fit within the allocated 100us timeframe. For instance, using the pow() function 140 times would be the around the limit, or doing 4350 integer divisions.
 
-If you have any other ideas for speeding up operations, feel free to reach out!
+If you have any other ideas for speeding up operations, create a discussion thread on the AMDC-Firmware repo [here](https://github.com/Severson-Group/AMDC-Firmware/discussions)!
