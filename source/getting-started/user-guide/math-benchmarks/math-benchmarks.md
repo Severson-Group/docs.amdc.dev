@@ -17,6 +17,28 @@ To understand the sequence of events, take the example of the `addi` test:
 - Then, the operations were performed. Two random numbers (from 0 to 1024) were selected for the inputs to `addi`. Lets use the examples `639` and `912`. The time taken to set `mathCommandOutputInt` to `(639 + 912 + 0)` is recorded. Then `mathCommandOutputInt` is set to `(639 + 912 + 1)`, then `(639 + 912 + 2)`, etc, and the clock cycles taken for all 100 operations are summed. The reason for the changing variable is to avoid caching of the results and ensure that the processor must redo the add operation every time.
 - With the measured and baseline numbers of clock cycles logged, the totals are subtracted from each other. The average number of clock cycles is calculated as `(measured - baseline) / 100.0` clock cycles.
 
+Code example:
+```
+/* gather baseline */
+for (register int i = 0; i < iter; i++) {
+	register uint32_t tickStart = cpu_timer_now(); // start timer
+	mathCommandOutputInt = 1 + i; // set output variable to increasing value
+	baselineTotalTicks += (cpu_timer_now() - tickStart); // record timer
+}
+/* run test on integer add */
+for (register double i = 0; i < iter; i++) {
+	register uint32_t tickStart = cpu_timer_now(); // start timer
+	mathCommandOutput = input1 + (input2 + i); // set output variable to input1 + input2 + i (for increasing value)
+	totalTicks += (cpu_timer_now() - tickStart); // record timer
+}
+printf("total ticks: %li ticks\n", totalTicks);
+totalTicks -= baselineTotalTicks; // subtract baseline ticks
+double averageTicks = (double) totalTicks / iter; // compute average ticks
+double averageTime = cpu_timer_ticks_to_usec(abs(totalTicks)) / iter;
+printf("\naverage ticks for add: %lf ticks\n", averageTicks);
+printf("average time for add: %lf microseconds\n", averageTime);
+```
+
 Additional information:
 - In some cases, the time taken to perform the operation was less than the baseline, like in the case of muli. This results in a negative number on the graph. This is unexpected and further tests would be required to determine the cause.
 - Tests were ran on the debug version of the code. This uses the -O2 optimization flag with the gcc compiler
@@ -27,6 +49,24 @@ Additional information:
 ## Results
 
 ### Common Operations
+
+| Operation | Argument Signature | Time per Operation (ns) |
+| --- | --- | --- |
+| `addi` | `int`, `int` | 1.365 |
+| `subi` | `int`, `int` | 1.605 |
+| `muli` | `int`, `int` | 1.395 |
+| `divi` | `int`, `int` | 24.285 |
+| `modi` | `int`, `int` | 37.395 |
+| `addf` | `float`, `float` | 0.150 |
+| `subf` | `float`, `float` | 0.105 |
+| `mulf` | `float`, `float` | 0.015 |
+| `divf` | `float`, `float` | -2.625 |
+| `add` | `double`, `double` | 0.030 |
+| `sub` | `double`, `double` | -0.045 |
+| `mul` | `double`, `double` | 0.000 |
+| `div` | `double`, `double` | -2.700 |
+| `fmod` | `double`, `double` | 91.635 |
+
 ![alt text](images/commonNanoseconds.svg)
 
 The `addi`, `subi`, `muli`, and `divi` refer to integer addition, subtraction, multiplication, and division.
@@ -56,11 +96,69 @@ Change plot sorting...
 
 <div id="plot_show_1"  style="display:block;">
 
+| Operation | Argument Signature | Time per Operation (ns) |
+| --- | --- | --- |
+| `floor` | `double` | 32.940 |
+| `ceil` | `double` | 35.235 |
+| `modf` | `double`, `double *` | 28.935 |
+| `fabs` | `double` | 10.770 |
+| `sqrt` | `double` | 37.800 |
+| `hypot` | `double` | 191.775 |
+| `cbrt` | `double` | 337.920 |
+| `sin` | `double` | 276.795 |
+| `cos` | `double` | 248.175 |
+| `tan` | `double` | 348.900 |
+| `asin` | `double` | 168.105 |
+| `acos` | `double` | 154.410 |
+| `atan` | `double` | 178.830 |
+| `atan2` | `double` | 273.495 |
+| `sinh` | `double` | 226.110 |
+| `cosh` | `double` | 130.025 |
+| `tanh` | `double` | 26.445 |
+| `asinh` | `double` | 347.580 |
+| `acosh` | `double` | 360.630 |
+| `atanh` | `double` | 124.335 |
+| `exp` | `double` | 269.865 |
+| `ldexp` | `double`, `int` | 102.555 |
+| `frexp` | `double`, `int *` | 35.265 |
+| `pow` | `double`,  `double` | 844.876 |
+| `log` | `double` | 226.110 |
+| `log10` | `double` | 284.175 |
+
 ![alt text](images/allNanoseconds.svg)
 
 </div>
 
 <div id="plot_show_2"  style="display:none;">
+
+| Operation | Argument Signature | Time per Operation (ns) |
+| --- | --- | --- |
+| `fabs` | `double` | 10.770 |
+| `tanh` | `double` | 26.445 |
+| `modf` | `double`, `double *` | 28.935 |
+| `floor` | `double` | 32.940 |
+| `ceil` | `double` | 35.235 |
+| `frexp` | `double`, `int *` | 35.265 |
+| `sqrt` | `double` | 37.800 |
+| `ldexp` | `double`, `int` | 102.555 |
+| `atanh` | `double` | 124.335 |
+| `cosh` | `double` | 130.025 |
+| `acos` | `double` | 154.410 |
+| `asin` | `double` | 168.105 |
+| `atan` | `double` | 178.830 |
+| `hypot` | `double` | 191.775 |
+| `sinh` | `double` | 226.110 |
+| `log` | `double` | 226.110 |
+| `cos` | `double` | 248.175 |
+| `exp` | `double` | 269.865 |
+| `sin` | `double` | 276.795 |
+| `log10` | `double` | 284.175 |
+| `atan2` | `double` | 273.495 |
+| `cbrt` | `double` | 337.920 |
+| `asinh` | `double` | 347.580 |
+| `tan` | `double` | 348.900 |
+| `acosh` | `double` | 360.630 |
+| `pow` | `double`,  `double` | 844.876 |
 
 ![alt text](images/sortedNanoseconds.svg)
 
@@ -71,6 +169,16 @@ Change plot sorting...
 All of these functions come from the <[math.h](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/math.h.html)> library.
 
 ### Casts
+
+| Operation | Argument Signature | Time per Operation (ns) |
+| --- | --- | --- |
+| `castfi` | `float` | 0.015 |
+| `castdi` | `double` | 0.150 |
+| `castif` | `int` | 3.015 |
+| `castdf` | `double` | 1.545 |
+| `castid` | `int` | 1.575 |
+| `castfd` | `float` | 0.150 |
+
 ![alt text](images/castNanoseconds.svg)
 
 Naming format:
@@ -104,7 +212,7 @@ int fastdivi(int arg1, int arg2) {
 
 Likewise, why bother using the slow `floor()` function when you can just cast the double to an int and then back to a double.
 ```
-// truncates the decimal portion of a double
+// truncates the decimal portion of a double (note: rounds negative numbers up)
 double fastfloor(double arg) {
 	return (double) (int) arg;
 }
