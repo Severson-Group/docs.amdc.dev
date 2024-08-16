@@ -81,5 +81,6 @@ To fully grasp the AMDC firmware architecture, examples are provided which concr
 
 drivers
 system
+timing-manager
 user-apps
 ```

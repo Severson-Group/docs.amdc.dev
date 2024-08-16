@@ -13,5 +13,6 @@ Not every user needs to complete all of these tutorials, just the ones relevant 
 :hidden:
 
 Custom Control Rate <custom-control-rate/index>
+Sensor Configuration and Profiling <sensor-configuration/index>
 Custom FPGA IP Core <fpga-ip-core/index>
 ```
