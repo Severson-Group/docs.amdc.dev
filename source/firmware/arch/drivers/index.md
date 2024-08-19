@@ -58,3 +58,12 @@ Similar to steps for reading voltages, but with `drv/pwm.c` driver.
 ### Reading Encoder Values
 
 Similar to steps for reading voltages, but with `drv/encoder.c` driver.
+
+
+```{toctree}
+:hidden:
+
+gpio-mux
+status-mux
+eddy-current-sensor
+```

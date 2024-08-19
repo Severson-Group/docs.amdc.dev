@@ -79,7 +79,7 @@ To fully grasp the AMDC firmware architecture, examples are provided which concr
 ```{toctree}
 :hidden:
 
-drivers
+drivers/index.md
 system
 user-apps
 ```
