@@ -65,5 +65,6 @@ Similar to steps for reading voltages, but with `drv/encoder.c` driver.
 
 gpio-mux
 status-mux
+encoder
 eddy-current-sensor
 ```

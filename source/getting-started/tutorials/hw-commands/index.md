@@ -134,7 +134,11 @@ To print this variable, call `hw enc pos`.
 The encoder position signal is not defined until the `Z` pulse is seen by the FPGA -- the command (i.e. driver) will output `-1` until a valid position is available.
 ```
 
-See the [encoder hardware documentation](/hardware/subsystems/encoder.md) for more info on the hardware capabilities.
+```{warning}
+The encoder is capable of reporting both the *instantaneous* steps and position, as well as the steps and position that were sampled at the time of the PWM-carrier-synced timing manager trigger. The latter is the default, but if the instantaneous steps and position values are required, they can be accessed via special functions in the encoder driver (see the *encoder driver documentation* page linked just below).
+```
+
+See the [encoder hardware documentation](/hardware/subsystems/encoder) for more info on the hardware capabilities, and the [encoder driver documentation](/firmware/arch/drivers/encoder) for more info on the C firmware layer used to interact with the encoder.
 
 #### Example
 
