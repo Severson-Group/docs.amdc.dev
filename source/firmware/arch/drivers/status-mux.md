@@ -3,7 +3,8 @@
 This driver is used to control and configure the inverter status mux IP core in the FPGA through the AXI4-Lite interface.
 
 ## Files
-All files for the inverter status mux driver are in the driver directory ([`common/drv/`](/sdk/bare/common/drv/)).
+All files for the inverter status mux driver are in the AMDC-Firmware driver directory ([`sdk/app_cpu1/common/drv/`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/drv)).
+
 
 ```
 drv/

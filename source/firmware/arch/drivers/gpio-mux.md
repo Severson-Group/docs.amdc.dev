@@ -1,46 +1,58 @@
-# Inverter GPIO Mux Driver
+# GPIO Port Mux Driver
 
-This driver is used to control and configure the GPIO mux IP core in the FPGA through the AXI4-Lite interface.
+This driver is used to configure the GPIO mux IP core in the FPGA through the AXI4-Lite interface.
+
+A physical GPIO port on the AMDC could be connected to one of many external devices. Therefore, a selector mux is necessary to pick which driver (AMDS, eddy current sensor, etc) should control the GPIO port.
 
 ## Files
-All files for the GPIO mux driver are in the driver directory ([`/sdk/app_cpu1/common/drv/`](/sdk/app_cpu1/common/drv/)).
+
+All files for the GPIO mux driver are in the AMDC-Firmware driver directory ([`sdk/app_cpu1/common/drv/`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/drv)).
 
 ```
 drv/
 |-- gpio_mux.c
 |-- gpio_mux.h
+|-- gp3io_mux.c
+|-- gp3io_mux.h
 ```
-## Default Connections and Operation
 
-The mux IP can be connected to one of eight different IP drivers
+## Configuring the GPIO Port Mux
 
-## Configuring the Mux
+The function used to connect a driver to a GPIO Port via the GPIO Mux depends on the revision of the AMDC hardware used:
 
-The following functions are used to configuring the GPIO mux IP. The `gpio_mux_init()` function is called upon initialization of the AMDC and sets the GPIO mux into a default state defined by the macros as described below. The `gpio_mux_set_device()` function is the intended way of configuring the GPIO mux IP. The function must be called by the user app. During runtime, the CLI commands can be used to configure the mux. 
+### AMDC REV E and beyond
 
-### Functions
+On AMDC REV E and beyond, the **GP3IO mux** IP is used to map drivers to the physical GPIO port. The following function can be used to configure the GPIO port mapping:
 
-`gpio_mux_init(void)`
-
-Initializes the GPIO mux with default configurations. Each IsoSPI port is mapped to the device drivers defined in its respective macro in `gpio_mux.h`.
-
-
-`void gpio_mux_set_device(port, device);`
-
-Remaps the GPIO lines on the specified IsoSPI port to the specified device driver. Each register corresponding to the IsoSPI port are written to via the AXI4-Lite interface with the device address (1-4).
-
-### CLI Commands
-
-The GPIO mux can be configured at runtime using commands entered in the command line interface. The command follows the form `hw mux gpio <port> <device>` where `<port>` and `<device>` specify which device driver is connected to which IsoSPI port.
-
-### Macros
-
-The following macros are used to configure which device driver each IsoSPI port is mapped to upon initialization.  
-
-Each port is set to the `GPIO_MUX_UNUSED` macro by default which disables the GPIO lines on the port by holding the lines to logic low. Each port can be mapped to a specific driver IP core upon initialization of the AMDC by setting the port macro to one of the devices (`GPIO_MUX_DEVICE1` - `GPIO_MUX_DEVICE4`)
-
-```C
-#define GPIO_PORT1 GPIO_MUX_UNUSED
-
-#define GPIO_PORT2 GPIO_MUX_UNUSED
+```C 
+void gp3io_mux_set_device(port, device);
 ```
+
+where *port* should be replaced by *GP3IO_MUX_N_BASE_ADDR*, *N* being the GPIO port number (1-4), and *device* should be the number in this list of the connected device:
+
+1. AMDS
+2. Eddy Current Sensor
+3. ILD1420 Proximity Sensor
+4. GPIO Direct (direct pin control)
+
+### AMDC REV D
+
+On AMDC REV D, the **GPIO mux** IP is used to map drivers to the physical GPIO port. The following function can be used to configure the GPIO port mapping:
+
+```C 
+void gpio_mux_set_device(port, device);
+```
+
+where *port* should be replaced by the GPIO port number (0 for physical port 1, 1 for physical port 2), and *device* should be the number in this list of the connected device:
+
+1. Eddy Current Sensor
+2. AMDS
+3. ILD1420 Proximity Sensor 1
+4. ILD1420 Proximity Sensor 2
+5. GPIO Direct (direct pin control, physical GPIO Port 1)
+6. GPIO Direct (direct pin control, physical GPIO Port 2)
+
+## CLI Commands
+
+Both GPIO mux interfaces can be configured at runtime using commands entered in the command line interface. The command follows the form `hw mux gpio <port> <device>` where `<port>` and `<device>` specify which device driver is connected to which GPIO physical port.
+

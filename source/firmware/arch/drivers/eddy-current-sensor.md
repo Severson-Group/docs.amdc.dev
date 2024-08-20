@@ -1,9 +1,10 @@
 # Eddy Current Sensor Driver
 
-This driver is used to control and configure the AMDC eddy current sensor IP core in the FPGA through the AXI4-Lite interface.
+This driver is used to control and configure the AMDC Eddy Current Sensor IP core in the FPGA through the AXI4-Lite interface.
 
 ## Files
-All files for the eddy current sensor driver are in the driver directory ([`common/drv/`](/sdk/bare/common/drv/)).
+All files for the eddy current sensor driver are in the AMDC-Firmware driver directory ([`sdk/app_cpu1/common/drv/`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/drv)).
+
 
 ```
 drv/
@@ -11,82 +12,61 @@ drv/
 |-- eddy_current_sensor.h
 ```
 
-## Configuring the AMDC
+## Connecting and Enabling 
 
-The [GPIO mux](GPIO_Mux.md) is used to map IP cores to the physical GPIO (IsoSPI) ports. It must be configured to map the `eddy_current_sensor_1.0` IP core to the intended GPIO port. The following function can be used to configure the GPIO port mapping:
+The eddy current sensor adapter board should be connected to one of the GPIO ports on the AMDC with a DB-15 cable. Additionally, the firmware driver must be routed to the connected port via the GPIO Mux (AMDC REV D) or GP3IO Mux (AMDC REV E). See the documentation on the GPIO muxes [here](/firmware/arch/drivers/gpio-mux.md).
 
-```C 
-void gpio_mux_set_device(port, device);
-```
-
-By default the `eddy_current_sensor_1.0` IP core is connected to device 1 in the FPGA firmware. The example below would configure the GPIO mux to map the IP core to port 1.
+As of AMDC Firmware release v1.3, sensors must also be enabled in the [Timing Manager](/firmware/arch/timing-manager) as follows, to be triggered for periodic data sampling:
 
 ```C
-gpio_mux_set_device(1, 1);
+void timing_manager_enable_sensor(sensor_e sensor)
 ```
+This function enables a sensor in the timing manager for period data sampling. To enable an eddy current sensor for a given GPIO port _N_, "_EDDY_N_" should passed in as the argument for _sensor_.
 
 ## Driving the Eddy Current Sensor
-### Functions
+
 ```C
 void eddy_current_sensor_init(void)
 ```
 
-This function is called by the BSP and initializes the eddy_current_sensor sample rate to 20kHz to match the AMDC callback frequency.
+This function is called by the BSP and initializes all eddy_current_sensor IP to use the default timing parameters (SCLK frequency and propogation delay).
 
 ```C
-void eddy_current_sensor_enable(void)
+void eddy_current_sensor_set_timing(uint32_t base_addr, uint32_t sclk_freq_khz, uint32_t propogation_delay_ns)
 ```
-
-This function enables SPI transmissions to the eddy current sensor. SPI transmission will occur continuously until the drivers are disabled
-
-```C
-void eddy_current_sensor_disable(void)
-```
-
-This function disables SPI transmissions to the eddy current sensor.
+This function can be used to override the default timing parameters for a given eddy current sensor instance.
 
 ```C
-void eddy_current_sensor_set_sample_rate(double sample_rate)
-```
-
-This function sets frequency of the SPI clock and conversion signal to match the given sample_rate parameter in Hz. The SPI clock is 25 times greater than the sample rate. 
-
-```C
-void eddy_current_sensor_set_divider(uint8_t divider)
-```
-
-This function sets the IP register used to modulate the SPI frequency.
-
-```C
-double eddy_current_sensor_read_x_voltage(void)
+double eddy_current_sensor_read_x_voltage(uint32_t base_addr)
 ```
 
 This function reads the X data from the IP data register. The returned data is sign extended 2's compliment 18-bit data.
 
 ```C
-double eddy_current_sensor_read_y_voltage(void)
+double eddy_current_sensor_read_y_voltage(uint32_t base_addr)
 ```
 
 This function reads the Y data from the IP data register. The returned data is sign extended 2's compliment 18-bit data.
 
 ## Example Code
 
-The desired sampling rate for the eddy current sensor should be set in the users initialization of their C drivers. The sampling rate ranges from 2KSps to 500KSps. The sensor data can be read from an existing callback function or one can be created and registered with FreeRTOS. The following code is a simple example of a scheduled callback function that reads the sensors positional data:
-
 ```C
 ///////////////////////////////////
-//  In my_driver.c  
+//  In app_controller.c  
 ///////////////////////////////////
 
-void my_driver_init() {
+void app_controller_init() 
+{
+  // Set GPIO port 1 on AMDC to eddy current sensor
+#if (USER_CONFIG_HARDWARE_TARGET == AMDC_REV_D)
+  gpio_mux_set_device(0, 1);
+#elif (USER_CONFIG_HARDWARE_TARGET == AMDC_REV_E ) || (USER_CONFIG_HARDWARE_TARGET == AMDC_REV_F)
+  gp3io_mux_set_device(GP3IO_MUX_1_BASE_ADDR, 2);
+#endif
 
-  // Set the sample rate of the eddy current sensor to 40KSps (1MHz SPI clock)
-  eddy_current_sensor_set_sample_rate(40000);
+  // Enable eddy current sensor in timing manager
+  timing_manager_enable_sensor(EDDY_1);
 
-  // Initializes a task to read the eddy current sensor data
-  task_eddy_current_sensor_init();
-
-  
   // More Initialization code...
 
   return;
@@ -94,31 +74,18 @@ void my_driver_init() {
 
 
 ///////////////////////////////////
-//  In task_eddy_current_sensor.c   
+//  In task_controller.c   
 //////////////////////////////////
 
-// Scheduler TCB which holds task "context"
-static task_control_block_t tcb;
+// Other functions...
 
-int task_eddy_current_sensor_init(void)
+void task_controller_callback(void *arg)
 {
-    if (scheduler_tcb_is_registered(&tcb)) {
-        return FAILURE;
-    }
-
-    // Fill TCB with parameters
-    scheduler_tcb_init(&tcb, task_eddy_current_sensor_callback, NULL, "eddy_current", TASK_DAC_INTERVAL_USEC);
-
-    // Register task with scheduler
-    return scheduler_tcb_register(&tcb);
-}
-
-void task_eddy_current_sensor_callback(void *arg)
-{
+  // Other callback code...
 
   // Read X and Y positional data as voltage
-  double voltage_x = eddy_current_sensor_read_x_voltage();
-  double voltage_y = eddy_current_sensor_read_y_voltage();
+  double voltage_x = eddy_current_sensor_read_x_voltage(EDDY_CURRENT_SENSOR_1_BASE_ADDR);
+  double voltage_y = eddy_current_sensor_read_y_voltage(EDDY_CURRENT_SENSOR_1_BASE_ADDR);
 
 
   // Use the positional data

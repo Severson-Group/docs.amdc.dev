@@ -125,10 +125,15 @@ Components were placed on the top layer in positions with the intent to maximize
 
 ## Firmware Driver
 
-This driver is used to control and configure the DAC expansion board REV C IP core in the FPGA through the AXI4-Lite interface.
+This driver is used to control and configure the DAC expansion board REV B IP core in the FPGA through the AXI4-Lite interface.
+
+```{warning}
+This documentation for driving the DAC expansion board was written for the AMDC REV D and DAC Board REV B, which have long-since been superceded by the AMDC REV E/F and DAC Board REV C. This guide should be considered out-of-date until it can be updated to reflect the new hardware and GPIO port interface.
+```
 
 ### Files
-All files for the DAC driver are in the AMDC-Firmware driver directory ([`common/drv/`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/drv)).
+All files for the DAC driver are in the AMDC-Firmware driver directory ([`sdk/app_cpu1/common/drv/`](https://github.com/Severson-Group/AMDC-Firmware/tree/develop/sdk/app_cpu1/common/drv)).
+
 
 ```
 drv/
@@ -138,7 +143,7 @@ drv/
 
 ### Enabling the DAC Drivers
 
-Several configuration need to be made to enable the DAC driver. The first configuration occurs in the [sts_mux.h](Status-Mux.md) file. The DAC IP core needs to be mapped to the desired Inverter Port for operation. By default the DAC IP core is connected to `STS_MUX_DEVICE1`. The desired port (`INVERTER_PORTn`) must be set to `STS_MUX_DEVICE1`. Lastly the direction of the Status lines A, B, and C must be configured as outputs. The `STS_MUX_X_DIR` macros must be set to `STS_MUX_OUTPUT` in the [sts_mux.h](Status-Mux.md) file, and the hardware must be configured as well.
+Several configurations need to be made to enable the DAC driver. The first configuration occurs in the [sts_mux.h](/firmware/arch/drivers/status-mux.md) file. The DAC IP core needs to be mapped to the desired Inverter Port for operation. By default the DAC IP core is connected to `STS_MUX_DEVICE1`. The desired port (`INVERTER_PORTn`) must be set to `STS_MUX_DEVICE1`. Lastly the direction of the Status lines A, B, and C must be configured as outputs. The `STS_MUX_X_DIR` macros must be set to `STS_MUX_OUTPUT` in the [sts_mux.h](/firmware/arch/drivers/status-mux.md) file, and the hardware must be configured as well.
 
 ### Configuring the DAC
 
