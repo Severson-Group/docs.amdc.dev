@@ -131,7 +131,7 @@ This means the position output can be used as an absolute position signal.
 To print this variable, call `hw enc pos`.
 
 ```{warning}
-The encoder position signal is not defined until the `Z` pulse is seen by the FPGA -- the command (i.e. driver) will output `-1` until a valid position is available.
+The encoder position signal is not defined until the `Z` pulse is seen by the FPGA -- the command (i.e. driver) will output `-1` until a valid position is available. If you do not see any valid data coming from the driver, verify that the encoder is properly initialized and `encoder_set_pulses_per_rev()` has been called.
 ```
 
 ```{warning}
