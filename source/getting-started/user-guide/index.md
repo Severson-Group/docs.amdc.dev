@@ -27,5 +27,5 @@ host-interface/index
 logging/index
 injection/index
 task-profiling
-amds-interface
+amds-interface/index
 ```

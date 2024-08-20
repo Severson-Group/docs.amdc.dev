@@ -16,7 +16,7 @@ First, the AMDS hardware needs to be configured:
 
 Now that the hardware is configured, the AMDC firmware must be configured.
 
-## Enable AMDS Support
+## Include AMDS code and Configure AMDC GPIO Port
 
 By default, the AMDS drivers are not compiled into the C-code.
 
@@ -26,9 +26,11 @@ To enable, update the `usr/user_config.h` file and set the following define to `
 #define USER_CONFIG_ENABLE_AMDS_SUPPORT (1)
 ```
 
+Since the AMDS can be plugged into any of the GPIO ports, the AMDS driver inside the AMDC needs to be connected to the desired AMDC GPIO Port via the [GPIO Mux](/firmware/arch/drivers/gpio-mux) interface. This configuration can be done via the Command Line Interface, or using functions in the C code:
+
 ### Command Line Interface
 
-Once the above #define is declared, the hardware will enable an AMDS interface app, this will show up as a set of `amds` commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
+Once the above `#define` is declared, the hardware will enable an AMDS interface app, this will show up as a set of `amds` commands at bootup. To enable AMDS usage in this app, we need to first route the mux to the appropriate ports. This is done through the `hw mux gpio <port> <device>` command call. 
 
 #### AMDC REV D
 
@@ -42,11 +44,9 @@ Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. T
 - `<port>` is `1-4` 
 - `<device>` should be set to `1` for the AMDS connection
     
-Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `amds <port> XXXX` command structure described in the `help` interface. Note that `<port>` ranges from `1-4` and should correspond to the GPIO port number your AMDS is connected to.
+Once the `gp3io_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `amds <port> XXXX` command structure described in the `help` interface. Note that `<port>` ranges from `1-4` and should correspond to the GPIO port number your AMDS is connected to.
 
 ### Configure GPIO/GP3IO Mux in Code
-
-Since the AMDS can be plugged into any of the GPIO ports, the AMDC needs to be configured for the appropriate GPIO port.
 
 #### AMDC REV D
 
@@ -61,11 +61,11 @@ Place the header file in the custom user app .c file
 Place the code below into your custom user app init function. Modify the first variable in the function call to match the physical port connection joining the AMDC with the AMDS.  Note this is zero-indexed and the GPIO port per the silk screen is one-indexed.
 
 ```C
-// Configure GPIO mux
+// Configure GPIO mux for the AMDS
 // 0: top port on AMDC
 // 1: bot port on AMDC
-// GPIO_MUX_DEVICE1: Eddy current I/O IP block in the FPGA
-// GPIO_MUX_DEVICE2: AMDS interface I/O IP block in the FPGA
+// GPIO_MUX_DEVICE1: Eddy Current Sensor IP block
+// GPIO_MUX_DEVICE2: AMDS driver IP block
 gpio_mux_set_device(0, GPIO_MUX_DEVICE2);
 ```
 
@@ -79,19 +79,30 @@ Include the header file in the custom user app .c file
 #include "drv/gp3io_mux.h"
 ```
 
-Place the code below into your custom user app init function. Modify the `GP3IO_MUX_#_ADDR` define to match the physical port connection joining the AMDC with the AMDS.
+Place the code below into your custom user app init function. Modify the `GP3IO_MUX_#_BASE_ADDR` define to match the physical port connection joining the AMDC with the AMDS.
 
 ```C
-// Set up GPIO mux for the AMDS board
-// GP3IO_MUX_1_BASE_ADDR means top AMDC port
-// GP3IO_MUX_DEVICE1 is AMDS IP block
+// Configure GP3IO mux for the AMDS
+// GP3IO_MUX_#_BASE_ADDR means AMDC GPIO Port #
+// GP3IO_MUX_DEVICE1 is AMDS driver IP block
 // GP3IO_MUX_DEVICE2 is Eddy Current Sensor IP block
-gp3io_mux_set_device(GP3IO_MUX_2_BASE_ADDR, GP3IO_MUX_DEVICE1);
+gp3io_mux_set_device(GP3IO_MUX_1_BASE_ADDR, GP3IO_MUX_DEVICE1);
 ```
+## Enabling the AMDS in the Timing Manager 
+
+Triggering data acquisition on the AMDS is done via the AMDC [Timing Manager](/firmware/arch/timing-manager.md). The Timing Manager triggers sensors to sample data aligned with the peaks and/or valleys of the PWM carrier, or at a sub-rate of these events. Run the command `hw tm enable amds #`, or include the following function in your user app init function:
+
+```C
+// Enable data sampling for AMDS on GPIO Port #
+timing_manager_enable_sensor(AMDS_1);
+```
+
+To learn more about how to enable sensors and how to configure triggering, please follow the [Sensor Feedback tutorial](/getting-started/tutorials/sensor-feedback/index.md), or the advanced [Sensor Configuration tutorial](/getting-started/advanced-tutorials/sensor-configuration/index.md).
+
 
 ## Requesting and Retrieving Data from the AMDS
 
-Triggering data acquisition on the AMDS is done via the AMDC Timing Manager. After enabling the AMDS (on the correct port) via the Timing Manager, the AMDS will be included when all enabled sensors are triggered by the Timing Manager. Sensors are triggered as aligned with the peaks and/or valleys of the PWM carrier, or at a sub-rate of these events. To learn more about how to enable sensors and how to configure triggering, please read the documentation for the [Timing Manager](/firmware/arch/system.md).
+
 
 After the AMDS is triggered to begin sampling, each sensor card populated on the AMDS will sample and provide the data the processor on the mainboard. As soon as the mainboard has collected all the data from the sensor cards, the mainboard will automatically send all the data back to the AMDC, where the data for each sensor card will be made available in the corresponding channel's data register. To learn more about the firmware interface between the AMDC and AMDS please see the [AMDS Firmware documentation](/accessories/amds/firmware/index.md), and the AMDC driver code in the [AMDC-Firmware repository](https://github.com/Severson-Group/AMDC-Firmware). The FPGA code can be found in `ip_repo/amdc_amds_1.0`, and C code can be found in `sdk/app_cpu1/common/drv/amds.c`.
 
@@ -209,7 +220,7 @@ The AMDS-AMDC digital interface sometimes needs debugging if valid data does not
 
 The process above allows for scope-level debugging since you are manually triggering everything to happen.
 
-### AMDS Driver Counters
+### AMDS Driver Debug Counters
 
 The AMDC uses a FPGA IP block for the AMDS interface driver.
 It keeps track of the performance of the digital link to the AMDS via several counters in the FPGA.
@@ -217,21 +228,35 @@ For each byte of data transmitted from the AMDS to AMDC, one counter is incremen
 
 At any time, you can read the counters via: `amds 1 counters` (or, programmatically via the associated C code API)
 
-- `V` is "valid" and means the byte of data received is valid.
-- `C` is "corrupt" when the full data byte was received, but the UART parity check fails (typically due to noise, EMI, etc).
-- `T` is "timeout" when the AMDC expected a byte from the AMDS, but it never showed up. This happens continuously when the cable is unplugged.
+- `Valid` means a full byte of data was received is passed the parity check.
+- `Corrupt` means a full data byte was received, but the UART parity check failed (typically due to noise, EMI, etc).
+- `Timed out bytes` is a timeout when the AMDC expected a byte from the AMDS, but it never showed up. Since this count is for a single data byte, it will typically only increment by a small amount when unplugging the cable connecting the AMDC and AMDS.
+- `Timed out data` is a timeout for a full four-packet (12 byte) data stream. This counter will increment when the AMDC is requesting data from the AMDS but gets *nothing* back, which happens continuously when the cable connecting the AMDC and AMDS is fully unplugged.
 
-The value of `V` should be non-zero if the connection is active.
-Each time you read the counters, the value of `V` should increment.
+If all the counters are stuck at zero, the mostly likely cause is that the AMDS is not enabled in the timing manager. If only the `Timed out data` counter is incrementing, the AMDS is either unplugged, or the GPIO mux configuration was not completed correctly. If the connection is made correctly and active, the value of the `Valid` counter should be continually incrementing.
 
-Note that, since the UART link has two data lines, a separate 16-bit counter is used for each data line.
+```{note}
+For all counters, since the UART link has two data lines, a separate 16-bit counter is used for each data line.
 The `counters` command returns both counters concatenated into a 32-bit value.
 For example, if the value is `0x0002` for the first UART data line and `0x0003` for the second UART data line, the counter will appear as: `0x00020003`.
+```
 
 #### Example
 
 Consider running this experiment: the AMDS-AMDC link is working and you are reading valid data. Then, the cable comes unplugged.
 
-- When the link is working, the `V` counter will continuously be incrementing (and wrapping around at the 16-bit limit)
-- As the cable comes unplugged, chances are, it will occur during some byte transmission. This will cause a corrupt data byte and the `C` counter will increment a few times based on exactly how the cable became unplugged.
-- After the cable is fully unplugged, the AMDC views every byte requested as a timeout, so the `T` counter will continuously increment. The other counters should remain frozen in their last value.
+- When the link is working, the `Valid` counter will continuously be incrementing (and wrapping around at the 16-bit limit)
+- As the cable comes unplugged, chances are, it will occur during some byte transmission. This will cause some  corrupt data bytes and some individual bytes to timeout. The `Corrupt` and `Timed out bytes` counters may each increment a few times based on exactly how the cable became unplugged.
+- After the cable is fully unplugged, the AMDC views every data stream requested as a data timeout, so the `Timed out data` counter will continuously increment. The other counters should remain frozen in their last value.
+
+This debug counter behaviour can be seen occuring repeatedly in the following video captured during experimental testing. When connected, `Valid` is incrementing, and when disconnected, `Timed out data` is incrementing. The `Corrupt` and `Timed out bytes` counters increment as the transition is made between the connected and disconnected states.
+
+![](images/debug-counters.gif)
+
+The image below also shows a graphical capture of the counters incrementing their values.
+
+```{image} images/debug-counter-graph.png
+:alt: Graph showing the values of debug counters during experiment
+:height: 18em
+:align: left
+```
