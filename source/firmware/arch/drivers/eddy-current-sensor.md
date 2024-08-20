@@ -55,6 +55,10 @@ This function reads the Y data from the IP data register. The returned data is s
 //  In app_controller.c  
 ///////////////////////////////////
 
+#include "drv/timing_manager.h"
+
+// Other includes and app functions...
+
 void app_controller_init() 
 {
   // Set GPIO port 1 on AMDC to eddy current sensor
@@ -71,13 +75,16 @@ void app_controller_init()
 
   return;
 }
+```
 
-
+```C
 ///////////////////////////////////
 //  In task_controller.c   
 //////////////////////////////////
 
-// Other functions...
+#include "drv/encoder.h"
+
+// Other includes and functions...
 
 void task_controller_callback(void *arg)
 {
