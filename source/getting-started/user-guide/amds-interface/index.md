@@ -16,7 +16,7 @@ First, the AMDS hardware needs to be configured:
 
 Now that the hardware is configured, the AMDC firmware must be configured.
 
-## Include AMDS code and Configure AMDC GPIO Port
+## Include AMDS Code and Configure AMDC GPIO Port
 
 By default, the AMDS drivers are not compiled into the C-code.
 
@@ -43,7 +43,7 @@ Once the `gpio_mux` is routed, we can now make inquiries to the AMDS for data. T
 
 - `<port>` is `1-4` 
 - `<device>` should be set to `1` for the AMDS connection
-    
+
 Once the `gp3io_mux` is routed, we can now make inquiries to the AMDS for data. This is done through the `amds <port> XXXX` command structure described in the `help` interface. Note that `<port>` ranges from `1-4` and should correspond to the GPIO port number your AMDS is connected to.
 
 ### Configure GPIO/GP3IO Mux in Code
@@ -58,7 +58,7 @@ Place the header file in the custom user app .c file
 #include "drv/gpio_mux.h"
 ```
 
-Place the code below into your custom user app init function. Modify the first variable in the function call to match the physical port connection joining the AMDC with the AMDS.  Note this is zero-indexed and the GPIO port per the silk screen is one-indexed.
+Place the code below into your custom user app init function. Modify the first variable in the function call to match the physical port connection joining the AMDC with the AMDS. Note this is zero-indexed and the GPIO port per the silk screen is one-indexed.
 
 ```C
 // Configure GPIO mux for the AMDS
@@ -101,8 +101,6 @@ To learn more about how to enable sensors and how to configure triggering, pleas
 
 
 ## Requesting and Retrieving Data from the AMDS
-
-
 
 After the AMDS is triggered to begin sampling, each sensor card populated on the AMDS will sample and provide the data the processor on the mainboard. As soon as the mainboard has collected all the data from the sensor cards, the mainboard will automatically send all the data back to the AMDC, where the data for each sensor card will be made available in the corresponding channel's data register. To learn more about the firmware interface between the AMDC and AMDS please see the [AMDS Firmware documentation](/accessories/amds/firmware/index.md), and the AMDC driver code in the [AMDC-Firmware repository](https://github.com/Severson-Group/AMDC-Firmware). The FPGA code can be found in `ip_repo/amdc_amds_1.0`, and C code can be found in `sdk/app_cpu1/common/drv/amds.c`.
 
@@ -246,7 +244,7 @@ For example, if the value is `0x0002` for the first UART data line and `0x0003` 
 Consider running this experiment: the AMDS-AMDC link is working and you are reading valid data. Then, the cable comes unplugged.
 
 - When the link is working, the `Valid` counter will continuously be incrementing (and wrapping around at the 16-bit limit)
-- As the cable comes unplugged, chances are, it will occur during some byte transmission. This will cause some  corrupt data bytes and some individual bytes to timeout. The `Corrupt` and `Timed out bytes` counters may each increment a few times based on exactly how the cable became unplugged.
+- As the cable comes unplugged, chances are, it will occur during some byte transmission. This will cause some corrupt data bytes and some individual bytes to timeout. The `Corrupt` and `Timed out bytes` counters may each increment a few times based on exactly how the cable became unplugged.
 - After the cable is fully unplugged, the AMDC views every data stream requested as a data timeout, so the `Timed out data` counter will continuously increment. The other counters should remain frozen in their last value.
 
 This debug counter behaviour can be seen occuring repeatedly in the following video captured during experimental testing. When connected, `Valid` is incrementing, and when disconnected, `Timed out data` is incrementing. The `Corrupt` and `Timed out bytes` counters increment as the transition is made between the connected and disconnected states.
@@ -260,3 +258,25 @@ The image below also shows a graphical capture of the counters incrementing thei
 :height: 18em
 :align: left
 ```
+
+| Upper Graph Legend Name | Counter Name                      |
+|-------------------------|-----------------------------------|
+| <span style="color:royalblue;font-weight:bold">V_0</span>   | Valid Count - Data Line 0          |
+| <span style="color:darkorange;font-weight:bold">V_1</span>  | Valid Count - Data Line 1          |
+| <span style="color:forestgreen;font-weight:bold">D_0</span> | Timed out Data Count - Data Line 0 |
+| <span style="color:firebrick;font-weight:bold">D_1</span>   | Timed out Data Count - Data Line 1 |
+
+You can see in the upper graph that the `Valid` counters for both Data Lines 0 and 1 ramp up (and overflow back to zero) while the cable between the AMDC and AMDS is plugged in. At around time 1500, the cable is unplugged. The value of the `Valid` counter freezes, while the value of the `Timed out data` counter begins to ramp up. Around time 2200, the cable is plugged back in and the counters switch off, and unplugged again at time 4000.
+
+Around time 6000, the cable is wiggled at the connector, rapidly connecting and disconnecting the two boards, to simulate a cable that is not fully plugged in. During this operating condition, the `Valid` and `Timed out data` counters rapidly switch off between ramping and freezing. 
+
+| Lower Graph Legend Name | Counter Name                      |
+|-------------------------|-----------------------------------|
+| <span style="color:royalblue;font-weight:bold">C_0</span>   | Corrupt Count - Data Line 0          |
+| <span style="color:darkorange;font-weight:bold">C_1</span>  | Corrupt Count - Data Line 1          |
+| <span style="color:forestgreen;font-weight:bold">B_0</span> | Timed out Byte Count - Data Line 0 |
+| <span style="color:firebrick;font-weight:bold">B_1</span>   | Timed out Byte Count - Data Line 1 |
+
+In the lower graph, the `Corrupt` and `Timed out Byte` counters for both data lines are shown. These counters should not really be increasing constantly during any operation, instead they may jump up a bit each time the cable becomes plugged in or unplugged, as a few individual data packets become corrupted or timeout.
+
+The bytes become corrupted much more frequently when the cable is loosely-connected/jostled after time 6000.
