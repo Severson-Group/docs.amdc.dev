@@ -97,7 +97,7 @@ Triggering data acquisition on the AMDS is done via the AMDC [Timing Manager](/f
 timing_manager_enable_sensor(AMDS_1);
 ```
 
-To learn more about how to enable sensors and how to configure triggering, please follow the [Sensor Feedback tutorial](/getting-started/tutorials/sensor-feedback/index.md), or the advanced [Sensor Configuration tutorial](/getting-started/advanced-tutorials/sensor-configuration/index.md).
+To learn more about how to enable sensors and how to configure triggering, please follow the [Timing & Sensors tutorial](/getting-started/tutorials/sensors/index.md).
 
 
 ## Requesting and Retrieving Data from the AMDS
