@@ -90,6 +90,8 @@ void timing_manager_init(void);
 int timing_manager_interrupt_system_init(void);
 ```
 
+These functions are used to initialize the Timing Manager to the default start-up configuration (no sensors enabled, trigger generation every 10 PWM Carrier valleys), and to enable the FPGA-ARM interrupt for the scheduler. The initialization is handled in `main.c`.
+
 ```C
 // Automatic and Manual Triggering Mode 
 void timing_manager_set_mode(trigger_mode_e mode);
@@ -98,11 +100,20 @@ void timing_manager_send_manual_trigger(void);
 uint32_t timing_manager_get_trigger_count(void);
 ```
 
+These functions are used to modify the trigger and debug the sensor interface. The trigger can be put into a single-trigger "Manual Mode" where the user can request that one trigger be sent at only the next PWM event, instead of all qualifying events ("Automatic Mode").
+
 ```C
+// PWM event configuration
+void timing_manager_trigger_on_pwm_both(void);
+void timing_manager_trigger_on_pwm_high(void);
+void timing_manager_trigger_on_pwm_low(void);
+
 // Set/get User Event Ratio
 void timing_manager_set_ratio(uint32_t ratio);
 uint32_t timing_manager_get_ratio(void);
 ```
+
+The functions allow the user to modify the PWM event configuration. By default, sensors are triggered every 10 PWM carrier valleys (`pwm_low`); however with these functions, the Timing Manager can be configured to align triggers to any multiple of PWM carrier peaks and/or valleys.
 
 ```C
 // Enable/Disable sensors
@@ -110,18 +121,15 @@ void timing_manager_select_sensors(uint16_t enable_bits);
 void timing_manager_enable_sensor(sensor_e sensor);
 ```
 
+These functions are commonly used to set which sensor interfaces the Timing Manager should send triggers through to. Sensors can be enabled one-at-a-time with the `timing_manager_enable_sensor()` function, or in a batch by passing the proper value to `timing_manager_select_sensors()`. To disable triggering on all sensor interfaces, pass zero to this function: `timing_manager_select_sensors(0)`.
+
 ```C
 // Check 'done' status of sensors
 bool timing_manager_is_sensor_done(sensor_e sensor);
 bool timing_manager_are_sensors_all_done(void);
 ```
 
-```C
-// PWM event configuration
-void timing_manager_trigger_on_pwm_both(void);
-void timing_manager_trigger_on_pwm_high(void);
-void timing_manager_trigger_on_pwm_low(void);
-```
+These functions allow the user to check which sensor interfaces are done sampling new data.
 
 ```C
 // Interrupt and Scheduler Interface
@@ -132,6 +140,14 @@ double timing_manager_get_tick_delta(void);
 double timing_manager_expected_tick_delta(void);
 ```
 
+These functions deal with the Timing Manager->Scheduler (FPGA->ARM) interrupt. `timing_manager_isr()` and `timing_manager_clear_isr()` are interrupt service routine (which starts the scheduler) and the interrupt clear function, respectively.
+
+`timing_manager_set_scheduler_source()` is called during Timing Manager initialization, and configure the scheduler interrupt to either be generated in sync with the trigger (Legacy Mode), or after the sensors have all reported done (New Mode), depending on the value of `#define USER_CONFIG_ISR_SOURCE` in `user_config.h`.
+
+`timing_manager_get_tick_delta()` reports the true measured time in microseconds between ISR calls for the scheduler, which needs to know the elapsed time for proper control. `timing_manager_expected_tick_delta()` reports what this time *should be* based on the user's configuration of the Timing Manager, which is needed in `log.h` to determine the logging task's update frequency.
+
+It is not recommended for users to mess with these functions directly unless the impacts of doing so are understood!
+
 ```C
 // Measure sensors' data acquisition time
 double timing_manager_get_time_per_sensor(sensor_e sensor);
@@ -139,4 +155,4 @@ void timing_manager_sensor_stats(void);
 statistics_t *timing_manager_get_stats_per_sensor(sensor_e sensor);
 ```
 
-
+These functions allow the user to access statistics for each sensor interface, namely the data acquisition time in microseconds, via `timing_manager_get_time_per_sensor()`. 
