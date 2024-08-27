@@ -25,6 +25,6 @@ Meet the AMDC <meet-amdc/index>
 Blink <blink/index>
 Hardware Commands <hw-commands/index>
 Voltage Source Inverter <vsi/index>
-Sensor Feedback <sensor-feedback/index>
+Timing & Sensors <sensors/index>
 Profiling Tasks <profiling-tasks/index>
 ```
