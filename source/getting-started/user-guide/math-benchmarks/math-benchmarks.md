@@ -232,7 +232,7 @@ Perhaps the common cause for these operations taking longer is that there is ove
 
 The fast functions outperform their standard counterparts in every case.
 
-# Conclusion
+## Conclusion
 
 The experimental approach and results presented on this page can be used as a reference for ballparking about how many of a certain operation will fit within a time window. For example, given 100 μs of total time, the pow() function can be used 140 times, while about 4350 integer divisions can be performed.
 
