@@ -18,7 +18,7 @@ To understand the sequence of events, take the example of the `addi` test:
 - With the measured and baseline numbers of clock cycles logged, the totals are subtracted from each other. The average number of clock cycles is calculated as `(measured - baseline) / 100.0` clock cycles.
 
 Code example:
-```
+```C
 /* gather baseline */
 for (register int i = 0; i < iter; i++) {
 	register uint32_t tickStart = cpu_timer_now(); // start timer
@@ -203,7 +203,7 @@ Quick analysis:
 ## Acceleration strategies
 
 Integer division is so slow. It's faster to cast both inputs to doubles, do double division, and then cast that back to an integer.
-```
+```C
 // Computes (arg1 / arg2) for two integers
 int fastdivi(int arg1, int arg2) {
 	return (int) ((double) arg1 / arg2);
@@ -211,16 +211,16 @@ int fastdivi(int arg1, int arg2) {
 ```
 
 Likewise, why bother using the slow `floor()` function when you can just cast the double to an int and then back to a double.
-```
-// truncates the decimal portion of a double (note: rounds negative numbers up)
+```C
+// Truncates the decimal portion of a double (note: rounds negative numbers up)
 double fastfloor(double arg) {
 	return (double) (int) arg;
 }
 ```
 
 One strange result is the slowness of the `hypot()` function, which takes in two lengths and returns the hypotenuse as if the two inputs were sides of a right triangle. This function is abnormally slow, given that the formula is sqrt(x * x + y * y). Which should be around 42.615 nanoseconds but instead it takes on average 181.5 nanoseconds.
-```
-// calculates the hypotenuse of a right triangle given the lengths of the two legs
+```C
+// Calculates the hypotenuse of a right triangle given the lengths of the two legs
 double fasthypot(double arg1, double arg2) {
 	return sqrt(arg1 * arg1 + arg2 * arg2);
 }
@@ -234,6 +234,8 @@ The fast functions outperform their standard counterparts in every case.
 
 # Conclusion
 
-Use this page as a reference for ballparking about how many of a certain operation will fit within the allocated 100us timeframe. For instance, using the pow() function 140 times would be the around the limit, or doing 4350 integer divisions.
+The experimental approach and results presented on this page can be used as a reference for ballparking about how many of a certain operation will fit within a time window. For example, given 100 μs of total time, the pow() function can be used 140 times, while about 4350 integer divisions can be performed.
+
+Users can evaluate the expected run-time of their code by counting each math operation type and summing the operation time using the tables presented above. Then, users can profile their code on real hardware using similar approaches to above to validate the prediction.
 
 If you have any other ideas for speeding up operations, create a discussion thread on the AMDC-Firmware repo [here](https://github.com/Severson-Group/AMDC-Firmware/discussions)!
