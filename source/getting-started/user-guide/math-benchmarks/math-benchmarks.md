@@ -26,7 +26,7 @@ for (register int i = 0; i < iter; i++) {
 	baselineTotalTicks += (cpu_timer_now() - tickStart); // record timer
 }
 /* run test on integer add */
-for (register double i = 0; i < iter; i++) {
+for (register int i = 0; i < iter; i++) {
 	register uint32_t tickStart = cpu_timer_now(); // start timer
 	mathCommandOutput = input1 + (input2 + i); // set output variable to input1 + input2 + i (for increasing value)
 	totalTicks += (cpu_timer_now() - tickStart); // record timer
