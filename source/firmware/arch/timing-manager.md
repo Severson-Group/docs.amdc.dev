@@ -33,6 +33,15 @@ The timing manager must wait to schedule control tasks until all the user's desi
 
 Each enabled sensor will be triggered to sample by the timing manager at qualifying PWM carrier events. When a sensor is triggered, its `done` status is reset to 0, until that sensor completes its sampling, makes its new data available, and re-asserts its `done` status to 1 for the timing manager. 
 
+```{important}
+When creating new drivers for sensors, the sensor driver's done signal that is reported back to the Timing Manager MUST:
+
+- Be reset to 1
+- AND guarantee that the will be done eventually (possibly even time-out)
+
+or else the Timing Manager will never generate the scheduler interrupt, and all code will freeze!
+```
+
 ### Outputs
 
 #### Sensor Trigger
@@ -81,6 +90,9 @@ The Timing Manager can be configures to generate a scheduler interrupt in one of
 
 This configuration must be set before code compilation and flashing using the `USER_CONFIG_ISR_SOURCE` definition in `usr/user_config.h`.
 
+```{warning}
+When the scheduler checks to see if a task should be scheduled in scheduler_run(), the task's measured loop time is subtracted from the desired loop time. If the former is larger than the latter, the result will be negative and obviously the task should be scheduled. However, it is possible with floating point numbers that the measured loop time will be *just less* than the target loop time, in which case the subtraction result will be a very small positive number. We still want the task to be run in this case, so instead of checking if the subtraction result is less than 0, we check that it is less than a very small positive variance value. This variance has been defaulted to 60ns, but if a user is running their AMDC with "abnormal" timing settings, the magnitude of the tolerance may need to be overridden in user_config.h
+```
 
 ## Driver Interface
 
