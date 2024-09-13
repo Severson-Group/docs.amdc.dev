@@ -28,5 +28,5 @@ logging/index
 injection/index
 task-profiling
 math-benchmarks/math-benchmarks
-amds-interface
+amds-interface/index
 ```
