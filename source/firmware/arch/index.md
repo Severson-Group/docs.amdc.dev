@@ -42,7 +42,7 @@ Most of the system hardware peripherials are located in the FPGA and are custom 
 
 As an example, consider trying to use an FPGA timer. The timers can be configured to trigger interrupts from the FPGA. The `drv/timer.c` driver abstracts away the fairly complex task of initializing the FPGA hardware and setting up register values. Instead, the user can essentially command: "set up timer 1 to trigger interrupt at 10kHz" and it automagically happens. :)
 
-[Read more about the driver layer...](drivers.md)
+[Read more about the driver layer...](drivers/index.md)
 
 ## System
 
@@ -79,7 +79,7 @@ To fully grasp the AMDC firmware architecture, examples are provided which concr
 ```{toctree}
 :hidden:
 
-drivers
+drivers/index.md
 system
 user-apps
 ```
