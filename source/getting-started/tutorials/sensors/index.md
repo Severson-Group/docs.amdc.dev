@@ -13,7 +13,45 @@
 
 ## Introduction 
 
-## Step 1:
+The timing manager is added in version 1.3 to allow for syncing control tasks and sensor queries to the pwm carrier.
+
+This tutorial provides the source code for:
+* extending the functionality of the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) into a closed loop control system
+
+## Scheduling and Synchronizing:
+
+![](images/timing.png)
+
+Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the timing manager
+
+The AMDC synchronizes running tasks and sensor collection to the PWM carrier wave. Every X PWM periods (where X is set by the function timing_manager_set_ratio()), the AMDC will collect data from sensors. In Legacy mode, the AMDC will run control tasks concurrently with sensor collection. In Synchronized mode the AMDC will not run control tasks until the sensor collection is complete. Lets enable Synchronized mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`
+
+```
+// Specify the source of the scheduler ISR
+// Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio
+//         of carrier frequency to desired control frequency
+// Mode 1: new mode - scheduler is triggered when all the enabled sensors are done
+//         acquiring their data
+#define USER_CONFIG_ISR_SOURCE (1)
+```
+
+There are multiple factors that affect when and how fast control tasks run.
+ - User set TASK_UPDATES_PER_SEC
+ - PWM Frequency
+ - timing manager event ratio
+ - Sensor collection time (synchronized mode)
+
+Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods. If the PWM frequency / `event_ratio` < TASK_UPDATES_PER_SEC, then the control task will run at a slower rate than TASK_UPDATES_PER_SEC. And that's before taking into account that control tasks have to wait for the sensors to finish collecting (in synchronized mode). Additionally, if the `event_ratio` / PWM frequency > Sensor collection time, then the control tasks will never have an opportunity to run (in synchronized mode), since all time will be spent waiting for sensors to finish collecting. This gives us both a lower and upper bound to set the variables.
+
+Lets enable one of the sensors to start observing the effects of the timing manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
+
+To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
+ - User set TASK_CONTROLLER_UPDATES_PER_SEC is set in `task_controller.h`, it is (10000)
+ - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
+ - timing manager event ratio is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to TM_DEFAULT_PWM_RATIO, which is 10.
+ - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
+
+
 
 ## Step 2:
 
