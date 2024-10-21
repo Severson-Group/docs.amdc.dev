@@ -31,7 +31,7 @@ The AMDC synchronizes running tasks and sensor collection to the PWM carrier wav
 // Specify the source of the scheduler ISR
 // Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio
 //         of carrier frequency to desired control frequency
-// Mode 1: new mode - scheduler is triggered when all the enabled sensors are done
+// Mode 1: synchronized mode - scheduler is triggered when all the enabled sensors are done
 //         acquiring their data
 #define USER_CONFIG_ISR_SOURCE (1)
 ```
@@ -47,25 +47,26 @@ Consider: Control tasks only have the opportunity to run once every `event_ratio
 
 Lets enable one of the sensors to start observing the effects of the timing manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
 
+To get data from the ADC, use the function `analog_getf(ANALOG_IN1, &output)`. Read about the analog channel mapping on the [analog input page](hardware/subsystems/analog.md)
+
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
  - User set TASK_CONTROLLER_UPDATES_PER_SEC is set in `task_controller.h`, it is (10000)
  - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
  - timing manager event ratio is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to TM_DEFAULT_PWM_RATIO, which is 10.
- - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
+ - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds. This will be affected by the ADC clock, which is set in `common/drv/analog.h` to `ANALOG_CLKDIV4`, and can be set by the user with the `analog_set_clkdiv()` function.
  - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
 ## We can now draw our timing diagram with exact parameters:
 
 ![](images/tmVSI.svg)
 
-## Step 3:
+We can see that we are sampling the sensors once per control task. That's because our event ratio of 10 fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. In this tutorial we will experiment with changes to the parameters of the timing manager and observe the effects on control task timings.
 
-## Step 4:
+## Experiment 1 - Ratio is too large
 
-## Step 5:
+## Experiment 2 - Multiple sensor samples per control task
 
-## Conclusion
-
+## Experiment 3 - 
 
 
 Enabling/disabling sensors - INCLUDE EXAMPLE OF DOING THIS IN THE USER APP INIT FUNCTION
