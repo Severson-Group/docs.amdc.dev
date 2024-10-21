@@ -10,6 +10,7 @@
 1. Working AMDC Hardware
 2. Completion of the [Hardware Commands](/getting-started/tutorials/hw-commands/index.md) tutorial
 3. Completion of the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial
+4. Completion of the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial
 
 ## Introduction 
 
@@ -40,8 +41,9 @@ There are multiple factors that affect when and how fast control tasks run.
  - PWM Frequency
  - timing manager event ratio
  - Sensor collection time (synchronized mode)
+ - Control task time (how long it takes for the control task to run)
 
-Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods. If the PWM frequency / `event_ratio` < TASK_UPDATES_PER_SEC, then the control task will run at a slower rate than TASK_UPDATES_PER_SEC. And that's before taking into account that control tasks have to wait for the sensors to finish collecting (in synchronized mode). Additionally, if the `event_ratio` / PWM frequency > Sensor collection time, then the control tasks will never have an opportunity to run (in synchronized mode), since all time will be spent waiting for sensors to finish collecting. This gives us both a lower and upper bound to set the variables.
+Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods. If the PWM frequency / `event_ratio` < TASK_UPDATES_PER_SEC, then the control task will run at a slower rate than TASK_UPDATES_PER_SEC. Additionally, if the `event_ratio` / PWM frequency > Sensor collection time, then the control tasks will never have an opportunity to run (in synchronized mode), since all time will be spent waiting for sensors to finish collecting. This gives us both a lower and upper bound for these parameters. We also have to ensure that 1 / TASK_UPDATES_PER_SEC > Control task time, otherwise we are not able to run a control task in the time slot allotted.
 
 Lets enable one of the sensors to start observing the effects of the timing manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
 
@@ -50,10 +52,9 @@ To understand the specific timings of sensor collection and tasks, we need to kn
  - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
  - timing manager event ratio is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to TM_DEFAULT_PWM_RATIO, which is 10.
  - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
+ - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
 
-
-## Step 2:
 
 ## Step 3:
 
