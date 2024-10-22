@@ -55,7 +55,7 @@ Once all enabled sensors are done sampling, the manager sends an interrupt from 
 
 ### Timing Diagram
 
-The following diagram shows the behaviour of these events: triggers, sensors reporting as done, and generation of scheduler interrupts:
+The following diagram shows the behavior of these events: triggers, sensors reporting as done, and generation of scheduler interrupts:
 
 ```{figure} images/timing.png
 :alt: Timing Manager timing diagram
