@@ -64,9 +64,15 @@ We can see that we are sampling the sensors once per control task. That's becaus
 
 ## Experiment 1 - Ratio is too large
 
+If we increase the timing manager's event ratio, we can cause the control task to run at less than 10Khz. Lets increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
+
+Now use the command `ctrl stats print` to view the run-time.
+
+![](images/tmVSI20.svg)
+
 ## Experiment 2 - Multiple sensor samples per control task
 
-## Experiment 3 - 
+## Experiment 3 - Changing PWM frequency
 
 
 Enabling/disabling sensors - INCLUDE EXAMPLE OF DOING THIS IN THE USER APP INIT FUNCTION
