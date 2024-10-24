@@ -56,7 +56,7 @@ To understand the specific timings of sensor collection and tasks, we need to kn
  - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds. This will be affected by the ADC clock, which is set in `common/drv/analog.h` to `ANALOG_CLKDIV4`, and can be set by the user with the `analog_set_clkdiv()` function.
  - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
-## We can now draw our timing diagram with exact parameters:
+### We can now draw our timing diagram with exact parameters:
 
 ![](images/tmVSI.svg)
 
@@ -69,8 +69,8 @@ If we increase the timing manager's `event ratio`, we can cause the control task
 ```
 void app_controller_init(void)
 {
-	// Enable data sampling for ADC
-	timing_manager_enable_sensor(ADC);
+    // Enable data sampling for ADC
+    timing_manager_enable_sensor(ADC);
     // Register "ctrl" command with system
     cmd_controller_register();
 }
@@ -89,6 +89,12 @@ The loop time is how much time there is between successive executions of the con
 Making the timing manager's `event ratio` too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
 ## Experiment 2 - Multiple sensor samples per control task
+
+By decreasing the timing manager's `event ratio`, we can cause multiple sensor samples to occur before one cycle of the control task.
+
+Here's the timing diagram using an `event ratio` of 1.
+
+
 
 ## Experiment 3 - Changing PWM frequency
 
