@@ -43,16 +43,16 @@ There are multiple factors that affect when and how fast control tasks run.
  - Sensor collection time (synchronized mode)
  - Control task time (how long it takes for the control task to run)
 
-Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods. If the PWM frequency / `event_ratio` < TASK_UPDATES_PER_SEC, then the control task will run at a slower rate than TASK_UPDATES_PER_SEC. Additionally, if the `event_ratio` / PWM frequency > Sensor collection time, then the control tasks will never have an opportunity to run (in synchronized mode), since all time will be spent waiting for sensors to finish collecting. This gives us both a lower and upper bound for these parameters. We also have to ensure that 1 / TASK_UPDATES_PER_SEC > Control task time, otherwise we are not able to run a control task in the time slot allotted.
+Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods. If the `PWM frequency` / `event_ratio` < `TASK_UPDATES_PER_SEC`, then the control task will run at a slower rate than `TASK_UPDATES_PER_SEC`. Additionally, if the `event_ratio` / `PWM frequency` > Sensor collection time, then the control tasks will never have an opportunity to run (in synchronized mode), since all time will be spent waiting for sensors to finish collecting. This gives us both a lower and upper bound for these parameters. We also have to ensure that 1 / `TASK_UPDATES_PER_SEC` > Control task time, otherwise we are not able to run a control task in the time slot allotted.
 
 Lets enable one of the sensors to start observing the effects of the timing manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
 
-To get data from the ADC, use the function `analog_getf(ANALOG_IN1, &output)`. Read about the analog channel mapping on the [analog input page](hardware/subsystems/analog.md)
+To get data from the ADC, use the function `analog_getf(ANALOG_IN1, &output)`. Read about the analog channel mapping on the [analog input page](/hardware/subsystems/analog.md)
 
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
- - User set TASK_CONTROLLER_UPDATES_PER_SEC is set in `task_controller.h`, it is (10000)
- - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
- - timing manager event ratio is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to TM_DEFAULT_PWM_RATIO, which is 10.
+ - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, it is (10000)
+ - `PWM frequency` can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
+ - timing manager `event ratio` is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is 10.
  - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds. This will be affected by the ADC clock, which is set in `common/drv/analog.h` to `ANALOG_CLKDIV4`, and can be set by the user with the `analog_set_clkdiv()` function.
  - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
@@ -64,11 +64,29 @@ We can see that we are sampling the sensors once per control task. That's becaus
 
 ## Experiment 1 - Ratio is too large
 
-If we increase the timing manager's event ratio, we can cause the control task to run at less than 10Khz. Lets increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
+If we increase the timing manager's `event ratio`, we can cause the control task to run at less than 10Khz. Lets increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
-Now use the command `ctrl stats print` to view the run-time.
+```
+void app_controller_init(void)
+{
+	// Enable data sampling for ADC
+	timing_manager_enable_sensor(ADC);
+    // Register "ctrl" command with system
+    cmd_controller_register();
+}
+```
+
+Now use the command `ctrl stats print` to view the loop time.
 
 ![](images/tmVSI20.svg)
+
+```
+Show stats output here
+```
+
+The loop time is how much time there is between successive executions of the control task. It should be 1 / `TASK_CONTROLLER_UPDATES_PER_SEC`, but in this case it is double of that. That indicates that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC`.
+
+Making the timing manager's `event ratio` too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
 ## Experiment 2 - Multiple sensor samples per control task
 
