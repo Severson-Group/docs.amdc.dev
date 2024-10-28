@@ -71,17 +71,29 @@ void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
+    // set timing manager event ratio
+    timing_manager_set_ratio(20);
     // Register "ctrl" command with system
     cmd_controller_register();
 }
 ```
 
-Now use the command `ctrl stats print` to view the loop time.
+Now use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
 ![](images/tmVSI20.svg)
 
 ```
-Show stats output here
+Task Stats:
+Loop Num:	26806 samples
+Loop Min:	193.78 usec
+Loop Max:	206.22 usec
+Loop Mean:	200.00 usec
+Loop Var:	0.02 usec
+Run Num:	26932 samples
+Run Min:	3.25 usec
+Run Max:	4.23 usec
+Run Mean:	3.41 usec
+Run Var:	0.00 usec
 ```
 
 The loop time is how much time there is between successive executions of the control task. It should be 1 / `TASK_CONTROLLER_UPDATES_PER_SEC`, but in this case it is double of that. That indicates that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC`.
@@ -94,31 +106,68 @@ By decreasing the timing manager's `event ratio`, we can cause multiple sensor s
 
 Here's the timing diagram using an `event ratio` of 1.
 
+![](images/tmVSI1.svg)
 
+There are 10 sensor samples for every control task. Lets look at the stats:
+
+```
+Task Stats:
+Loop Num:	48373 samples
+Loop Min:	80.46 usec
+Loop Max:	119.44 usec
+Loop Mean:	100.00 usec
+Loop Var:	0.24 usec
+Run Num:	48624 samples
+Run Min:	9.85 usec
+Run Max:	17.02 usec
+Run Mean:	10.25 usec
+Run Var:	1.40 usec
+```
+
+The loop time has returned to 100.00 usec. The timing manager is not slowing down the rate of the control task anymore.
+
+But the Run time has increased significantly. Why is that?
+
+The answer is that I have no idea. Ask Patrick
 
 ## Experiment 3 - Changing PWM frequency
 
+Another way to impact loop time is to change the PWM frequency. Lets return to the situation with an event ratio of 10, but this time modify the PWM ratio from 100KHz to 50KHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
-Enabling/disabling sensors - INCLUDE EXAMPLE OF DOING THIS IN THE USER APP INIT FUNCTION
-- Enable in the timing manager with `timing_manager_enable_sensor()`
-- If peripheral, still need to configure GPIO port!! i.e. `gp3io_mux_set_device()`
+```
+void app_controller_init(void)
+{
+    // Enable data sampling for ADC
+    timing_manager_enable_sensor(ADC);
+    // set timing manager event ratio
+    timing_manager_set_ratio(20);
+    // set PWM frequency
+    pwm_set_switching_freq(50000);
+    // Register "ctrl" command with system
+    cmd_controller_register();
+}
+```
 
-Getting Sensor data
-- This depends on which sensor interface(s) is(are) being used 
+```
+Task Stats:
+Loop Num:	8349 samples
+Loop Min:	193.91 usec
+Loop Max:	206.22 usec
+Loop Mean:	200.00 usec
+Loop Var:	0.05 usec
+Run Num:	8475 samples
+Run Min:	3.24 usec
+Run Max:	4.00 usec
+Run Mean:	3.37 usec
+Run Var:	0.00 usec
+```
 
-Profiling sensor acquisition times `timing_manager_get_time_per_sensor()`
+The loop time is back to 200us. Here is the timing diagram:
+
+![](images/tmVSI50.svg)
+
+## TODO
 
 ISR Generation mode: Legacy vs New Mode
 - when it makes an impact
 - how to use the `is_sensor_done` in a loop to poll/stall in Legacy Mode
-
-changing timing settings - PWM freq, peaks/valleys, ratio
-- How "bad" settings will affect task loop time
-
-Timing Manager debug features?
-- Trigger mode AUTO vs MANUAL?
-
-
-```{warning}
-When the scheduler checks to see if a task should be scheduled in scheduler_run(), the task's measured loop time is subtracted from the desired loop time. If the former is larger than the latter, the result will be negative and obviously the task should be scheduled. However, it is possible with floating point numbers that the measured loop time will be *just less* than the target loop time, in which case the subtraction result will be a very small positive number. We still want the task to be run in this case, so instead of checking if the subtraction result is less than 0, we check that it is less than a very small positive variance value. This variance has been defaulted to 60ns, but if a user is running their AMDC with "abnormal" timing settings, the magnitude of the tolerance may need to be overridden in user_config.h
-```
