@@ -14,7 +14,7 @@ Incremental encoders are typically used with the AMDC and have a fixed number of
 
 The recommended approach to reading the shaft position from the encoder is illustrated in the figure below:
 
-<img src="./resources/EncoderCodeBlockDiargam.svg" width="100%" align="center"/>
+<img src="./resources/EncoderCodeBlockDiagram.svg" width="100%" align="center"/>
 
 As a first step, the user may use the AMDC `drv/encoder` driver module `encoder_get_position()` to get the count of the encoder reading. The`drv/encoder` driver module also has a function called `encoder_get_steps()` which gives the incremental change in the encoder position. Whereas, `encoder_get_position()` gives the actual position of the shaft and this can be converted to rotor position in radians.
 
