@@ -2,7 +2,9 @@
 
 ## Background
 
-Encoders provide rotor position feedback to the control system in a motor drive. This document describes a method to convert the raw readings of an encoder into meaningful position information which can be used by the contrl algorithm. Next, useful methods to obtain rotor speed from the measured position is presented. For more information on how an encoder works and how they may be interfaced with the AMDC please refer to this [document](https://docs.amdc.dev/hardware/subsystems/encoder.html#).
+Encoders provide rotor position feedback to the control system in a motor drive. This document describes a method to convert the raw readings of an encoder into meaningful position information which can be used by the control algorithm. Methods to obtain rotor speed from the measured position are also presented. 
+
+For more information on how an encoder works and how they may be interfaced with the AMDC please refer to this [document](https://docs.amdc.dev/hardware/subsystems/encoder.html#).
 
 ## Calibration
 
