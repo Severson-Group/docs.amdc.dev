@@ -6,9 +6,24 @@ Encoders provide rotor position feedback to the control system in a motor drive.
 
 For more information on how an encoder works and how they may be interfaced with the AMDC please refer to this [document](https://docs.amdc.dev/hardware/subsystems/encoder.html#).
 
-## Calibration
+## Obtaining Position
 
 Incremental encoders are typically used with the AMDC and have a fixed number of counts per revolution `CPR` (for example, `CPR = 1024`). The user needs to provide code that interfaces to the AMDC's drivers to read the encoder count and convert it into usable angular information that is suitable for use within the control code.
+
+### Configuring the encoder
+Upon powerup, the AMDC configures the encoder to a default number of pulses per revolution. This is handled in `encoder.c`, which is part of the core AMDC-Firmware. When using an encoder that has a different number pulses per revolution, the user must inform the driver by calling `encoder_set_pulses_per_rev()`. 
+
+Example code for a 10 bit encoder:
+
+``` C
+#define USER_ENCODER_PULSES_PER_REV_BITS (10)
+#define USER_ENCODER_PULSES_PER_REV (1 << USER_ENCODER_PULSES_PER_REV_BITS)
+
+int task_user_app_init(void)
+{
+    encoder_set_pulses_per_rev_bits(USER_ENCODER_PULSES_PER_REV_BITS);
+    ...
+```
 
 ### Obtaining encoder count and translating it into rotor position
 
