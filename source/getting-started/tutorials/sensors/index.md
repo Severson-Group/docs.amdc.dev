@@ -47,15 +47,15 @@ There are multiple factors that affect when and how fast control tasks run.
 
 Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods.\
 That means we have to satisfy these three inequalities:
+
 $$
-\frac{\rm PWM\_Frequency}{\rm event\_ratio} \ge \rm TASK\_UPDATES\_PER\_SEC
-$$ (eq:vout)
-$$
-\frac{\rm event\_ratio}{\rm PWM\_Frequency} \ge \rm Sensor\_Collection\_Time
-$$ (eq:vout)
-$$
+\frac{\rm PWM\_Frequency}{\rm event\_ratio} \ge \rm TASK\_UPDATES\_PER\_SEC \\
+\\
+\frac{\rm event\_ratio}{\rm PWM\_Frequency} \ge \rm Sensor\_Collection\_Time \\
+\\
 \frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\_task\_time
 $$ (eq:vout)
+
 The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_UPDATES_PER_SEC`.\
 The second inequality ensures that the sensors don't take up the entire timeslot.\
 The third inequality makes sure that we are able to run the control task in the allotted time slot.\
