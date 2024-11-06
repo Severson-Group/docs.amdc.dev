@@ -27,17 +27,6 @@ Read [this docs page](/firmware/arch/timing-manager.md) for detailed information
 
 The AMDC synchronizes running tasks and sensor collection to the PWM carrier wave. Every X PWM periods (where X is set by the function timing_manager_set_ratio()), the AMDC will collect data from sensors. In Legacy mode, the AMDC will run control tasks concurrently with sensor collection. In Post-sensor mode the AMDC will not run control tasks until the sensor collection is complete. 
 
-In this tutorial, we'll be activating the timing manager in Post-Sensor mode. Lets enable Post-sensor mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`
-
-```
-// Specify the source of the scheduler ISR
-// Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio
-//         of carrier frequency to desired control frequency
-// Mode 1: post-sensor mode - scheduler is triggered when all the enabled sensors are done
-//         acquiring their data
-#define USER_CONFIG_ISR_SOURCE (1)
-```
-
 There are multiple factors that affect when and how fast control tasks run.
  - User set TASK_UPDATES_PER_SEC
  - PWM Frequency
@@ -61,9 +50,23 @@ The second inequality ensures that the sensors don't take up the entire timeslot
 The third inequality makes sure that we are able to run the control task in the allotted time slot.\
 These three combined inequalities give us both an upper and lower bound for `event_ratio` and `PWM_Frequency` relative to each other.
 
+## C-Code
+
+In this tutorial, we'll be activating the timing manager in Post-Sensor mode. Lets enable Post-sensor mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`
+
+`user_config.h`:
+```
+// Specify the source of the scheduler ISR
+// Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio
+//         of carrier frequency to desired control frequency
+// Mode 1: post-sensor mode - scheduler is triggered when all the enabled sensors are done
+//         acquiring their data
+#define USER_CONFIG_ISR_SOURCE (1)
+```
+
 Lets enable one of the sensors to start observing the effects of the timing manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
 
-Init code:
+`app_controller.c`:
 ```
 void app_controller_init(void)
 {
@@ -110,6 +113,7 @@ s
 
 If we increase the timing manager's `event ratio`, we can cause the control task to run at less than 10Khz. Lets increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
+`app_controller.c`:
 ```
 void app_controller_init(void)
 {
@@ -151,6 +155,7 @@ By decreasing the timing manager's `event ratio`, we can cause multiple sensor s
 
 Lets set the `event ratio` of `1`.
 
+`app_controller.c`:
 ```
 void app_controller_init(void)
 {
@@ -195,6 +200,7 @@ The answer is that I have no idea. Ask Patrick
 
 Another way to impact loop time is to change the `PWM_Frequency`. Lets return to the situation with an event ratio of 10, but this time modify the PWM ratio from 100KHz to 50KHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
+`app_controller.c`:
 ```
 #include "drv/pwm.h"
 
