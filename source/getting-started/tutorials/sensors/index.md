@@ -21,10 +21,6 @@ This tutorial provides the source code for:
 
 ## Scheduling and Synchronizing:
 
-![](images/timing.png)
-
-Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the timing manager
-
 The AMDC synchronizes running tasks and sensor collection to the PWM carrier wave. Every X PWM periods (where X is set by the function timing_manager_set_ratio()), the AMDC will collect data from sensors. In Legacy mode, the AMDC will run control tasks concurrently with sensor collection. In Post-sensor mode the AMDC will not run control tasks until the sensor collection is complete. 
 
 There are multiple factors that affect when and how fast control tasks run.
@@ -33,6 +29,10 @@ There are multiple factors that affect when and how fast control tasks run.
  - timing manager event ratio
  - Sensor collection time (post-sensor mode)
  - Control task time (how long it takes for the control task to run)
+
+ ![](images/timing.png)
+
+Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the timing manager
 
 Consider: Control tasks only have the opportunity to run once every `event_ratio` PWM periods.\
 That means we have to satisfy these three inequalities:
