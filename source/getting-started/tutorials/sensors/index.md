@@ -86,7 +86,6 @@ To understand the specific timings of sensor collection and tasks, we need to kn
  - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
  - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
-Stats:
 ```
 Task Stats:
 Loop Num:	21431 samples
