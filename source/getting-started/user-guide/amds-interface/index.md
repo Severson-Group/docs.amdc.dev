@@ -8,7 +8,7 @@ Before attempting to use these drivers, make sure to read about the AMDS in [its
 
 ## AMDS Firmware Version
 
-Ensure that your AMDS Firmware version matches your AMDC firmware version using the following table:
+Ensure that your AMDS firmware version matches your AMDC firmware version using the following table:
 
 | AMDC Version | AMDS Version |
 |-------|-------|
