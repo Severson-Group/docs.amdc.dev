@@ -12,8 +12,8 @@ Ensure that your AMDS Firmware version matches your AMDC firmware version using 
 
 | AMDC Version | AMDS Version |
 |-------|-------|
-| v1.3.x or greater | v2.0.x or greater |
-| v1.2.x or lesser  | v1.0.x or greater |
+| v1.3.x or greater | v2.x.x |
+| v1.2.x or lesser  | v1.x.x |
 
 ## Configure AMDS Hardware
 
