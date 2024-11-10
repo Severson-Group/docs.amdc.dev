@@ -6,6 +6,15 @@ This document describes the built-in AMDC drivers which can be used to interface
 Before attempting to use these drivers, make sure to read about the AMDS in [its documentation](/accessories/amds/index.md).
 ```
 
+## AMDS Firmware Version
+
+Ensure that your AMDS firmware version matches your AMDC firmware version using the following table:
+
+| AMDC Version | AMDS Version |
+|-------|-------|
+| v1.3.x or greater | v2.x.x |
+| v1.2.x or lesser  | v1.x.x |
+
 ## Configure AMDS Hardware
 
 First, the AMDS hardware needs to be configured:

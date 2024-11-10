@@ -146,8 +146,8 @@ One header is used to supply power to the cards and the other header is used for
 | 2 | 3V3 |
 | 3 | GND |
 | 4 | DIN (ADC IN, MOSI) |
-| 5 | DOUT (ADC OUT, MISO) |
-| 6 | SCLK |
+| 5 | SCLK |
+| 6 | DOUT (ADC OUT, MISO) |
 | 7 | CONVST (Conversion start) |
 
 For information regarding the placement of the headers, refer to the mainboard PCB Altium file in the AMDS repo located: `/Mainboard/altium/SensorMotherBoard.PcbDoc`. 
