@@ -38,13 +38,13 @@ Read [this docs page](/firmware/arch/timing-manager.md) for detailed information
 Consider: Control tasks only have the opportunity to run once every X PWM periods, where X is the User Event Ratio.\
 That means we have to satisfy these three inequalities:
 
-$$
+$
 \frac{\rm PWM\ frequency}{\rm event\ ratio} \ge \rm TASK\_UPDATES\_PER\_SEC \\
 \\
 \frac{\rm event\ ratio}{\rm PWM\ frequency} \ge \rm Sensor\ Collection\ Time \\
 \\
 \frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\ Task\ Time
-$$ (eq:tm)
+$ (eq:tm)
 
 The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_UPDATES_PER_SEC`.\
 The second inequality ensures that the sensors don't take up the entire timeslot.\
