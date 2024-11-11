@@ -1,8 +1,8 @@
 # Tutorial: Sensor Configuration, Feedback, & Profiling
 
 - **Goal:** Learn how to use the AMDC Timing Manager to get feedback from sensors
-- **Complexity:** 4 / 5
-- **Estimated Time:** TODO
+- **Complexity:** 3 / 5
+- **Estimated Time:** 40 min
 
 
 ## Tutorial Requirements
@@ -16,14 +16,13 @@ This tutorial expands on the code created in the [Voltage Source Inverter](/gett
 
 ## Introduction 
 
-In motor control applications, it is important to have consistent timing of both sensor data acquisition and the running of control tasks. In default configuration, the AMDC allows for some jitter between sensor measurement time and control loop timing. This tutorial shows how the AMDC can be configured to elimiate this jitter.
+In motor control applications, it is important for the timing of both sensor data acquisition and control task execution to remain consistent. In its default configuration, the AMDC may allow some jitter (timing incosistency) between sensor measurement time and control loop timing. This tutorial shows how the AMDC's "Timing Manager" peripheral can be configured to eliminate this jitter.
 
-This tutorial provides the source code for:
-* experimenting the effects of the timing manager using the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) app
+This tutorial provides code that allows users to experiment with the configuration of the AMDC Timing Manager. The effects of this experimentation will be observed through the lense of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
 
 ## Scheduling and Synchronizing:
 
-The AMDC synchronizes running tasks and sensor collection to the PWM carrier wave. Every X PWM periods (where X is set by the function timing_manager_set_ratio()), the AMDC will collect data from sensors. In Legacy mode, the AMDC will run control tasks concurrently with sensor collection. In Post-sensor mode the AMDC will not run control tasks until the sensor collection is complete. 
+The AMDC synchronizes sensor data collection and task execution to the PWM carrier wave. Every X PWM periods (where X is set by the function `timing_manager_set_ratio()`), the AMDC will collect data from sensors. By default, the Timing Manager is set to Legacy Mode, in which the AMDC will run control tasks concurrently with sensor data collection. Alternatively, when configured in Post-Sensor Mode, the Timing Manager guaruntees that in each control cycle, the AMDC will wait to execute control tasks until the sensor data collection is complete.
 
 There are multiple factors that affect when and how fast control tasks run.
  - User set TASK_UPDATES_PER_SEC
@@ -45,7 +44,7 @@ $$
 \frac{\rm event\ ratio}{\rm PWM\ frequency} \ge \rm Sensor\ Collection\ Time \\
 \\
 \frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\ Task\ Time
-$$ (eq:vout)
+$$ (eq:tm)
 
 The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_UPDATES_PER_SEC`.\
 The second inequality ensures that the sensors don't take up the entire timeslot.\
