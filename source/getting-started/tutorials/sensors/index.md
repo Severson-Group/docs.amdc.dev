@@ -22,7 +22,7 @@ This tutorial provides code that allows users to experiment with the configurati
 
 ## Scheduling and Synchronizing:
 
-The AMDC synchronizes sensor data collection and task execution to the PWM carrier wave. Every X PWM periods (where X is set by the function `timing_manager_set_ratio()`), the AMDC will collect data from sensors. By default, the Timing Manager is set to Legacy Mode, in which the AMDC will run control tasks concurrently with sensor data collection. Alternatively, when configured in Post-Sensor Mode, the Timing Manager guarantees that in each control cycle, the AMDC will wait to execute control tasks until the sensor data collection is complete.
+The AMDC synchronizes sensor data collection and task execution to the PWM carrier wave. Every X PWM periods (where X is set by the function `timing_manager_set_ratio()`), the AMDC will collect data from sensors. By default, the Timing Manager is set to Legacy Mode, in which the AMDC will run control tasks concurrently with sensor data collection. Alternatively, when configured in Post-Sensor Mode, the Timing Manager guarantees that in each control cycle, the AMDC will wait to execute control tasks until the sensor data collection is complete.s
 
 There are multiple factors that affect when and how fast control tasks run.
  - User set `TASK_UPDATES_PER_SEC`
@@ -31,7 +31,7 @@ There are multiple factors that affect when and how fast control tasks run.
  - Sensor collection time (Post-Sensor Mode)
  - Control task time (how long it takes for the control task to run)
 
- ![](images/timing.png)
+ ![](/firmware/arch/images/timing.png)
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager
 
@@ -53,7 +53,7 @@ These three combined inequalities give us both an upper and lower bound for User
 
 ## C-Code
 
-In this tutorial, we'll be activating the Timing Manager in Post-Sensor Mode. Let's enable Post-Sensor Mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`
+In this tutorial, we'll be activating the Timing Manager in Post-Sensor Mode. Let's enable Post-Sensor Mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`.
 
 `user_config.h`:
 ```
@@ -82,10 +82,10 @@ To get data from the ADC, use the function `analog_getf(ANALOG_IN1, &output)`. R
 
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
- - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at (100000.0)
- - User Event Ratio is set in `common/drv/timing_manager.c` in the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is 10.
- - Sensor collection time for the ADC can be gathered with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
- - The control task time can be gathered with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
+ - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
+ - User Event Ratio is set in `common/drv/timing_manager.c` with the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is `10`.
+ - The ADC's data acquisition time can be retrieved with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
+ - The control task's Run-Time and Loop-Time can be retrieved with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
 ```
 Task Stats:
@@ -274,9 +274,3 @@ Run Max:	3.84 usec
 Run Mean:	3.39 usec
 Run Var:	0.00 usec
 ```
-
-## TODO
-
-ISR Generation mode: Legacy vs New Mode
-- when it makes an impact
-- how to use the `is_sensor_done` in a loop to poll/stall in Legacy Mode
