@@ -1,6 +1,6 @@
-# Tutorial: Sensor Configuration, Feedback, & Profiling
+# Tutorial: Timing & Sensors
 
-- **Goal:** Learn how to use the AMDC Timing Manager to get feedback from sensors
+- **Goal:** Learn how to use the AMDC Timing Manager to configure, profile, and get feedback from sensors
 - **Complexity:** 3 / 5
 - **Estimated Time:** 40 min
 
@@ -18,7 +18,7 @@ This tutorial expands on the code created in the [Voltage Source Inverter](/gett
 
 In motor control applications, it is important for the timing of both sensor data acquisition and control task execution to remain consistent. In its default configuration, the AMDC may allow some jitter (timing incosistency) between sensor measurement time and control loop timing. This tutorial shows how the AMDC's "Timing Manager" peripheral can be configured to eliminate this jitter.
 
-This tutorial provides code that allows users to experiment with the configuration of the AMDC Timing Manager. The effects of this experimentation will be observed through the lense of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
+This tutorial provides code that allows users to experiment with the configuration of the AMDC Timing Manager. The effects of this experimentation will be observed through the lens of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
 
 ## Scheduling and Synchronizing:
 
@@ -35,7 +35,7 @@ There are multiple factors that affect when and how fast control tasks run.
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager
 
-Consider: Control tasks only have the opportunity to run once every X PWM periods, where X is the User Event Ratio.\
+Consider: Control tasks can run, at most, once every X PWM periods, where X is the User Event Ratio.\
 That means we have to satisfy these three inequalities:
 
 $$
@@ -192,9 +192,7 @@ Run Var:	1.40 usec
 
 The Loop Mean has returned to 100.00 usec. The Timing Manager is not slowing down the rate of the control task anymore.
 
-But the Run-Time has increased significantly. Why is that?
-
-The answer is that I have no idea. Ask Patrick
+However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration.
 
 ## Experiment 3 - Changing PWM frequency
 
