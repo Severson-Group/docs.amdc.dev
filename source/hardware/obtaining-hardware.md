@@ -78,6 +78,8 @@ The BOM file is provided in CSV format and is located in the `REVxxxx` folder.
 The distributor part number is given for Digi-Key.
 Users can simply upload the BOM file to Digi-Key and it will populate the cart automatically.
 
+A key component of the AMDC to be aware of is the Avnet PicoZed system-on-module (SoM). The PicoZed is the "brains" of the AMDC, and users should be careful to make sure they are ordering the correct model of the PicoZed (7Z030) to ensure compatibility with the open-source AMDC Firmware. A full article on the PicoZed as it pertains to the AMDC can be found [here](/hardware/subsystems/picozed.md).
+
 ```{warning}
 Most likely, there will be some out-of-stock parts in the BOM which are not available on Digi-Key.
 Users should first try to find alternative distributors which have stock.
