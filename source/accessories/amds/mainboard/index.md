@@ -4,7 +4,7 @@ This document describes the design consideration, implementation details, and bo
 
 ## Relevant Hardware Versions
 
-REVD
+AMDS REV D
 
 ## Application / Purpose
 
@@ -12,48 +12,50 @@ The mainboard is specifically designed to interface directly to the [GPIO expans
 
 ## Features
 
-- Can connect up to 8 sensor daughter cards.
+- Can connect up to 8 sensor cards.
 - Can communicate with an external controller (like AMDC). An external controller can obtain the measurement results and also is allowed to control the digital conversion process.
 - Robust differential IO communication is used to transmit sensor data to an external controller.
-- High throughput of up to 1 MSPS (depending on ADC device on daughter cards).
+- High throughput of up to 1 MSPS (depending on ADC device on sensor cards).
 
 ## Block Diagram and SPI Connection Configuration
 
-The eight daughter cards (DC) transmit data to the STM32 MCU using standard SPI protocol. The daughter cards are grouped into four pairs of daisy chain connections. See the following block diagram.
+The eight sensor cards transmit data to the STM32 MCU using standard SPI protocol. The sensor cards are grouped into four pairs of daisy chain connections. See the following block diagram.
 
 ![](images/Measurementboard_REVD.svg)
 
 ![](images/Motherboard_3d.png)
 
-The daughter cards can be connected in daisy chain pair configuration (D) or single SPI configuration (S). The daisy chain configuration will have a throughput of 500 kSPS. If the number of daughter cards is less than or equal to four, then a single SPI configuration can be used to get higher throughput. This single SPI configuration will have a throughput of 1 MSPS. The configuration can be changed using jumpers (P9, P10, P15, P16) as shown in the following figure.
+The sensor cards can be connected in daisy chain pair configuration (D) or single SPI configuration (S). The daisy chain configuration will have a throughput of 500 kSPS. If the number of sensor cards is less than or equal to four, then a single SPI configuration can be used to get higher throughput. This single SPI configuration will have a throughput of 1 MSPS. The configuration can be changed using jumpers (P9, P10, P15, P16) as shown in the following figure.
 
 ![](images/Jumper_modes.png)
 
 ## External Connections
 
-There are two interfacing DB-15 connectors on the measurement board. The first connector is used for interfacing with the external controller via isoSPI and differential IO communication. The second connector is intended as an expansion port connection, which is connected to the GPIO port of the MCU.
+There are two interfacing DB-15 connectors on the measurement board. The first connector is used for interfacing with the controller (the AMDC driver) via differential I/O. The second connector is intended to connect to an external expansion for the AMDS, and is connected back to the GPIO port of the MCU on the AMDS mainboard.
 
-### DB15 Connector 1: IsoSPI and Differential IO 
+### DB15 Connector 1: AMDC Link (connects to a GPIO port on the AMDC) 
 
 | Pin number | Signal name | Voltage level | Protocol |
 |------------|--------|--------|--------|
 | 1 | 5V_IN | 5V | - |
-| 2 | D2_I_P | 5V | Differential IO |
-| 3 | D2_I_N | 5V | Differential IO |
-| 4 | D3_I_P | 5V | Differential IO |
-| 5 | D3_I_N | 5V | Differential IO |
+| 2 | DATA0_P | 5V | Differential IO |
+| 3 | DATA0_N | 5V | Differential IO |
+| 4 | DATA1_P | 5V | Differential IO |
+| 5 | DATA1_N | 5V | Differential IO |
 | 6 | NC | - | - |
-| 7 | isoSPI2_P | 5V | IsoSPI |
-| 8 | isoSPI2_N | 5V | IsoSPI |
-| 9 | isoSPI3_P | 5V | IsoSPI |
+| 7  | isoSPI2_P | 5V | IsoSPI |
+| 8  | isoSPI2_N | 5V | IsoSPI |
+| 9  | isoSPI3_P | 5V | IsoSPI |
 | 10 | isoSPI3_N | 5V | IsoSPI |
 | 11 | GND | - | - |
-| 12 | D2_O_P | 5V | Differential IO |
-| 13 | D2_O_N | 5V | Differential IO |
-| 14 | D3_O_P | 5V | Differential IO |
-| 15 | D3_O_N | 5V | Differential IO |
+| 12 | SYNC_ADC_P | 5V | Differential IO |
+| 13 | SYNC_ADC_N | 5V | Differential IO |
+| 14 | SYNC_TX_P  | 5V | Differential IO |
+| 15 | SYNC_TX_N  | 5V | Differential IO |
 
-### DB15 Connector 2: GPIO
+> **NOTE:** The IsoSPI interface on pins 7-10 is a legacy interface and is not used. Only the differential I/O pins are used for signals between the AMDC and AMDS.
+
+### DB15 Connector 2: AMDS GPIO Link
 
 | Pin number | Signal name | Voltage level |
 |------------|--------|--------|
@@ -81,7 +83,7 @@ Per the block diagram above, the mainboard is made of several systems, as explai
 
 ### STM32F7 Microcontroller
 
-STM32F7 microcontroller is used as an interface between the daughter card and an external controller. This MCU has a core ARM 32-bit Cortex M7 CPU. This IC can operate at a supply voltage of 1.7 V to 3.6 V. JTAG / SWD interface is used for debugging and programming the MCU. It has 6 SPIs which is used for daughter card and AMDC isoSPI interfaces. The maximum speed of the MCU SPI interface is 54 Mbps. It has 4 USART with a maximum baud rate of 26 Mbps, which are used to transmit daughter card data to the AMDC. GPIO pins of the MCU can be accessed using GPIO connector. More information on this MCU can be found [here](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf).
+STM32F7 microcontroller is used as an interface between the sensor card and an external controller. This MCU has a core ARM 32-bit Cortex M7 CPU. This IC can operate at a supply voltage of 1.7 V to 3.6 V. JTAG / SWD interface is used for debugging and programming the MCU. It has 6 SPIs which is used for sensor card and AMDC isoSPI interfaces. The maximum speed of the MCU SPI interface is 54 Mbps. It has 4 USART with a maximum baud rate of 26 Mbps, which are used to transmit sensor card data to the AMDC. GPIO pins of the MCU can be accessed using GPIO connector. More information on this MCU can be found [here](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf).
 
 (diff-io-transceiver)=
 ### Differential IO Isolated Transceiver
@@ -120,9 +122,9 @@ The maximum supply current consumed by the IC including to drive currents for di
 
 A transformer is required for implementing isoSPI. This will provide an isolation barrier to the differential SPI signals. This is implemented by adding pulse transformer HX1188NLT, which has 1:1 turns ratio. More information on the pulse transformer is found in the [datasheet](https://media.digikey.com/pdf/Data%20Sheets/Pulse%20PDFs/10_100BASE-T%20Single%20Port%20SMD%20Magnetics_Rev2008.pdf).
 
-## Daugter Card Interface
+## Sensor Card Interface
 
-In order to design a daugter card, the interface information provided in this section will be useful. Each daughter card slot has two headers, where the daughter card can be plugged in. See the following figure.
+In order to design a daugter card, the interface information provided in this section will be useful. Each sensor card slot has two headers, where the sensor card can be plugged in. See the following figure.
 
 ![](images/DC_hdr.png)
 
@@ -144,10 +146,10 @@ One header is used to supply power to the cards and the other header is used for
 | 2 | 3V3 |
 | 3 | GND |
 | 4 | DIN (ADC IN, MOSI) |
-| 5 | DOUT (ADC OUT, MISO) |
-| 6 | SCLK |
+| 5 | SCLK |
+| 6 | DOUT (ADC OUT, MISO) |
 | 7 | CONVST (Conversion start) |
 
 For information regarding the placement of the headers, refer to the mainboard PCB Altium file in the AMDS repo located: `/Mainboard/altium/SensorMotherBoard.PcbDoc`. 
 
-For more information on designing a daughter card, refer the [sensor card documentation](/accessories/amds/sensor-cards/index.md).
+For more information on designing a sensor card, refer the [sensor card documentation](/accessories/amds/sensor-cards/index.md).

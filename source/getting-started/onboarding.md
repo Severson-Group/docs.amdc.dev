@@ -17,7 +17,8 @@ For group members, check out the AMDC Board Log spreadsheet to find an available
 
 For external users not a part of the Severson Research Group, the only way to acquire a working AMDC is by ordering and assembling the blank PCB and components.
 This is clearly an involved process which should only be attempted by individuals skilled in PCB ordering and bring-up.
-Detailed documentation is provided to aid in the ordering and bring-up process, but in general, users are on their own.
+Detailed documentation is provided to aid in the ordering and bring-up process, but in general, users are on their own. 
+See the dedicated page on this documentation site for [Obtaining Hardware](/hardware/obtaining-hardware.md).
 No 1:1 technical support is available from the Severson Research Group to external users.
 
 ```{tip}
