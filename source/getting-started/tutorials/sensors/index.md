@@ -1,6 +1,6 @@
 # Tutorial: Timing & Sensors
 
-- **Goal:** Learn how to use the AMDC Timing Manager to configure, profile, and get feedback from sensors
+- **Goal:** Learn how to use the AMDC Timing Manager to synchronize task execution to sensor data acquisition.
 - **Complexity:** 3 / 5
 - **Estimated Time:** 40 min
 
@@ -83,9 +83,9 @@ In this tutorial, we will use the [Timing Manager](/firmware/arch/timing-manager
 
 ### Link the Timing Manager to Sensor Interaces
 
-We need to link any sensor interfaces of interest to the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
+We need to link the sensor interfaces we wish to synchronize to with the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
 
-To link the ADC to the timing manger, edit the  `...controller_init()` function to include the function call `timing_manager_enable_sensor(ADC)`:
+To link the ADC to the [Timing Manager](/firmware/arch/timing-manager.md), edit the  `...controller_init()` function to include the function call `timing_manager_enable_sensor(ADC)`:
 
 `app_controller.c`:
 ```C
@@ -99,7 +99,7 @@ void app_controller_init(void)
 ```
 
 ### Reading Sensor Data
-Data can be obtained from the sensor interaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). We won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the Timing Manager.
+Data can be obtained from the sensor interaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). Note that we won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the [Timing Manager](/firmware/arch/timing-manager.md).
 
 ### System Timing
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
@@ -136,7 +136,7 @@ We can see that we are sampling the sensors once per control task. That's becaus
 If we increase the User Event Ratio, we can cause the control task to run at less than 10kHz. Let's increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
 `app_controller.c`:
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
@@ -178,7 +178,7 @@ By decreasing the User Event Ratio, we can cause multiple sensor samples to occu
 Let's set the User Event Ratio to `1`.
 
 `app_controller.c`:
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
@@ -221,7 +221,7 @@ However, the task's Run-Time has increased significantly. This is a bug under re
 Another way to impact loop time is to change the PWM frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
 `app_controller.c`:
-```
+```C
 #include "drv/pwm.h"
 
 void app_controller_init(void)
@@ -261,7 +261,7 @@ Indeed our Loop Mean is back to 200us.
 
 We can fix this by adjusting the Timing Manager's ratio from 10 down to 5.
 
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
