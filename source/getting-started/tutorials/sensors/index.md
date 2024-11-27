@@ -1,6 +1,6 @@
 # Tutorial: Timing & Sensors
 
-- **Goal:** Learn how to use the AMDC Timing Manager to configure, profile, and get feedback from sensors
+- **Goal:** Learn how to use the AMDC Timing Manager to synchronize task execution to sensor data acquisition.
 - **Complexity:** 3 / 5
 - **Estimated Time:** 40 min
 
@@ -14,28 +14,41 @@
 
 This tutorial expands on the code created in the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial, and uses commands created in the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial. Both must be completed before this tutorial.
 
-## Introduction 
+## Introduction
 
-In motor control applications, it is important for the timing of both sensor data acquisition and control task execution to remain consistent. In its default configuration, the AMDC may allow some jitter (timing incosistency) between sensor measurement time and control loop timing. This tutorial shows how the AMDC's "Timing Manager" peripheral can be configured to eliminate this jitter.
+In motor control applications, it is important for the timing of both sensor data acquisition and control task execution to remain consistent. In its default configuration, the AMDC may allow some jitter (timing incosistency) between sensor measurement time and control loop timing. This tutorial shows how the AMDC's [Timing Manager](/firmware/arch/timing-manager.md) peripheral can be configured to eliminate this jitter.
 
-This tutorial provides code that allows users to experiment with the configuration of the AMDC Timing Manager. The effects of this experimentation will be observed through the lens of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
+This tutorial provides code that allows users to experiment with the configuration of the AMDC [Timing Manager](/firmware/arch/timing-manager.md). The effects of this experimentation will be observed through the lens of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
 
-## Scheduling and Synchronizing:
+## Scheduling and Synchronizing
 
-The AMDC synchronizes sensor data collection and task execution to the PWM carrier wave. Every X PWM periods (where X is set by the function `timing_manager_set_ratio()`), the AMDC will collect data from sensors. By default, the Timing Manager is set to Legacy Mode, in which the AMDC will run control tasks concurrently with sensor data collection. Alternatively, when configured in Post-Sensor Mode, the Timing Manager guarantees that in each control cycle, the AMDC will wait to execute control tasks until the sensor data collection is complete.s
+Through the [Timing Manager](/firmware/arch/timing-manager.md), the AMDC is capable of synchronizing sensor data collection and task execution to the PWM carrier wave. This is desirable to eliminate electromagnetic noise in motor drives (for example, switching harmonics in the phase current measurements) because the inverter does not switch at the peak and trough of the PWM carrier.
 
-There are multiple factors that affect when and how fast control tasks run.
- - User set `TASK_UPDATES_PER_SEC`
- - PWM Frequency
- - User Event Ratio
- - Sensor collection time (Post-Sensor Mode)
- - Control task time (how long it takes for the control task to run)
+### Timing Manager Modes
 
- ![](/firmware/arch/images/timing.png)
+Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will run tasks independent of whether the sensors have completed data collection.
 
-Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager
+Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete. With propoper configuration, this can be used to ensure the following:
 
-Consider: Control tasks can run, at most, once every X PWM periods, where X is the User Event Ratio.\
+1. the task has new sensor data and
+2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
+
+### Configuring the Timing Manager
+
+There are multiple factors that affect when and how fast control tasks run:
+- User set `TASK_UPDATES_PER_SEC`
+- PWM Frequency
+- User Event Ratio
+- Sensor collection time (`Post-Sensor Mode`)
+- Control task time (how long it takes for the control task to run)
+
+This figure illustrates the functionality of the timing manager:
+
+ ![Timing Manager Architecture](/firmware/arch/images/timing.png)
+
+Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
+
+Consider: Control tasks can run, at most, once every `X` PWM periods, where `X` is the User Event Ratio.\
 That means we have to satisfy these three inequalities:
 
 $$
@@ -52,23 +65,30 @@ The third inequality makes sure that we are able to run the control task in the 
 These three combined inequalities give us both an upper and lower bound for User Event Ratio and PWM frequency relative to each other.
 
 ## C-Code
+To perform the tutorial, make the following modifications to the C code you created through the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) and [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorials.
 
-In this tutorial, we'll be activating the Timing Manager in Post-Sensor Mode. Let's enable Post-Sensor Mode in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`.
+### Set the Timing Manager Mode
+In this tutorial, we will use the [Timing Manager](/firmware/arch/timing-manager.md) in `Post-Sensor Mode`. Enable this in the `user_config.h` file by setting `USER_CONFIG_ISR_SOURCE` to `1`:
 
 `user_config.h`:
-```
+```c
 // Specify the source of the scheduler ISR
 // Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio
 //         of carrier frequency to desired control frequency
 // Mode 1: post-sensor mode - scheduler is triggered when all the enabled sensors are done
 //         acquiring their data
+
 #define USER_CONFIG_ISR_SOURCE (1)
 ```
 
-Let's enable one of the sensors to start observing the effects of the Timing Manager. In the `controller_init()` function, enable the ADC (analog to digital converter) with `timing_manager_enable_sensor(ADC)`.
+### Link the Timing Manager to Sensor Interaces
+
+We need to link the sensor interfaces we wish to synchronize to with the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
+
+To link the ADC to the [Timing Manager](/firmware/arch/timing-manager.md), edit the  `...controller_init()` function to include the function call `timing_manager_enable_sensor(ADC)`:
 
 `app_controller.c`:
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
@@ -78,8 +98,10 @@ void app_controller_init(void)
 }
 ```
 
-To get data from the ADC, use the function `analog_getf(ANALOG_IN1, &output)`. Read about the analog channel mapping on the [analog input page](/hardware/subsystems/analog.md). We won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the Timing Manager.
+### Reading Sensor Data
+Data can be obtained from the sensor interaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). Note that we won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the [Timing Manager](/firmware/arch/timing-manager.md).
 
+### System Timing
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
  - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
@@ -114,7 +136,7 @@ We can see that we are sampling the sensors once per control task. That's becaus
 If we increase the User Event Ratio, we can cause the control task to run at less than 10kHz. Let's increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
 `app_controller.c`:
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
@@ -156,7 +178,7 @@ By decreasing the User Event Ratio, we can cause multiple sensor samples to occu
 Let's set the User Event Ratio to `1`.
 
 `app_controller.c`:
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
@@ -199,7 +221,7 @@ However, the task's Run-Time has increased significantly. This is a bug under re
 Another way to impact loop time is to change the PWM frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
 `app_controller.c`:
-```
+```C
 #include "drv/pwm.h"
 
 void app_controller_init(void)
@@ -239,7 +261,7 @@ Indeed our Loop Mean is back to 200us.
 
 We can fix this by adjusting the Timing Manager's ratio from 10 down to 5.
 
-```
+```C
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
