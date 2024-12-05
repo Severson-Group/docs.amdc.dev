@@ -129,6 +129,8 @@ The Loop Mean is how much time there is between successive executions of the con
 
 ![](images/tmPostSensor.svg)
 
+![](images/tmLegacy.svg)
+
 We can see that we are sampling the sensors once per control task. That's because our User Event Ratio of `10` fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. In this tutorial we will experiment with changes to the parameters of the Timing Manager and observe the effects on control task timings.
 
 ## Experiment 1 - Ratio is too large
@@ -150,6 +152,8 @@ void app_controller_init(void)
 What does this do? We've made it so that the sensors will collect data every 20 PWM cycles, and then the scheduler will run the control task. Since our PWM frequency is still 10kHz, that means our sensors will collect data every 200us. It also means that our control task can only run once every 200us, instead of 100us like it should.
 
 ![](images/tmPostSensorRatio20.svg)
+
+![](images/tmLegacyRatio20.svg)
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
@@ -193,6 +197,8 @@ void app_controller_init(void)
 What we've done now is tell the Timing Manager to sample the sensors every `1` PWM cycle.
 
 ![](images/tmPostSensorRatio1.svg)
+
+![](images/tmLegacyRatio1.svg)
 
 The Timing Manager triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the User Event Ratio can only slow down the rate of control tasks, not speed them up.
 
@@ -241,6 +247,8 @@ Now we're sampling sensors every `10` PWM cycles, but each PWM cycle takes twice
 
 ![](images/tmPostSensorFrequency50.svg)
 
+![](images/tmLegacyFrequency50.svg)
+
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
 ```
@@ -278,6 +286,8 @@ void app_controller_init(void)
 Now we're sampling sensors every `5` PWM cycles. Since each PWM cycle takes 20us, that means our sensor sampling and control task will run every 100us once again.
 
 ![](images/tmPostSensorFrequency50Ratio5.svg)
+
+![](images/tmLegacyFrequency50Ratio5.svg)
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
