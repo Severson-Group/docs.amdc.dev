@@ -19,8 +19,8 @@ import datetime
 # -- Project information -----------------------------------------------------
 
 project = 'AMDC Platform'
-copyright = '2018-' + str(datetime.date.today().year) + ', Severson Research Group'
-author = 'Severson Research Group'
+copyright = '2018-' + str(datetime.date.today().year) + ', Electric Machinery and Levitation Laboratory'
+author = 'Electric Machinery and Levitation Laboratory'
 
 
 # -- General configuration ---------------------------------------------------
