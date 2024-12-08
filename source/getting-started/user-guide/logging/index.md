@@ -12,7 +12,7 @@ Logging simply means recording variables over time from inside the firmware and 
 The capability to log variables from inside the C-code is absolutely essential to debugging complex control algorithms, as well as validating correct behavior.
 
 ```{seealso}
-Signal logging pairs nicely with [](../injection/index.md)!
+Signal logging pairs nicely with [](../injection/index.rst)!
 ```
 
 ## Types of Logging
@@ -49,6 +49,16 @@ Once buffered logging is done, this large array of samples can be transfered fro
 For streaming-based logging, the same principles apply as buffered logging, however, the large memory buffer goes unused.
 Instead, when log streaming is started, the registered variables are sampled and directly streamed from the AMDC to the host.
 
+```{danger}
+By default, the AMDC system runs tasks at a 10 kHz rate, resulting in a period between callbacks of 100 µs. For integer periods, the logging system works as expected.
+
+However, if you change the timing configuration of the AMDC and are running tasks at a frequency that results in a non-integer period in microseconds, then the time interval between samples reported back to the Python interface for logging will be truncated. The system will still function, logging will still happen at the expected/desired rate. However, the logged data returned to the host will use the truncated time interval, resulting in an incorrect time vector. Users should be aware of this and fix the time vector themselves accordingly.
+
+For example, a control/sample rate of 22 kHz results in a period of 45.4545 µs (not an integer). After dumping the logged data to the host, the time vector will be based on the truncated interval of 45 µs, i.e., `t = 0, 45, 90, ...` µs.
+
+This is a known limitation of the `v1` codebase and will be fixed in the `v2` release.
+```
+
 ### Specifications
 
 By default, the logging framework can record up to 32 different variables at one time (i.e., 32 slots).
@@ -70,7 +80,7 @@ Simply uncomment the slots and sample depth defines to override the default valu
 Note that the maximum memory available is limited, so users must keep the product of `slots` and `sample depth` reasonable (i.e. less than 100s of MB).
 For example, the user could change the settings to be 128 variables at 25k sample depth.
 
-
+(c-code-modifications)=
 ## C-Code Modifications
 
 The logging framework has been designed specifically to limit the amount of changes users have to make to their C-code to log variables of interest. The only modifications that users need to make to their C-code are as follows:

@@ -17,7 +17,6 @@ Each tutorial has a clear singular aim and can often be completed within an hour
 | [Hardware Commands](hw-commands/index.md) | Run built-in commands to control the AMDC drive I/O. |
 | [Voltage Source Inverter](vsi/index.md) | Develop control code for 3-phase voltage source inverter (VSI). |
 | [Profiling Tasks](profiling-tasks/index.md) | Determine code performance by using task timing statistics. |
-| [Custom Control Rate](custom-control-rate/index.md) | Run control tasks at any desired rate. |
 
 ```{toctree}
 :hidden:
@@ -27,5 +26,4 @@ Blink <blink/index>
 Hardware Commands <hw-commands/index>
 Voltage Source Inverter <vsi/index>
 Profiling Tasks <profiling-tasks/index>
-Custom Control Rate <custom-control-rate/index>
 ```

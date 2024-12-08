@@ -42,7 +42,7 @@ Most of the system hardware peripherials are located in the FPGA and are custom 
 
 As an example, consider trying to use an FPGA timer. The timers can be configured to trigger interrupts from the FPGA. The `drv/timer.c` driver abstracts away the fairly complex task of initializing the FPGA hardware and setting up register values. Instead, the user can essentially command: "set up timer 1 to trigger interrupt at 10kHz" and it automagically happens. :)
 
-[Read more about the driver layer...](drivers.md)
+[Read more about the driver layer...](drivers/index.md)
 
 ## System
 
@@ -62,7 +62,7 @@ To understand how to create an application for AMDC, you must fully grasp the fo
 
 The AMDC firmware is mainly *task based*. These tasks are repeatedly executed at user-specified intervals (i.e., 1Hz, 500Hz, 10kHz, etc). You can think of a task as simply a block of code that runs periodically. These tasks can form the backbone of a user control algorithm. For example, imagine a PID controller. This code must be executed periodically to update its state. This would fit naturally into a **task** -- the user can configure the system to run the controller task at a periodic interval so that the state updates.
 
-[Read more about tasks...](system.md#tasks)
+[Read more about tasks...](./system.md#tasks)
 
 ### Commands
 
@@ -70,7 +70,7 @@ To interact with the firmware which is running on AMDC, a command-line interface
 
 However, each user application will most likely require its own commands in addition to the default system commands. For example, if an application is controlling a motor, having a command to set the desired output shaft speed would be helpful. The system `commands.c` module exists for this purpose -- the user application simply registers their own command with the system. The user does not need to understand how the incoming characters are parsed and handled -- the system will call the user command handler function if their command has been typed in.
 
-[Read more about commands...](system.md#commands)
+[Read more about commands...](./system.md#commands)
 
 ## Examples
 
@@ -79,7 +79,7 @@ To fully grasp the AMDC firmware architecture, examples are provided which concr
 ```{toctree}
 :hidden:
 
-drivers
+drivers/index.md
 system
 user-apps
 ```

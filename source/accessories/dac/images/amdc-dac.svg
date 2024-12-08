@@ -66,7 +66,7 @@
 	<rect id="rect815-5-51" x="355.1" y="132.1" class="st7" width="142" height="164.8"/>
 </g>
 <g id="text11471">
-	<text transform="matrix(1 0 0 1 10.27 106.43)" class="st3 st0 st1">f</text>
+	<text transform="matrix(1 0 0 1 10.27 106.43)" class="st3 st0 st1">F</text>
 	<text transform="matrix(1 0 0 1 15.11 106.43)" class="st3 st0 st1">r</text>
 	<text transform="matrix(1 0 0 1 21.5 106.43)" class="st3 st0 st1">om AMDC</text>
 </g>
@@ -83,7 +83,7 @@
 <g id="text11489">
 	<text transform="matrix(1 0 0 1 67.02 429.01)" class="st0 st1">Digital-</text>
 	<text transform="matrix(1 0 0 1 117.29 429.01)" class="st0 st1">t</text>
-	<text transform="matrix(1 0 0 1 122.56 429.01)" class="st0 st1">o-analog co</text>
+	<text transform="matrix(1 0 0 1 122.56 429.01)" class="st0 st1">o-Analog Co</text>
 	<text transform="matrix(1 0 0 1 200.73 429.01)" class="st0 st1">nv</text>
 	<text transform="matrix(1 0 0 1 217.1 429.01)" class="st0 st1">er</text>
 	<text transform="matrix(1 0 0 1 231.52 429.01)" class="st0 st1">t</text>
@@ -105,16 +105,16 @@
 <g id="text12213">
 	<text transform="matrix(1 0 0 1 297.81 16.67)" class="st3 st0 st4">Digital-</text>
 	<text transform="matrix(1 0 0 1 360.64 16.67)" class="st3 st0 st4">t</text>
-	<text transform="matrix(1 0 0 1 367.23 16.67)" class="st3 st0 st4">o-analog co</text>
+	<text transform="matrix(1 0 0 1 367.23 16.67)" class="st3 st0 st4">o-Analog Co</text>
 	<text transform="matrix(1 0 0 1 464.95 16.67)" class="st3 st0 st4">nv</text>
 	<text transform="matrix(1 0 0 1 485.41 16.67)" class="st3 st0 st4">ersion</text>
 </g>
 <g id="text12213-2">
-	<text transform="matrix(1 0 0 1 52.46 18.41)" class="st3 st0 st4">Pinout selection</text>
+	<text transform="matrix(1 0 0 1 52.46 18.41)" class="st3 st0 st4">Pinout Selection</text>
 </g>
 <path id="path12215" class="st5" d="M945.5,38V25.7h293.4v12.3"/>
 <g id="text12219">
-	<text transform="matrix(1 0 0 1 1032.58 17.41)" class="st3 st0 st4">Analog output</text>
+	<text transform="matrix(1 0 0 1 1032.58 17.41)" class="st3 st0 st4">Analog Output</text>
 </g>
 <path id="path11159" class="st11" d="M455,129.8l-5.7-9.8h11.3L455,129.8z"/>
 <path id="path11157" class="st12" d="M455,123.2"/>
@@ -183,12 +183,12 @@
 	<text transform="matrix(1 0 0 1 431.65 218.33)" class="st0 st1">C</text>
 </g>
 <g id="text7955">
-	<text transform="matrix(1 0 0 1 67.02 460.21)" class="st0 st1">Analog signal</text>
+	<text transform="matrix(1 0 0 1 67.02 460.21)" class="st0 st1">Analog Signal</text>
 </g>
 <path id="path7969" class="st19" d="M52.7,478.6l-9.8,5.7v-11.4L52.7,478.6z"/>
 <path id="path7963" class="st20" d="M46.2,478.6"/>
 <g id="text7967">
-	<text transform="matrix(1 0 0 1 67.02 481.72)" class="st0 st1">Digital signal</text>
+	<text transform="matrix(1 0 0 1 67.02 481.72)" class="st0 st1">Digital Signal</text>
 </g>
 <g id="text13401">
 	<text transform="matrix(1 0 0 1 803.49 175.7)" class="st21 st0 st1">±10V</text>
@@ -251,7 +251,7 @@
 	<text transform="matrix(1 0 0 1 29.805 164.3161)" class="st3 st0 st1">er Stack pinout</text>
 </g>
 <g id="text9531-5">
-	<text transform="matrix(1 0 0 1 19.7399 222.7802)" class="st3 st0 st1">isoSPI pinout</text>
+	<text transform="matrix(1 0 0 1 19.7399 222.7802)" class="st3 st0 st1">GPIO pinout</text>
 </g>
 <g id="text9543-2">
 	<text transform="matrix(1 0 0 1 196.37 199.57)" class="st0 st1">Jumper</text>
