@@ -24,14 +24,17 @@ This tutorial provides code that allows users to experiment with the configurati
 
 Through the [Timing Manager](/firmware/arch/timing-manager.md), the AMDC is capable of synchronizing sensor data collection and task execution to the PWM carrier wave. This is desirable to eliminate electromagnetic noise in motor drives (for example, switching harmonics in the phase current measurements) because the inverter does not switch at the peak and trough of the PWM carrier.
 
+Additionally, updates to the PWM duty ratio can be precisely synced with the timing manager, and are by default.
+
 ### Timing Manager Modes
 
 Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will run tasks independent of whether the sensors have completed data collection.
 
-Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete. With propoper configuration, this can be used to ensure the following:
+Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete. With proper configuration, this can be used to ensure the following:
 
 1. the task has new sensor data and
 2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
+3. the pwm duty ratio is updated at a consistent rate (every X pwm cycles)
 
 ### Configuring the Timing Manager
 
