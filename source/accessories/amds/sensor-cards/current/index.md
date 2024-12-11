@@ -48,7 +48,7 @@ The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, w
 To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
 
 ### Voltage Reference (LDO)
-The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen. The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
+The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
 
 ### Op Amp Stage
 
@@ -56,7 +56,7 @@ A non-inverting level translation circuit is implemented using Op Amps as shown 
 
 ![](images/current-sensor-opamp-stage.svg)
 
-This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of 0-4.5V.
+This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of 0-$V_{\rm REF}$.
 
 The output voltage for this circuit can be solved as:
 
