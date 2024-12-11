@@ -72,7 +72,7 @@ $$
 
 The resistor values can be calculated from solving these expressions analytically. However, the algebra gets quite complicated. Instead, these values were computed using the [TI analog engineer's calculator](https://www.ti.com/tool/ANALOG-ENGINEER-CALC).
 
-The final design is implemented so that $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 5V$.
+The final design is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$.
 
 ```{attention}
 As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2V to 4.5V for best performance. The user is advised to consider their required current measurement range with the [final voltage expressions](final-primary-current-to-adc-input-voltage-relationship) to select an appropriate number of [primary turns](current-sensor-gain).
