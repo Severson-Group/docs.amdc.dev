@@ -36,10 +36,10 @@ Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firm
 2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
 3. the pwm duty ratio is updated at a consistent rate (every X pwm cycles)
 
-### Configuring the Timing Manager
+### AMDC Actions Synchronized by the Timing Manager
 
 There are multiple factors that affect when and how fast control tasks run:
-- User set `TASK_UPDATES_PER_SEC`
+- User set `TASK_NAME_UPDATES_PER_SEC`
 - PWM Frequency
 - User Event Ratio
 - Sensor collection time (`Post-Sensor Mode`)
@@ -62,10 +62,23 @@ $$
 \frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\ Task\ Time
 $$ (eq:tm)
 
-The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_UPDATES_PER_SEC`.\
+The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.\
 The second inequality ensures that the sensors don't take up the entire timeslot.\
 The third inequality makes sure that we are able to run the control task in the allotted time slot.\
 These three combined inequalities give us both an upper and lower bound for User Event Ratio and PWM frequency relative to each other.
+
+```{attention}
+The first inequality should become an equality for the critical control task.
+
+$$
+\frac{\rm PWM\ frequency}{\rm event\ ratio} = \rm TASK\_UPDATES\_PER\_SEC \\
+\\
+$$ (eq:tmeq)
+
+To understand why, see [Experiment 2](#experiment-2---ratio-is-too-small)
+
+```
+
 
 ## C-Code
 To perform the tutorial, make the following modifications to the C code you created through the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) and [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorials.
@@ -178,9 +191,9 @@ The Loop Mean is how much time there is between successive executions of the con
 
 Making the User Event Ratio too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
-## Experiment 2 - Multiple sensor samples per control task
+## Experiment 2 - Ratio is too small
 
-By decreasing the User Event Ratio, we can cause multiple sensor samples to occur before one cycle of the control task.
+By decreasing the User Event Ratio, we can cause multiple sensor samples to occur before one cycle of the control task. This causes a race condition and can lead to inconsistent sensor staleness times.
 
 Let's set the User Event Ratio to `1`.
 
@@ -227,7 +240,7 @@ However, the task's Run-Time has increased significantly. This is a bug under re
 
 ## Experiment 3 - Changing PWM frequency
 
-Another way to impact loop time is to change the PWM frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
+If the AMDC's PWM frequency is changed, the user needs to appropriately update the User Event Ratio to be compatible with the desired control task frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
 `app_controller.c`:
 ```C
