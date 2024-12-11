@@ -36,7 +36,7 @@ It has an excellent bandwidth of 200khz and a low impedance current output that 
 ### Burden Resistor (_R_<sub>_BURDEN_</sub>)
 A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. For a sensing range of 70A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
 
-_V_<sub>_BURDEN_</sub>  = _I_<sub>_PRIMARY_</sub>(_N_<sub>2</sub>/_N_<sub>1</sub>)_R_<sub>_BURDEN_</sub>
+_V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</sub> _R_<sub>_BURDEN_</sub>
 
 _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143Ω 
 
@@ -72,7 +72,32 @@ A single-ended ADC was selected. The ADC used is the Texas Instruments ADS8860. 
 The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
 The input voltage range is 0-4.5V. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
 
-Need equations
+#### Primary Current-to-ADC Input Voltage Relationship
+The relationship between the primary current flowing through the current transducer into a voltage at the input of the ADC ($V_{out}$ of Op Amp) is analyzed below.
+The exact equation of $V_{\text{BURDEN}}$ and $V_{\text{out}}$ are expressed as:
+
+$$
+V_{\text{BURDEN}} = \frac{R_{a} R_{BURDEN} (N_1/N_2) I_{PRIMARY} + R_{BURDEN} V_{\text{out}}}{R_{a} + R_{BURDEN}}
+$$
+
+$$
+V_{\text{out}} = \frac{R_{a} R_{b}}{R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c}} V_{\text{REF}} + \frac{R_{b} R_{c}}{R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c}} V_{\text{BURDEN}}
+$$
+
+With above equations, the relationship between the primary current ($I_{PRIMARY}$) and the input voltage of ADC ($V_{\text{out}}$) is expressed as: 
+
+For the current card `REV20190805B` ($V_{REF}$ = 5V, $R_{BURDEN}$ = 150Ω, $R_{a}$ = 10kΩ, $R_{b}$ = 8.45kΩ, $R_{c}$ = 4.64kΩ),
+
+$$
+V_{\text{out, RevB}} = 2.4922 + 0.034 I_{\text{PRIMARY}}
+$$
+
+For the current card `REV202008330C` ($V_{REF}$ = 4.5V, $R_{BURDEN}$ = 150Ω, $R_{a}$ = 10kΩ, $R_{b}$ = 10.7kΩ, $R_{c}$ = 4.12kΩ),
+
+$$
+V_{\text{out, RevC}} = 2.5126 + 0.034 I_{\text{PRIMARY}}
+$$
+
 
 **Note:** The different stages of the current sensor card described above convert the input current into a voltage in the range of 0.2V - 4.5V. Therefore, 0 input current corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V.
 
