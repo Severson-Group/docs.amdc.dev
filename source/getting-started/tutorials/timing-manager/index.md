@@ -284,7 +284,7 @@ Run Var:	1.40 usec
 
 The Loop Mean has returned to 100.00 usec. The Timing Manager is not slowing down the rate of the control task anymore.
 
-However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-manager-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task).
+However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-manager-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task). This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent). This causes a race condition.
 
 ## Experiment 3 - Changing PWM frequency
 
