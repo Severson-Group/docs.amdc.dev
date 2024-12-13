@@ -61,9 +61,9 @@ That means we have to satisfy these three inequalities:
 ### Timing Manager Configuration Rules
 
 $$
-\frac{\rm PWM\ frequency}{\rm event\ ratio} \ge \rm TASK\_UPDATES\_PER\_SEC \\
+\frac{\rm PWM\ frequency}{\rm TASK\_UPDATES\_PER\_SEC} \ge \rm event\ ratio \\
 \\
-\frac{\rm event\ ratio}{\rm PWM\ frequency} \ge \rm Sensor\ Collection\ Time \\
+\rm event\ ratio \ge {\rm PWM\ frequency} * {\rm Sensor\ Collection\ Time} \\
 \\
 \frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\ Task\ Time
 $$ (eq:tm)
@@ -77,7 +77,7 @@ These three combined inequalities give us both an upper and lower bound for User
 The first inequality should become an equality for the critical control task.
 
 $$
-\frac{\rm PWM\ frequency}{\rm event\ ratio} = \rm TASK\_UPDATES\_PER\_SEC \\
+\frac{\rm PWM\ frequency}{\rm TASK\_UPDATES\_PER\_SEC} = \rm event\ ratio \\
 \\
 $$ (eq:tmeq)
 
