@@ -163,6 +163,9 @@ ADC time to acquire: 0.820000us
 ADC time since done: 20.805000us
 ```
 
+The ADC time to acquire refers to how long between the trigger for the ADC to start sampling to when it was complete.\
+The ADC time since done is the "staleness" of the data, it refers to how long ago the ADC reported done. This may be useful when controlling a motor with careful timing considerations.
+
 ### System Timing
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
