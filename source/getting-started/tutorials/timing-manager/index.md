@@ -30,7 +30,11 @@ Additionally, updates to the PWM duty ratio can be precisely synced with the tim
 
 Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will run tasks independent of whether the sensors have completed data collection.
 
+![](images/tmLegacySimple.svg)
+
 Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete. With proper configuration, this can be used to ensure the following:
+
+![](images/tmPostSensorSimple.svg)
 
 1. the task has new sensor data and
 2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
@@ -47,7 +51,7 @@ There are multiple factors that affect when and how fast control tasks run:
 
 This figure illustrates the functionality of the timing manager:
 
- ![Timing Manager Architecture](/firmware/arch/images/timing.png)
+![Timing Manager Architecture](/firmware/arch/images/timing.png)
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
 
@@ -117,6 +121,48 @@ void app_controller_init(void)
 ### Reading Sensor Data
 Data can be obtained from the sensor interaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). Note that we won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the [Timing Manager](/firmware/arch/timing-manager.md).
 
+### Reporting sensor acquisition time and sensor data staleness
+
+We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data.
+
+`task_controller.h` at the top:
+```C
+extern uint8_t sensorFlag;
+```
+
+`task_controller.c` in `task_controller_callback(void *arg)`:
+```C
+if (sensorFlag) {
+    cmd_resp_printf("ADC time to acquire: %lfus\n", timing_manager_get_time_per_sensor(ADC));
+    cmd_resp_printf("ADC time since done: %lfus\n", timing_manager_get_time_since_sensor_poll(ADC));
+    sensorFlag = 0;
+}
+```
+
+`cmd_controller.c` at the top:
+```C
+static uint8_t vsi_initialised = 0;
+```
+
+`cmd_controller.c` in `int cmd_vsiApp(int argc, char **argv)`:
+```C
+if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 0) {
+    if (vsi_initialised == 0) {
+        cmd_resp_printf("vsi must be initialised\n");
+        return CMD_FAILURE;
+    }
+    sensorFlag = 1;
+    return CMD_SUCCESS_QUIET;
+}
+```
+
+We can then use the command `ctrl sensor timing` to get the information.
+
+```
+ADC time to acquire: 0.820000us
+ADC time since done: 20.805000us
+```
+
 ### System Timing
 To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
@@ -145,11 +191,11 @@ The Loop Mean is how much time there is between successive executions of the con
 
 ![](images/tmPostSensor.svg)
 
-![](images/tmLegacy.svg)
-
 We can see that we are sampling the sensors once per control task. That's because our User Event Ratio of `10` fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. In this tutorial we will experiment with changes to the parameters of the Timing Manager and observe the effects on control task timings.
 
 ## Experiment 1 - Ratio is too large
+
+Increasing the User Event Ratio is one way to cause tasks to run at less than their desired frequency.
 
 If we increase the User Event Ratio, we can cause the control task to run at less than 10kHz. Let's increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
@@ -168,8 +214,6 @@ void app_controller_init(void)
 What does this do? We've made it so that the sensors will collect data every 20 PWM cycles, and then the scheduler will run the control task. Since our PWM frequency is still 10kHz, that means our sensors will collect data every 200us. It also means that our control task can only run once every 200us, instead of 100us like it should.
 
 ![](images/tmPostSensorRatio20.svg)
-
-![](images/tmLegacyRatio20.svg)
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
@@ -213,8 +257,6 @@ void app_controller_init(void)
 What we've done now is tell the Timing Manager to sample the sensors every `1` PWM cycle.
 
 ![](images/tmPostSensorRatio1.svg)
-
-![](images/tmLegacyRatio1.svg)
 
 The Timing Manager triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the User Event Ratio can only slow down the rate of control tasks, not speed them up.
 
@@ -263,8 +305,6 @@ Now we're sampling sensors every `10` PWM cycles, but each PWM cycle takes twice
 
 ![](images/tmPostSensorFrequency50.svg)
 
-![](images/tmLegacyFrequency50.svg)
-
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
 ```
@@ -302,8 +342,6 @@ void app_controller_init(void)
 Now we're sampling sensors every `5` PWM cycles. Since each PWM cycle takes 20us, that means our sensor sampling and control task will run every 100us once again.
 
 ![](images/tmPostSensorFrequency50Ratio5.svg)
-
-![](images/tmLegacyFrequency50Ratio5.svg)
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
