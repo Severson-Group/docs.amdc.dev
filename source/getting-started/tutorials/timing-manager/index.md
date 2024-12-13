@@ -239,7 +239,7 @@ Run Var:	0.00 usec
 The Loop Mean is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`, but in this case, it is twice that. That indicates that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
 Making the User Event Ratio too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.\
-This violates [inequality number 1](#Timing Manager Configuration Rules)
+This violates [inequality number 1](#timing-manager-configuration-rules)
 
 ## Experiment 2 - Ratio is too small
 
@@ -284,7 +284,7 @@ Run Var:	1.40 usec
 
 The Loop Mean has returned to 100.00 usec. The Timing Manager is not slowing down the rate of the control task anymore.
 
-However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#Timing Manager Configuration Rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task).
+However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-manager-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task).
 
 ## Experiment 3 - Changing PWM frequency
 
