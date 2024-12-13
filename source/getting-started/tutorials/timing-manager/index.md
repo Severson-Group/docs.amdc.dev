@@ -61,11 +61,11 @@ That means we have to satisfy these three inequalities:
 ### Timing Manager Configuration Rules
 
 $$
-\frac{\rm PWM\ frequency}{\rm TASK\_UPDATES\_PER\_SEC} \ge \rm event\ ratio \\
+\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ge \rm event\ ratio \\
 \\
-\rm event\ ratio \ge {\rm PWM\ frequency} * {\rm Sensor\ Collection\ Time} \\
+\rm event\ ratio \ge {\rm PWM\_FREQUENCY} * {\rm Sensor\ Sample\ Acquisition\ Time} \\
 \\
-\rm Control\ Task\ Time > \frac{1}{\rm TASK\_UPDATES\_PER\_SEC}
+\rm Control\ Task\ Time > \frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC}
 $$ (eq:tm)
 
 The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.\
@@ -77,7 +77,7 @@ These three combined inequalities give us both an upper and lower bound for User
 The first inequality should become an equality for the critical control task.
 
 $$
-\frac{\rm PWM\ frequency}{\rm TASK\_UPDATES\_PER\_SEC} = \rm event\ ratio \\
+\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} = \rm event\ ratio \\
 \\
 $$ (eq:tmeq)
 
@@ -143,18 +143,37 @@ if (sensorFlag) {
 
 `cmd_controller.c` at the top:
 ```C
-static uint8_t vsi_initialised = 0;
+static uint8_t ctrl_initialized = 0;
 ```
 
 `cmd_controller.c` in `int cmd_vsiApp(int argc, char **argv)`:
 ```C
 if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 0) {
-    if (vsi_initialised == 0) {
-        cmd_resp_printf("vsi must be initialised\n");
+    if (ctrl_initialized == 0) {
+        cmd_resp_printf("ctrl must be initialized\n");
         return CMD_FAILURE;
     }
     sensorFlag = 1;
     return CMD_SUCCESS_QUIET;
+}
+```
+
+`cmd_controller.c` in `int cmd_vsiApp(int argc, char **argv)` (update existing init and deinit code):
+```C
+if (argc == 2 && strcmp("init", argv[1]) == 0) {
+    if (task_controller_init() != SUCCESS) {
+        return CMD_FAILURE;
+    }
+    ctrl_initialized = 1;
+    return CMD_SUCCESS;
+}
+
+if (argc == 2 && strcmp("deinit", argv[1]) == 0) {
+    if (task_controller_deinit() != SUCCESS) {
+        return CMD_FAILURE;
+    }
+    ctrl_initialized = 0;
+    return CMD_SUCCESS;
 }
 ```
 
