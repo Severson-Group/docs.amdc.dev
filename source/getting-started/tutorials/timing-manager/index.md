@@ -171,7 +171,7 @@ To understand the specific timings of sensor collection and tasks, we need to kn
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
  - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
  - User Event Ratio is set in `common/drv/timing_manager.c` with the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is `10`.
- - The ADC's data acquisition time can be retrieved with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.86 microseconds.
+ - The ADC's data acquisition time can be retrieved with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.82 microseconds.
  - The control task's Run-Time and Loop-Time can be retrieved with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
 ```
