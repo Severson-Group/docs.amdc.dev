@@ -65,7 +65,7 @@ $$
 \\
 \rm event\ ratio \ge {\rm PWM\ frequency} * {\rm Sensor\ Collection\ Time} \\
 \\
-\frac{1}{\rm TASK\_UPDATES\_PER\_SEC} < \rm Control\ Task\ Time
+\rm Control\ Task\ Time > \frac{1}{\rm TASK\_UPDATES\_PER\_SEC}
 $$ (eq:tm)
 
 The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.\
