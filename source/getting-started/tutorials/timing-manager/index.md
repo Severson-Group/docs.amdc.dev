@@ -49,10 +49,6 @@ There are multiple factors that affect when and how fast control tasks run:
 - Sensor collection time (`Post-Sensor Mode`)
 - Control task time (how long it takes for the control task to run)
 
-This figure illustrates the functionality of the timing manager:
-
-![Timing Manager Architecture](/firmware/arch/images/timing.png)
-
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
 
 Consider: Control tasks can run, at most, once every `X` PWM periods, where `X` is the User Event Ratio.\
