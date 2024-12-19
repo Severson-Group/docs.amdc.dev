@@ -45,7 +45,7 @@ With proper configuration, this can be used to ensure the following:
 ### AMDC Actions Synchronized by the Timing Manager
 
 There are multiple factors that affect when and how fast control tasks run:
-- User set `TASK_NAME_UPDATES_PER_SEC`
+- User set `TASK_NAME_UPDATES_PER_SEC` (set in [task header file](/getting-started/tutorials/vsi/index.md#template-task-h-file) and unique per task)
 - The PWM switching frequency (referred to as `PWM_FREQUENCY` in this tutorial)
 - User Event Ratio (referred to as `EVENT_RATIO` in this tutorial)
 - The sensor's sample acquisition time (in `Post-Sensor Mode`)
