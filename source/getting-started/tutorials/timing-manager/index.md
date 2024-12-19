@@ -28,7 +28,7 @@ Additionally, updates to the PWM duty ratio can be precisely synced with the tim
 
 ### Timing Manager Modes
 
-Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will run tasks independent of whether the sensors have completed data collection.
+Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will start running tasks at the same time as starting sensor data acquisition.
 
 ![](images/tmLegacySimple.svg)
 
@@ -45,11 +45,11 @@ With proper configuration, this can be used to ensure the following:
 ### AMDC Actions Synchronized by the Timing Manager
 
 There are multiple factors that affect when and how fast control tasks run:
-- User set `TASK_NAME_UPDATES_PER_SEC` (set in [task header file](/getting-started/tutorials/vsi/index.md#template-task-h-file) and unique per task)
+- User set `TASK_NAME_UPDATES_PER_SEC` (set in the [task header file](/getting-started/tutorials/vsi/index.md#template-task-h-file) and unique per task)
 - The PWM switching frequency (referred to as `PWM_FREQUENCY` in this tutorial)
 - User Event Ratio (referred to as `EVENT_RATIO` in this tutorial)
-- The sensor's sample acquisition time (in `Post-Sensor Mode`)
-- The total task run-time (how long it takes for the all scheduled tasks to run)
+- The sensors' sample acquisition time (in `Post-Sensor Mode`)
+- The total task run-time (how long it takes for all the scheduled tasks to run)
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
 
@@ -63,11 +63,11 @@ $$
 $$ (eq:tm1)
 
 $$
-\rm EVENT\_RATIO \ge {\rm PWM\_FREQUENCY} * {\rm Sensor\ Sample\ Acquisition\ Time}
+\rm EVENT\_RATIO \ge {\rm PWM\_FREQUENCY} \times {\rm Sensor\ Sample\ Acquisition\ Time}
 $$ (eq:tm2)
 
 $$
-\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run-Time
+\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run\ Time
 $$ (eq:tm3)
 
 - Inequality (1) must be met to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.
@@ -181,26 +181,40 @@ if (argc == 2 && strcmp("deinit", argv[1]) == 0) {
 }
 ```
 
-Now, program the AMDC and run the command `ctrl init` to start the controller task.
+## Determine System Timing
+We will now have you use the updated project to determine the system timing parameters and construct a timing diagram for how the [Timing Manager](/firmware/arch/timing-manager.md) behaves.
 
-We can then use the command `ctrl sensor timing` to get sensor timing information.
+Re-build your project and program the AMDC. 
+
+### Step 1: Determine programmed timing parameters
+
+Inspect your AMDC code to determine the following critical timing parameters:
+ - The value of `TASK_CONTROLLER_UPDATES_PER_SEC` in `task_controller.h`. From the [VSI tutorial](/getting-started/tutorials/vsi/index.md#template-task-h-file), we expect its value is set to `(10000)`
+ - The PWM frequency. This can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
+ - The User Event Ratio. This is set in `common/drv/timing_manager.c` by the `timing_manager_init()` function to a default value of `TM_DEFAULT_PWM_RATIO`, which is `10`. Later in the tutorial, we will show you how to change this value.
+
+### Step 2: Determine Sensor Acquisition Time
+On your serial terminal, send the command `ctrl init` to start the controller task.
+
+Send the command `ctrl sensor timing` to use your newly created functions to get the sensor timing information. Your terminal window should show a response from the AMDC similar to the following:
 
 ```
 ADC time to acquire: 0.820000us
 ADC time since done: 20.805000us
 ```
 
-The ADC time to acquire refers to how long between the trigger for the ADC to start sampling to when it was complete (it is the `Sensor Sample Acquisition Time` from [inequality (2)](#timing-manager-configuration-rules)).
+The `ADC time to acquire` refers to how it took the ADC to acquire its most recent sample. This is the `Sensor Sample Acquisition Time` from [inequality (2)](#timing-manager-configuration-rules).
 
-The ADC time since done is the "staleness" of the data, it refers to how long ago the ADC reported done. This may be useful when controlling a motor with careful timing considerations.
+The `ADC time since done` is the "staleness" of the data. This refers to how long it has been since the ADC last finished a sample acquisition. This may be useful as a debugging tool when getting control code to work.
 
-### System Timing
-To understand the specific timings of sensor collection and tasks, we need to know the specific numbers of the factors that control tasks.
- - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
- - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
- - User Event Ratio is set in `common/drv/timing_manager.c` with the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is `10`.
- - The ADC's data acquisition time can be retrieved our new command `ctrl sensor timing`, or with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.82 microseconds.
- - The control task's Run-Time and Loop-Time can be retrieved with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
+
+```{attention}
+The AMDC also has a hardware command `hw tm time adc` that can be used to obtain the `ADC time to acquire`.
+```
+
+### Step 3: Determine the run time and loop time
+
+Issue the command `ctrl stats print`. The AMDC should respond with approximately the following values:
 
 ```
 Task Stats:
@@ -216,20 +230,19 @@ Run Mean:	3.40 usec
 Run Var:	0.00 usec
 ```
 
-- The sensor acquire time and staleness can be retrieved with the new `ctrl sensor timing` command.
+The concepts of run time and loop time were introduced in the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md#step-4-profile-the-vsi-control-code) tutorial.
 
-```
-ADC time to acquire: 0.820000us
-ADC time since done: 20.805000us
-```
+The `Loop Mean` is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`. And in this case it is, at `1` / `10000` seconds.
 
-The Loop Mean is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`. And in this case it is, at `1` / `10000` seconds.
+### Step 4: Construct system timing diagram
 
-### We can now draw our timing diagram with exact parameters:
+The information obtained above can now be used to create a timing diagram. This has been done for the default values that are provided in steps 1 - 3, shown below.
 
 ![](images/tmPostSensor.svg)
 
-We can see that we are sampling the sensors once per control task. That's because our User Event Ratio of `10` fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. In this tutorial we will experiment with changes to the parameters of the Timing Manager and observe the effects on control task timings.
+We can see that we are sampling the sensors once per control task. That's because our User Event Ratio of `10` fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. 
+
+We will now experiment with changes to the parameters of the [Timing Manager](/firmware/arch/timing-manager.md) and observe the effects on control task timings.
 
 ## Experiment 1 - Ratio is too large
 
