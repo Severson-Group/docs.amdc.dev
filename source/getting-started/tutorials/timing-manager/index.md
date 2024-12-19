@@ -127,26 +127,28 @@ Data can be obtained from the sensor interaces in the usual manner, irrespective
 
 ### Reporting sensor acquisition time and sensor data staleness
 
-We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data.
+We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We'll use a global variable `sensor_flag` which will trigger a single reporting of sensor staleness.
 
 Add the following line to the top of `task_controller.h`:
 ```C
-extern uint8_t sensorFlag;
+extern uint8_t sensor_flag;
 ```
 
 Edit function `task_controller_callback(void *arg)` in `task_controller.c`:
 ```C
-if (sensorFlag) {
+if (sensor_flag) {
     cmd_resp_printf("ADC time to acquire: %lfus\n", timing_manager_get_time_per_sensor(ADC));
     cmd_resp_printf("ADC time since done: %lfus\n", timing_manager_get_time_since_sensor_poll(ADC));
-    sensorFlag = 0;
+    sensor_flag = 0;
 }
 ```
 
-`cmd_controller.c` at the top:
+Add the following line to the top of `cmd_controller.c`:
 ```C
 static uint8_t ctrl_initialized = 0;
 ```
+
+Add a new `ctrl sensor timing` command to your controller app.
 
 Edit function `int cmd_vsiApp(int argc, char **argv)` in `cmd_controller.c`:
 ```C
@@ -155,7 +157,7 @@ if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 
         cmd_resp_printf("ctrl must be initialized\n");
         return CMD_FAILURE;
     }
-    sensorFlag = 1;
+    sensor_flag = 1;
     return CMD_SUCCESS_QUIET;
 }
 ```
@@ -179,14 +181,17 @@ if (argc == 2 && strcmp("deinit", argv[1]) == 0) {
 }
 ```
 
-We can then use the command `ctrl sensor timing` to get the information.
+Now, program the AMDC and run the command `ctrl init` to start the controller task.
+
+We can then use the command `ctrl sensor timing` to get sensor timing information.
 
 ```
 ADC time to acquire: 0.820000us
 ADC time since done: 20.805000us
 ```
 
-The ADC time to acquire refers to how long between the trigger for the ADC to start sampling to when it was complete.\
+The ADC time to acquire refers to how long between the trigger for the ADC to start sampling to when it was complete (it is the `Sensor Sample Acquisition Time` from [inequality (2)](#timing-manager-configuration-rules)).
+
 The ADC time since done is the "staleness" of the data, it refers to how long ago the ADC reported done. This may be useful when controlling a motor with careful timing considerations.
 
 ### System Timing
@@ -194,7 +199,7 @@ To understand the specific timings of sensor collection and tasks, we need to kn
  - User set `TASK_CONTROLLER_UPDATES_PER_SEC` is set in `task_controller.h`, its value is set to `(10000)`
  - PWM frequency can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
  - User Event Ratio is set in `common/drv/timing_manager.c` with the `timing_manager_init()` function. It is set to `TM_DEFAULT_PWM_RATIO`, which is `10`.
- - The ADC's data acquisition time can be retrieved with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.82 microseconds.
+ - The ADC's data acquisition time can be retrieved our new command `ctrl sensor timing`, or with the hardware command `hw tm time adc` or the C function `timing_manager_get_time_per_sensor(ADC)`. It is around 0.82 microseconds.
  - The control task's Run-Time and Loop-Time can be retrieved with the user-made command `ctrl stats print`. We are specifically looking at the Run-Time.
 
 ```
@@ -209,6 +214,13 @@ Run Min:	3.25 usec
 Run Max:	3.92 usec
 Run Mean:	3.40 usec
 Run Var:	0.00 usec
+```
+
+- The sensor acquire time and staleness can be retrieved with the new `ctrl sensor timing` command.
+
+```
+ADC time to acquire: 0.820000us
+ADC time since done: 20.805000us
 ```
 
 The Loop Mean is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`. And in this case it is, at `1` / `10000` seconds.
@@ -227,12 +239,15 @@ If we increase the User Event Ratio, we can cause the control task to run at les
 
 Edit `app_controller.c` to update this code:
 ```C
+
+#define EVENT_RATIO 20
+
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
     // set User Event Ratio
-    timing_manager_set_ratio(20);
+    timing_manager_set_ratio(EVENT_RATIO);
     // Register "ctrl" command with system
     cmd_controller_register();
 }
@@ -271,12 +286,15 @@ Let's set the User Event Ratio to `1`.
 
 Edit `app_controller.c` to update this code:
 ```C
+
+#define EVENT_RATIO 1
+
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
     // set User Event Ratio
-    timing_manager_set_ratio(1);
+    timing_manager_set_ratio(EVENT_RATIO);
     // Register "ctrl" command with system
     cmd_controller_register();
 }
@@ -316,12 +334,14 @@ Edit `app_controller.c` to update this code:
 ```C
 #include "drv/pwm.h"
 
+#define EVENT_RATIO 10
+
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
     // set User Event Ratio
-    timing_manager_set_ratio(10);
+    timing_manager_set_ratio(EVENT_RATIO);
     // set PWM frequency
     pwm_set_switching_freq(50000);
     // Register "ctrl" command with system
@@ -354,12 +374,16 @@ Indeed our Loop Mean is back to 200us.
 We can fix this by adjusting the Timing Manager's ratio from 10 down to 5.
 
 ```C
+#include "drv/pwm.h"
+
+#define EVENT_RATIO 5
+
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
     // set User Event Ratio
-    timing_manager_set_ratio(5);
+    timing_manager_set_ratio(EVENT_RATIO);
     // set PWM frequency
     pwm_set_switching_freq(50000);
     // Register "ctrl" command with system
