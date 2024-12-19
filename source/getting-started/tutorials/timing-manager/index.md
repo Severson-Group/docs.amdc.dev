@@ -32,9 +32,11 @@ Every `X` PWM periods (where the user specifies `X` using the function `timing_m
 
 ![](images/tmLegacySimple.svg)
 
-Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete. With proper configuration, this can be used to ensure the following:
+Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete.
 
 ![](images/tmPostSensorSimple.svg)
+
+With proper configuration, this can be used to ensure the following:
 
 1. the task has new sensor data and
 2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
@@ -44,10 +46,10 @@ Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firm
 
 There are multiple factors that affect when and how fast control tasks run:
 - User set `TASK_NAME_UPDATES_PER_SEC`
-- PWM Frequency
-- User Event Ratio
-- Sensor collection time (`Post-Sensor Mode`)
-- Control task time (how long it takes for the control task to run)
+- The PWM switching frequency (referred to as `PWM_FREQUENCY` in this tutorial)
+- User Event Ratio (referred to as `EVENT_RATIO` in this tutorial)
+- The sensor's sample acquisition time (in `Post-Sensor Mode`)
+- The total task run-time (how long it takes for the all scheduled tasks to run)
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
 
@@ -57,16 +59,20 @@ That means we have to satisfy these three inequalities:
 ### Timing Manager Configuration Rules
 
 $$
-\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ge \rm EVENT\_RATIO \\
-\\
-\rm EVENT\_RATIO \ge {\rm PWM\_FREQUENCY} * {\rm Sensor\ Sample\ Acquisition\ Time} \\
-\\
-\rm Control\ Task\ Time > \frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC}
-$$ (eq:tm)
+\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ge \rm EVENT\_RATIO
+$$ (eq:tm1)
 
-The first inequality is necessary to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.\
-The second inequality ensures that the sensors don't take up the entire timeslot.\
-The third inequality makes sure that we are able to run the control task in the allotted time slot.\
+$$
+\rm EVENT\_RATIO \ge {\rm PWM\_FREQUENCY} * {\rm Sensor\ Sample\ Acquisition\ Time}
+$$ (eq:tm2)
+
+$$
+\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run-Time
+$$ (eq:tm3)
+
+- Inequality (1) must be met to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.
+- Inequality (2) must be met to ensure that the sensors don't take up the entire timeslot.
+- Inequality (3) must be met to makes sure that we are able to run all tasks in the allotted time slot.
 These three combined inequalities give us both an upper and lower bound for User Event Ratio and PWM frequency relative to each other.
 
 ```{attention}
@@ -123,12 +129,12 @@ Data can be obtained from the sensor interaces in the usual manner, irrespective
 
 We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data.
 
-`task_controller.h` at the top:
+Add the following line to the top of `task_controller.h`:
 ```C
 extern uint8_t sensorFlag;
 ```
 
-`task_controller.c` in `task_controller_callback(void *arg)`:
+Edit function `task_controller_callback(void *arg)` in `task_controller.c`:
 ```C
 if (sensorFlag) {
     cmd_resp_printf("ADC time to acquire: %lfus\n", timing_manager_get_time_per_sensor(ADC));
@@ -142,7 +148,7 @@ if (sensorFlag) {
 static uint8_t ctrl_initialized = 0;
 ```
 
-`cmd_controller.c` in `int cmd_vsiApp(int argc, char **argv)`:
+Edit function `int cmd_vsiApp(int argc, char **argv)` in `cmd_controller.c`:
 ```C
 if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 0) {
     if (ctrl_initialized == 0) {
@@ -154,7 +160,7 @@ if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 
 }
 ```
 
-`cmd_controller.c` in `int cmd_vsiApp(int argc, char **argv)` (update existing init and deinit code):
+Edit function `int cmd_vsiApp(int argc, char **argv)` in `cmd_controller.c`:
 ```C
 if (argc == 2 && strcmp("init", argv[1]) == 0) {
     if (task_controller_init() != SUCCESS) {
@@ -219,7 +225,7 @@ Increasing the User Event Ratio is one way to cause tasks to run at less than th
 
 If we increase the User Event Ratio, we can cause the control task to run at less than 10kHz. Let's increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
 
-`app_controller.c`:
+Edit `app_controller.c` to update this code:
 ```C
 void app_controller_init(void)
 {
@@ -253,8 +259,9 @@ Run Var:	0.00 usec
 
 The Loop Mean is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`, but in this case, it is twice that. That indicates that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
-Making the User Event Ratio too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.\
-This violates [inequality number 1](#timing-manager-configuration-rules)
+Making the User Event Ratio too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.
+
+This violates [inequality (1)](#timing-manager-configuration-rules)
 
 ## Experiment 2 - Ratio is too small
 
@@ -262,7 +269,7 @@ By decreasing the User Event Ratio, we can cause multiple sensor samples to occu
 
 Let's set the User Event Ratio to `1`.
 
-`app_controller.c`:
+Edit `app_controller.c` to update this code:
 ```C
 void app_controller_init(void)
 {
@@ -305,7 +312,7 @@ However, the task's Run-Time has increased significantly. This is a bug under re
 
 If the AMDC's PWM frequency is changed, the user needs to appropriately update the User Event Ratio to be compatible with the desired control task frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
-`app_controller.c`:
+Edit `app_controller.c` to update this code:
 ```C
 #include "drv/pwm.h"
 
