@@ -24,15 +24,15 @@ This tutorial shows how the AMDC's [Timing Manager](/firmware/arch/timing-manage
 
 ## Scheduling and Synchronizing
 
-The [Timing Manager](/firmware/arch/timing-manager.md) leverages the underlying FPGA to generate a sensor acquisition start signal (`Sensor Trigger`) based on the PWM carrier and an interrupt (`Scheduler Interrupt`) once all sensors have finished acquiring their new data sample. The AMDC OS will only allow tasks to run one time per `Sensor Trigger` signal, regardless of how frequently the tasks have requested to be run.
+The [Timing Manager](/firmware/arch/timing-manager.md) leverages the underlying FPGA to generate a sensor acquisition start signal (`Sensor Trigger`) based on the PWM carrier and an interrupt (`Scheduler Interrupt`) once all sensors have finished acquiring their new data sample. The AMDC scheduler will only allow tasks to run one time per `Sensor Trigger` signal, regardless of how frequently the tasks have requested to be run.
 
 ### Timing Manager Modes
 
-By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will start running tasks at the same time as starting sensor data acquisition (everytime `Sensor Trigger` is asserted).
+By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC scheduler will start running tasks at the same time as starting sensor data acquisition (everytime `Sensor Trigger` is asserted).
 
 ![](images/tmLegacySimple.svg)
 
-Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete (when the `Scheduler Interrupt` occurs).
+Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC scheduler to wait to execute tasks until the sensor data collection is complete (when the `Scheduler Interrupt` occurs).
 
 ![](images/tmPostSensorSimple.svg)
 
