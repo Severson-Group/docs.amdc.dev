@@ -4,7 +4,6 @@
 - **Complexity:** 3 / 5
 - **Estimated Time:** 40 min
 
-
 ## Tutorial Requirements
 
 1. Working AMDC Hardware
@@ -12,35 +11,32 @@
 3. Completion of the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial
 4. Completion of the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial
 
-This tutorial expands on the code created in the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial, and uses commands created in the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial. Both must be completed before this tutorial.
+This tutorial expands on the code created in the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial and uses commands created in the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial. Both must be completed before this tutorial.
 
 ## Introduction
 
-In motor control applications, it is important for the timing of both sensor data acquisition and control task execution to remain consistent. In its default configuration, the AMDC may allow some jitter (timing incosistency) between sensor measurement time and control loop timing. This tutorial shows how the AMDC's [Timing Manager](/firmware/arch/timing-manager.md) peripheral can be configured to eliminate this jitter.
+In control applications, it is often important to be able to synchronize sensor data acquisition and control task execution with the PWM carrier. This is desirable to eliminate electromagnetic noise in motor drives (for example, switching harmonics in the phase current measurements) because the inverter does not switch at the peak and trough of the PWM carrier.
 
-This tutorial provides code that allows users to experiment with the configuration of the AMDC [Timing Manager](/firmware/arch/timing-manager.md). The effects of this experimentation will be observed through the lens of the previous [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial.
+This tutorial shows how the AMDC's [Timing Manager](/firmware/arch/timing-manager.md) peripheral can be used to do the following:
+
+1. synchronize the start of sensor data acquisition to the PWM carrier and
+2. gaurantee that tasks are only run once new sensor data is available.
 
 ## Scheduling and Synchronizing
 
-Through the [Timing Manager](/firmware/arch/timing-manager.md), the AMDC is capable of synchronizing sensor data collection and task execution to the PWM carrier wave. This is desirable to eliminate electromagnetic noise in motor drives (for example, switching harmonics in the phase current measurements) because the inverter does not switch at the peak and trough of the PWM carrier.
-
-Additionally, updates to the PWM duty ratio can be precisely synced with the timing manager, and are by default.
+The [Timing Manager](/firmware/arch/timing-manager.md) leverages the underlying FPGA to generate a sensor acquisition start signal (`Sensor Trigger`) based on the PWM carrier and an interrupt (`Scheduler Interrupt`) once all sensors have finished acquiring their new data sample. The AMDC OS will only allow tasks to run one time per `Sensor Trigger` signal, regardless of how frequently the tasks have requested to be run.
 
 ### Timing Manager Modes
 
-Every `X` PWM periods (where the user specifies `X` using the function `timing_manager_set_ratio()`), the AMDC will collect data from the sensors. By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will start running tasks at the same time as starting sensor data acquisition.
+By default, the [Timing Manager](/firmware/arch/timing-manager.md) is set to `Legacy Mode`, in which the AMDC OS will start running tasks at the same time as starting sensor data acquisition (everytime `Sensor Trigger` is asserted).
 
 ![](images/tmLegacySimple.svg)
 
-Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete.
+Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firmware/arch/timing-manager.md) will instruct the AMDC OS to wait to execute tasks until the sensor data collection is complete (when the `Scheduler Interrupt` occurs).
 
 ![](images/tmPostSensorSimple.svg)
 
-With proper configuration, this can be used to ensure the following:
-
-1. the task has new sensor data and
-2. the time elapsed between when the sensor data is acquired and when the task is run is consistent and jitter-free.
-3. the pwm duty ratio is updated at a consistent rate (every X pwm cycles)
+The `Post-Sensor Mode` gaurantees that every task has access to new sensor data since the last time it was run. It does this by eliminating a race condition between when the sensors collect their data and when the tasks start running.
 
 ### AMDC Actions Synchronized by the Timing Manager
 
