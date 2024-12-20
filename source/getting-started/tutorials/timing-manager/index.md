@@ -1,8 +1,8 @@
 # Tutorial: Timing & Sensors
 
 - **Goal:** Learn how to use the AMDC Timing Manager to synchronize task execution to sensor data acquisition.
-- **Complexity:** 3 / 5
-- **Estimated Time:** 40 min
+- **Complexity:** 4 / 5
+- **Estimated Time:** 60 min
 
 ## Tutorial Requirements
 
@@ -68,7 +68,7 @@ $$
 $$ (eq:tm2)
 
 $$
-\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run\ Time + \rm Sensor\ Sample\ Acquisition\ Time
+\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ > \ & \rm Total\ Task\ Run\ Time \quad + \\ & \rm Sensor\ Sample\ Acquisition\ Time
 $$ (eq:tm3)
 
 From these inequalities,
