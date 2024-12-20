@@ -38,6 +38,10 @@ Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firm
 
 The `Post-Sensor Mode` guarantees that every task has access to new sensor data since the last time it was run. It eliminates a race condition between when the sensors collect their data and when the tasks start running.
 
+```{tip}
+In the timing diagrams above, one of these tasks is labeled as the `control task`. This is the task that is concerned with time synchronization of the sensor data as it is presumed to implement a control algorithm. The AMDC scheduler does not have any knowledge of this task being unique. It is treated the same as any other task. However, we are indicating it as our task of interest in this tutorial to facilitate our explanations. Later timing diagrams will _only_ show the control task and neglect all other tasks shown above.
+```
+
 ### Key Timing Parameters
 
 There are multiple parameters that affect when and how fast tasks run:
@@ -130,7 +134,7 @@ Add the following line to the top of `task_controller.h`:
 extern uint8_t sensor_flag;
 ```
 
-Edit function `task_controller_callback(void *arg)` in `task_controller.c`:
+Edit function `task_controller_callback(void *arg)` in `task_controller.c` to add the following code at the start of the function:
 ```C
 if (sensor_flag) {
     cmd_resp_printf("ADC time to acquire: %lfus\n", timing_manager_get_time_per_sensor(ADC));
@@ -201,7 +205,7 @@ ADC time since done: 20.805000us
 
 The `ADC time to acquire` refers to how long it took the ADC to acquire its most recent sample. This is the `Sensor Sample Acquisition Time` from inequality {eq}`eq:tm2`.
 
-The `ADC time since done` is the "staleness" of the data. This refers to how long it has been since the ADC last finished a sample acquisition. This may be useful as a debugging tool when getting control code to work.
+The `ADC time since done` is the "staleness" of the data. This refers to how long it has been since the ADC last finished a sample acquisition. This may be useful as a debugging tool when getting control code to work. Note that the value you obtain here will vary depending on the other tasks running on your AMDC.
 
 ```{attention}
 The AMDC also has a hardware command `hw tm time adc` that can be used to obtain the `ADC time to acquire`.
