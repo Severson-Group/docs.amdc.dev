@@ -284,9 +284,11 @@ Note that our `Loop Mean` (time elapsed between successive executions of the con
 
 ## Experiment 2 - Ratio is too small
 
-By decreasing the User Event Ratio, we can cause multiple sensor samples to occur before one cycle of the control task. This causes a race condition and can lead to inconsistent sensor staleness times.
+For control tasks (tasks which require new sensor data each time they run), {eq}`eq:tm1` is expected to be an equality. We will now explore what happens when `EVENT_RATIO` is decreased, so that {eq}`eq:tm1` is no longer an equality, but the inqequalities of {eq}`eq:tm1`-{eq}`eq:tm3` are still satisfied.
 
-Let's set the User Event Ratio to `1`.
+This scenario causes multiple sensor samples to occur between each cycle of the control task which we will now show creates a race condition in the control task.
+
+Let's set the `EVENT_RATIO` to `1`.
 
 Edit `app_controller.c` to update this code:
 ```C
@@ -304,11 +306,11 @@ void app_controller_init(void)
 }
 ```
 
-What we've done now is tell the Timing Manager to sample the sensors every `1` PWM cycle.
+What we've done now is tell the [Timing Manager](/firmware/arch/timing-manager.md) to sample the sensors every `1` PWM cycle.
 
 ![](images/tmPostSensorRatio1.svg)
 
-The Timing Manager triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the User Event Ratio can only slow down the rate of control tasks, not speed them up.
+The [Timing Manager](/firmware/arch/timing-manager.md) triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the User Event Ratio can only slow down the rate of control tasks, not speed them up.
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
@@ -326,9 +328,9 @@ Run Mean:	10.25 usec
 Run Var:	1.40 usec
 ```
 
-The Loop Mean has returned to 100.00 usec. The Timing Manager is not slowing down the rate of the control task anymore.
+The `Loop Mean` has returned to `100.00 usec` (the value specified by `TASK_CONTROLLER_UPDATES_PER_SEC`). Unlike Experiment 1, the [Timing Manager](/firmware/arch/timing-manager.md) is no longer slowing down the rate of the control task.
 
-However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task). This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent). This causes a race condition.
+However, the task's `Run Mean` value has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-configuration-rules), this is an example of a critical task not satisfying equality {eq}`eq:tm1`. This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent).
 
 ## Experiment 3 - Changing PWM frequency
 
