@@ -310,7 +310,7 @@ What we've done now is tell the [Timing Manager](/firmware/arch/timing-manager.m
 
 ![](images/tmPostSensorRatio1.svg)
 
-The [Timing Manager](/firmware/arch/timing-manager.md) triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the User Event Ratio can only slow down the rate of control tasks, not speed them up.
+The [Timing Manager](/firmware/arch/timing-manager.md) triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn't mean that the control task always runs after every sensor sampling. In this way, the `EVENT_RATIO` can only slow down the rate of control tasks, not speed them up.
 
 Rebuild and run the new program, and use the command `ctrl stats print` to view the loop time (after doing `ctrl init`).
 
@@ -334,7 +334,9 @@ However, the task's `Run Mean` value has increased significantly. This is a bug 
 
 ## Experiment 3 - Changing PWM frequency
 
-If the AMDC's PWM frequency is changed, the user needs to appropriately update the User Event Ratio to be compatible with the desired control task frequency. Let's return to the situation with a User Event Ratio of 10, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
+If the AMDC's `PWM_FREQUENCY` is changed, the user needs to appropriately update the `EVENT_RATIO` to be compatible with the desired `TASK_CONTROLLER_UPDATES_PER_SEC`. 
+
+To illustrate this, let's return to the situation with an `EVENT_RATIO` of `10`, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code `pwm_set_switching_freq(50000)` to our init function (remember to `#include "drv/pwm.h"` at the top of the file).
 
 Edit `app_controller.c` to update this code:
 ```C
@@ -375,9 +377,9 @@ Run Mean:	3.39 usec
 Run Var:	0.00 usec
 ```
 
-Indeed our Loop Mean is back to 200us.
+Indeed our `Loop Mean` is back to `200us`.
 
-We can fix this by adjusting the Timing Manager's ratio from 10 down to 5.
+We can fix this by adjusting the `EVENT_RATIO` ratio from `10` down to `5`:
 
 ```C
 #include "drv/pwm.h"
