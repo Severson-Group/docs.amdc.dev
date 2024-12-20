@@ -84,9 +84,9 @@ This configuration can be done via the C driver interface (given below).
 
 ## Scheduler ISR Modes
 
-The Timing Manager can be configures to generate a scheduler interrupt in one of two modes:
+The Timing Manager can be configured to generate a scheduler interrupt in one of two modes:
 - "Legacy" Mode: The scheduler interrupt is generated only based on the PWM configuation and user ratio, and does not wait for sensor interfaces to report `done`. To maintain backwards-compatibility, this is the **default** setting. 
-- "New" Mode: The scheduler interrupt is only generated when all sensors enabled via the Timing Manager report `done`. If no sensors are enabled, the scheduler interrupt is generated in the way as the Legacy Mode.
+- "Post-Sensor" Mode: The scheduler interrupt is only generated when all sensors enabled via the Timing Manager report `done`. If no sensors are enabled, the scheduler interrupt is generated in the way as the Legacy Mode.
 
 This configuration must be set before code compilation and flashing using the `USER_CONFIG_ISR_SOURCE` definition in `usr/user_config.h`.
 
@@ -154,7 +154,7 @@ double timing_manager_expected_tick_delta(void);
 
 These functions deal with the Timing Manager->Scheduler (FPGA->ARM) interrupt. `timing_manager_isr()` and `timing_manager_clear_isr()` are interrupt service routine (which starts the scheduler) and the interrupt clear function, respectively.
 
-`timing_manager_set_scheduler_source()` is called during Timing Manager initialization, and configure the scheduler interrupt to either be generated in sync with the trigger (Legacy Mode), or after the sensors have all reported done (New Mode), depending on the value of `#define USER_CONFIG_ISR_SOURCE` in `user_config.h`.
+`timing_manager_set_scheduler_source()` is called during Timing Manager initialization, and configure the scheduler interrupt to either be generated in sync with the trigger (Legacy Mode), or after the sensors have all reported done (Post-Sensor Mode), depending on the value of `#define USER_CONFIG_ISR_SOURCE` in `user_config.h`.
 
 `timing_manager_get_tick_delta()` reports the true measured time in microseconds between ISR calls for the scheduler, which needs to know the elapsed time for proper control. `timing_manager_expected_tick_delta()` reports what this time *should be* based on the user's configuration of the Timing Manager, which is needed in `log.h` to determine the logging task's update frequency.
 
