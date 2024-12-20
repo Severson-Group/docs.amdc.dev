@@ -36,26 +36,27 @@ Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firm
 
 ![](images/tmPostSensorSimple.svg)
 
-The `Post-Sensor Mode` gaurantees that every task has access to new sensor data since the last time it was run. It does this by eliminating a race condition between when the sensors collect their data and when the tasks start running.
+The `Post-Sensor Mode` gaurantees that every task has access to new sensor data since the last time it was run. It eliminates a race condition between when the sensors collect their data and when the tasks start running.
 
-### AMDC Actions Synchronized by the Timing Manager
+### Key Timing Parameters
 
-There are multiple factors that affect when and how fast control tasks run:
-- User set `TASK_NAME_UPDATES_PER_SEC` (set in the [task header file](/getting-started/tutorials/vsi/index.md#template-task-h-file) and unique per task)
-- The PWM switching frequency (referred to as `PWM_FREQUENCY` in this tutorial)
-- User Event Ratio (referred to as `EVENT_RATIO` in this tutorial)
-- The sensors' sample acquisition time (in `Post-Sensor Mode`)
-- The total task run-time (how long it takes for all the scheduled tasks to run)
+There are multiple parameters that affect when and how fast tasks run:
+- `TASK_NAME_UPDATES_PER_SEC`: This is set by the user in the [task header file](/getting-started/tutorials/vsi/index.md#template-task-h-file) for each task
+- `PWM_FREQUENCY`: The PWM switching frequency (frequency of the PWM carrier).
+- `EVENT_RATIO`: This is the `User Event Ratio` of the [Timing Manager](/firmware/arch/timing-manager.md).
+- `Sensor Sample Acquisition Time`: This is the time it takes the slowest sensor to acquire a data sample (only relevant to `Post-Sensor Mode`).
+- `Total Task Run Time`: The cumulative time it takes for all the scheduled tasks to run.
 
 Read [this docs page](/firmware/arch/timing-manager.md) for detailed information on the Timing Manager.
 
-Consider: Control tasks can run, at most, once every `X` PWM periods, where `X` is the User Event Ratio.\
-That means we have to satisfy these three inequalities:
+### Timing Configuration Rules
 
-### Timing Manager Configuration Rules
+The [Timing Manager](/firmware/arch/timing-manager.md) intiates sensor data acquisition (`Sensor Trigger`) every `EVENT_RATIO` PWM cycles. Tasks are allowed to run, at most, one time between `Sensor Trigger` events. This means that the system configuration must be carefully considered to ensure satisfactory task timing.
+
+For `Post-Sensor Mode`, the following three inequalities should be satisfied:
 
 $$
-\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ge \rm EVENT\_RATIO
+\rm EVENT\_RATIO \leq \frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC}
 $$ (eq:tm1)
 
 $$
@@ -66,23 +67,24 @@ $$
 \frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run\ Time
 $$ (eq:tm3)
 
-- Inequality (1) must be met to ensure the control task can run at the specified rate of `TASK_NAME_UPDATES_PER_SEC`.
-- Inequality (2) must be met to ensure that the sensors don't take up the entire timeslot.
-- Inequality (3) must be met to makes sure that we are able to run all tasks in the allotted time slot.
-These three combined inequalities give us both an upper and lower bound for User Event Ratio and PWM frequency relative to each other.
+From these inequalities,
+- {eq}`eq:tm1` must be met for the highest frequency task to ensure it can run at its specified rate of `TASK_NAME_UPDATES_PER_SEC`;
+- {eq}`eq:tm2` ensures that the sensors don't take up the entire timeslot;
+- {eq}`eq:tm3` ensures that we are able to run all tasks in the allotted time slot.
+  
+These three combined inequalities give us both an upper and lower bound for `EVENT_RATIO` and `PWM_FREQUENCY` relative to each other.
 
 ```{attention}
-The first inequality should become an equality for the critical control task.
+For any tasks that must be run at precise intervals of `TASK_NAME_UPDATES_PER_SEC`, the right hand side of {eq}`eq:tm1` must be an integer. For the critical control task (the task that requires new sensor data each time it runs), inequality {eq}`eq:tm1` should become an equality:
 
 $$
-\frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} = \rm EVENT\_RATIO \\
+\frac{\rm PWM\_FREQUENCY}{\rm CONTROL\_TASK\_NAME\_UPDATES\_PER\_SEC} = \rm EVENT\_RATIO \\
 \\
 $$ (eq:tmeq)
 
 To understand why, see [Experiment 2](#experiment-2---ratio-is-too-small)
 
 ```
-
 
 ## C-Code
 To perform the tutorial, make the following modifications to the C code you created through the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) and [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorials.
@@ -103,11 +105,9 @@ In this tutorial, we will use the [Timing Manager](/firmware/arch/timing-manager
 
 ### Link the Timing Manager to Sensor Interaces
 
-We need to link the sensor interfaces we wish to synchronize to with the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
+We need to link the sensor interfaces we wish to synchronize with the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
 
-To link the ADC to the [Timing Manager](/firmware/arch/timing-manager.md), edit the  `...controller_init()` function to include the function call `timing_manager_enable_sensor(ADC)`:
-
-`app_controller.c`:
+To link the ADC to the [Timing Manager](/firmware/arch/timing-manager.md), edit the  `app_controller_init()` function within `app_controller.c` to include the function call `timing_manager_enable_sensor(ADC)`:
 ```C
 void app_controller_init(void)
 {
@@ -123,7 +123,7 @@ Data can be obtained from the sensor interaces in the usual manner, irrespective
 
 ### Reporting sensor acquisition time and sensor data staleness
 
-We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We'll use a global variable `sensor_flag` which will trigger a single reporting of sensor staleness.
+We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We'll add a global variable `sensor_flag` to indicate when the app callback functon should writeout a report of the sensor tmining statistics.
 
 Add the following line to the top of `task_controller.h`:
 ```C
@@ -185,9 +185,9 @@ Re-build your project and program the AMDC.
 ### Step 1: Determine programmed timing parameters
 
 Inspect your AMDC code to determine the following critical timing parameters:
- - The value of `TASK_CONTROLLER_UPDATES_PER_SEC` in `task_controller.h`. From the [VSI tutorial](/getting-started/tutorials/vsi/index.md#template-task-h-file), we expect its value is set to `(10000)`
- - The PWM frequency. This can be set with a hardware command `hw pwm sw`, but the default value is in `common/drv/pwm.h` at `(100000.0)`
- - The User Event Ratio. This is set in `common/drv/timing_manager.c` by the `timing_manager_init()` function to a default value of `TM_DEFAULT_PWM_RATIO`, which is `10`. Later in the tutorial, we will show you how to change this value.
+ - The value of `TASK_CONTROLLER_UPDATES_PER_SEC` in `task_controller.h`. From the [VSI tutorial](/getting-started/tutorials/vsi/index.md#template-task-h-file), we expect its value is set to `(10000)`.
+ - The PWM frequency. This can be set with a hardware command `hw pwm sw`, but the default value in `common/drv/pwm.h` is `(100000.0)`.
+ - `EVENT_RATIO`. This is set in `common/drv/timing_manager.c` by the `timing_manager_init()` function to a default value of `TM_DEFAULT_PWM_RATIO`, which is `10`. Later in the tutorial, we will show you how to change this value.
 
 ### Step 2: Determine Sensor Acquisition Time
 On your serial terminal, send the command `ctrl init` to start the controller task.
@@ -199,10 +199,9 @@ ADC time to acquire: 0.820000us
 ADC time since done: 20.805000us
 ```
 
-The `ADC time to acquire` refers to how it took the ADC to acquire its most recent sample. This is the `Sensor Sample Acquisition Time` from [inequality (2)](#timing-manager-configuration-rules).
+The `ADC time to acquire` refers to how long it took the ADC to acquire its most recent sample. This is the `Sensor Sample Acquisition Time` from inequality {eq}`eq:tm2`.
 
 The `ADC time since done` is the "staleness" of the data. This refers to how long it has been since the ADC last finished a sample acquisition. This may be useful as a debugging tool when getting control code to work.
-
 
 ```{attention}
 The AMDC also has a hardware command `hw tm time adc` that can be used to obtain the `ADC time to acquire`.
@@ -236,17 +235,15 @@ The information obtained above can now be used to create a timing diagram. This 
 
 ![](images/tmPostSensor.svg)
 
-We can see that we are sampling the sensors once per control task. That's because our User Event Ratio of `10` fits perfectly with the ratio between the PWM frequency and our control task's frequency. This is the gold standard. 
+We can see that we are sampling the sensors once per control task. That is because our `EVENT_RATIO` of `10` fits perfectly with the ratio between the PWM frequency `100 kHz` and our control task's frequency `10 kHz`. This is the gold standard.
 
 We will now experiment with changes to the parameters of the [Timing Manager](/firmware/arch/timing-manager.md) and observe the effects on control task timings.
 
 ## Experiment 1 - Ratio is too large
 
-Increasing the User Event Ratio is one way to cause tasks to run at less than their desired frequency.
+Increasing the `EVENT_RATIO` above the limit of {eq}`eq:tm1` will cause tasks to run at less than their desired frequency (`TASK_NAME_UPDATES_PER_SEC`). In this experiment, we will cause the control task to run at less than 10kHz. 
 
-If we increase the User Event Ratio, we can cause the control task to run at less than 10kHz. Let's increase it to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function.
-
-Edit `app_controller.c` to update this code:
+Let's increase `EVENT_RATIO` to 20 by putting `timing_manager_set_ratio(20)` in the `controller_init()` function. Edit `app_controller.c` to update this code:
 ```C
 
 #define EVENT_RATIO 20
@@ -261,7 +258,9 @@ void app_controller_init(void)
     cmd_controller_register();
 }
 ```
-What does this do? We've made it so that the sensors will collect data every 20 PWM cycles, and then the scheduler will run the control task. Since our PWM frequency is still 10kHz, that means our sensors will collect data every 200us. It also means that our control task can only run once every 200us, instead of 100us like it should.
+What does this do? We've made it so that the sensors will collect data every 20 PWM cycles. Since the AMDC's OS will only run tasks one time per sensor acquisition, this also means that the scheduler will wait 20 PWM cycles to run the control task.
+
+Since our `PWM_FREQUENCY` is 100kHz, our sensors will collect data every 200us and our control task can only run once every 200us, instead of the 100us interval we specified in `TASK_CONTROLLER_UPDATES_PER_SEC`.
 
 ![](images/tmPostSensorRatio20.svg)
 
@@ -281,11 +280,7 @@ Run Mean:	3.41 usec
 Run Var:	0.00 usec
 ```
 
-The Loop Mean is how much time there is between successive executions of the control task. It should be `1` / `TASK_CONTROLLER_UPDATES_PER_SEC`, but in this case, it is twice that. That indicates that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC`.
-
-Making the User Event Ratio too high is one way that control tasks can be slowed down past their target `TASK_CONTROLLER_UPDATES_PER_SEC`.
-
-This violates [inequality (1)](#timing-manager-configuration-rules)
+Note that our `Loop Mean` (time elapsed between successive executions of the control task) is indeed `200 us` instead of `100 us`. This proves that the control task is only running at half of `TASK_CONTROLLER_UPDATES_PER_SEC` because the inequality {eq}`eq:tm1` has been violated.
 
 ## Experiment 2 - Ratio is too small
 
@@ -333,7 +328,7 @@ Run Var:	1.40 usec
 
 The Loop Mean has returned to 100.00 usec. The Timing Manager is not slowing down the rate of the control task anymore.
 
-However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-manager-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task). This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent). This causes a race condition.
+However, the task's Run-Time has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-configuration-rules), this is an example of a critical task not satisfying equality number 1 (inequality number 1 becomes an equality for the critical task). This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent). This causes a race condition.
 
 ## Experiment 3 - Changing PWM frequency
 
