@@ -20,7 +20,7 @@ In control applications, it is often important to be able to synchronize sensor 
 This tutorial shows how the AMDC's [Timing Manager](/firmware/arch/timing-manager.md) peripheral can be used to do the following:
 
 1. synchronize the start of sensor data acquisition to the PWM carrier and
-2. gaurantee that tasks are only run once new sensor data is available.
+2. guarantee that tasks are only run once new sensor data is available.
 
 ## Scheduling and Synchronizing
 
@@ -36,7 +36,7 @@ Alternatively, when configured in `Post-Sensor Mode`, the [Timing Manager](/firm
 
 ![](images/tmPostSensorSimple.svg)
 
-The `Post-Sensor Mode` gaurantees that every task has access to new sensor data since the last time it was run. It eliminates a race condition between when the sensors collect their data and when the tasks start running.
+The `Post-Sensor Mode` guarantees that every task has access to new sensor data since the last time it was run. It eliminates a race condition between when the sensors collect their data and when the tasks start running.
 
 ### Key Timing Parameters
 
@@ -64,7 +64,7 @@ $$
 $$ (eq:tm2)
 
 $$
-\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run\ Time
+\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} > \rm Total\ Task\ Run\ Time + \rm Sensor\ Sample\ Acquisition\ Time
 $$ (eq:tm3)
 
 From these inequalities,
