@@ -134,11 +134,19 @@ Add the following line to the top of `task_controller.h`:
 extern uint8_t sensor_flag;
 ```
 
+Add the following line to the top of `task_controller.c`:
+```C
+#include "drv/timing_manager.h"
+#include "sys/commands.h"
+
+uint8_t sensor_flag = 0;
+```
+
 Edit function `task_controller_callback(void *arg)` in `task_controller.c` to add the following code at the start of the function:
 ```C
 if (sensor_flag) {
     cmd_resp_printf("ADC time to acquire: %lfus\n", timing_manager_get_time_per_sensor(ADC));
-    cmd_resp_printf("ADC time since done: %lfus\n", timing_manager_get_time_since_sensor_poll(ADC));
+    cmd_resp_printf("ADC time since done: %lfus\n", timing_manager_get_time_since_sensor_done(ADC));
     sensor_flag = 0;
 }
 ```
