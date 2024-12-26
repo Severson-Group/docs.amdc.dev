@@ -129,7 +129,7 @@ Data can be obtained from the sensor interaces in the usual manner, irrespective
 
 ### Reporting sensor acquisition time and sensor data staleness
 
-We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We'll add a global variable `sensor_flag` to indicate when the app callback functon should writeout a report of the sensor tmining statistics.
+We're also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We'll add a global variable `sensor_flag` to indicate when the app callback function should writeout a report of the sensor timing statistics.
 
 Add the following line to the top of `task_controller.h`:
 ```C
