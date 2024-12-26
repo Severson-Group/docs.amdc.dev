@@ -55,7 +55,7 @@ Read [this docs page](/firmware/arch/timing-manager.md) for detailed information
 
 ### Timing Configuration Rules
 
-The [Timing Manager](/firmware/arch/timing-manager.md) intiates sensor data acquisition (`Sensor Trigger`) every `EVENT_RATIO` PWM cycles. Tasks are allowed to run, at most, one time between `Sensor Trigger` events. This means that the system configuration must be carefully considered to ensure satisfactory task timing.
+The [Timing Manager](/firmware/arch/timing-manager.md) initiates sensor data acquisition (`Sensor Trigger`) every `EVENT_RATIO` PWM cycles. Tasks are allowed to run, at most, one time between `Sensor Trigger` events. This means that the system configuration must be carefully considered to ensure satisfactory task timing.
 
 For `Post-Sensor Mode`, the following three inequalities should be satisfied:
 
@@ -113,12 +113,14 @@ We need to link the sensor interfaces we wish to synchronize with the [Timing Ma
 
 To link the ADC to the [Timing Manager](/firmware/arch/timing-manager.md), edit the  `app_controller_init()` function within `app_controller.c` to include the function call `timing_manager_enable_sensor(ADC)`:
 ```C
+#include "drv/timing_manager.h"
+
 void app_controller_init(void)
 {
     // Enable data sampling for ADC
     timing_manager_enable_sensor(ADC);
     // Register "ctrl" command with system
-    cmd_controller_register();
+    cmd_ctrl_register();
 }
 ```
 
@@ -151,14 +153,14 @@ if (sensor_flag) {
 }
 ```
 
-Add the following line to the top of `cmd_controller.c`:
+Add the following line to the top of `cmd_ctrl.c`:
 ```C
 static uint8_t ctrl_initialized = 0;
 ```
 
 Add a new `ctrl sensor timing` command to your controller app.
 
-Edit function `int cmd_vsiApp(int argc, char **argv)` in `cmd_controller.c`:
+Edit function `int cmd_ctrl(int argc, char **argv)` in `cmd_ctrl.c`:
 ```C
 if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 0) {
     if (ctrl_initialized == 0) {
@@ -170,7 +172,7 @@ if (argc == 3 && strcmp("sensor", argv[1]) == 0 && strcmp("timing", argv[2]) == 
 }
 ```
 
-Edit function `int cmd_vsiApp(int argc, char **argv)` in `cmd_controller.c`:
+Edit function `int cmd_ctrl(int argc, char **argv)` in `cmd_ctrl.c`:
 ```C
 if (argc == 2 && strcmp("init", argv[1]) == 0) {
     if (task_controller_init() != SUCCESS) {
@@ -267,7 +269,7 @@ void app_controller_init(void)
     // set User Event Ratio
     timing_manager_set_ratio(EVENT_RATIO);
     // Register "ctrl" command with system
-    cmd_controller_register();
+    cmd_ctrl_register();
 }
 ```
 What does this do? We've made it so that the sensors will collect data every 20 PWM cycles. Since the AMDC's OS will only run tasks one time per sensor acquisition, this also means that the scheduler will wait 20 PWM cycles to run the control task.
@@ -296,7 +298,7 @@ Note that our `Loop Mean` (time elapsed between successive executions of the con
 
 ## Experiment 2 - Ratio is too small
 
-For control tasks (tasks which require new sensor data each time they run), {eq}`eq:tm1` is expected to be an equality. We will now explore what happens when `EVENT_RATIO` is decreased, so that {eq}`eq:tm1` is no longer an equality, but the inqequalities of {eq}`eq:tm1`-{eq}`eq:tm3` are still satisfied.
+For control tasks (tasks which require new sensor data each time they run), {eq}`eq:tm1` is expected to be an equality. We will now explore what happens when `EVENT_RATIO` is decreased, so that {eq}`eq:tm1` is no longer an equality, but the inequalities of {eq}`eq:tm1`-{eq}`eq:tm3` are still satisfied.
 
 This scenario causes multiple sensor samples to occur between each cycle of the control task which we will now show creates a race condition in the control task.
 
@@ -314,7 +316,7 @@ void app_controller_init(void)
     // set User Event Ratio
     timing_manager_set_ratio(EVENT_RATIO);
     // Register "ctrl" command with system
-    cmd_controller_register();
+    cmd_ctrl_register();
 }
 ```
 
@@ -365,7 +367,7 @@ void app_controller_init(void)
     // set PWM frequency
     pwm_set_switching_freq(50000);
     // Register "ctrl" command with system
-    cmd_controller_register();
+    cmd_ctrl_register();
 }
 ```
 
@@ -407,7 +409,7 @@ void app_controller_init(void)
     // set PWM frequency
     pwm_set_switching_freq(50000);
     // Register "ctrl" command with system
-    cmd_controller_register();
+    cmd_ctrl_register();
 }
 ```
 
