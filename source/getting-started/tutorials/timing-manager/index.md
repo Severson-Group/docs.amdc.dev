@@ -10,6 +10,7 @@
 2. Completion of the [Hardware Commands](/getting-started/tutorials/hw-commands/index.md) tutorial
 3. Completion of the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial
 4. Completion of the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial
+5. AMDC firmware version 1.4 or higher
 
 This tutorial expands on the code created in the [Voltage Source Inverter](/getting-started/tutorials/vsi/index.md) tutorial and uses commands created in the [Profiling Tasks](/getting-started/tutorials/profiling-tasks/index.md) tutorial. Both must be completed before this tutorial.
 
@@ -344,7 +345,11 @@ Run Var:	1.40 usec
 
 The `Loop Mean` has returned to `100.00 usec` (the value specified by `TASK_CONTROLLER_UPDATES_PER_SEC`). Unlike Experiment 1, the [Timing Manager](/firmware/arch/timing-manager.md) is no longer slowing down the rate of the control task.
 
-However, the task's `Run Mean` value has increased significantly. This is a bug under review that may appear from sub-optimal timing configuration. While this doesn't break any of the [timing manager rules](#timing-configuration-rules), this is an example of a critical task not satisfying equality {eq}`eq:tm1`. This is because our sensor data will have inconsistent staleness (depending on which sensor tick is most recent).
+While the experiment 2 configuration doesn't break any of the [timing manager rules](#timing-configuration-rules), it is an example of a critical task not satisfying equality {eq}`eq:tm1`. Users are advised to avoid this configuration because the sensor data will have inconsistent staleness.
+
+```{attention}
+Note that in this case, the task's `Run Mean` value has increased significantly. This is a [bug under review](https://github.com/Severson-Group/AMDC-Firmware/issues/424) that may appear from sub-optimal timing configuration. Not all users experience this bug.
+```
 
 ## Experiment 3 - Changing PWM frequency
 
