@@ -50,6 +50,14 @@ All firmware system code is located in the `sys` directory. These modules are re
 
 [Read more about the system layer...](system.md)
 
+## Timing Manager
+
+A critical part of the AMDC scheduler architecture is the "Timing Manager". The Timing Manager is an event synchronizer built into the FPGA hardware. Its purpose is to ensure that sensor sampling, feedback, and software control remain coupled to the peaks and valleys of the switching PWM carrier when EMI is minimized.
+
+The Timing Manager operates primarily at the system level, but operation can be re-configured with user-level drivers if needed.
+
+[Read more about the Timing Manager...](timing-manager.md)
+
 ## User Apps
 
 All user apps are written in C and exist in the `usr` directory. These apps are built on top of all other system functionality (the system modules, drivers, and hardware). These user apps interact with the system code for various things: register tasks, register commands, etc. The user apps can also interact with the system drivers to interface with hardware resources (i.e., PWM outputs, analog inputs, etc).
@@ -81,5 +89,6 @@ To fully grasp the AMDC firmware architecture, examples are provided which concr
 
 drivers/index.md
 system
+timing-manager
 user-apps
 ```
