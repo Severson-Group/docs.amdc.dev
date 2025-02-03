@@ -55,6 +55,26 @@ err = analog_getf(ANALOG_IN1, &voltage);
 
 Similar to steps for reading voltages, but with `drv/pwm.c` driver.
 
+The pwm has additional options for determining when the physical duty ratio will update.
+
+This is done by calling the following function:
+
+```C
+err = pwm_set_duty_latching_mode(mode);
+```
+
+With mode options
+
+```C
+typedef enum {
+    PWM_LATCH_MODE_TIMING_MANAGER = 0, // Update duty ratios at next timing manager trigger (default)
+    PWM_LATCH_MODE_PWM,                // Update duty ratios at next PWM carrier peak/valley
+    PWM_LATCH_MODE_IMMEDIATE           // Update duty ratios immediately (next FPGA clock rise)
+} pwm_latch_mode;
+```
+
+The pwm can be set to update in sync with the [timing manager interrupt](/firmware/arch/timing-manager.md), on the next peak/valley, or immediately.
+
 ### Reading Encoder Values
 
 Similar to steps for reading voltages, but with `drv/encoder.c` driver.
