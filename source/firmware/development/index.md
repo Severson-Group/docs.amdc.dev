@@ -49,7 +49,7 @@ Refer to the diagram above for a graphical representation of how the git branchi
 The procedure for creating a new release is mostly common for all three types (major, minor, bug fix):
 
 1. Update code via topic branches which are based on `develop` and merge updates into `develop`
-2. Ensure development has stablized on the `develop` branch
+2. Ensure development has stabilized on the `develop` branch
 3. Ensure thorough testing of the latest `develop` branch code
 4. Create a final commit to `develop` where the `./CHANGELOG.md` file is updated with documentation about the new release
 
