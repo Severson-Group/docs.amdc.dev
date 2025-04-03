@@ -81,7 +81,7 @@ void task_setup(void) {
 Note that `tcb` refers to the local task variable which is required for every task.
 
 ```{attention}
-`task_stats_enable(&tcb.stats);` must be run after 
+`task_stats_enable()` must be run after `scheduler_tcb_init()`, since the `scheduler_tcb_init()` function overrides the task stats enable status with `USER_CONFIG_ENABLE_TASK_STATISTICS_BY_DEFAULT`
 ```
 
 ## Viewing Timing Results
