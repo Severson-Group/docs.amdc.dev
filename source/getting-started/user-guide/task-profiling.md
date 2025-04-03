@@ -80,6 +80,10 @@ void task_setup(void) {
 
 Note that `tcb` refers to the local task variable which is required for every task.
 
+```{attention}
+`task_stats_enable(&tcb.stats);` must be run after 
+```
+
 ## Viewing Timing Results
 
 After enabling task timing statistics, the system scheduler will automatically record the timing for tasks.
