@@ -32,7 +32,7 @@ Three-phase PWM signals `A+`, `B+`, `C+` generated on the AMDC are carried over 
 
 ### Analog
 
-For providing feedback of current and voltage (analog sensing), the uInverter board uses the [RJSAE connector](https://www.digikey.com/en/products/detail/amphenol-icc-commercial-products/RJSAE-5385-02/1242709) similar to the analog connector on the AMDC.
+For providing feedback of current and voltage (analog sensing), the uInverter board uses the [RJSAE connector](https://www.digikey.com/en/products/detail/amphenol-icc-commercial-products/RJSAE-5385-02/1242709) similar to the [analog connector on the AMDC](https://docs.amdc.dev/hardware/subsystems/analog.html).
 Three phase current signals and the DC link voltage signal generated on the uInverter are fed back to the AMDC using connector `CONN3` - `ANALOG SENSING`.
 
 ```{image} images/uInverter_analog_conn.jpg
