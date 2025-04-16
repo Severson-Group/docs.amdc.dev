@@ -108,7 +108,7 @@ In this tutorial, we will use the [Timing Manager](/firmware/arch/timing-manager
 #define USER_CONFIG_ISR_SOURCE (1)
 ```
 
-### Link the Timing Manager to Sensor Interaces
+### Link the Timing Manager to Sensor Interfaces
 
 We need to link the sensor interfaces we wish to synchronize with the [Timing Manager](/firmware/arch/timing-manager.md). In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.
 
@@ -126,7 +126,7 @@ void app_controller_init(void)
 ```
 
 ### Reading Sensor Data
-Data can be obtained from the sensor interaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). Note that we won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the [Timing Manager](/firmware/arch/timing-manager.md).
+Data can be obtained from the sensor interfaces in the usual manner, irrespective of the mode of the [Timing Manager](/firmware/arch/timing-manager.md). For example, the ADC can be read via `analog_getf(ANALOG_IN1, &output)` (see the [analog input page](/hardware/subsystems/analog.md)). Note that we won't be using the ADC's actual numerical output in this tutorial, we're just enabling it to activate the [Timing Manager](/firmware/arch/timing-manager.md).
 
 ### Reporting sensor acquisition time and sensor data staleness
 
