@@ -57,7 +57,15 @@ No specialized fab house is needed; the AMDC hardware is designed to be orderabl
 
 There are a seemingly endless number PCB fab houses who can produce the physical PCBs for the AMDC.
 Depending on your location, some PCB fabrication companies might make more sense than others, i.e., for quality, shipping times, cost, etc.
-For ordering PCBs from China, [PCBWay](https://www.pcbway.com/) is one example of a reputable fabrication company that is easy to work with.
+Here is a list of vendors that we've used in the past for PCB fabrication and assembly:
+
+| Vendor Name                                             | Country | Type                 |
+|---------------------------------------------------------|---------|----------------------|
+| [Screaming Circuits](https://www.screamingcircuits.com/)| US      | Fabrication/Assembly |
+| [OshPark](https://oshpark.com/home)                     | US      | Fabrication          |
+| [Sunstone Circuits](https://www.sunstone.com/)          | US      | Fabrication          |
+| [PCBWay](https://www.pcbway.com/)                       | China   | Fabrication/Assembly |
+| [JLCPCB](https://jlcpcb.com)                            | China   | Fabrication/Assembly |
 
 To order a blank circuit board, you need the *gerber* files.
 [Gerber files](https://en.wikipedia.org/wiki/Gerber_format) are simply text files which encode all the layers of the final PCB, such as copper, silkscreen, solder mask, etc.
