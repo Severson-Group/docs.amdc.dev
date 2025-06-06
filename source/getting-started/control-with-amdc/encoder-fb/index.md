@@ -92,6 +92,8 @@ double task_get_theta_m(void)
 The example code shown above makes use of an encoder offset value, `enc_theta_m_offset`. It is necessary for the user to find this offset experimentally for their machine, and this section provides a procedure for finding the offset in two steps. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator.
 
 #### Step 1
+To estimate the initial encoder offset, the user needs to follow the procedure below in no-spinning mode. 
+
 1. Set the `enc_theta_m_offset` to 0 in the control code.
 2. Eliminate any source of load torque on the shaft
 3. Align the rotor with the phase U winding axis by:
@@ -105,14 +107,11 @@ To account for dynamic factors like friction and rotor misalignment, the user ne
 
 1. Spin the motor up-to a steady speed under no load conditions
 1. Measure the d-axis voltage commanded by the current regulator
-1. Based on the estimated encoder offset values from Step 1, adjust `enc_theta_m_offset` gradually with relatively large values (3-5) until the sign of d-axis voltage flips, to figure out a zero crossing point.
-1. Adjust enc_theta_m_offset in smaller increments at the zero crossing and record the d-axis voltage.
-1. Repeat procedure 3-4 with various speeds.
-1. For each offset value, average the d-axis voltage values for different speeds. 
-1. Select the offset that shows the lowest average d-axis voltage for different speeds.
-1. Plot the d-axis voltage with the selected offset against the different rotor speeds.
-1. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly
-1. In-case there is an error in the offset value, a significant speed dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
+1. Starting from the estimated encoder offset values from Step 1, record the d-axis voltage while adjusting `enc_theta_m_offset` gradually until the sign of the d-axis voltage flips to figure out a zero crossing point.
+1. Repeat procedure 3 with various speeds.
+1. For each offset value, average the d-axis voltage values for different speeds and select the offset with the lowest average d-axis voltage.
+1. Plot the d-axis voltage with the selected offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
+1. In-case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
 
 
 
