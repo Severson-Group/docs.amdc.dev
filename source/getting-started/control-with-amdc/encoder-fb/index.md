@@ -1,5 +1,17 @@
 # Encoder Feedback
 
+[the encoder](/firmware/arch/drivers/encoder.md)
+
+[firmware](/firmware/index.rst)
+
+[arch](/firmware/arch/index.md)
+
+[timing manager](/firmware/arch/timing-manager.md)
+
+[drivers](/firmware/arch/drivers/index.md)
+
+[logging](/getting-started/user-guide/logging/index.md)
+
 ## Background
 
 Encoders are used to determine the rotor position and speed, and are the typical method of feedback to the control system in a motor drive. This document explains how to use the AMDC's encoder interface to extract high quality rotor position and speed data.
