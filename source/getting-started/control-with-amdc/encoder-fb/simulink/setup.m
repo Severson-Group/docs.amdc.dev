@@ -1,6 +1,12 @@
 clear
 close all
 
+Tend = 0.2;
+Tsim = 1e-5;
+
+p = 1;  % number of pole
+speed_cmd = 3000;  % fundmental frequency [Hz]
+
 % Parameters for low pass filter
 f_lpf = 10;  % low pass fileter cut-off frequency (Hz)
 omega_lpf = 2*pi*f_lpf;  % low pass fileter cut-off frequency (rad/s)
@@ -8,15 +14,17 @@ omega_lpf = 2*pi*f_lpf;  % low pass fileter cut-off frequency (rad/s)
 % Parameters for PLL
 pole_1_Hz = -10;
 pole_2_Hz = -100;
-
 w1 = 2*pi*pole_1_Hz;
 w2 = 2*pi*pole_2_Hz;
 
-Tend = 0.2;
-Tsim = 1e-5;
+% Parameters for observer
+J_z = 29.54e-6;
+b = 4.28e-6; 
 
-p = 1;  % number of pole
-speed_cmd = 3000;  % fundmental frequency [Hz]
+f_sf = 10;  % motion state fileter cut-off frequency (Hz)
+wb_sf = 2*pi*f_sf;
+b_o_sf = wb_sf*J_z;
+K_io_sf = wb_sf*b;
 
 %% Run simulation
 out = sim('computing_speed.slx');
@@ -27,7 +35,7 @@ out = sim('computing_speed.slx');
 runObj = Simulink.sdi.Run.getLatest;
 
 % List of variables to extract
-obj2ext = {'time','theta_m','omega_raw', 'omega_lpf', 'omega_pll'};
+obj2ext = {'time','theta_m','omega_raw', 'omega_lpf', 'omega_pll', 'omega_sf'};
 
 % Get signal IDs and store signals into array
 for idx = 2:length(obj2ext)
@@ -61,11 +69,12 @@ hold on;
 plot(time, squeeze(sig_val.omega_raw), 'Color', 'k', 'LineWidth', lw);
 plot(time, squeeze(sig_val.omega_lpf), 'Color', 'r', 'LineWidth', lw);
 plot(time, squeeze(sig_val.omega_pll), 'Color', 'b', 'LineWidth', lw);
+plot(time, squeeze(sig_val.omega_sf), 'Color', 'g', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
 ylim([0 400]);
-legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', 'Interpreter','latex','Location','east');
+legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', '$\Omega_{\mathrm{sf}}$', 'Interpreter','latex','Location','east');
 
 set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
 
