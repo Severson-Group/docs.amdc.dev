@@ -70,7 +70,7 @@ hold on;
 plot(time, squeeze(sig_val.omega_raw), 'Color', 'k', 'LineWidth', lw);
 plot(time, squeeze(sig_val.omega_lpf), 'Color', 'r', 'LineWidth', lw);
 plot(time, squeeze(sig_val.omega_pll), 'Color', 'b', 'LineWidth', lw);
-plot(time, squeeze(sig_val.omega_sf), 'Color', 'g', 'LineWidth', lw);
+plot(time, squeeze(sig_val.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
