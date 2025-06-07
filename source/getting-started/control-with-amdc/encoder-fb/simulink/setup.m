@@ -1,6 +1,11 @@
 clear
 close all
 
+% Parameters for low pass filter
+f_lpf = 10;  % low pass fileter cut-off frequency (Hz)
+omega_lpf = 2*pi*f_lpf;  % low pass fileter cut-off frequency (rad/s)
+
+% Parameters for PLL
 pole_1_Hz = -10;
 pole_2_Hz = -100;
 
@@ -22,7 +27,7 @@ out = sim('computing_speed.slx');
 runObj = Simulink.sdi.Run.getLatest;
 
 % List of variables to extract
-obj2ext = {'time','theta_m','omega_raw', 'omega_pll'};
+obj2ext = {'time','theta_m','omega_raw', 'omega_lpf', 'omega_pll'};
 
 % Get signal IDs and store signals into array
 for idx = 2:length(obj2ext)
@@ -54,12 +59,13 @@ ylim([0 7]);
 subplot(2,1,2);
 hold on;
 plot(time, squeeze(sig_val.omega_raw), 'Color', 'k', 'LineWidth', lw);
-plot(time, squeeze(sig_val.omega_pll), 'Color', 'r', 'LineWidth', lw);
+plot(time, squeeze(sig_val.omega_lpf), 'Color', 'r', 'LineWidth', lw);
+plot(time, squeeze(sig_val.omega_pll), 'Color', 'b', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
 ylim([0 400]);
-legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{pll}}$', 'Interpreter','latex','Location','east');
+legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', 'Interpreter','latex','Location','east');
 
 set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
 
