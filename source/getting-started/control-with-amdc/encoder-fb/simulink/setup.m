@@ -77,7 +77,7 @@ plot(time, squeeze(sig_val.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
-ylim([0 400]);
+% ylim([0 400]);
 legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', '$\Omega_{\mathrm{sf}}$', 'Interpreter','latex','Location','east');
 
 set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
@@ -88,7 +88,9 @@ print(figure1, '-dpng','-r300','plot_results');
 
 %% System ID
 den = squeeze(sig_val.omega_raw); % input signal
-num = squeeze(sig_val.omega_lpf); % output signal
+% num = squeeze(sig_val.omega_lpf); % output signal
+num = squeeze(sig_val.omega_pll); % output signal
+% num = squeeze(sig_val.omega_sf); % output signal
 
 [freq,mag,phase,coh] = generateFRF(num,den,Ts,10000,'hann');
 
