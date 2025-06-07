@@ -89,33 +89,31 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes use of an encoder offset value, `enc_theta_m_offset`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motors shaft. This section provides a procedure to determine `enc_theta_m_offset`. 
+The example code shown above makes use of an encoder offset value, `enc_theta_m_offset`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `enc_theta_m_offset`. 
 
 #### Step 1: Determine approximate offset
 
-To estimate the initial encoder offset, use the following procedure with a stationary shaft. 
+The approximate encoder offset can be found using the following simple procedure without feedback control:
 
 1. Set the `enc_theta_m_offset` to 0 in the control code `task_get_theta_m()`.
 2. Eliminate any source of load torque on the shaft.
-3. Align the rotor with the phase U winding axis by either:
-    1) Method 1: Apply a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). 
-    2) Method 2: Inject a current along the d-axis using the AMDC [Signal Injection](https://docs.amdc.dev/getting-started/user-guide/injection/index.html) module. 
-4. Record the current encoder position and use this as the offset value: `enc_theta_m_offset = encoder_get_position();`. 
-5. Update the variable `enc_theta_m_offset` to the appropriate value in the `task_get_theta_m()` function.
+3. Align the rotor with the phase U winding axis by applying a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). This could be accomplished by:
+    1) Using a DC power supply, or
+    2) Injecting a current command on the d-axis using the AMDC [Signal Injection](/getting-started/user-guide/injection/index.rst) module with `theta_m_enc` fixed to 0.
+4. Record the current encoder position and use this as the offset value: `enc_theta_m_offset = encoder_get_position();`.
+5. Update the variable `enc_theta_m_offset` to the appropriate value in `task_get_theta_m()`.
 
 #### Step 2: Determine precise offset
 
-To account for dynamic factors like friction and rotor misalignment, the user needs to find the new offset under spinning operation based on the fine-tuned offset from the static test from step 1. For a permanent magnet synchronous motor, this can be done as follows:
+Friction and cogging torque in the motor decrease the accuracy of the estimate in Step 1. The precise offset can be found by fine-tuning the `enc_theta_m_offset` from Step 1 while using closed-loop control to rotate the shaft at significant speed. This can be done as follows:
 
-1. Spin the motor up-to a steady speed under no load conditions
-1. Measure the d-axis voltage commanded by the current regulator
-1. Starting from the estimated encoder offset values from Step 1, record the d-axis voltage while adjusting `enc_theta_m_offset` gradually until the sign of the d-axis voltage flips to figure out a zero crossing point.
-1. Repeat procedure 3 with various speeds.
-1. For each offset value, average the d-axis voltage values for different speeds and select the offset with the lowest average d-axis voltage.
-1. Plot the d-axis voltage with the selected offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
-1. In-case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
-
-
+1. Configure the AMDC for closed-loop speed and DQ current control and configure the operating environment to allow for quick edits to `enc_theta_m_offset` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
+2. Command the motor to rotate in steady speed under no load conditions. Use the estimated `enc_theta_m_offset` obtained in Step 1.
+3. Determine the value of `enc_theta_m_offset` that results in the d-axis voltage being closest to 0V. Do this by monitoring the d-axis voltage while adjusting `enc_theta_m_offset` gradually until the sign of the d-axis voltage flips.
+4. Repeat step 3 at several speeds.
+5. For each offset value, average the d-axis voltage values for different speeds and select the offset with the lowest average d-axis voltage.
+6. Plot the d-axis voltage with the selected offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
+7. In-case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
 
 ## Computing Speed from Position
 
