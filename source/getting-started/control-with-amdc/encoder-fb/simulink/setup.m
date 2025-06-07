@@ -32,8 +32,7 @@ f_init = 0.1; % initial frequency of chirp [Hz]
 f_target = 1000; % chirp frequency at target time [Hz]
 
 %% Run simulation
-out = sim('computing_speed.slx');
-%
+out = sim('compute_speed.slx');
 
 %% Post processing
 % Extract simulation data 
