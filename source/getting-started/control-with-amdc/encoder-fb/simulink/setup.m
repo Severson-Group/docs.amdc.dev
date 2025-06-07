@@ -2,7 +2,8 @@ clear
 close all
 
 Tend = 0.2;
-Tsim = 1e-5;
+Ts = 1e-4;
+Tsim = 1e-6;
 
 p = 1;  % number of pole
 speed_cmd = 3000;  % fundmental frequency [Hz]
