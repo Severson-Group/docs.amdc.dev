@@ -87,74 +87,80 @@ print(figure1, '-dsvg','-noui','plot_results');
 print(figure1, '-dpng','-r300','plot_results');
 
 %% System ID
-den = squeeze(sig_val.omega_raw); % input signal
-% num = squeeze(sig_val.omega_lpf); % output signal
-num = squeeze(sig_val.omega_pll); % output signal
-% num = squeeze(sig_val.omega_sf); % output signal
+den = squeeze(sig_val.omega_raw);  % input signal
+outputs = {
+    squeeze(sig_val.omega_lpf), 'Low-pass filter', '--';
+    squeeze(sig_val.omega_pll), 'PLL', '-';
+    squeeze(sig_val.omega_sf),  'Observer', '-.'
+};  % output signals
 
-[freq,mag,phase,coh] = generateFRF(num,den,Ts,10000,'hann');
-
-% Curve Fit Current Command Tracking FRF
-% Find where frequency goes positive
-idx_f_pos = find(freq >= 0,1);
-
-mag_pos = mag(idx_f_pos:end);
-phase_pos = phase(idx_f_pos:end);
-freq_pos = freq(idx_f_pos:end);
-[~,index] = min(abs(mag_pos - 1/sqrt(2)));
-freq_check = freq_pos(index);
-mag_check = mag_pos(index);
-phase_check = phase_pos(index);
-
-%% Plot
 markersize = 3;
 linewidth = 1;
+colors = lines(size(outputs, 1));  % set color map
 
-% Bode diagram
-figure
+% Bode plot
+f1 = f_init;
+f2 = f_target;
 
-f1 = 0.1;
-f2 = 1000;
-
+figure;
 tiledlayout(3,1);
-ax1 = nexttile;
-ax2 = nexttile;
-ax3 = nexttile;
+ax1 = nexttile;  % Magnitude
+ax2 = nexttile;  % Phase
+ax3 = nexttile;  % Coherence
 
-% Bode plot by System ID
-plot(ax1,freq,20*log10(mag),'oc','markersize',markersize);
-plot(ax2,freq,phase,'oc','markersize',markersize);
-plot(ax3,freq,coh,'.','markersize',6);
-hold (ax1,'on'); 
-hold (ax2,'on'); 
+hold(ax1, 'on');
+hold(ax2, 'on');
+hold(ax3, 'on');
 
-% % Bode plot with ideal Closed-loop transfer function
-% freq_bode = transpose(linspace(0.1,1/(4*Tsim),10/(4*Tsim)));
-% [mag_G_CL,phase_G_CL] = bode(G_CL,freq_bode*2*pi);
-% plot(ax1,freq_bode,squeeze(20*log10(mag_G_CL)),'r','linewidth',linewidth);
-% plot(ax2,freq_bode,wrapTo180(squeeze(phase_G_CL)),'r','linewidth',linewidth);
+% Compute magnitude and phase for each signal
+for i = 1:size(outputs, 1)
+    num = outputs{i, 1};
+    label = outputs{i, 2};
+    linestyle = outputs{i, 3};
+    
+    [freq, mag, phase, coh] = generateFRF(num, den, Ts, 10000, 'hann');
 
-% Set figure limit, label, etc.
-xlim(ax1,[f1 f2]);
-xlim(ax2,[f1 f2]);
-xlim(ax3,[f1 f2]);
-ylim(ax3,[0 1]);
+    plot(ax1, freq, 20*log10(mag), ...
+        'LineStyle', 'none', 'Marker', 'o', ...
+        'Color', colors(i,:), 'MarkerSize', markersize, ...
+        'DisplayName', label);
 
-xlabel(ax3,"Frequency (Hz)");
-ylabel(ax1,"Magnitude (dB)");
-ylabel(ax2,"Phase (deg)");
-ylabel(ax3,"Coherence");
+    plot(ax2, freq, phase, ...
+        'LineStyle', 'none', 'Marker', 'o', ...
+        'Color', colors(i,:), 'MarkerSize', markersize, ...
+        'DisplayName', label);
 
-grid(ax1,'on');
-grid(ax2,'on');
-grid(ax3,'on');
+    plot(ax3, freq, coh, ...
+        'LineStyle', 'none', 'Marker', 'o', ...
+        'Color', colors(i,:), 'MarkerSize', markersize, ...
+        'DisplayName', label);
+end
 
-set(ax1,'xscale','log');
-set(ax2,'xscale','log');
-set(ax3,'xscale','log');
+xlim(ax1, [f1 f2]);
+xlim(ax2, [f1 f2]);
+xlim(ax3, [f1 f2]);
+ylim(ax3, [0 1]);
 
-legend(ax1,'System ID','PLL','Location','southwest');
-legend(ax2,'System ID','PLL','Location','southwest');  
+set(ax1, 'xscale', 'log');
+set(ax2, 'xscale', 'log');
+set(ax3, 'xscale', 'log');
+
+xlabel(ax3, "Frequency (Hz)");
+ylabel(ax1, "Magnitude (dB)");
+ylabel(ax2, "Phase (deg)");
+ylabel(ax3, "Coherence");
+
+grid(ax1, 'on');
+grid(ax2, 'on');
+grid(ax3, 'on');
+
+legend(ax1, 'Location', 'southwest');
+
+set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
+
+set(figure1,'Units','inches','Position',[(Inch_SS(3)-width)/2 (Inch_SS(4)-height)/2 width height]);
+print(figure1, '-dsvg','-noui','bode_plot');
+print(figure1, '-dpng','-r300','bode_plot');
 
 %%
 function [freq,mag,phase,coh] = generateFRF(num,den,T,lines,win)
