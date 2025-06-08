@@ -8,23 +8,13 @@ Tsim = 1e-5;
 
 load_system('compute_speed') % load Simulink model
 
-if ENABLE_SYSTEM_ID == 0
-    Tend = 0.2;
-    % Comment out Chirp Signal block
-    set_param('compute_speed/Chirp Signal', 'Commented', 'on');
-    set_param('compute_speed/Theta to Omega', 'Commented', 'off');
-elseif ENABLE_SYSTEM_ID == 1
-    Tend = 10;
-    % Comment out Theta to Omega block
-    set_param('compute_speed/Chirp Signal', 'Commented', 'off');
-    set_param('compute_speed/Theta to Omega', 'Commented', 'on');
-end
+Tend = 0.2;
 
 p = 1;  % number of pole
 speed_cmd = 3000;  % rotational speed (r/min)
 
 % Parameters for low pass filter
-f_lpf = 10;  % low pass fileter cut-off frequency (Hz)
+f_lpf = 100;  % low pass fileter cut-off frequency (Hz)
 omega_lpf = 2*pi*f_lpf;  % low pass fileter cut-off frequency (rad/s)
 
 % Parameters for PLL
@@ -87,6 +77,7 @@ xlabel('Time [s]','Interpreter','latex');
 ylabel('$\theta_{\mathrm{m}}$ (rad)','Interpreter','latex');
 xlim([0 Tend]);
 ylim([0 7]);
+yticks([0 2 4 6]);
 
 % Plot theta_out
 subplot(2,1,2);
