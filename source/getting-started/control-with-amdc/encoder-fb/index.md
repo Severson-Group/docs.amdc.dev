@@ -143,6 +143,12 @@ Friction and cogging torque in the motor decrease the accuracy of the estimate i
 6. Plot the d-axis voltage with the final offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
 7. In-case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
 
+An example of the results are shown in the plot below. After the calibration process, the updated encoder offset results in the d-axis voltage being closer to 0 across different speeds compared to the previous value.
+
+<div align="center">
+  <img src="./resources/encoder-offset.svg" width="40%">
+</div>
+
 ## Computing Speed from Position
 
 The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. 
