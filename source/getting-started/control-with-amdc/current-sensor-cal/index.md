@@ -42,7 +42,10 @@ double offset = 4.739; // [V], offset from curve fit. This is a variable so that
 double current_measurement; // Actual current measurement, to be used in control algorithm
 
 current_measurement = (sensor_reading - offset)*INV_GAIN;  // sensor_reading is the raw measurement and needs to be obtained by the user
+```
 
+```{tip}
+In AMDC firmware versions 1.4.1 and above, the amds driver has a built in function `amds_convert_voltage()` to streamline this process. Default offset and gain values for each different sensor card are also included.
 ```
 
 ## Recalculate Offset At Startup

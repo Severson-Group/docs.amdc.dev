@@ -10,6 +10,7 @@ What makes AMDC's RTOS design **simple**? Why is it used instead of a "real" RTO
 
 The AMDC *system* layer sits between the *driver* layer and the *user application* layer. Some system resources (such as the serial interface) are managed exclusively by the system layer -- for example, if a user application needs to print a message to the console for debugging, it must request the system to do this action on its behalf (via the `sys/debug.c` module). Other system resources, such as PWM outputs or analog inputs, can be accessed directly by the user application via the driver layer.
 
+(tasks)=
 ### Tasks
 
 Tasks are the foundation upon which all system services are built. As described in previous documentation, a task is simply a block of code that runs periodically. Tasks can exist in the user space (used in user applications) or in the system space.
@@ -43,6 +44,7 @@ What if a task must perform complex actions that take too long? If a task must d
 
 Read more about cooperative scheduling of tasks [on Wikipedia](https://en.wikipedia.org/wiki/Cooperative_multitasking).
 
+(commands)=
 ### Commands
 
 Commands provide interactive operation of AMDC with the outside world. While the hardware I/O allows AMDC to change state based on the physical world, commands are designed for higher-level actions (i.e., "turn off LED" or "spin motor to 100RPM"). Commands are completely optional in user applications and are triggered by user input on the serial terminal.
