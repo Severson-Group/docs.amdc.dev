@@ -26,7 +26,7 @@ These steps outline how to find the compiled design files from the git repo, ord
 
 Each version of the AMDC hardware is released as a revision labeled with the snapshot date and a sequential letter.
 The format is: `REVyyyymmdd*` where `yyyymmdd` is the date and `*` is the sequential letter.
-For example, the 5th revision is called `REV20210325E`.
+For example, the 6th revision is called `REV20231005F`.
 
 Each revision of the AMDC hardware has its own `REVxxxx` folder in the git repo.
 Within the folder is the compiled design files:
@@ -40,7 +40,7 @@ Within the folder is the compiled design files:
 
 These files are all that is required to order and build a complete AMDC.
 
-For example, the `REVxxxx` folder for the 5th revision, `REV E`, is located on GitHub [at this link](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/REV20210325E).
+For example, the `REVxxxx` folder for the 6th revision, `REV F`, is located on GitHub [at this link](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/REV20231005F).
 
 ### 2. Ordering blank PCBs
 
@@ -57,7 +57,15 @@ No specialized fab house is needed; the AMDC hardware is designed to be orderabl
 
 There are a seemingly endless number PCB fab houses who can produce the physical PCBs for the AMDC.
 Depending on your location, some PCB fabrication companies might make more sense than others, i.e., for quality, shipping times, cost, etc.
-For ordering PCBs from China, [PCBWay](https://www.pcbway.com/) is one example of a reputable fabrication company that is easy to work with.
+Here is a list of vendors that we've used in the past for PCB fabrication and assembly:
+
+| Vendor Name                                             | Country | Type                 |
+|---------------------------------------------------------|---------|----------------------|
+| [Screaming Circuits](https://www.screamingcircuits.com/)| US      | Fabrication/Assembly |
+| [OshPark](https://oshpark.com/home)                     | US      | Fabrication          |
+| [Sunstone Circuits](https://www.sunstone.com/)          | US      | Fabrication          |
+| [PCBWay](https://www.pcbway.com/)                       | China   | Fabrication/Assembly |
+| [JLCPCB](https://jlcpcb.com)                            | China   | Fabrication/Assembly |
 
 To order a blank circuit board, you need the *gerber* files.
 [Gerber files](https://en.wikipedia.org/wiki/Gerber_format) are simply text files which encode all the layers of the final PCB, such as copper, silkscreen, solder mask, etc.
@@ -77,6 +85,8 @@ The BOM has a row for each unique part number and lists the quantity needed, dis
 The BOM file is provided in CSV format and is located in the `REVxxxx` folder.
 The distributor part number is given for Digi-Key.
 Users can simply upload the BOM file to Digi-Key and it will populate the cart automatically.
+
+A key component of the AMDC to be aware of is the Avnet PicoZed system-on-module (SoM). The PicoZed is the "brains" of the AMDC, and users should be careful to make sure they are ordering the correct model of the PicoZed (7Z030) to ensure compatibility with the open-source AMDC Firmware. A full article on the PicoZed as it pertains to the AMDC can be found [here](/hardware/subsystems/picozed.md).
 
 ```{warning}
 Most likely, there will be some out-of-stock parts in the BOM which are not available on Digi-Key.

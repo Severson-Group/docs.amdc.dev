@@ -43,6 +43,7 @@ This gate driver serves as a half bridge arrangement.
 The IC works for an input voltage range of 10V to 35V. For the purpose of current regulation, this gate driver IC can be used to drive the RL load.
 The driver suits the application requirements well.
 
+(current-sense-amplifier)=
 ### Current Sense Amplifier
 
 For three-phase current regulation, phase currents need to be sensed and fed back to the AMDC. A precision resistor is used in the phase leg to sense the phase current. A difference amplifier is used to amplify the voltage across this resistor and bring it to the voltage level suited for the analog input to AMDC. The amplifier increases the signal to noise ratio of the current sense signal.
@@ -63,7 +64,6 @@ The maximum common mode voltage expected at the terminals of the amplifier can b
 
 The [INA143U](https://www.digikey.com/en/products/detail/texas-instruments/INA143U/301019) analog difference amplifier has an acceptable common mode voltage range of -15.4V to +15.4V per the datasheet.
 Thus, this amplifier serves well in terms of the operational requirements.
-
 
 ### Current Sensing Resistor
 
@@ -116,7 +116,7 @@ A motor load can be modeled as an RL-load circuit. Each load branch consists of 
 
 1. **R/L ratio:**
 The load R and L values on the uInverter are chosen to emulate real-life high-speed low-inductance motors.
-A brief survery of [high-speed low-inductance motors](#ref) was performed -- the R/L ratio for the surveyed motors lie somewhere in the range of 10 to 100 Ω/mH with L being in the range of 20 to 100 uH.
+A brief survery of [high-speed low-inductance motors](#references) was performed -- the R/L ratio for the surveyed motors lie somewhere in the range of 10 to 100 Ω/mH with L being in the range of 20 to 100 uH.
 The inductor is chosen in such a way that the overall load impedence (seen by the AC source) has a R/L ratio in the above mentioned range.
 
 2. **Resistance:**
@@ -142,7 +142,7 @@ In an effort to emulate the real-life high-speed low-inductance motors, a 100 uH
 
 This inductor has an Equivalent Series Resistance (ESR) of 118 mΩ.
 Including the sensing resistor and the gate driver output resistance, the half bridge yields the R/L ratio of about 8.
-This is close to the R/L ratio of example motors which were benchmarked below: [reference motors](#benchmark-motors).
+This is close to the R/L ratio of example motors which were benchmarked below: [reference motors](#references).
 
 
 ### DC Link Capacitor
@@ -204,12 +204,13 @@ The default values specified in the BOM are: $R_1 = 4.4~\mathrm{k\Omega}$, $R_2 
 
 For detailed descriptions of the pinouts of the uInverter connectors and connections with AMDC, refer to [](./connections.md) document.
 
+(references)=
 ## Benchmark Motors
 
 Benchmark motor specifications:
 
-| Motor                 | `R` (ohm) |  `L` (uH) | `R/L` (Ω/ mH) |
-| -------               | ------- | ------- | ----------- |
-| [Thingap - LSI-25-10](https://www.thingap.com/wp-content/uploads/2020/12/LSI-25-10-Datasheet-Rev_C.pdf)   | 0.993     | 11.878 | 83.6
-| [Thingap - TG2310](https://www.thingap.com/wp-content/themes/ndic/pdf/TG2310.pdf)       | 0.31 | 20 | 15.5 |
-| [Portescap - 16ECP36 Ultra EC](https://www.portescap.com/en/products/brushless-dc-motors/all-bldc-motors) | 0.47 | 40.4 | 11.7
+| Motor | `R` (ohm) |  `L` (uH) | `R/L` (Ω/ mH) |
+| --- | --- | --- | --- |
+| [Thingap - LSI-25-10](https://www.thingap.com/wp-content/uploads/2021/11/LSI-25-10-Datasheet-Rev_D.pdf) | 0.993 | 11.878 | 83.6 |
+| [Thingap - TG2310](https://www.thingap.com/wp-content/themes/ndic/pdf/TG2310.pdf) | 0.31 | 20 | 15.5 |
+| [Portescap - 16ECP36 Ultra EC](https://www.portescap.com/en/products/brushless-dc-motors/all-bldc-motors) | 0.47 | 40.4 | 11.7 |

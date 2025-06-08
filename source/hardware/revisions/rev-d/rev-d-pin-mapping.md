@@ -21,6 +21,7 @@ NOTE: if any mistakes are found in this document, **make sure to update the [Viv
 | `EEPROM_SI`     | JX3-38      | MIO45 - SPI0   |
 | `EEPROM_SO`     | JX3-41      | MIO46 - SPI0   |
 
+(power-stack-interface)=
 ## Power Stack Interface
 
 ### Inverter 1
@@ -143,7 +144,7 @@ NOTE: if any mistakes are found in this document, **make sure to update the [Viv
 | `LV_INV_STS_C8` | JX3-97      | V15           |
 | `LV_INV_STS_D8` | JX3-100     | W16           |
 
-
+(analog)=
 ## Analog
 
 | PCB Signal Name | PicoZed Pin | Zynq-7000 Pin |
@@ -160,6 +161,7 @@ NOTE: if any mistakes are found in this document, **make sure to update the [Viv
 | `ADC_SDO7`      | JX1-31      | F6            |
 | `ADC_SDO8`      | JX1-35      | E8            |
 
+(encoder)=
 ## Encoder
 
 | PCB Signal Name | PicoZed Pin | Zynq-7000 Pin |
@@ -171,6 +173,7 @@ NOTE: if any mistakes are found in this document, **make sure to update the [Viv
 | `LV_ENC_2B`     | JX1-68      | A5            |
 | `LV_ENC_2Z`     | JX1-70      | A4            |
 
+(isospi)=
 ## isoSPI
 
 ### SPI1

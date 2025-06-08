@@ -124,7 +124,7 @@ Each DB-15 connector has three rows of pins (uses the high-density DB-15 format)
 | 14    | `GNDPS`     |
 | 15    | `GND`       |
 
-To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the Power Stack section of the [pin mapping document](RevD-PinMapping.md#power-stack-interface).
+To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the Power Stack section of the [pin mapping document](../revisions/rev-d/rev-d-pin-mapping.md#power-stack-interface).
 
 #### Mapping C Driver to FPGA to Hardware
 

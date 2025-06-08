@@ -10,7 +10,7 @@ Nuances of the firmware architecture are discussed which impact control code exe
 ## Tutorial Requirements
 
 1. Working AMDC hardware
-2. Completion of the [VSI tutorial](../vsi/index.md)
+2. Completion of the [VSI tutorial](/getting-started/tutorials/vsi/index.md)
 3. Review of the `v1.0` firmware [system architecture documentation](/firmware/arch/system)
 4. Review of the [signal logging framework](/getting-started/user-guide/logging/index) built-in to the AMDC
 
@@ -29,7 +29,7 @@ The remainder of this document explains how to do this.
 
 The most important part of running real-time control code is knowing if it indeed is running as expected.
 Therefore, during all hardware testing, it is highly advised to **always** be measuring and logging the execution timing data for the control task.
-Recall that the averaged task timing data can be recorded and viewed using the built-in system task timing statistics framework which is presented in the [profiling tasks tutorial](../profiling-tasks/index).
+Recall that the averaged task timing data can be recorded and viewed using the built-in system task timing statistics framework which is presented in the [profiling tasks tutorial](/getting-started/tutorials/profiling-tasks/index).
 However, data per each task execution is more useful for timing verification.
 
 To record fine grain timing data, instrument your code task callback function as shown below.

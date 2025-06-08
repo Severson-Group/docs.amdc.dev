@@ -261,17 +261,17 @@ After following the above steps, the project build settings should resemble the 
 
 ### Target Correct Hardware Revision
 
-The AMDC C code is configurable to be built for either the `REV D` or `REV E` hardware revision. By default, it targets the latest version: `REV E`.
+The AMDC C code is configurable to be built for any hardware revision after and including `REV D`. By default, it targets the latest version, which is `REV F` (as of March 2024).
 
-If you are using `REV D`, change the hardware target define in your `usr/user_config.h` file to `AMDC_REV_D`:
+If you are using an older hardware revision, ("REV ?" where "?" is D, E, etc), be sure to change the hardware target define in your `usr/user_config.h` file to `AMDC_REV_?`:
 
 ```C
-#define USER_CONFIG_HARDWARE_TARGET (AMDC_REV_D)
+#define USER_CONFIG_HARDWARE_TARGET (AMDC_REV_?)
 ```
 
 ### Build SDK Projects
 
-SDK will attempt to build the projects you just imported. Wait until all projects are done compiling... Could take a few minutes...
+The SDK will attempt to build the projects you just imported. Wait until all projects are done compiling... Could take a few minutes...
 
 There shouldn't be any errors. Ensure there are no errors for `amdc_bsp` and your desired application project (i.e. `app_cpu1`)
 
@@ -347,7 +347,7 @@ Now, you are ready to start the code on AMDC!
 To interface with the serial terminal on AMDC, your PC needs the appropriate driver: 
 
 - For `REV D` hardware, the UART interface is the `Silicon Labs CP210x USB-UART Bridge`
-- For `REV E` hardware, the UART interface is from `FTDI` and should be natively supported by your operating system
+- For `REV E` hardware and beyond, the UART interface is from `FTDI` and should be natively supported by your operating system
 
 #### For Silicon Labs UART-USB Driver (`REV D` hardware)
 

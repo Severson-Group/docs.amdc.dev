@@ -9,9 +9,9 @@ However, if a user wants to build a new dual-core system from scratch, this docu
 There are surprisingly few resources online about dual-core operation of the Xilinx Zynq-7000 SoC.
 Below is a brief summary list:
 
-- The main reference for this doc is the Xilinx application note [XAPP1079](https://www.xilinx.com/support/documentation/application_notes/xapp1079-amp-bare-metal-cortex-a9.pdf) from 2014 written by John McDougall. This [Xilinx wiki page](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842504/XAPP1079+Latest+Information) gives updates to XAPP1079 as the dev software evolves.
-- The [Xilinx Zynq-7000 SoC Technical Reference Manual (TRM)](https://www.xilinx.com/support/documentation/user_guides/ug585-Zynq-7000-TRM.pdf) discusses dual-core operation extensively, but does not provide many actionable ideas. In fact, the TRM is written almost exclusively from the prospective of dual-core operation! But, it is >1800 pages long; good luck reading it.
-- For information about running Linux on dual-core, check out [XAPP1078](https://www.xilinx.com/support/documentation/application_notes/xapp1078-amp-linux-bare-metal.pdf)
+- The main reference for this doc is the Xilinx application note [XAPP1079](https://docs.xilinx.com/v/u/en-US/xapp1079-amp-bare-metal-cortex-a9) from 2014 written by John McDougall. This [Xilinx wiki page](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842504/XAPP1079+Latest+Information) gives updates to XAPP1079 as the dev software evolves.
+- The [Xilinx Zynq-7000 SoC Technical Reference Manual (TRM)](https://docs.xilinx.com/v/u/en-US/ug585-Zynq-7000-TRM) discusses dual-core operation extensively, but does not provide many actionable ideas. In fact, the TRM is written almost exclusively from the prospective of dual-core operation! But, it is >1800 pages long; good luck reading it.
+- For information about running Linux on dual-core, check out [XAPP1078](https://docs.xilinx.com/v/u/en-US/xapp1078-amp-linux-bare-metal)
 
 ## Definitions
 

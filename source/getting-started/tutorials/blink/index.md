@@ -36,7 +36,7 @@ The interface is similar to a typical [command-line interface (CLI)](https://en.
 
 To complete this step, plug in a USB cable to the AMDC and confirm the AMDC appears in the device list on your host computer.
 
-For `REV D` hardware, you will need the Silicon Labs drivers for the UART interface to appear as a COM port. For `REV E`, the UART serial driver is typically included in the host OS due to a different circuit design.
+For `REV D` hardware, you will need the Silicon Labs drivers for the UART interface to appear as a COM port. For `REV E` and beyond, the UART serial driver is typically included in the host OS due to a different circuit design.
 
 ### Terminal Software
 
