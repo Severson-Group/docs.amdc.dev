@@ -41,23 +41,40 @@ Kp_speed = omega_b_speed*J_z;
 Ki_speed = omega_b_speed*b;
 
 %% Run simulation
-out = sim('compute_speed.slx');
+set_param('compute_speed/Speed Controller LPF', 'Commented', 'off');
+set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
+set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
+sim('compute_speed.slx');
+run1 = Simulink.sdi.Run.getLatest;
+
+set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
+set_param('compute_speed/Speed Controller PLL', 'Commented', 'off');
+set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
+sim('compute_speed.slx');
+run2 = Simulink.sdi.Run.getLatest;
+
+set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
+set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
+set_param('compute_speed/Speed Control Observer', 'Commented', 'off');
+sim('compute_speed.slx');
+run3 = Simulink.sdi.Run.getLatest;
 
 %% Post processing
-% Extract simulation data 
-runObj = Simulink.sdi.Run.getLatest;
-
 % List of variables to extract
 obj2ext = {'time', 'omega_raw', 'omega_lpf', 'omega_pll', 'omega_sf'};
+runs = {run1, run2, run3};
 
-% Get signal IDs and store signals into array
-for idx = 2:length(obj2ext)
-    sigID = getSignalIDsByName(runObj,obj2ext{idx});
-    sig_obj.(obj2ext{idx}) = Simulink.sdi.getSignal(sigID);
-    sig_val.(obj2ext{idx}) = sig_obj.(obj2ext{idx}).Values.Data;
+for r = 1:3
+    runObj = runs{r};
+    for i = 1:length(obj2ext)
+        sigID = getSignalIDsByName(runObj, obj2ext{i});
+        if ~isempty(sigID)
+            sig_obj{r}.(obj2ext{i}) = Simulink.sdi.getSignal(sigID);
+            sig_val{r}.(obj2ext{i}) = sig_obj{r}.(obj2ext{i}).Values.Data;
+            time{r} = sig_obj{r}.(obj2ext{i}).Values.Time;
+        end
+    end
 end
-
-time = sig_obj.(obj2ext{2}).Values.Time;
 
 %% Plot figure
 width = 2*5.43; 
@@ -69,10 +86,10 @@ lw = 1;  % line width
 figure1 = figure;
 % Plot omega
 hold on;
-plot(time, squeeze(sig_val.omega_raw), 'Color', 'k', 'LineWidth', lw);
-plot(time, squeeze(sig_val.omega_lpf), 'Color', 'r', 'LineWidth', lw);
-plot(time, squeeze(sig_val.omega_pll), 'Color', 'b', 'LineWidth', lw);
-plot(time, squeeze(sig_val.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
+plot(time{3}, squeeze(sig_val{3}.omega_raw), 'Color', 'k', 'LineWidth', lw);
+plot(time{1}, squeeze(sig_val{1}.omega_lpf), 'Color', 'r', 'LineWidth', lw);
+plot(time{2}, squeeze(sig_val{2}.omega_pll), 'Color', 'b', 'LineWidth', lw);
+plot(time{3}, squeeze(sig_val{3}.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
