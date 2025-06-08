@@ -79,7 +79,7 @@ Each analog input to the ADC is configured as a pseudo-differential bipolar sign
 
 The ADC has a digital serial data output for each analog input (8 digital outputs in total). The output signals use 1.8V logic and are directly connected to the PicoZed. Three additional digital signals (`ADC_CNV`, `ADC_SCK` and `ADC_CLKOUT`) are used by the AMDC to manage the signal conversion process.
 
-To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the analog section of the [pin mapping document](RevD-PinMapping.md#analog).
+To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the analog section of the [pin mapping document](../revisions/rev-d/rev-d-pin-mapping.md#analog).
 
 More detailed information on the operating conditions of the ADC can be found in the [datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/232014fa.pdf).
 

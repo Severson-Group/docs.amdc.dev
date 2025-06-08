@@ -3647,7 +3647,7 @@
            y="159.35678"
            x="478.95605"
            id="tspan12824-0-6-3"
-           sodipodi:role="line">DC4</tspan></text>
+           sodipodi:role="line">SC4</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker19960-9)"
          d="M 476.30429,157.61748 H 447.18734"
@@ -3682,7 +3682,7 @@
            id="tspan12824-0-6-3-2"
            x="479.10617"
            y="192.55779"
-           style="stroke-width:0.264583">DC2</tspan></text>
+           style="stroke-width:0.264583">SC2</tspan></text>
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -3717,7 +3717,7 @@
            id="tspan12824-0-6-3-3"
            x="478.97592"
            y="225.70239"
-           style="stroke-width:0.264583">DC1</tspan></text>
+           style="stroke-width:0.264583">SC1</tspan></text>
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -3757,7 +3757,7 @@
            id="tspan12824-0-6-3-7"
            x="479.11191"
            y="259.49069"
-           style="stroke-width:0.264583">DC3</tspan></text>
+           style="stroke-width:0.264583">SC3</tspan></text>
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -3804,7 +3804,7 @@
            y="192.5631"
            x="510.44714"
            id="tspan12824-0-6-3-8-7"
-           sodipodi:role="line">DC6</tspan></text>
+           sodipodi:role="line">SC6</tspan></text>
       <rect
          style="fill:#ffd2d5;fill-opacity:1;stroke:#000000;stroke-width:0.100385;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect45274-4-9-6-2"
@@ -3822,7 +3822,7 @@
            y="225.61482"
            x="510.52039"
            id="tspan12824-0-6-3-8-0"
-           sodipodi:role="line">DC5</tspan></text>
+           sodipodi:role="line">SC5</tspan></text>
       <rect
          style="fill:#ffd2d5;fill-opacity:1;stroke:#000000;stroke-width:0.100385;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect45274-4-9-6-31"
@@ -3840,7 +3840,7 @@
            y="259.30359"
            x="510.56708"
            id="tspan12824-0-6-3-8-4"
-           sodipodi:role="line">DC7</tspan></text>
+           sodipodi:role="line">SC7</tspan></text>
       <text
          id="text19942-9-1-17"
          y="167.84789"
@@ -3902,7 +3902,7 @@
            id="tspan12824-0-2-6-2"
            x="475.56271"
            y="141.68068"
-           style="fill:#3c3c3c;fill-opacity:1;stroke-width:0.264583"> Daughter Cards (DC)</tspan></text>
+           style="fill:#3c3c3c;fill-opacity:1;stroke-width:0.264583"> Sensor Cards (SC)</tspan></text>
       <text
          id="text45280-8-1-2-0-6-3"
          y="160.2653"
@@ -3913,7 +3913,7 @@
            id="tspan12824-0-6-3-8-7-0"
            x="510.24512"
            y="160.2653"
-           style="stroke-width:0.264583">DC8</tspan></text>
+           style="stroke-width:0.264583">SC8</tspan></text>
       <g
          transform="matrix(0,0.62447357,-0.76332816,0,789.85516,27.791234)"
          id="g5844-9-4">

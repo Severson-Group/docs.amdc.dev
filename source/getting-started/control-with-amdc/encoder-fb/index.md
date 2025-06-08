@@ -6,86 +6,101 @@ Encoders are used to determine the rotor position and speed, and are the typical
 
 For more information:
 
-- on how encoders work and are interfaced with the AMDC, see the [encoder hardware subsystem page](https://docs.amdc.dev/hardware/subsystems/encoder.html#)
-- on the driver functionality included with the AMDC firmware, see the [encoder driver architecture page](https://docs.amdc.dev/firmware/arch/drivers/encoder.html).
+- on how encoders work and are interfaced with the AMDC, see the [encoder hardware subsystem page](/hardware/subsystems/encoder.md);
+- on the driver functionality included with the AMDC firmware, see the [encoder driver architecture page](/firmware/arch/drivers/encoder.md).
 
 ## Rotor Position
 
 The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.wikipedia.org/wiki/Incremental_encoder#Quadrature_outputs) and a fixed number of counts per revolution `CPR` (for example, `CPR = 1024`). The user needs to provide code that interfaces to the AMDC's drivers to read the encoder count and convert it into usable angular information that is suitable for use within the control code.
 
+This document assumes the configuration shown in the figure below, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
+
+![Motor Cross-Section with Encoder Angles](resources/MotorCrossSection.svg)
+
 ### Configuring the encoder
 
-Upon powerup, the AMDC configures the encoder to a default number of pulses per revolution. This is handled in `encoder.c` as part of the standard firmware package. When using an encoder that has a different number pulses per revolution, the user must inform the driver by calling `encoder_set_pulses_per_rev()`.
+Upon powerup, the AMDC configures the encoder to a default number of counts per revolution. This is handled in `encoder.c` as part of the standard firmware package. When using an encoder that has a different number counts per revolution, the user must inform the driver by calling `encoder_set_counts_per_rev()`.
 
 Example code for a 10 bit encoder:
 
 ``` C
-#define USER_ENCODER_PULSES_PER_REV_BITS (10)
-#define USER_ENCODER_PULSES_PER_REV (1 << USER_ENCODER_PULSES_PER_REV_BITS)
+#define USER_ENCODER_COUNTS_PER_REV_BITS (10)
+#define USER_ENCODER_COUNTS_PER_REV (1 << USER_ENCODER_COUNTS_PER_REV_BITS)
 
 int task_user_app_init(void)
 {
-    encoder_set_pulses_per_rev(USER_ENCODER_PULSES_PER_REV);
+    encoder_set_counts_per_rev(USER_ENCODER_COUNTS_PER_REV);
     
     // other user app one-time initialization code
     // ...
 ```
 
 ```{tip}
-The AMDC provides a convenience function that can be used as an alternate to `encoder_set_pulses_per_rev()` when the encoder is specified as a number of bits: `encoder_set_pulses_per_rev_bits(USER_ENCODER_PULSES_PER_REV_BITS).` 
+The AMDC provides a convenience function that can be used as an alternate to `encoder_set_counts_per_rev()` when the encoder is specified as a number of bits: `encoder_set_counts_per_rev_bits(USER_ENCODER_COUNTS_PER_REV_BITS).` 
 ```
 
 ### Converting the encoder count into rotor position
 
 The recommended approach to reading the shaft position from the encoder is illustrated in the figure below:
 
-<img src="./resources/EncoderCodeBlockDiagram.svg" width="100%" align="center"/>
+<img src="resources/EncoderCodeBlockDiagram.svg" width="100%" align="center"/>
 
-As a first step, the user may use the AMDC `drv/encoder` driver module function `encoder_get_position()` to get the count of the encoder reading. The`drv/encoder` driver module also has a function called `encoder_get_steps()` which gives the incremental change in the encoder position. Whereas, `encoder_get_position()` gives the actual position of the shaft and this can be converted to rotor position in radians.
+First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
 
- Next, the user needs to verify if the encoder count is increasing or decreasing with counter-clock wise rotation of shaft. This may be done manually by rotating the shaft and observing the trend of the reported position with respect to the direction of rotation. In the figure, the signal `CCW` indicates this directionality. It must be  set to `1` if the encoder count increases with counter clockwise rotation of shaft and `0` otherwise. Additionally, the user needs to provide the encoder offset, `offset`, and the encoder counts per revolution, `ENCODER_COUNT_PER_REV`. A method to get the value of offset is described in the next [subsection](#finding-the-offset). Using all of these quantities, the obtained count can be translated into angular position using a simple linear equation.  Note that this document follows the convention of a positive rotor angle in the counter clockwise direction of shaft rotation while calculating rotor position from the count signal.
- 
- Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the `rotor position` signal using the `mod` function. This is shown in the final block in the diagram.
+```{tip}
+The [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module also has a function called `encoder_get_steps()` which returns the encoder's count since power-on. One rotation direction increments, the other decrements. This value does not wrap around (it ignores `encoder_set_counts_per_rev()` and the z-pulse). Users are advised to use `encoder_get_position()`, which does wrap around and tracks the z-pulse.
+```
 
-Example code to convert encoder to angular position in radians:
+Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This is done by 1) removing the offset and 2) converting counts into radians. For the the angles defined as shown in the image above, this is simply calculated as
+
+$$
+\theta_{\rm m} = \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left( \theta_{\rm enc} - \theta_{\rm off} \right)
+$$ (eq:convCCW)
+
+In this case, a counter-clockwise rotation of the rotor causes the $\theta_{\rm enc}$ to increase. However, in some teststands a clockwise rotation causes $\theta_{\rm enc}$ to increment. For these encoders, $\theta_{\rm m}$ is calculated as
+
+$$
+\theta_{\rm m} &= \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left({\scriptstyle \rm COUNTS\_PER\_REV} - \theta_{\rm enc} + \theta_{\rm off} \right) \\ &= 2\pi - \theta_{\rm m, CCW}
+$$ (eq:convCW)
+
+```{tip}
+The user can experimentally determine whether the encoder count increases with counter-clockwise rotation of the shaft by rotating the shaft and using [logging](/getting-started/user-guide/logging/index.md) to observe the trend of $\theta_{\rm enc}$.
+```
+
+Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the $\theta_{\rm m}$. This can be accomplished in C by using the `mod` function. This is shown in the final block in the diagram.
+
+Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already know; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
 ```C
 double task_get_theta_m(void)
 {
-    // Get raw encoder position
-    uint32_t position;
-    encoder_get_position(&position);
-
-    int ENCODER_COUNT_PER_REV, CCW;
-    double enc_theta_m_offset;
+    // User to set encoder offset
+    double theta_off = 100;
 
     // User to set encoder count per revolution
-    ENCODER_COUNT_PER_REV = 1024;
+    double ENCODER_COUNT_PER_REV = 1024;
 
-    // Set 1 if encoder count increases with CCW rotation of shaft, Set 0 if encoder count increases with CW rotation of shaft
-    CCW = 1; 
+    // User to set 1 if encoder count increases with CCW rotation of shaft, set 0 if encoder count increases with CW rotation of shaft
+    int CCW_ROTATION_FLAG = 1;
 
     // Angular position to be computed
-    double theta_m_enc;
+    double theta_m;
 
-    // User to set encoder offset
-    enc_theta_m_offset = 100;
-
+    // Get raw encoder position
+    uint32_t theta_enc;
+    encoder_get_position(&theta_enc);
 
     // Convert to radians
-    if (CCW){
-        theta_m_enc = (double) PI2 * ( ( (double)position - enc_theta_m_offset )/ (double) ENCODER_COUNT_PER_REV);
+    theta_m = (double) PI2 * ( ((double)theta_enc - theta_off) / (double) ENCODER_COUNT_PER_REV);
+
+    if (!CCW_ROTATION_FLAG){
+        theta_m = PI2 - theta_m;
     }
-    else{
-        theta_m_enc = (double) PI2 * ( ( (double)ENCODER_COUNT_PER_REV - (double)1 -(double)position + enc_theta_m_offset )/ (double) ENCODER_COUNT_PER_REV);
-    }
-    
+
      // Mod by 2 pi
-    theta_m_enc = fmod(theta_m_enc,PI2);
-    return theta_m_enc;
+    theta_m = fmod(theta_m,PI2);
+    return theta_m;
 }
 ```
-
-
 
 ### Finding the offset
 

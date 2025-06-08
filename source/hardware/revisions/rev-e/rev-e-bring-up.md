@@ -26,19 +26,39 @@ For reference, the AMDC REV E schematics are available [here](https://github.com
 ## Configure PCB for bring-up
 
 5. Print serial number label for both the AMDC PCB and PicoZed and update board log.
-![](../rev-d/images/bring-up/amdc-rev-d-label-sn.jpg)
+
+```{image} images/bring-up/amdc-rev-e-label-sn.jpg
+:height: 15em
+```
 
 6. Install miscellaneous hardware parts:
     1. PicoZed heatsink (e.g. [P/N on Digi-Key](https://www.digikey.com/products/en?keywords=1528-1697-ND))
-    ![](../rev-d/images/bring-up/amdc-rev-d-heatsink2.jpg)
+
+    ```{image} ../rev-d/images/bring-up/amdc-rev-d-heatsink2.jpg
+    :height: 15em
+    ```
     
     2. All jumpers
-    ![](../rev-d/images/bring-up/amdc-rev-d-jumpers1.jpg)
-    ![](../rev-d/images/bring-up/amdc-rev-d-jumpers2.jpg)
-    ![](../rev-d/images/bring-up/amdc-rev-d-jumpers3.jpg)
+
+    ```{image} images/bring-up/amdc-rev-e-jumpers1.jpg
+    :height: 15em
+    ```
+
+    ```{image} images/bring-up/amdc-rev-e-jumpers2.jpg
+    :height: 15em
+    ```
+
+    ```{image} images/bring-up/amdc-rev-e-jumpers3.jpg
+    :height: 15em
+    ```
+
     
     3. All stand-offs (do not leave any off since board flexes when PicoZed is installed)
-    ![](../rev-d/images/bring-up/amdc-rev-d-standoffs.jpg)
+
+    ```{image} ../rev-d/images/bring-up/amdc-rev-d-standoffs.jpg
+    :height: 15em
+    ```
+
 
 7. Set jumpers for bring-up: when you first apply power to a board, you should isolate each power supply (if possible) and ensure they function as expected. See the [Power Distribution document](/hardware/subsystems/power-distribution.md) for a diagram of the jumper locations in the power flow path. Remove the jumpers after the DC/DC converters, before the LDOs (i.e. remove JP8, JP9, JP10).
 
@@ -76,4 +96,4 @@ The output of LDO `U16` should be 0V since the PicoZed is not installed. This is
 
 *Congratulations!* If you made it this far, you have successfully brought up a new REV E AMDC! At this point, you are ready to compile the firmware required by the Xilinx Zynq-7000 SoC on the PicoZed and program the AMDC.
 
-For comprehensive instructions, see the [](/firmware/xilinx-tools/building-and-running-firmware.md) document.
+For comprehensive instructions, see the [Building and Running Firmware](/firmware/xilinx-tools/building-and-running-firmware.md) document.
