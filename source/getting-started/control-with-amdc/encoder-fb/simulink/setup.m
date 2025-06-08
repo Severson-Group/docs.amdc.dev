@@ -21,7 +21,7 @@ elseif ENABLE_SYSTEM_ID == 1
 end
 
 p = 1;  % number of pole
-speed_cmd = 3000;  % rotational speed [r/min]
+speed_cmd = 3000;  % rotational speed (r/min)
 
 % Parameters for low pass filter
 f_lpf = 10;  % low pass fileter cut-off frequency (Hz)
@@ -45,6 +45,12 @@ K_io_sf = wb_sf*b;
 % Parameters for chirp signal
 f_init = 0.1; % initial frequency of chirp [Hz]
 f_target = 1000; % chirp frequency at target time [Hz]
+
+% Parameters for speed control
+fb_speed = 100;
+omega_b_speed = 2*pi*fb_speed;
+Kp_speed = omega_b_speed*J_z;
+Ki_speed = omega_b_speed*b;
 
 %% Run simulation
 out = sim('compute_speed.slx');
