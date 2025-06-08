@@ -104,19 +104,28 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes use of an encoder offset value, `enc_theta_m_offset`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `enc_theta_m_offset`. 
+The example code shown above makes use of an encoder offset value, `enc_theta_m_offset`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `enc_theta_m_offset`.
 
 #### Step 1: Determine approximate offset
 
-The approximate encoder offset can be found using the following simple procedure without feedback control:
+```{image} resources/torque-plot.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+```
+
+The approximate encoder offset can be found by taking advantage of the motor having the torque characteristic shown on the right. This corresponds to [the image at the start of the section](#rotor-position) and positive torque is in the counter-clockwise direction. 
+
+The following simple procedure can be used without any feedback control:
 
 1. Set the `enc_theta_m_offset` to 0 in the control code `task_get_theta_m()`.
 2. Eliminate any source of load torque on the shaft.
-3. Align the rotor with the phase U winding axis by applying a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). This could be accomplished by:
+3. Power on the AMDC and rotate the rotor manually by one revolution (so that the encoder z-pulse is detected).
+4. Align the rotor with the phase U winding axis by applying a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). This could be accomplished by:
     1) Using a DC power supply, or
     2) Injecting a current command on the d-axis using the AMDC [Signal Injection](/getting-started/user-guide/injection/index.rst) module with `theta_m_enc` fixed to 0.
-4. Record the current encoder position and use this as the offset value: `enc_theta_m_offset = encoder_get_position();`.
-5. Update the variable `enc_theta_m_offset` to the appropriate value in `task_get_theta_m()`.
+5. Record the current encoder position and use this as the offset value: `enc_theta_m_offset = encoder_get_position();`.
+6. Update the variable `enc_theta_m_offset` to the appropriate value in `task_get_theta_m()`.
 
 #### Step 2: Determine precise offset
 
