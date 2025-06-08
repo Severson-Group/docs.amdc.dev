@@ -137,10 +137,10 @@ Friction and cogging torque in the motor decrease the accuracy of the estimate i
 
 1. Configure the AMDC for closed-loop speed and DQ current control and configure the operating environment to allow for quick edits to `enc_theta_m_offset` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate in steady speed under no load conditions. Use the estimated `enc_theta_m_offset` obtained in Step 1.
-3. Determine the value of `enc_theta_m_offset` that results in the d-axis voltage being closest to 0V. Do this by monitoring the d-axis voltage while adjusting `enc_theta_m_offset` gradually until the sign of the d-axis voltage flips.
-4. Repeat step 3 at several speeds.
-5. For each offset value, average the d-axis voltage values for different speeds and select the offset with the lowest average d-axis voltage.
-6. Plot the d-axis voltage with the selected offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
+3. Sweep `enc_theta_m_offset` over a small range around the initial estimate (e.g., ±5 counts). For each value, monitor the d-axis voltage and find the `enc_theta_m_offset` that makes the d-axis voltage closest to 0 V. Idnetify this by observing when the sign of the d-axis voltage changes.
+4. Repeat step 3 at multiple rotor speeds. At each speed, record the `enc_theta_m_offset` value that minimizes the d-axis voltage.
+5. Take the average of the colleceted `enc_theta_m_offset` values from part 4 to determine the final encoder offset value.
+6. Plot the d-axis voltage with the final offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly.
 7. In-case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
 
 ## Computing Speed from Position
