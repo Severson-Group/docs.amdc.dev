@@ -118,7 +118,7 @@ The example code shown above makes use of an encoder offset value, `enc_theta_m_
 :align: right
 ```
 
-The approximate encoder offset can be found by taking advantage of the motor having the torque characteristic shown on the right. This corresponds to [the image at the start of the section](#rotor-position) and positive torque is in the counter-clockwise direction. 
+The approximate encoder offset can be found by taking advantage of the motor having the torque characteristic shown on the right. This depicts shaft torque as the shaft is rotated counter-clockwise and corresponds to [the image at the start of the section](#rotor-position); positive torque is in the counter-clockwise direction.
 
 The following simple procedure can be used without any feedback control:
 
