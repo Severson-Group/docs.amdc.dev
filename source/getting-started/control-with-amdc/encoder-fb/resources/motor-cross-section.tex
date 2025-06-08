@@ -103,7 +103,7 @@
 	\def\StatorOR{16}
 	\def\StatorIR{12}
 	\def\drawPMrotor{1}
-	\def\PMrotorPoles{8}
+	\def\PMrotorPoles{2}
 	\def\PMnorthColor{red!20!white}
 	\def\PMsouthColor{green!20!white}
 	\def\showRotorAngle{1}
@@ -230,6 +230,8 @@
 	{
 		\draw(\PMrotorRotation:\StatorIR-\PMrotorAG/2) -- (\PMrotorRotation:\StatorOR+5); 
 		\draw(0:\StatorOR+.5) -- (0:\StatorOR+9) node[right]{phase $u$ axis};
+		\draw[rotate=120](0:\StatorOR+.5) -- (0:\StatorOR+9) node[right, xshift=-2, yshift=9, rotate=120+180]{phase $v$ axis};
+		\draw[rotate=240](0:\StatorOR+.5) -- (0:\StatorOR+9) node[right, xshift=-7, yshift=-8, rotate=240+180]{phase $w$ axis};
 		%\draw[dashed](0:\StatorOR+5) -- (0:\StatorOR+10) node[right]{phase $u$ axis};
 		\draw[->]([shift=(0:\StatorOR+2.5)]0,0) arc (0:\PMrotorRotation:\StatorOR+2.5) node[xshift=-3,pos=0.5, right]{\rotorAngleLabel};
 	}

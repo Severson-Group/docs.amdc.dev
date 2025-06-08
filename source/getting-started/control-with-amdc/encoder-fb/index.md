@@ -13,9 +13,13 @@ For more information:
 
 The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.wikipedia.org/wiki/Incremental_encoder#Quadrature_outputs) and a fixed number of counts per revolution `CPR` (for example, `CPR = 1024`). The user needs to provide code that interfaces to the AMDC's drivers to read the encoder count and convert it into usable angular information that is suitable for use within the control code.
 
-This document assumes the configuration shown in the figure below, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
+```{image} resources/motor-cross-section.svg
+:alt: Motor Cross-Section with Encoder Angles
+:width: 350px
+:align: right
+```
 
-![Motor Cross-Section with Encoder Angles](resources/MotorCrossSection.svg)
+This document assumes the configuration shown to the right, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
 
 ### Configuring the encoder
 
