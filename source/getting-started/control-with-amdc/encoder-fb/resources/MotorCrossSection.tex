@@ -1,0 +1,259 @@
+\documentclass[class=IEEEtran]{standalone}%[conference,10pt]{IEEEtran}
+\usepackage{amsmath}
+\ifCLASSINFOpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage[dvips]{graphicx}
+\fi
+
+\usepackage{color}	% required for `\textcolor' (yatex added)
+
+%ERIC ADDED:
+\usepackage{xcolor, tikz, pgfplots, ifthen}
+\usepackage[american,cuteinductors,smartlabels]{circuitikz}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{intersections,calc,backgrounds}
+
+\begin{document}
+	
+	
+	\centering
+	\newcommand{\thisScale}{.09}
+
+
+%THE CALLING TEX FILE MUST DEFINE TWO COMMANDS:
+%\thisScale and \setupFig
+%for example:
+% \newcommand{\setupFig}
+%{
+%	\def\TopLayerLabels{{"v", "v", "-u", "w", "w", "-v", "u", "u", "-w", "v", "v", "-u", "w", "w", "-v", "u", "u", "-w","v", "v", "-u", "w", "w", "-v", "u", "u", "-w","v", "v", "-u", "w", "w", "-v", "u", "u", "-w"}}
+%	\def\BotLayerLabels{{"v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w", "v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w","v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w","v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w"}}
+%}
+\definecolor{motoGreen}{RGB}{34, 139, 34}
+\definecolor{motoRed}{RGB}{196,0,100} % HEX #fedeed
+\definecolor{motoBlue}{RGB}{0,110,191}
+
+%PREAMBLE:
+% \usetikzlibrary{intersections}
+% \usetikzlibrary{calc}
+% 
+% \newcommand{\setupFig}{\def\showX{0}}
+% \newcommand{\thisScale}{1/10}
+% 
+\scalebox{3}{
+\begin{tikzpicture}[font=\tiny,scale=\thisScale,remember picture, >=stealth]
+	
+	
+%default values:
+\def\StatorOR{25}
+\def\StatorIR{17.5}
+
+\def\IntraSlotDepth{.3}
+\def\IntraSlotWidth{2}
+\def\SlotWidth{2}
+\def\SlotDepth{4.1}
+\def\NumSlots{36}
+\def\CondRadius{1.25}
+\def\UseCond{0}
+\def\NumberSlots{0}
+\def\StatorRotOffset{5}	%angle that slot 1 should be at with respect to the x axis
+\def\TopLayerLabels{{"v", "v", "-u", "w", "w", "-v", "u", "u", "-w", "v", "v", "-u", "w", "w", "-v", "u", "u", "-w","v", "v", "-u", "w", "w", "-v", "u", "u", "-w","v", "v", "-u", "w", "w", "-v", "u", "u", "-w"}}
+\def\BotLayerLabels{{"v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w", "v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w","v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w","v", "-u", "-u", "w", "-v", "-v", "u", "-w", "-w"}}
+\def\phaseUcolor{"motoBlue!30!white"}
+\def\phaseVcolor{"motoRed!30!white"}
+\def\phaseWcolor{"motoGreen!30!white"}
+\def\TopCondColors{{\phaseUcolor,\phaseUcolor,\phaseVcolor,\phaseVcolor,\phaseWcolor,\phaseWcolor,\phaseUcolor,\phaseUcolor,\phaseVcolor,\phaseVcolor,\phaseWcolor,\phaseWcolor}}
+\def\BotCondColors{{\phaseVcolor,\phaseVcolor,\phaseWcolor,\phaseWcolor,\phaseWcolor,\phaseWcolor,\phaseUcolor,\phaseUcolor,\phaseWcolor,\phaseVcolor,\phaseWcolor,\phaseWcolor}}
+\def\nodeFontSize{\tiny}
+
+%draw rotor:
+\def\drawPMrotor{0}
+\def\PMrotorPoles{4}
+\def\PMrotorRotation{15}
+\def\PMrotorPMthick{2}
+\def\PMrotorAG{1}
+\def\PMnorthColor{red!20!white}
+\def\PMsouthColor{green!20!white}
+\def\showRotorAngle{1}
+\def\rotorAngleLabel{$\theta$}
+\def\showRotorAngleTwo{0}
+\def\rotorAngleTwoStart{15}
+\def\rotorAngleTwoLabel{$\theta_b$}
+\def\showAlpha{1}
+
+
+% Overrides for this image
+\newcommand{\setupFig}
+{
+	\def\TopLayerLabels{{
+			" ", " ", " "," "," "," ",
+			" "," "," "," "," "," "}} %back of the slot
+	\def\BotLayerLabels{{
+			" ", " "," "," "," "," ",
+			" "," "," "," "," "," "}} %front of the slot
+	\def\TopCondColors{{\phaseUcolor,\phaseVcolor,\phaseWcolor,\phaseUcolor,\phaseVcolor, 
+			\phaseWcolor,\phaseUcolor,\phaseVcolor,\phaseWcolor,\phaseUcolor,\phaseVcolor,\phaseWcolor}} %back of slot
+	\def\BotCondColors{{\phaseWcolor,\phaseUcolor,\phaseVcolor,\phaseWcolor,\phaseUcolor,\phaseVcolor,
+			\phaseWcolor,\phaseUcolor,\phaseVcolor,\phaseWcolor,\phaseUcolor,\phaseVcolor}} %front of slot
+	\def\NumSlots{0}
+	\def\SlotWidth{3.6}
+	\def\SlotDepth{6.0}
+	\def\IntraSlotDepth{.75}
+	\def\StatorRotOffset{-60}	%angle that slot 1 should be at with respect to the x axis
+	\def\StatorOR{16}
+	\def\StatorIR{12}
+	\def\drawPMrotor{1}
+	\def\PMrotorPoles{8}
+	\def\PMnorthColor{red!20!white}
+	\def\PMsouthColor{green!20!white}
+	\def\showRotorAngle{1}
+	\def\showRotorAngleTwo{1}
+	\def\rotorAngleTwoStart{-30}
+	\def\PMrotorRotation{15}
+	\def\showAlpha{0}
+	\def\NumberSlots{0}
+	\def\UseCond{0}
+	\def\rotorAngleTwoLabel{$\theta_{\rm enc}$}
+	\def\rotorAngleLabel{$\theta_{\rm m}$}
+}
+
+\setupFig	%must be defined, this can overwrite the above definitions
+
+
+
+%Stator laminations
+\filldraw[fill=gray!40!white] circle(\StatorOR);
+\filldraw[fill=white,very thin] circle (\StatorIR);
+
+
+%make slots:
+%find x y coordinate for slot
+ 	\pgfmathparse{(\SlotWidth/4.5)/\StatorOR}; %was: \SlotWidth/6
+ 	\edef\slope{\pgfmathresult};
+ 	\pgfmathparse{sqrt((\StatorIR)^2/(1+\slope^2))};
+ 	\edef\xcord{\pgfmathresult};
+ 	\pgfmathparse{sqrt((\StatorIR)^2/(1+(1/\slope)^2))};
+ 	\edef\ycord{\pgfmathresult};
+ 	
+ 	\pgfmathparse{sqrt((\StatorIR-1)^2/(1+\slope^2))};
+ 	\edef\xcordsnip{\pgfmathresult};
+ 	\pgfmathparse{sqrt((\StatorIR-1)^2/(1+(1/\slope)^2))};
+ 	\edef\ycordsnip{\pgfmathresult};
+
+  \ifthenelse{\NumSlots = 0}{}{	
+ \begin{scope}
+ 	\foreach \x in {1,2,...,\NumSlots}
+ 	{
+ 		\path[fill= white,draw=black,rotate=360/\NumSlots*(\x-1)+\StatorRotOffset, name path =slotPath] (\xcord, \ycord) -- ++(\IntraSlotDepth,0) -- ++(0, \SlotWidth/3) -- ++(\SlotDepth, 0) -- ++(0,-\SlotWidth) -- ++(-\SlotDepth,0) -- ++(0, \SlotWidth/3) -- ++(-\IntraSlotDepth,0) -- cycle;
+ 	}
+ \end{scope}
+ 
+ \begin{scope}
+ 	\foreach \x in {1,2,...,\NumSlots}
+ 	{
+ 		\pgfmathparse{\TopLayerLabels[\x-1]};
+ 		\edef\TopLayerLabel{\pgfmathresult};
+ 		\pgfmathparse{\BotLayerLabels[\x-1]};
+ 		\edef\BotLayerLabel{\pgfmathresult};
+ 		\path[fill= white,rotate=360/\NumSlots*(\x-1)+\StatorRotOffset, name path =slotPath](\xcordsnip, \ycordsnip) -- ++(\IntraSlotDepth+1,0) -- ++(0, \SlotWidth/3) -- ++(\SlotDepth, 0) -- ++(0,-\SlotWidth) -- ++(-\SlotDepth,0) -- ++(0, \SlotWidth/3) -- ++(-\IntraSlotDepth-1,0) -- cycle;
+ 		\ifthenelse{\UseCond = 1}
+ 		{
+ 			\pgfmathparse{\TopCondColors[\x-1]}
+ 			\edef\TopCondColor{\pgfmathresult}
+ 			\pgfmathparse{\BotCondColors[\x-1]}
+ 			\edef\BotCondColor{\pgfmathresult}
+ 			
+ 			\filldraw[fill = \BotCondColor, very thin,rotate=360/\NumSlots*(\x-1)+\StatorRotOffset-.5]  (\StatorIR+\IntraSlotDepth+\CondRadius+.25,0) circle(\CondRadius) node[font=\tiny]{\BotLayerLabel};
+ 			\filldraw[fill = \TopCondColor, very thin, rotate=360/\NumSlots*(\x-1)+\StatorRotOffset-.5]  (\StatorIR+\IntraSlotDepth+\SlotDepth-\CondRadius-.25,0) circle(\CondRadius) node[font=\nodeFontSize]{\TopLayerLabel};
+		}
+		{		
+			\draw[rotate=360/\NumSlots*(\x-1)+\StatorRotOffset] (\StatorIR + \IntraSlotDepth+\SlotDepth/2, -\SlotWidth/2) -- +(0, \SlotWidth);
+			\draw [rotate=360/\NumSlots*(\x-1)+\StatorRotOffset](\StatorIR + \IntraSlotDepth + \SlotDepth/4, 0) node{\BotLayerLabel};
+			\draw [rotate=360/\NumSlots*(\x-1)+\StatorRotOffset](\StatorIR + \IntraSlotDepth + 3*\SlotDepth/4, 0) node{\TopLayerLabel};
+		}
+		\ifthenelse{\NumberSlots = 1}
+		{
+			\draw [rotate=360/\NumSlots*(\x-1)+\StatorRotOffset](\StatorIR + \IntraSlotDepth + 5*\SlotDepth/4, 0) node{\x};
+		}{}
+ 	}
+ \end{scope}}
+ 
+ \begin{scope}[rotate = \PMrotorRotation]
+
+ \ifthenelse{\drawPMrotor = 1}
+ {
+	\edef\rotorPMOR{\StatorIR-\PMrotorAG}
+	\edef\rotorShaftOR{\rotorPMOR - \PMrotorPMthick}
+	\edef\PMangle{180/\PMrotorPoles}
+	
+	\fill[gray!40!white] (0,0) circle(\rotorShaftOR);
+	\foreach \x in {1,2,...,\PMrotorPoles}
+ 	{ 		
+		\begin{scope}[rotate=(\x-1)*\PMangle*2]	
+		\pgfmathparse{int(mod(\x,2))}
+		\edef\NorthPole{\pgfmathresult}
+		
+		\def\pmColor{\PMnorthColor}
+		\def\pmColor{\PMsouthColor}
+			\ifthenelse{\NorthPole = 1}
+			{
+				\def\pmColor{\PMnorthColor}
+			}
+			{
+				\def\pmColor{\PMsouthColor}
+			}
+			%\filldraw[gray!40!white,draw=black] ([shift=(-180\PMrotorPoles:\rotorShaftOR)]0,0) arc (-180/\PMrotorPoles:180/\PMrotorPole:\rotorShaftOR);
+			\fill[\pmColor] ([shift=(-\PMangle:\rotorShaftOR)]0,0) arc (-\PMangle:\PMangle:\rotorShaftOR) 
+				-- (\PMangle:\rotorPMOR)
+				-- ([shift=(\PMangle:\rotorPMOR)]0,0) arc (\PMangle:-\PMangle:\rotorPMOR)
+				-- (-\PMangle:\rotorShaftOR);
+			\draw([shift=(-\PMangle:\rotorShaftOR)]0,0) arc (-\PMangle:\PMangle:\rotorShaftOR) 
+				-- (\PMangle:\rotorPMOR)
+				-- ([shift=(\PMangle:\rotorPMOR)]0,0) arc (\PMangle:-\PMangle:\rotorPMOR);
+				
+
+			\ifthenelse{\NorthPole = 1}
+			{
+				\draw[->] (\rotorShaftOR+.25, 0) -- (\rotorPMOR-.25, 0);
+			}
+			{
+				\draw[<-] (\rotorShaftOR+.25, 0) -- (\rotorPMOR-.25, 0);
+			}
+		\end{scope}
+	}
+	
+ }
+ {}
+\end{scope}
+
+\ifthenelse{\showRotorAngle = 1}
+	{
+		\draw(\PMrotorRotation:\StatorIR-\PMrotorAG/2) -- (\PMrotorRotation:\StatorOR+5); 
+		\draw(0:\StatorOR+.5) -- (0:\StatorOR+9) node[right]{phase $u$ axis};
+		%\draw[dashed](0:\StatorOR+5) -- (0:\StatorOR+10) node[right]{phase $u$ axis};
+		\draw[->]([shift=(0:\StatorOR+2.5)]0,0) arc (0:\PMrotorRotation:\StatorOR+2.5) node[xshift=-3,pos=0.5, right]{\rotorAngleLabel};
+	}
+	{}
+	
+\ifthenelse{\showRotorAngleTwo = 1}
+{
+	\draw(\PMrotorRotation:\StatorIR-\PMrotorAG/2) -- (\PMrotorRotation:\StatorOR+10); 
+	\draw(\rotorAngleTwoStart:\StatorOR+.5) -- (\rotorAngleTwoStart:\StatorOR+10) node[pos=1, right,rotate=\rotorAngleTwoStart] {z-pulse}; 
+	\draw[->]([shift=(\rotorAngleTwoStart:\StatorOR+7.5)]0,0) arc (\rotorAngleTwoStart:\PMrotorRotation:\StatorOR+7.5) node[xshift=-2,pos=0.85, right]{\rotorAngleTwoLabel};
+	\draw[->]([shift=(\rotorAngleTwoStart:\StatorOR+2.5)]0,0) arc (\rotorAngleTwoStart:0:\StatorOR+2.5) node[xshift=-3,pos=0.5, right]{$\theta_{\rm off}$};
+}
+{}
+	
+\ifthenelse{\showAlpha = 1}
+{
+	\draw(0,0) -- (60:\StatorIR-\PMrotorAG-\PMrotorPMthick*1.5); 
+	\draw(0,0) -- (0:\StatorIR-\PMrotorAG-\PMrotorPMthick*1.5); 
+	%\draw(0:\StatorOR+.5) -- (0:\StatorOR+5); 
+	\draw[->]([shift=(0:\StatorIR-\PMrotorAG-\PMrotorPMthick*1.5-2.5)]0,0) arc (0:60:\StatorIR-\PMrotorAG-\PMrotorPMthick*1.5-2.5) node[pos=0.95, right]{$\alpha$};
+}
+{}	
+\showAlpha{1}
+\end{tikzpicture}
+}
+\end{document}
+

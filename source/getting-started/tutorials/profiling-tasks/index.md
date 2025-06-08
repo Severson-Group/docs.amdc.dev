@@ -50,7 +50,14 @@ To do this, update the controller `init()` function:
 int task_controller_init(void)
 {
     // ...
+    
+    // Initialize the TCB struct
+    scheduler_tcb_init(...);
+    
+    // After init of TCB struct,
+    // enable the task stats
     task_stats_enable(&tcb.stats);
+    
     // ...
 }
 
