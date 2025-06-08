@@ -6,7 +6,7 @@ Ts = 1e-4;
 Tsim = 1e-5;
 
 p = 1;  % number of pole
-speed_cmd = 3000;  % fundmental frequency [Hz]
+speed_cmd = 3000;  % rotational speed [r/min]
 
 % Parameters for low pass filter
 f_lpf = 10;  % low pass fileter cut-off frequency (Hz)
@@ -90,7 +90,7 @@ print(figure1, '-dpng','-r300','plot_results');
 den = squeeze(sig_val.omega_raw);  % input signal
 outputs = {
     squeeze(sig_val.omega_lpf), 'Low-pass filter', '--';
-    squeeze(sig_val.omega_pll), 'PLL', '-';
+    % squeeze(sig_val.omega_pll), 'PLL', '-';
     squeeze(sig_val.omega_sf),  'Observer', '-.'
 };  % output signals
 
@@ -139,6 +139,7 @@ end
 xlim(ax1, [f1 f2]);
 xlim(ax2, [f1 f2]);
 xlim(ax3, [f1 f2]);
+% ylim(ax2, [-180 0]);
 ylim(ax3, [0 1]);
 
 set(ax1, 'xscale', 'log');
