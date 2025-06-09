@@ -133,7 +133,7 @@ The following simple procedure can be used without any feedback control:
 
 #### Determine precise offset
 
-Friction and cogging torque in the motor decrease the accuracy of the estimate in Step 1. The precise offset can be found by fine-tuning the `enc_theta_m_offset` from Step 1 while using closed-loop control to rotate the shaft at  at the highest possible speed. The correct offset is determined by observing $\hat{\theta}_e$ using the following $v_d$ equation. 
+Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `enc_theta_m_offset` while using closed-loop control to rotate the shaft at the highest possible speed. The correct offset is determined by observing $\hat{\theta}_e$ using the following $v_d$ equation. 
 
 $$
 v_d = (R_d + pL_d) i_d - \hat{\omega}\_e L_q i_q - \hat{\omega}\_e \lambda\_{\mathrm{pm}} \sin(\tilde{\theta}\_e)
@@ -143,7 +143,7 @@ $$
 \tilde{\theta}\_e = \theta\_e - \hat{\theta}\_e
 $$
 
-When the current commands are set to $i_d = i_q = 0$, the $v_d$ value should be zero if the estimated angle $\hat{\theta}_e$ is accurate. Step 2 describes how to determine the encoder offset by finding the condition where $v_d = 0$.
+When the current commands are set to $i_d = i_q = 0$, the $v_d$ value should be zero if the estimated angle $\hat{\theta}_e$ is accurate. The following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
 
 1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `enc_theta_m_offset` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `enc_theta_m_offset` obtained in [Finding the offset](#finding-the-offset).
