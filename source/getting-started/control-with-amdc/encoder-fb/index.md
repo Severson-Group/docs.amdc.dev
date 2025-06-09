@@ -136,7 +136,7 @@ The following simple procedure can be used without any feedback control:
 Friction and cogging torque in the motor decrease the accuracy of the estimate in Step 1. The precise offset can be found by fine-tuning the `enc_theta_m_offset` from Step 1 while using closed-loop control to rotate the shaft at  at the highest possible speed. The correct offset is determined by observing $\hat{\theta}_e$ using the following $v_d$ equation. 
 
 $$
-v_d = (R + pL) i_d - \hat{\omega}\_e L i_q - \hat{\omega}\_e \lambda\_{\mathrm{pm}} \sin(\tilde{\theta}\_e)
+v_d = (R_d + pL_d) i_d - \hat{\omega}\_e L_q i_q - \hat{\omega}\_e \lambda\_{\mathrm{pm}} \sin(\tilde{\theta}\_e)
 $$
 
 $$
