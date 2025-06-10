@@ -155,9 +155,11 @@ When the current commands are set to $i_d = i_q = 0$, the $v_d$ value should be 
 
 An example of the results is shown in the plot below. After the calibration process, the updated encoder offset results in the d-axis voltage being closer to 0 across different speeds compared to the previous value.
 
-<div align="center">
-  <img src="./resources/encoder-offset.svg" width="40%">
-</div>
+```{image} resources/encoder-offset.svg
+:alt: Torque Variation with Rotor Angle
+:width: 300px
+:align: center
+```
 
 ## Computing Speed from Position
 
