@@ -136,11 +136,11 @@ The following simple procedure can be used without any feedback control:
 Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `enc_theta_m_offset` while using closed-loop control to rotate the shaft at the highest possible speed. The correct offset is determined by observing $\hat{\theta}_e$ using the following $v_d$ equation. 
 
 $$
-v_d = (R_d + pL_d) i_d - \hat{\omega}\_e L_q i_q - \hat{\omega}\_e \lambda\_{\mathrm{pm}} \sin(\tilde{\theta}\_e)
+v_d = (R_d + pL_d) i_d - \hat{\omega}_e L_q i_q - \hat{\omega}_e \lambda_{\mathrm{pm}} \sin(\tilde{\theta}_e)
 $$
 
 $$
-\tilde{\theta}\_e = \theta\_e - \hat{\theta}\_e
+\tilde{\theta}_e = \theta_e - \hat{\theta}_e
 $$
 
 When the current commands are set to $i_d = i_q = 0$, the $v_d$ value should be zero if the estimated angle $\hat{\theta}_e$ is accurate. The following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
