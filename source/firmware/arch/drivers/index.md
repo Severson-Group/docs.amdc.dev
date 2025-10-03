@@ -53,8 +53,36 @@ err = analog_getf(ANALOG_IN1, &voltage);
 
 ### Writing PWM Duty Ratios
 
-Similar to steps for reading voltages, but with `drv/pwm.c` driver.
+The `drv/pwm.c` driver contains user functions to control the PWM interface. The approach to using this driver is similar to `drv/analog.c`, with one major difference:
+
+The timing of when duty ratio updates are applied is viewed as a critical aspect of precision motor controls. The driver provides options to either apply the updates immediately, synchronize the updates with the [timing manager interrupt](/firmware/arch/timing-manager.md), or apply them on the next carrier peak/valley.
+
+This is done by calling the following function:
+
+```C
+err = pwm_set_duty_latching_mode(mode);
+```
+
+With mode options
+
+```C
+typedef enum {
+    PWM_LATCH_MODE_TIMING_MANAGER = 0, // Update duty ratios at next timing manager trigger (default)
+    PWM_LATCH_MODE_PWM,                // Update duty ratios at next PWM carrier peak/valley
+    PWM_LATCH_MODE_IMMEDIATE           // Update duty ratios immediately (next FPGA clock rise)
+} pwm_latch_mode;
+```
 
 ### Reading Encoder Values
 
 Similar to steps for reading voltages, but with `drv/encoder.c` driver.
+
+
+```{toctree}
+:hidden:
+
+gpio-mux
+status-mux
+encoder
+eddy-current-sensor
+```

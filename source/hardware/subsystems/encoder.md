@@ -4,7 +4,7 @@ This document describes the design considerations and implementation details for
 
 ## Relevant Versions of AMDC Hardware
 
-AMDC REV D
+AMDC REV D, E, F
 
 ## Design Requirements
 
@@ -60,13 +60,11 @@ A table of the pin mappings for each D-Sub connector is shown below:
 | 8 | GND |
 | 9 | GND |
 
-To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the encoder  section of the [pin mapping document](RevD-PinMapping.md#encoder).
+To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-7000 balls used in Vivado, take a look at the encoder  section of the [pin mapping document](../revisions/rev-d/rev-d-pin-mapping.md#encoder).
 
 The location of these encoder connectors on the AMDC is shown below:
 
 ![](images/amdc-encoder-input-highlighted.svg)
-
-More information on the D-sub connector can be found [here]( https://www.alliedelec.com/m/d/c3366066d9274ddf3c20bc3008518f5b.pdf?src-supplier=Allied+Electronics).
 
 ### 3. Differential to Single-Ended Conversion
 
@@ -87,6 +85,10 @@ Before connecting the encoder to the AMDC, the user should check if the encoder 
 ### 4. Level Shifter
 
 After the encoder differential signals are converted to the single-ended, these signals are level-shifted/translated to a lower voltage, allowing compatibility with the PicoZed FPGA. The level shifter [SN74LVC8T245](http://www.ti.com/lit/ds/symlink/sn74lvc8t245.pdf) uses two separate configurable power-supply rails and allows for the bidirectional operation. Signals on each side (input or output) are referenced to their respective voltage rail. In the AMDC REV D design, the input voltage rail is at 5V and the output voltage rail is at 1.8V. The outputs of this chip (6 signals in total if 2 encoders are connected) are then transmitted to PicoZed.
+
+## Firmware Driver
+
+Documentation on the C code functions used to interact with the encoder system can be found [here](/firmware/arch/drivers/encoder).
 
 ## PCB Layout
 

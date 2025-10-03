@@ -1,6 +1,6 @@
 # Low Voltage
 
-This document describes the design considerations and implementation details for the low voltage card, which serves as a daughtercard for the AMDS mainboard.
+This document describes the design considerations and implementation details for the low voltage card, a sensor card for the AMDS mainboard.
 
 ## Relevant Hardware Versions
 

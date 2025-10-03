@@ -20,16 +20,9 @@ AMDC Platform Documentation
 
    getting-started/onboarding
    getting-started/tutorials/index
+   getting-started/advanced-tutorials/index
    getting-started/user-guide/index
    getting-started/control-with-amdc/index
-
-.. toctree::
-   :hidden:
-   :caption: Applications
-
-   applications/current-control/index
-   applications/speed-control/index
-   applications/maglev-control/index
 
 .. toctree::
    :hidden:
@@ -138,10 +131,10 @@ Do you offer technical support?
    No. Since the AMDC platform is not a paid project, we do not have the resources to provide 1:1 support. Please read the extensive documentation on this site.
 
 Who created the AMDC Platform?
-   `Nathan Petersen <https://nathanpetersen.com/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://directory.engr.wisc.edu/ece/Faculty/Severson_Eric/>`_; he designed the `hardware <https://github.com/Severson-Group/AMDC-Hardware>`_ and `firmware <https://github.com/Severson-Group/AMDC-Firmware>`_ and built this `documentation website <https://github.com/Severson-Group/docs.amdc.dev>`_ you are reading.
+   `Nathan Petersen <https://github.com/npetersen2/>`_ was the original architect and designer of the AMDC under the direction of `Prof. Eric Severson <https://github.com/elsevers/>`_; he designed the initial versions of the `hardware <https://github.com/Severson-Group/AMDC-Hardware>`_ and `firmware <https://github.com/Severson-Group/AMDC-Firmware>`_ and built this `documentation website <https://github.com/Severson-Group/docs.amdc.dev>`_ you are reading.
 
 Who maintains the AMDC Platform?
-   The AMDC Platform is actively maintained by students in the `Severson Research Group <https://severson.wempec.wisc.edu/>`_ at the `University of Wisconsin, Madison <https://www.wisc.edu/>`_ in the USA.
+   The AMDC Platform is actively maintained by students in the `Electric Machinery and Levitation Laboratory <https://elev.umn.edu/>`_ at the `University of Minnesota <https://twin-cities.umn.edu/>`_ in the USA.
 
 
 ********
