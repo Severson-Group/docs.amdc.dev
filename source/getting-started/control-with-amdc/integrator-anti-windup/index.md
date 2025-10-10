@@ -22,7 +22,7 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
 2. Speed control:
     - Plant input: $q$-axis current command
     - Output: Rotational speed of the electric machinery
-    - Physical limitation: The practical output current is limited by the coil current density, typically 8 A/mm<sup>2</sup> (air-cooling).
+    - Physical limitation: The practical command current to the plant is limited by the coil current density, typically 8 A/mm<sup>2</sup> (air-cooling).
 
 3. Temperature control:
     - Plant input: Heat
