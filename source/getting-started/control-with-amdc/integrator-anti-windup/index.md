@@ -16,7 +16,7 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
 
 1. Current regulation:
     - Plant input: Voltage command
-    - Output: Current
+    - Plant output: Current
     - Physical limitation: The realistic output voltage is restricted by the capability of the DC power supply
 
 2. Speed control:
