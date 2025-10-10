@@ -62,7 +62,7 @@ In the previous saturation block (`preSat`), the manipulated variable instantane
 
 #### Disturbance Suppression without/with Actuator Limitations
 
-Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine if disturbances affect on the behavior of the integrator. In this scenario, the command is set as 0, and the disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and end at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.
+Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine whether disturbances affect the behavior of the integrator. In this scenario, the command is set as 0, and the disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.
 
 ```{image} images/Disturbance.svg
     :align: center
