@@ -37,7 +37,7 @@ This section provides the practical challenges from the actuator’s input limit
 
 #### Command Tracking without/with Actuator Limitations
 
-Let us analyze the simulation result with the block diagram above to investigate the technical challenges on windup. Two scenarios are compared here:  one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.  
+Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. Two scenarios are compared here:  one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.  
 
 ```{image} images/Output_sat_c.svg
     :align: center
