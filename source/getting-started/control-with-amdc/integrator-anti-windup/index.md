@@ -15,7 +15,7 @@ Generally, the primary components of a control diagram are the controller and pl
 In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This system can be analyzed from following perspectives:
 
 1. Current regulation:
-    - Plant input: Voltage reference
+    - Plant input: Voltage command
     - Output: Current
     - Physical limitation: The realistic output voltage is restricted by the capability of the DC power supply
 
