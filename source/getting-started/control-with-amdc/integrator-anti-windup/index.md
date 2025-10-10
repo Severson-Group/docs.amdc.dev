@@ -49,7 +49,7 @@ Let us analyze the simulation result with the block diagram above to investigate
     :width: 600
 ```
 
-As observed, the command can track correctly without saturation block, whereas overshoot with slow response occurs is present when the saturation block. The second figure shows the output of the integrator. With the saturated block, errors are accumulated, leading to delayed convergence, a condition known as an integral windup.
+As observed, the command can track correctly without saturation block, whereas overshoot with slow response occurs in presence of the saturation block. The second figure shows the output of the integrator. With the saturated block, errors are accumulated, leading to delayed convergence, a condition known as an integral windup.
 
 Next, let us examine the manipulated variable in the previous and the post saturation block.
 
