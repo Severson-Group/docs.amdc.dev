@@ -6,13 +6,13 @@ This article describes how to evaluate performance of anti-windup. A windup migh
 
 ### Block Diagram with Saturation
 
-Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. However, in practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the Saturation block, demonstrating the physical limitations of the actuator input.
+Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. However, in practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the `Saturation` block, demonstrating the physical limitations of the actuator input.
 
 ```{image} images/control-diagram-sat.svg
     :align: center
 ```
 
-In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This system can be analyzed from following perspectives:
+In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This system can be interpreted from following examples:
 
 1. Current regulation:
     - Plant input: Voltage command
@@ -22,7 +22,7 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
 2. Speed control:
     - Plant input: $q$-axis current command
     - Output: Rotational speed of the electric machinery
-    - Physical limitation: The practical command current to the plant is limited by the coil current density, typically 8 A/mm<sup>2</sup> (air-cooling).
+    - Physical limitation: The practical command current to the plant is limited by the coil current density.
 
 3. Temperature control:
     - Plant input: Heat
@@ -33,11 +33,11 @@ In this example, the PI controller is employed to achieve the desired system res
 
 ### Technical Challenges on Windup
 
-This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression. A definition of windup will be introduced.
+This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression, and introduces the definition of windup.
 
 #### Command Tracking without/with Actuator Limitations
 
-Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. Two scenarios are compared here: one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
+Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. The objective of this analysis is to evaluate the impact of the saturation block on the output performance. The simulation results are shown below, where two scenarios are compared: one “without saturation block (red line)” and one “with the saturation block (blue line)”. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
 
 ```{image} images/Output-sat-c.svg
     :align: center
@@ -49,16 +49,16 @@ Let us analyze the simulation result with the block diagram above to investigate
     :width: 600
 ```
 
-As observed, the command can track correctly without saturation block, whereas overshoot with slow response occurs in presence of the saturation block. The second figure shows the output of the integrator. With the saturated block, errors are accumulated, leading to delayed convergence, a condition known as an integral windup.
+As observed in the top figure, the command tracks correctly when no saturation block is present, whereas overshoot occurs when the saturation block is included. The bottom figure illustrates the output of the integrator `Iout`. With the saturated block, `Iout` becomes larger than that without the saturation block.
 
-Next, let us examine the manipulated variable in the previous and the post saturation block.
+Let us examine why this phenomenon occurs by analyzing the manipulated variable before and after the saturation block.
 
 ```{image} images/preSat-postSat.svg
     :align: center
     :width: 600
 ```
 
-In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, beyond the saturation range of 10. On the other hand, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation occurrences. Consequently, the PI controller may provide a higher manipulated variable after getting the higher error, which causes the windup.
+In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continue to increase the manipulated variable after getting the larger error. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known as an integral windup.
 
 #### Disturbance Suppression without/with Actuator Limitations
 
