@@ -33,7 +33,7 @@ In this example, the PI controller is employed to achieve the desired system res
 
 ### Technical Challenges on Windup
 
-This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression, and introduces the definition of windup.
+This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression, and introduces the definition of an integral windup.
 
 #### Command Tracking without/with Actuator Limitations
 
@@ -84,7 +84,7 @@ To avoid the integral windup, the mitigation strategy known as the anti-windup s
     :align: center
 ```
 
-In the anti-windup methods, if the manipulated variable reaches the specified `Limit`, the integrator is to keep the integrated value from increasing past the specified limit. There are multiple ways to implement integrator anti-windup, however, two common methods are introduced here:
+In the anti-windup methods, if the manipulated variable reaches the specified `Limit`, the integrator is to keep the integrated value from increasing past the specified limit. There are multiple ways to implement integrator anti-windup, however, two common methods are introduced in this article:
 
 1. [**Clamping**](#clamping): Turn off the integrator to stop further accumulation of the value. This can be divided into two methods, i.e., [simple clamping](#simple-clamping) and [advanced clamping](#advanced-clamping).
 
@@ -213,10 +213,10 @@ The idea of back-tracking method is to use a feedback loop to unwind the interna
     :width: 70%
 ```
 
-For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_\text{b}$ is a feedback gain of the back-tracking. On the other hand, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
+For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_\text{b}$ is a feedback gain of the back-tracking. In contrast, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
 
 ```{tip}
-The selection of $K_\text{b}$ is highly nuanced upon the specific event being managed. Making an incorrect choice for $K_\text{b}$ can lead to the clamping method better. In practice, the feedback gain of $K_\text{b}$ is determined by trial and error, depending on the user’s requirements, such as how much overshoot or response-speed they want. There is a paper that shows an example of how to determine the $K_\text{b}$ known as a `conditioned PI controller`. In this literature, the $K_\text{b}$ is determined as $K_\text{b} = K_\text{i}/K_\text{p}$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
+The selection of $K_\text{b}$ is highly nuanced upon the specific event being managed. Making an incorrect choice for $K_\text{b}$ can lead to the clamping method better. In practice, the feedback gain of $K_\text{b}$ is determined by trial and error, depending on the user’s requirements, such as the allowable overshoot and desired response speed. There is a paper that shows an example of how to determine the $K_\text{b}$ known as a `conditioned PI controller`. In this literature, the $K_\text{b}$ is determined as $K_\text{b} = K_\text{i}/K_\text{p}$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
 ```
 
 Here is a Simulink simulation of the no anti-windup, simple clamping, advanced clamping, and back-tracking.
@@ -254,4 +254,4 @@ From the `Output` waveform, it is evident that the back-tracking technique margi
 
 The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_\text{b} = K_\text{i}/K_\text{p}$, which might be required to adjust based on the specific condition and simulation outcomes.
 
-The anti-windup methods introduced in this article can be implemented by running the Simulink model provided [here](https://github.com/Severson-Group/docs.amdc.dev/source/getting-started/control-with-amdc/integrator-anti-windup).
+The anti-windup methods introduced in this article can be implemented by running the Simulink model provided [here](../integrator-anti-windup/simulink/).
