@@ -29,7 +29,7 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
     - Output: Resulting system temperature
     - Physical limitation: The heater’s power rating (e.g., 1 kW) limits the actuator.
 
-In this example, the PI controller is employed to achieve the desired system response. The PI gains are set to achieve the first response with a bandwidth of 10 Hz, i.e., $K_p = 2\pi \times 10$, and $K_i = 2\pi \times 10$.
+In this example, the PI controller is employed to achieve the desired system response. The PI gains are set to achieve the first response with a bandwidth of 10 Hz, i.e., $K_\text{p} = 2\pi \times 10$, and $K_\text{i} = 2\pi \times 10$.
 
 ### Technical Challenges on Windup
 
@@ -201,7 +201,7 @@ Here are simulation results based on the above scenarios:
     :width: 600
 ```
 
-From the `Output` result, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. _However_, this can be observed only if the proportional gain of $K_p$ is very small ($= 0.0002*2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation.
+From the `Output` result, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0002*2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation.
 Significant differences in the advanced clamping only appear when the system saturates **AND** signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. Therefore, the highly specific scenario where the system stays in saturation during this flip in signs is necessary to clearly make the advanced method better. This suggests that the effort to implement the advanced clamping version is probably not worth it for the typical motor control systems.
 
 ### Back-tracking
@@ -213,10 +213,10 @@ The idea of back-tracking method is to use a feedback loop to unwind the interna
     :width: 70%
 ```
 
-For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_b$ is a feedback gain of the back-tracking. On the other hand, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
+For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_\text{b}$ is a feedback gain of the back-tracking. On the other hand, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
 
 ```{tip}
-The selection of $K_b$ is highly nuanced upon the specific event being managed. Making an incorrect choice for $K_b$ can lead to the clamping method better. In practice, the feedback gain of $K_b$ is determined by trial and error, depending on the user’s requirements, such as how much overshoot or response-speed they want. There is a paper that shows an example of how to determine the $K_b$ known as a `conditioned PI controller`. In this literature, the $K_b$ is determined as $K_b = K_i/K_p$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
+The selection of $K_\text{b}$ is highly nuanced upon the specific event being managed. Making an incorrect choice for $K_\text{b}$ can lead to the clamping method better. In practice, the feedback gain of $K_\text{b}$ is determined by trial and error, depending on the user’s requirements, such as how much overshoot or response-speed they want. There is a paper that shows an example of how to determine the $K_\text{b}$ known as a `conditioned PI controller`. In this literature, the $K_\text{b}$ is determined as $K_\text{b} = K_\text{i}/K_\text{p}$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
 ```
 
 Here is a Simulink simulation of the no anti-windup, simple clamping, advanced clamping, and back-tracking.
@@ -252,6 +252,6 @@ From the `Output` waveform, it is evident that the back-tracking technique margi
     :width: 600
 ```
 
-The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_b = K_i/K_p$, which might be required to adjust based on the specific condition and simulation outcomes.
+The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_\text{b} = K_\text{i}/K_\text{p}$, which might be required to adjust based on the specific condition and simulation outcomes.
 
 The anti-windup methods introduced in this article can be implemented by running the Simulink model provided [here](https://github.com/Severson-Group/docs.amdc.dev/source/getting-started/control-with-amdc/integrator-anti-windup).
