@@ -1,6 +1,6 @@
 # Integrator Anti-Windup
 
-This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of anti-windup strategy depends on the duration of the windup and how extreme it is.  Therefore, simulating realistic scenarios of windup and anti-windup performance is crucial to investigate specific scenarios that are likely to be encountered since perfect anti-windup is unachievable.
+This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Therefore, simulating realistic scenarios of windup and anti-windup performance is crucial to investigate specific scenarios that are likely to be encountered since perfect anti-windup is unachievable.
 
 ## Exploring Windup Phenomena in Integrators
 
@@ -37,7 +37,7 @@ This section provides the practical challenges from the actuator’s input limit
 
 #### Command Tracking without/with Actuator Limitations
 
-Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. Two scenarios are compared here:  one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.  
+Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. Two scenarios are compared here: one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
 
 ```{image} images/Output-sat-c.svg
     :align: center
@@ -58,7 +58,7 @@ Next, let us examine the manipulated variable in the previous and the post satur
     :width: 600
 ```
 
-In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, beyond the saturation range of 10. On the other hand, the voltage reference in the post saturation block (`postSat`) is limited to 10.  As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation occurrences. Consequently, the PI controller may provide a higher manipulated variable after getting the higher error, which causes the windup.
+In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, beyond the saturation range of 10. On the other hand, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation occurrences. Consequently, the PI controller may provide a higher manipulated variable after getting the higher error, which causes the windup.
 
 #### Disturbance Suppression without/with Actuator Limitations
 
@@ -153,7 +153,7 @@ In the advanced clamping method, the behavior itself is essentially similar to t
 
 **Step 1.** Compare the `preSat` and `postSat`. If these values are not equal, i.e., the manipulated variable reaches saturation, the block outputs 1. If they are equal, then no saturation takes place, and the block outputs 0 -- this is the same purpose of the simple clamping.
 
-**Step 2.** Compare the sign of the `preSat` and the `Error`. And then, if both signs are equal, the block outputs 1. If not, the block outputs 0 -- this is the additional condition  necessary for advanced clamping.
+**Step 2.** Compare the sign of the `preSat` and the `Error`. And then, if both signs are equal, the block outputs 1. If not, the block outputs 0 -- this is the additional condition necessary for advanced clamping.
 
 **Step 3.** The anti-windup output denoted as tracking-signal `TR` becomes 1 to clamp the integrator only if both outputs of **Step 1.** and **Step 2.** are 1. In other words, the integrator clamps integration if the output is saturating AND the `Error` is the same sign as the `preSat`.
 
