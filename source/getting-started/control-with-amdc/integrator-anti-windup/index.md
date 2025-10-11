@@ -1,6 +1,6 @@
 # Integrator Anti-Windup
 
-This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Therefore, simulating realistic scenarios of windup and anti-windup performance is crucial to investigate specific scenarios that are likely to be encountered since perfect anti-windup is unachievable.
+This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Therefore, simulating realistic windup and anti-windup behaviors is crucial to investigate specific scenarios that are likely to occur since perfect anti-windup is unachievable.
 
 ## Exploring Windup Phenomena in Integrators
 
