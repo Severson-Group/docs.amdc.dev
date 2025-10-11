@@ -39,12 +39,12 @@ This section provides the practical challenges from the actuator’s input limit
 
 Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. Two scenarios are compared here:  one “without saturation block” and one “with the saturation block”. The objective of this analysis is to evaluate the impact of its saturation block on the output performance. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.  
 
-```{image} images/Output_sat_c.svg
+```{image} images/Output-sat-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout_sat_c.svg
+```{image} images/Iout-sat-c.svg
     :align: center
     :width: 600
 ```
@@ -53,7 +53,7 @@ As observed, the command can track correctly without saturation block, whereas o
 
 Next, let us examine the manipulated variable in the previous and the post saturation block.
 
-```{image} images/preSat_postSat.svg
+```{image} images/preSat-postSat.svg
     :align: center
     :width: 600
 ```
@@ -69,7 +69,7 @@ Disturbances can degrade the system by introducing unexpected/rapid changes. Let
     :width: 600
 ```
 
-```{image} images/Output_sat_d.svg
+```{image} images/output-sat-d.svg
     :align: center
     :width: 600
 ```
@@ -109,17 +109,17 @@ Here is a Simulink simulation of the no anti-windup and simple clamping.
 
 #### Command Tracking
 
-```{image} images/Output_simple_c.svg
+```{image} images/output-simple-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/postSat_simple_c.svg
+```{image} images/postSat-simple-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout_simple_c.svg
+```{image} images/Iout-simple-c.svg
     :align: center
     :width: 600
 ```
@@ -133,7 +133,7 @@ In the `Output` waveforms, an overshoot is observed when there is no anti-windup
     :width: 600
 ```
 
-```{image} images/Output_simple_d.svg
+```{image} images/output-simple-d.svg
     :align: center
     :width: 600
 ```
@@ -161,17 +161,17 @@ If the `TR` is 1, the input of the integrator becomes 0 as the switch is trigger
 
 Here is a Simulink simulation of the no anti-windup, simple clamping, and advanced clamping.
 
-```{image} images/Output_advanced_c.svg
+```{image} images/output-advanced-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/postSat_advanced_c.svg
+```{image} images/postSat-advanced-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout_advanced_c.svg
+```{image} images/Iout-advanced-c.svg
     :align: center
     :width: 600
 ```
@@ -186,17 +186,17 @@ Based on this, a highly specific scenario is now introduced where advanced clamp
 
 Here are simulation results based on the above scenarios:
 
-```{image} images/Disturbance_advanced_better.svg
+```{image} images/disturbance-advanced-better.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Output_advanced_better.svg
+```{image} images/output-advanced-better.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout_advanced_better.svg
+```{image} images/Iout-advanced-better.svg
     :align: center
     :width: 600
 ```
@@ -223,17 +223,17 @@ Here is a Simulink simulation of the no anti-windup, simple clamping, advanced c
 
 #### Command Tracking
 
-```{image} images/postSat_back_c.svg
+```{image} images/postSat-back-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Output_back_c.svg
+```{image} images/Output-back-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout_back_c.svg
+```{image} images/Iout-back-c.svg
     :align: center
     :width: 600
 ```
@@ -247,7 +247,7 @@ From the `Output` waveform, it is evident that the back-tracking technique margi
     :width: 600
 ```
 
-```{image} images/Output_back_d.svg
+```{image} images/output-back-d.svg
     :align: center
     :width: 600
 ```
