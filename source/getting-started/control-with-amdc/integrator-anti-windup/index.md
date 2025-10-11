@@ -6,7 +6,7 @@ This article describes how to evaluate performance of anti-windup. A windup migh
 
 ### Block Diagram with Saturation
 
-Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. Practically, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the saturation block, demonstrating the physical limitations of the actuator input.
+Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. However, in practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the Saturation block, demonstrating the physical limitations of the actuator input.
 
 ```{image} images/control-diagram-sat.svg
     :align: center
