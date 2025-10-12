@@ -1,6 +1,8 @@
 # Integrator Anti-Windup
 
-This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability. The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Therefore, simulating realistic windup and anti-windup behaviors is crucial to investigate specific scenarios that are likely to occur since perfect anti-windup is unachievable.
+This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability.
+
+The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Since perfect anti-windup is unachievable, it is crucial to simulate realistic windup and anti-windup behaviors to examine specific scenarios that are likely to occur in practice. To help readers understand this, an example of Simulink model (available [here](../integrator-anti-windup/simulink/)) is provided in this article to demonstrate how such scenario can be simulated and how the anti-windup strategy can address them.
 
 ## Exploring Windup Phenomena in Integrators
 
@@ -254,4 +256,4 @@ From the `Output` waveform, it is evident that the back-tracking technique margi
 
 The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_\text{b} = K_\text{i}/K_\text{p}$, which might be required to adjust based on the specific condition and simulation outcomes.
 
-The anti-windup methods introduced in this article can be implemented by running the Simulink model provided [here](../integrator-anti-windup/simulink/).
+
