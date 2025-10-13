@@ -203,7 +203,7 @@ Here are simulation results based on the above scenarios:
     :width: 600
 ```
 
-From the `Output` result, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0002*2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation.
+From the `Output` result, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0002 \times 2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation.
 Significant differences in the advanced clamping only appear when the system saturates **AND** signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. Therefore, the highly specific scenario where the system stays in saturation during this flip in signs is necessary to clearly make the advanced method better. This suggests that the effort to implement the advanced clamping version is probably not worth it for the typical motor control systems.
 
 ### Back-tracking
