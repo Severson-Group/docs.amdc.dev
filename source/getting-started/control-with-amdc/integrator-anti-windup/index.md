@@ -182,7 +182,9 @@ Notice that the above assumptions cause the simple and advanced clamping to beha
 
 Based on this, a highly specific scenario is now introduced where advanced clamping demonstrates better performance. Here is simulation scenario to demonstrate the superiority of advanced clamping than simple clamping:
 
-**Initial State**: A disturbance of 5 causes the system to saturate and stabilize at -1 output.
+1. A disturbance of 3 occurs at 0.5 seconds, and causes the system to saturate.
+2. After the output is stabilized to 0, the positive reference of 1 is commanded at 5 seconds.
+3. 
 
 **Controller Behavior**: At 5 seconds, the controller set point starts toggling around the saturated output.
 
@@ -194,6 +196,16 @@ Here are simulation results based on the above scenarios:
 ```
 
 ```{image} images/output-advanced-better.svg
+    :align: center
+    :width: 600
+```
+
+```{image} images/error-advanced-better.svg
+    :align: center
+    :width: 600
+```
+
+```{image} images/preSat-advanced-better.svg
     :align: center
     :width: 600
 ```
