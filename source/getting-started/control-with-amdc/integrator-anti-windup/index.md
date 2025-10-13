@@ -182,11 +182,8 @@ Notice that the above assumptions cause the simple and advanced clamping to beha
 
 Based on this, a highly specific scenario is now introduced where advanced clamping demonstrates better performance. Here is simulation scenario to demonstrate the superiority of advanced clamping than simple clamping:
 
-1. A disturbance of 3 occurs at 0.5 seconds, and causes the system to saturate.
-2. After the output is stabilized to 0, the positive reference of 1 is commanded at 5 seconds.
-3. 
-
-**Controller Behavior**: At 5 seconds, the controller set point starts toggling around the saturated output.
+1. A `Disturbance` with amplitude of 3 is applied at 0.5 seconds, causing the system to saturate.
+2. Once the `Output` has stabilized at 0, a positive reference of 1 is commanded at 5 seconds.
 
 Here are simulation results based on the above scenarios:
 
@@ -210,13 +207,9 @@ Here are simulation results based on the above scenarios:
     :width: 600
 ```
 
-```{image} images/Iout-advanced-better.svg
-    :align: center
-    :width: 600
-```
+As indicated in `Output` plot, the advanced clamping performs better, whereas the simple clamping can no longer track the reference. Interestingly, the simple clamping can be even worse than having no anti-windup in this example. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0001 \times 2\pi \times 10$ in this case).
 
-From the `Output` result, when the controller set point drops below the output, the advanced clamping method avoids integrating, allowing for effective unwinding. On the other hand, the simple clamping continues to integrate, which may not handle unwinding as effectively as the advanced method. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0002 \times 2\pi \times 10$ in this case), which is not commonly preferred, especially if the PI controller is tuned for pole-zero cancellation.
-Significant differences in the advanced clamping only appear when the system saturates **AND** signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. Therefore, the highly specific scenario where the system stays in saturation during this flip in signs is necessary to clearly make the advanced method better. This suggests that the effort to implement the advanced clamping version is probably not worth it for the typical motor control systems.
+Significant differences in the advanced clamping only appear when the system saturates **AND** signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. In this example, the `Error` suddenly becomes positive at 5 seconds, while the `preSat` remains negative due to low P gain. This brakes the equal sign condition (i.e., `Error` does not have the same sign as the `preSat`) and unclamps the integrator.  Because setting a significantly low P gain is generally undesirable, this suggests that the additional effort to implement the advanced clamping is probably not worth for the typical motor control systems.
 
 ### Back-tracking
 
