@@ -68,21 +68,26 @@ $$
 
 ### Analog to Digital Converter
 To increase noise immunity, the card has an inbuilt Analog to Digital Conversion (ADC) IC. The ADC used is the Texas Instruments ADS8860. It is pseudo-differential input, SPI output, SAR ADC. The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
-
-#### Relationship Between Input and ADC voltage
 The different stages of the voltage sensor card described above convert the input voltage, to a voltage in the range of 0.2V - 4.5V. For the current design, 0V input voltage corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V. 
 
+#### Relationship Between Input and ADC voltage
 From the equations provided in the [Level shift stage](level-shift-stage) section, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
 
-##### Revision B
+##### Revision A
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
+In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 390Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = (V_{\text{ADC, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
+V_{\text{MEAS}} = (V_{\text{ADC, RevB}} - 2.5031) \times 1432 \qquad {\rm [V]}
 $$
 
+##### Revision B, C
 
+In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 348Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
+
+$$
+V_{\text{MEAS}} = (V_{\text{ADC, RevB}} - 2.5031) \times 1600 \qquad {\rm [V]}
+$$
 
 ### Connectors
 - The HV terminal block `B1` with screw connectors is used to connect the HV terminals across which voltage has to be measured. 
