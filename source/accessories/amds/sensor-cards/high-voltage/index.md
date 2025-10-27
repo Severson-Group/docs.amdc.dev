@@ -42,10 +42,18 @@ The voltage across the burden resistor is a bipolar signal (voltage span include
 This circuit is used to translate the voltage across the burden resistor, which is bipolar, to the ADC input range of 0-4.5V. The resistor values can be calculated analytically using the following formula:
 
 $$
-V_\text{out} = \frac{R_b||R_c}{R_a + (R_b||R_c)}\times V_\text{BURDEN} + \frac{R_a||R_b}{R_c + (R_a||R_b)}\times V_\text{REF}
+V_{\rm out} = \frac{R_{\rm a} R_{\rm b}}{R_{\rm a} R_{\rm b} + R_{\rm a} R_{\rm c} + R_{\rm b} R_{\rm c}} V_{\rm REF} + \frac{R_{\rm b} R_{\rm c}}{R_{\rm a} R_{\rm b} + R_{\rm a} R_{\rm c} + R_{\rm b} R_{\rm c}} V_{\rm BURDEN}
 $$
 
-The algebra can get quite complicated when solving it analytically. So the resistor values were computed to be R<sub>a</sub> = 10kΩ, R<sub>b</sub> = 8.45kΩ, and R<sub>c</sub> = 4.64kΩ using the TI analog engineer's calculator.
+A more precise expression for $V_{\rm BURDEN}$ can be derived as:
+
+$$
+V_{\mathrm{BURDEN}} = \frac{1}{R_{\mathrm{a}} + R_{\mathrm{BURDEN}}}\left(R_{\mathrm{BURDEN}} V_{\mathrm{out}} + \frac{K_{N} R_{\mathrm{a}} R_{\mathrm{BURDEN}}}{2R_{\mathrm{IN}}} V_{\mathrm{IN}}\right)
+$$
+
+where R<sub>BURDEN</sub> is the burden resistor, R<sub>IN</sub> is the input resistance, and K<sub>N</sub> is the sensor conversion ratio from the datasheet. For LV-25P, the data sheet lists K<sub>N</sub> = 2500:1000.
+
+The algebra can get quite complicated when solving it analytically. So the resistor values were computed to be R<sub>a</sub> = 10kΩ, R<sub>b</sub> = 8.45kΩ, and R<sub>c</sub> = 4.64kΩ using the [TI analog engineer's calculator](https://www.ti.com/tool/ANALOG-ENGINEER-CALC).
 
 **Note:** As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly so the output voltage is limited to actually be 0.2V to 4.5V.
 
@@ -61,15 +69,20 @@ $$
 ### Analog to Digital Converter
 To increase noise immunity, the card has an inbuilt Analog to Digital Conversion (ADC) IC. The ADC used is the Texas Instruments ADS8860. It is pseudo-differential input, SPI output, SAR ADC. The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
 
-The different stages of the voltage sensor card described above convert the input voltage, to a voltage in the range of 0.2V - 4.5V. The voltage at the ADC input V<sub>ADC</sub> is related to the sensor card input voltage V<sub>IN</sub> as follows:
+#### Relationship Between Input and ADC voltage
+The different stages of the voltage sensor card described above convert the input voltage, to a voltage in the range of 0.2V - 4.5V. For the current design, 0V input voltage corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V. 
+
+From the equations provided in the [Level shift stage](level-shift-stage) section, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
+
+##### Revision B
+
+In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-V_\text{ADC} = \frac{R_b||R_c}{R_a+(R_b||R_c)}\left( \frac{V_\text{IN}R_\text{BURDEN}}{R_\text{IN}}K_\text{N}\right)+\frac{R_a||R_b}{R_c+(R_a||R_b)}\times V_\text{REF}
+I_{\text{PRIMARY}} = (V_{\text{ADC, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
 $$
 
-where R<sub>BURDEN</sub> is the burden resistor, R<sub>IN</sub> is the input resistance, and K<sub>N</sub> is the sensor conversion ratio from the datasheet. For LV-25P, the data sheet lists K<sub>N</sub> = 2500:1000.
 
-For the current design, 0V input voltage corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V.
 
 ### Connectors
 - The HV terminal block `B1` with screw connectors is used to connect the HV terminals across which voltage has to be measured. 
