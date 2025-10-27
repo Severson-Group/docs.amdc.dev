@@ -24,7 +24,7 @@ Since these requirements very closely mirror the analog inputs on the AMDC, a si
 
 Various ADCs are available which are pin-compatible to the part designed into the PCB. This means that the user can select which one they want when they assemble the boards. The ADCs offer the same specs, but vary on the sample rate. More expensive ADCs provide a higher sample rate.
 
-#### Relationship Between Input and ADC voltage
+### Relationship Between Input and ADC voltage
 
 For both REV A and REV B low-voltage sensor boards with $V_{\rm REF}$ = 2.048V, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ is given by:
 
