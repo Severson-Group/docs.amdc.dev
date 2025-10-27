@@ -100,16 +100,15 @@ From the equations provided in the [Op Amp Stage](op-amp-stage) section, the rel
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-V_{\text{out, RevB}} = 2.4922 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = (V_{\text{out, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
 $$
 
 ##### Revision C
 In this design, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
-V_{\text{out, RevC}} = 2.5126 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = (V_{\text{out, RevC}} - 2.5126) \times 29.4118 \qquad \mathrm{[A]}
 $$
-
 
 ### Connectors
 - There are two screw terminals `P5` and `P6` to connect the conductor in which the current is to be measured
