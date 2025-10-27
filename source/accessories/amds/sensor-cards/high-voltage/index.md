@@ -78,7 +78,7 @@ From the equations provided in the [Level shift stage](level-shift-stage) sectio
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 390Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
-V_{\text{MEAS}} = (V_{\text{ADC, RevA}} - 2.5031) \times 1432 \qquad {\rm [V]}
+V_{\text{MEAS}} = (V_{\text{ADC, RevA}} - 2.5054) \times 1432 \qquad {\rm [V]}
 $$
 
 ##### Revision B, C
