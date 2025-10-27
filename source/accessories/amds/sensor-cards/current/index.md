@@ -91,7 +91,7 @@ A single-ended ADC was selected. The ADC used is the Texas Instruments [ADS8860]
 The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
 The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
 
-#### Final Primary Current-to-ADC Input Voltage Relationship
+#### Relationship Between Input and ADC voltage
 
 From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{out}}$ can be calculated for each revision of the current sensor board as follows:
 
