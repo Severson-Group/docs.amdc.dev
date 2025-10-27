@@ -93,21 +93,21 @@ The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `A
 
 #### Relationship Between Input and ADC voltage
 
-From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{out}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
 
 ##### Revision B
 
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = (V_{\text{out, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
+I_{\text{PRIMARY}} = (V_{\text{ADC, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
 $$
 
 ##### Revision C
 In this design, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = (V_{\text{out, RevC}} - 2.5126) \times 29.4118 \qquad \mathrm{[A]}
+I_{\text{PRIMARY}} = (V_{\text{ADC, RevC}} - 2.5126) \times 29.4118 \qquad \mathrm{[A]}
 $$
 
 ### Connectors
