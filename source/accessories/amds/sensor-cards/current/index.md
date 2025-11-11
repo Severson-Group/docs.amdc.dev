@@ -93,7 +93,7 @@ The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `A
 
 #### Relationship Between Input and ADC voltage
 
-From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
 
 ##### Revision B
 
