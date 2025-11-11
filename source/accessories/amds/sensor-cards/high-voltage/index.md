@@ -71,7 +71,7 @@ To increase noise immunity, the card has an inbuilt Analog to Digital Conversion
 The different stages of the voltage sensor card described above convert the input voltage, to a voltage in the range of 0.2V - 4.5V. For the current design, 0V input voltage corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V. 
 
 #### Relationship Between Input and ADC voltage
-From the equations provided in the [Level shift stage](level-shift-stage) section, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Level shift stage](#level-shift-stage) section, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
 
 ##### Revision A
 
