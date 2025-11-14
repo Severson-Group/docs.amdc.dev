@@ -95,6 +95,18 @@ The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `A
 
 From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
 
+##### General Expression
+
+$$
+V_{\text{out}} = \left[\frac{R_{a} R_{b} (R_{a} + R_{\text{BURDEN}})}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right] V_{\text{ref}} + \left[\frac{R_{a} R_{\text{BURDEN}} R_{b} R_{c}}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right]\left(\frac{N_1}{N_2} I_{\text{PRIMARY}}\right)
+$$
+
+$$
+I_{\text{PRIMARY}} = \frac{N_2}{N_1} \cdot \frac{V_{\text{out}} - \left[\frac{R_{a} R_{b} (R_{a} + R_{\text{BURDEN}})}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right] V_{\text{ref}}}{\left[\frac{R_{a} R_{\text{BURDEN}} R_{b} R_{c}}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right]}
+$$
+
+
+
 ##### Revision B
 
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
