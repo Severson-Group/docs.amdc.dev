@@ -76,7 +76,7 @@ From the equations provided in the [Level shift stage](#level-shift-stage) secti
 ##### General Expression
 
 $$
-V_{\mathrm{IN}} = \frac{2 R_{\mathrm{IN}}\left[(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{BURDEN}}R_{\mathrm{b}}R_{\mathrm{c}}\right]}{K_{N}R_{\mathrm{a}}R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\left(V_{\mathrm{ADC}} - \frac{(R_{\mathrm{a}} + R_{\mathrm{BURDEN}})R_{\mathrm{a}}R_{\mathrm{b}}V_{\mathrm{ref}}}{(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\right)
+V_{\mathrm{IN}} = \frac{2 R_{\mathrm{IN}}\left[(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{BURDEN}}R_{\mathrm{b}}R_{\mathrm{c}}\right]}{K_{N}R_{\mathrm{a}}R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\left(V_{\mathrm{ADC}} - \frac{(R_{\mathrm{a}} + R_{\mathrm{BURDEN}})R_{\mathrm{a}}R_{\mathrm{b}}V_{\mathrm{REF}}}{(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\right)
 $$
 
 ##### Revision A
