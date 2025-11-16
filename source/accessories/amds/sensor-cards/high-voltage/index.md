@@ -51,7 +51,7 @@ $$
 V_{\mathrm{BURDEN}} = \frac{1}{R_{\mathrm{a}} + R_{\mathrm{BURDEN}}}\left(R_{\mathrm{BURDEN}} V_{\mathrm{out}} + \frac{K_{N} R_{\mathrm{a}} R_{\mathrm{BURDEN}}}{2R_{\mathrm{IN}}} V_{\mathrm{IN}}\right)
 $$
 
-where R<sub>BURDEN</sub> is the burden resistor, R<sub>IN</sub> is the input resistance, and K<sub>N</sub> is the sensor conversion ratio from the datasheet. For LV-25P, the data sheet lists K<sub>N</sub> = 2500:1000.
+where R<sub>BURDEN</sub> is the burden resistor, R<sub>IN</sub> is the input resistance, and K<sub>N</sub> is the sensor conversion ratio from the datasheet. For LV-25P, the data sheet lists _N_<sub>1</sub>:_N_<sub>2</sub> = 2500:1000 (K<sub>N</sub> = 2.5).
 
 The algebra can get quite complicated when solving it analytically. So the resistor values were computed to be R<sub>a</sub> = 10kΩ, R<sub>b</sub> = 8.45kΩ, and R<sub>c</sub> = 4.64kΩ using the [TI analog engineer's calculator](https://www.ti.com/tool/ANALOG-ENGINEER-CALC).
 
@@ -81,7 +81,7 @@ $$
 
 ##### Revision A
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 390Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
+In this design, K<sub>N</sub> = 2.5 from from [Level shift stage](#level-shift-stage), $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 390Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
 V_{\text{IN}} = (V_{\text{ADC, RevA}} - 2.5054) \times 229.170 \qquad {\rm [V]}
