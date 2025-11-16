@@ -93,33 +93,27 @@ The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `A
 
 #### Relationship Between Input and ADC voltage
 
-From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the general relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated, and the relationship for each revision of the current sensor board is provided below:
 
 ##### General Expression
 
+$$ 
+I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{out}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
 $$
-V_{\text{out}} = \left[\frac{R_{a} R_{b} (R_{a} + R_{\text{BURDEN}})}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right] V_{\text{ref}} + \left[\frac{R_{a} R_{\text{BURDEN}} R_{b} R_{c}}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right]\left(\frac{N_1}{N_2} I_{\text{PRIMARY}}\right)
-$$
-
-$$
-I_{\text{PRIMARY}} = \frac{N_2}{N_1} \cdot \frac{V_{\text{out}} - \left[\frac{R_{a} R_{b} (R_{a} + R_{\text{BURDEN}})}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right] V_{\text{ref}}}{\left[\frac{R_{a} R_{\text{BURDEN}} R_{b} R_{c}}{(R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c})(R_{a} + R_{\text{BURDEN}}) - R_{\text{BURDEN}} R_{b} R_{c}}\right]}
-$$
-
-
 
 ##### Revision B
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000 from [Current Sensor Gain](#current-sensor-gain), $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = (V_{\text{ADC, RevB}} - 2.4922) \times 29.4118 \qquad {\rm [A]}
+I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevB}} - 2.4922) \qquad {\rm [A]}
 $$
 
 ##### Revision C
-In this design, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000 from [Current Sensor Gain](#current-sensor-gain), $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = (V_{\text{ADC, RevC}} - 2.5126) \times 29.4118 \qquad \mathrm{[A]}
+I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
 
 ### Connectors
