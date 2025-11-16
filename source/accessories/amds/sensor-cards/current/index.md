@@ -106,7 +106,7 @@ $$
 In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA, B}} - 2.4922) \qquad {\rm [A]}
+I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA,B}} - 2.4922) \qquad {\rm [A]}
 $$
 
 ##### Revision C
