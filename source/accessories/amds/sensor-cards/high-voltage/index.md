@@ -89,7 +89,7 @@ $$
 
 ##### Revision B, C
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 348Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
+In this design, K<sub>N</sub> = 2.5 from from [Level shift stage](#level-shift-stage), $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 348Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
 V_{\text{IN}} = (V_{\text{ADC, RevB,C}} - 2.5031) \times 256.022 \qquad {\rm [V]}
