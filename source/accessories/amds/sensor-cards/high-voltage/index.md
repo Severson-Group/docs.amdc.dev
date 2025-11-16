@@ -71,14 +71,20 @@ To increase noise immunity, the card has an inbuilt Analog to Digital Conversion
 The different stages of the voltage sensor card described above convert the input voltage, to a voltage in the range of 0.2V - 4.5V. For the current design, 0V input voltage corresponds to 2.35V at the ADC input. The positive peak corresponds to 4.5V and the negative peak corresponds to 0.2V. 
 
 #### Relationship Between Input and ADC voltage
-From the equations provided in the [Level shift stage](#level-shift-stage) section, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Level shift stage](#level-shift-stage) section, the general relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated, and the relationship for each revision of the current sensor board is provided below:
+
+##### General Expression
+
+$$
+V_{\mathrm{IN}} = \frac{2 R_{\mathrm{IN}}\left[(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{BURDEN}}R_{\mathrm{b}}R_{\mathrm{c}}\right]}{K_{N}R_{\mathrm{a}}R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\left(V_{\mathrm{ADC}} - \frac{(R_{\mathrm{a}} + R_{\mathrm{BURDEN}})R_{\mathrm{a}}R_{\mathrm{b}}V_{\mathrm{ref}}}{(R_{\mathrm{a}}R_{\mathrm{b}} + R_{\mathrm{a}}R_{\mathrm{c}} + R_{\mathrm{b}}R_{\mathrm{c}})(R_{\mathrm{a}} + R_{\mathrm{BURDEN}}) - R_{\mathrm{b}}R_{\mathrm{c}}R_{\mathrm{BURDEN}}}\right)
+$$
 
 ##### Revision A
 
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 390Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
-V_{\text{MEAS}} = (V_{\text{ADC, RevA}} - 2.5054) \times 229.170 \qquad {\rm [V]}
+V_{\text{IN}} = (V_{\text{ADC, RevA}} - 2.5054) \times 229.170 \qquad {\rm [V]}
 $$
 
 ##### Revision B, C
@@ -86,7 +92,7 @@ $$
 In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 348Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, $R_{\rm IN}$ = 25kΩ, resulting in:
 
 $$
-V_{\text{MEAS}} = (V_{\text{ADC, RevB,C}} - 2.5031) \times 256.022 \qquad {\rm [V]}
+V_{\text{IN}} = (V_{\text{ADC, RevB,C}} - 2.5031) \times 256.022 \qquad {\rm [V]}
 $$
 
 ### Connectors
