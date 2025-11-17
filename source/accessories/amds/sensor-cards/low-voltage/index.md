@@ -26,7 +26,7 @@ Various ADCs are available which are pin-compatible to the part designed into th
 
 ### Relationship Between Input and ADC voltage
 
-For both REV A and REV B low-voltage sensor boards with $V_{\rm REF}$ = 2.048V, the relationship between the measured voltage $V_{\rm MEAS}$ and the input voltage of ADC $V_{\text{ADC}}$ is given by:
+For both REV A and REV B low-voltage sensor boards with $V_{\rm REF}$ = 2.048V, the relationship between the input voltage $V_{\rm IN}$ and the ADC input voltage $V_{\text{ADC}}$ is given by:
 
 $$
 V_{\text{IN}} = V_{\rm IN+} - V_{\rm IN-} = (V_{\text{ADC}} - 2.048) \times 10 \qquad {\rm [V]}
