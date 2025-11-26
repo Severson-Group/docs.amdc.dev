@@ -1,0 +1,818 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2024-09-13T14:41:04-05:00" /><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="Signal Logging (Buffered)" href="buffered.html"><link rel="prev" title="Python Wrapper" href="../host-interface/python-wrapper.html">
+        <link rel="canonical" href="https://docs.amdc.dev/getting-started/user-guide/logging/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Signal Logging - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/getting-started/user-guide/logging/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/getting-started/user-guide/logging/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="signal-logging">
+<h1>Signal Logging<a class="headerlink" href="#signal-logging" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>This document describes the “logging” features built into the core AMDC firmware.
+Logging simply means recording variables over time from inside the firmware and retreiving the sampled values.
+The capability to log variables from inside the C-code is absolutely essential to debugging complex control algorithms, as well as validating correct behavior.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Signal logging pairs nicely with <a class="reference internal" href="../injection/index.html"><span class="std std-doc">Signal Injection</span></a>!</p>
+</div>
+<section id="types-of-logging">
+<h2>Types of Logging<a class="headerlink" href="#types-of-logging" title="Permalink to this heading">¶</a></h2>
+<p>The AMDC supports two methods of logging data:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="buffered.html"><span class="std std-doc">Buffered</span></a></p></li>
+<li><p><a class="reference internal" href="streaming.html"><span class="std std-doc">Streaming</span></a></p></li>
+</ol>
+<p>Each method has its pros and cons.
+Furthermore, the appropriate method for each user will change over time.
+For example, during initial control development and bring-up, streaming might make more sense, but after the controller matures, buffered logging might work better.
+For demos, streaming-based logging is a powerful way to give the audience insight into the inner workings of the controller.
+Understanding how to log via both methods will provide the most flexibility.</p>
+<p>The general logging flow can be broken into two parts:</p>
+<ol class="arabic simple">
+<li><p>Elements common to both methods (buffered and streaming)</p></li>
+<li><p>Elements specific to one method</p></li>
+</ol>
+<p>The remainder of this page will describe the common elements for signal logging.
+For the elements specific to each method, check out the respective subpage.</p>
+</section>
+<section id="internal-workings">
+<h2>Internal Workings<a class="headerlink" href="#internal-workings" title="Permalink to this heading">¶</a></h2>
+<p>Understanding the internal architecture of the logging framework (<code class="docutils literal notranslate"><span class="pre">sys/log</span></code>) can help better explain the features and reasoning behind the features.
+A brief summary is provided below.</p>
+<p>For each C-code variable which should be logged, e.g. <code class="docutils literal notranslate"><span class="pre">LOG_x</span></code>, a slot is allocated within the logging engine.
+This slot contains metadata as well as a large memory array.
+When buffered logging starts, the value of the logged variable (e.g. <code class="docutils literal notranslate"><span class="pre">LOG_x</span></code>) is copied into the memory buffer at the specified sampling interval.
+Once buffered logging is done, this large array of samples can be transfered from the AMDC to the host via the command-line interface.</p>
+<p>For streaming-based logging, the same principles apply as buffered logging, however, the large memory buffer goes unused.
+Instead, when log streaming is started, the registered variables are sampled and directly streamed from the AMDC to the host.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>By default, the AMDC system runs tasks at a 10 kHz rate, resulting in a period between callbacks of 100 µs. For integer periods, the logging system works as expected.</p>
+<p>However, if you change the timing configuration of the AMDC and are running tasks at a frequency that results in a non-integer period in microseconds, then the time interval between samples reported back to the Python interface for logging will be truncated. The system will still function, logging will still happen at the expected/desired rate. However, the logged data returned to the host will use the truncated time interval, resulting in an incorrect time vector. Users should be aware of this and fix the time vector themselves accordingly.</p>
+<p>For example, a control/sample rate of 22 kHz results in a period of 45.4545 µs (not an integer). After dumping the logged data to the host, the time vector will be based on the truncated interval of 45 µs, i.e., <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">45,</span> <span class="pre">90,</span> <span class="pre">...</span></code> µs.</p>
+<p>This is a known limitation of the <code class="docutils literal notranslate"><span class="pre">v1</span></code> codebase and will be fixed in the <code class="docutils literal notranslate"><span class="pre">v2</span></code> release.</p>
+</div>
+<section id="specifications">
+<h3>Specifications<a class="headerlink" href="#specifications" title="Permalink to this heading">¶</a></h3>
+<p>By default, the logging framework can record up to 32 different variables at one time (i.e., 32 slots).</p>
+<section id="buffered">
+<h4>Buffered<a class="headerlink" href="#buffered" title="Permalink to this heading">¶</a></h4>
+<p>For each variable, the framework can store a maximum of 100k samples (default configuration).
+Once the log buffer is full, the logging system automatically stops writing data (even if logging is still enabled).
+The logging engine <em>does not</em> use a circular buffer approach.</p>
+</section>
+<section id="streaming">
+<h4>Streaming<a class="headerlink" href="#streaming" title="Permalink to this heading">¶</a></h4>
+<p>If only the streaming-based logging is used, the only relevant specification is the maximum variable slots; the sample buffers are not used (although, still allocated to memory).</p>
+</section>
+<section id="specification-modifications">
+<h4>Specification Modifications<a class="headerlink" href="#specification-modifications" title="Permalink to this heading">¶</a></h4>
+<p>The defaults above (32 slots at 100k sample depth) can easily be configured by the user via the <code class="docutils literal notranslate"><span class="pre">usr/user_config.h</span></code> file.
+Simply uncomment the slots and sample depth defines to override the default values.
+Note that the maximum memory available is limited, so users must keep the product of <code class="docutils literal notranslate"><span class="pre">slots</span></code> and <code class="docutils literal notranslate"><span class="pre">sample</span> <span class="pre">depth</span></code> reasonable (i.e. less than 100s of MB).
+For example, the user could change the settings to be 128 variables at 25k sample depth.</p>
+</section>
+</section>
+</section>
+<section id="c-code-modifications">
+<span id="id1"></span><h2>C-Code Modifications<a class="headerlink" href="#c-code-modifications" title="Permalink to this heading">¶</a></h2>
+<p>The logging framework has been designed specifically to limit the amount of changes users have to make to their C-code to log variables of interest. The only modifications that users need to make to their C-code are as follows:</p>
+<ol class="arabic simple">
+<li><p>Enable the logging feature using the config file <code class="docutils literal notranslate"><span class="pre">usr/user_config.h</span></code>. This is located in the <code class="docutils literal notranslate"><span class="pre">usr/</span></code> folder of your private C code. Set the following define variable to <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p></li>
+</ol>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define USER_CONFIG_ENABLE_LOGGING (1)</span>
+</pre></div>
+</div>
+<p>Note that it is set to 0 (logging disabled) by default.</p>
+<ol class="arabic simple" start="2">
+<li><p>For every variable that you want to log within your C code, create a new global variable with the same name prepended by <code class="docutils literal notranslate"><span class="pre">LOG_</span></code> (note that it is case sensitive).
+For example, if you have a variable <code class="docutils literal notranslate"><span class="pre">foo</span></code> in your code that you would like to log, create a new global variable of the same type called <code class="docutils literal notranslate"><span class="pre">LOG_foo</span></code>.
+Note that the total logging variable name length is limited to 32 characters (including the <code class="docutils literal notranslate"><span class="pre">LOG_</span></code> prefix) due to how the CLI command parsing works.</p></li>
+<li><p>Update all global logging variables wherever desired by assigning the local variable to the global variable (e.g. <code class="docutils literal notranslate"><span class="pre">LOG_foo</span> <span class="pre">=</span> <span class="pre">foo;</span></code>)</p></li>
+</ol>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h3>
+<p>The following example illustrates one possible use case:</p>
+<p>We have a typedef called <code class="docutils literal notranslate"><span class="pre">Currents_t</span></code> that is a struct containing measured currents from each of the three inverter phases. This variable is then updated by the generic <code class="docutils literal notranslate"><span class="pre">read_currents</span></code> function. You could imagine this function is reading in the three current sensors from an inverter. <strong>We wish to log the three phase currents.</strong> To do this, we use the two steps listed above.</p>
+<p>First, we create global variables for each of the three currents that we care about. Then, in the callback function, we update the global current variables to equal the measured currents that we care about tracking. Note that in this example we update the global variables within the callback, but you can update them at any point in your code. For example, we could have updated the global variables inside of the <code class="docutils literal notranslate"><span class="pre">read_currents()</span></code> function</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">LOG_Ia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">LOG_Ib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">LOG_Ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">Currents_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">Ia</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">Ib</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">Ic</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">Currents_t</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">Currents_t</span><span class="w"> </span><span class="n">Iabc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">example_callback_func</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Read currents from sensors</span>
+<span class="w">    </span><span class="n">read_currents</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Iabc</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Update variables that are being recorded by logging application</span>
+<span class="w">    </span><span class="n">LOG_Ia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iabc</span><span class="p">.</span><span class="n">Ia</span><span class="p">;</span>
+<span class="w">    </span><span class="n">LOG_Ib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iabc</span><span class="p">.</span><span class="n">Ib</span><span class="p">;</span>
+<span class="w">    </span><span class="n">LOG_Ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iabc</span><span class="p">.</span><span class="n">Ic</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are no other steps needed in the embedded code running on the AMDC for logging. The only requirement is that you have exposed a global variable and updated it. The rest of the logging system is handling by the system code.</p>
+</section>
+</section>
+<section id="terminal-interface">
+<h2>Terminal Interface<a class="headerlink" href="#terminal-interface" title="Permalink to this heading">¶</a></h2>
+<p>The logging framework exposes several <code class="docutils literal notranslate"><span class="pre">log</span></code> subcommands which are used to interact with the logging process.
+While users <em>could</em> theoretically use the raw <code class="docutils literal notranslate"><span class="pre">log</span></code> commands themselves, this is highly discouraged.
+Instead, a comprehensive Python class is provided which greatly simplies logging.</p>
+<p>First, we will discuss the raw terminal interface.
+Then, the Python wrapping.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Users should never need to use the raw <code class="docutils literal notranslate"><span class="pre">log</span></code> commands directly.
+Always use the Python wrapper class!</p>
+</div>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">reg</span></code> – registers a new variable for logging</p>
+<blockquote>
+<div><p><strong>Required Arguments</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">log_var_idx</span></code> – the index that you want the variable to be stored in (must be 0-31). The command will fail if a variable is already registered in the requested slot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> – name of the variable that you are logging (example: <code class="docutils literal notranslate"><span class="pre">LOG_foo</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory_addr</span></code> – global memory address of the variable you are logging in decimal format. The reason global variables are created for logging is because their address remains constant at runtime. The memory address can be found in “mapfile.txt” in a hexadecimal format, which is located in the “Debug” folder of the users private c code. After locating the variable’s address, you must convert it from hexadecimal to decimal before entering it in the terminal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">samples_per_sec</span></code>  – the sample rate in samples per second that you wish to record the variable at. Note that not all variables have to have the same sample rate. This generally can range from 1 to 10kHz.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> – data type of the variable being logged. Valid types are: <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unreg</span></code> – unregisters a variable that you no longer care to log</p>
+<blockquote>
+<div><p><strong>Required Arguments</strong></p>
+<ul class="simple">
+<li><p>log_var_idx – the index of the variable that you want to unregister (must be 0-31).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code> – starts recording data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop</span></code> – stops recording data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump</span></code> – dumps all of the recorded data of a slot out to the serial terminal</p>
+<blockquote>
+<div><p><strong>Required Arguments</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bin</span></code> or <code class="docutils literal notranslate"><span class="pre">text</span></code> – One of the preceding flags must be set. If <code class="docutils literal notranslate"><span class="pre">bin</span></code> is used, the data will be dumped to the serial terminal in binary format. If <code class="docutils literal notranslate"><span class="pre">text</span></code> is used, the data will be dumped to the serial terminal in human readable text format. Using <code class="docutils literal notranslate"><span class="pre">bin</span></code> is much faster.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log_var_idx</span></code> – index of the variable that you wish to dump (must be 0-31)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">empty</span></code> – resets the specified logging slot (calling <code class="docutils literal notranslate"><span class="pre">dump</span></code> after <code class="docutils literal notranslate"><span class="pre">empty</span></code> on the same slot will result in no data being output)</p>
+<blockquote>
+<div><p><strong>Required Arguments</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">log_var_idx</span></code> – index of the variable you wish to reset</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code> – prints information about the logging system (registered slots, samples, etc) to the serial terminal</p></li>
+</ol>
+</section>
+<section id="python-interface">
+<h2>Python Interface<a class="headerlink" href="#python-interface" title="Permalink to this heading">¶</a></h2>
+<p>Before you can use the Python interface, you must modify your C-code according to the <a class="reference internal" href="#c-code-modifications">C-Code Modifications</a> section.</p>
+<p>Note that in the text that follows, <code class="docutils literal notranslate"><span class="pre">REPO_DIR</span></code> is an alias for the file path to where your repository is located.
+<code class="docutils literal notranslate"><span class="pre">REPO_DIR</span></code> contains the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> submodule as well as a the folder containing your user C-code.</p>
+<section id="import-needed-modules">
+<h3>1. Import needed modules:<a class="headerlink" href="#import-needed-modules" title="Permalink to this heading">¶</a></h3>
+<p>To use logging in Python, you must <code class="docutils literal notranslate"><span class="pre">import</span></code> the <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> and <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> modules from the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> folder of the AMDC-Firmware.
+There are two main classes of interest:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AMDC</span></code>: class that is found in the <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> module. Responsible for communicating with the AMDC over the physical link</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code>: class that is found in the <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> module. Responsible for sending logging commands to the AMDC and book keeping</p></li>
+</ol>
+<p>The top of your Python script should look like the following:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">scripts_folder</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;REPO_DIR\AMDC-Firmware\scripts&#39;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scripts_folder</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">AMDC</span> <span class="kn">import</span> <span class="n">AMDC</span>
+<span class="kn">from</span> <span class="nn">AMDC_Logger</span> <span class="kn">import</span> <span class="n">AMDC_Logger</span><span class="p">,</span> <span class="n">find_mapfile</span>
+</pre></div>
+</div>
+<p>Adding the location of the scripts folder to the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> variable allows Python to find the <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> and <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> modules to import them.</p>
+<p>After importing the modules, perform the following steps:</p>
+</section>
+<section id="instantiate-an-amdc-object-and-connect-it-to-the-amdc">
+<h3>2. Instantiate an <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> object and connect it to the AMDC:<a class="headerlink" href="#instantiate-an-amdc-object-and-connect-it-to-the-amdc" title="Permalink to this heading">¶</a></h3>
+<p>This depends on the physical link being used, i.e., UART vs. Ethernet.</p>
+<p>For detailed instructions about using the <code class="docutils literal notranslate"><span class="pre">AMDC.py</span></code> class, follow the steps <a class="reference internal" href="../host-interface/python-wrapper.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="instantiate-an-amdc-logger-object">
+<h3>3. Instantiate an <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> object:<a class="headerlink" href="#instantiate-an-amdc-logger-object" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mapfile_path</span> <span class="o">=</span> <span class="n">find_mapfile</span><span class="p">(</span><span class="n">REPO_DIR</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">AMDC_Logger</span><span class="p">(</span><span class="n">AMDC</span> <span class="o">=</span> <span class="n">amdc</span><span class="p">,</span> <span class="n">mapfile</span> <span class="o">=</span> <span class="n">mapfile_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> object requires two inputs on instantiation: an <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> object (created in step 2), and a file path to where the mapfile is located. You can manually locate and specifiy the location of <code class="docutils literal notranslate"><span class="pre">mapfile.txt</span></code> or you can use the convenience function <code class="docutils literal notranslate"><span class="pre">find_mapfile()</span></code> which takes in the base path of the repository and locates and returns the path to the mapfile.</p>
+</section>
+<section id="synchronize-logger-with-amdc">
+<h3>4. Synchronize logger with AMDC:<a class="headerlink" href="#synchronize-logger-with-amdc" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This step isn’t required but is recommended. It reads the current state of logging in the AMDC and synchronizes Python to that state. It’s useful for if you restart your Python session while the AMDC is still on. If you don’t do this and variables are are set up for logging in the AMDC, the internal state of Python’s book keeping and the AMDC won’t align and you’ll get unexpected behavior.</p>
+</section>
+<section id="register-variables-of-interest">
+<h3>5. Register variables of interest:<a class="headerlink" href="#register-variables-of-interest" title="Permalink to this heading">¶</a></h3>
+<p>There are several ways to register variables for logging. One way is as follows:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;LOG_foo&#39;</span><span class="p">,</span> <span class="n">samples_per_sec</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">var_type</span> <span class="o">=</span> <span class="s1">&#39;double&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that register has default arguments of <code class="docutils literal notranslate"><span class="pre">samples_per_sec</span> <span class="pre">=</span> <span class="pre">1000</span></code> and <code class="docutils literal notranslate"><span class="pre">var_type</span> <span class="pre">=</span> <span class="pre">'double'</span></code> so the preceding line could also be accomplished as follows:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;LOG_foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have multiple variables that you wish to register with the same type and sample rate you can register them all at the same time. the <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> class is also smart and sanitizes the input variables so you don’t have to prepend <code class="docutils literal notranslate"><span class="pre">LOG_</span></code> to each variable if you don’t want. The following snippets of code all accomplish the same task.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;LOG_foo LOG_bar LOG_baz&#39;</span><span class="p">)</span> <span class="c1"># variable names in one string seperated by white space</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo bar baz&#39;</span><span class="p">)</span>             <span class="c1"># one string with no LOG_ (this option is probably the fastest/easiest)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">])</span>     <span class="c1"># list of variable names</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">register</span><span class="p">((</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">))</span>     <span class="c1"># tuple of variable names</span>
+</pre></div>
+</div>
+<p>There is also a convenient <code class="docutils literal notranslate"><span class="pre">auto_register()</span></code> function that can be used to search your user code for variables of the form <code class="docutils literal notranslate"><span class="pre">LOG_*</span></code> and register them for you automatically. You just give the file path to your app’s c code as follows:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">auto_register</span><span class="p">(</span><span class="n">path_to_user_app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>if you want to check to see which variables the auto register function will register before calling it, you can call the <code class="docutils literal notranslate"><span class="pre">auto_find_vars()</span></code> function as follows:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">log_vars</span><span class="p">,</span> <span class="n">log_types</span> <span class="o">=</span> <span class="n">auto_find_vars</span><span class="p">(</span><span class="n">path_to_user_app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">log_vars</span></code> is a list containing all of the variables found in the user c code and <code class="docutils literal notranslate"><span class="pre">log_types</span></code> is a list containing the corresponding variable types.</p>
+</section>
+<section id="unregister-variables">
+<h3>6. Unregister variables:<a class="headerlink" href="#unregister-variables" title="Permalink to this heading">¶</a></h3>
+<p>Sometimes, you need to unregister a variable to free the logging slot.
+This can happen when you are changing experiments or accidentally registered the wrong variable.</p>
+<p>To unregister a specific list of variables:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="s1">&#39;foo bar&#39;</span><span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="s1">&#39;LOG_foo LOG_bar&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">unregister</span><span class="p">([</span><span class="s1">&#39;LOG_foo&#39;</span><span class="p">,</span> <span class="s1">&#39;LOG_bar&#39;</span><span class="p">])</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">unregister</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Or, to unregister all variables (i.e. reset the logger to a clean slate):</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">unregister_all</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="buffered-vs-streaming">
+<h3>7. Buffered vs. Streaming<a class="headerlink" href="#buffered-vs-streaming" title="Permalink to this heading">¶</a></h3>
+<p>At this point, the paths diverge for buffered vs. streaming.
+Up to now, you have instrumented the C-code for logging, and called the common Python functions to register variables for logging.</p>
+<p>To perform the actual logging, you will need to follow the method-specific instructions:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="buffered.html"><span class="std std-doc">Buffered</span></a></p></li>
+<li><p><a class="reference internal" href="streaming.html"><span class="std std-doc">Streaming</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="function-reference">
+<h2>Function Reference<a class="headerlink" href="#function-reference" title="Permalink to this heading">¶</a></h2>
+<p>The following are methods available in the <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> class:</p>
+<section id="registering-unregistering">
+<h3>Registering / Unregistering<a class="headerlink" href="#registering-unregistering" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">register(log_vars,</span> <span class="pre">samples_per_sec</span> <span class="pre">=</span> <span class="pre">1000,</span> <span class="pre">var_type</span> <span class="pre">=</span> <span class="pre">'double')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto_register(root,</span> <span class="pre">samples_per_sec</span> <span class="pre">=</span> <span class="pre">1000)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unregister(log_vars,</span> <span class="pre">send_cmd</span> <span class="pre">=</span> <span class="pre">True)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unregister_all()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto_find_vars(root)</span></code></p></li>
+</ul>
+</section>
+<section id="empty-log-slots">
+<h3>Empty Log Slots<a class="headerlink" href="#empty-log-slots" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">empty(var)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">empty_all()</span></code></p></li>
+</ul>
+</section>
+<section id="log-status">
+<h3>Log Status<a class="headerlink" href="#log-status" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">info()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sync()</span></code></p></li>
+</ul>
+</section>
+<section id="start-stop">
+<h3>Start / Stop<a class="headerlink" href="#start-stop" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log(duration</span> <span class="pre">=</span> <span class="pre">0.25)</span></code></p></li>
+</ul>
+</section>
+<section id="dump-data-load">
+<h3>Dump Data / Load<a class="headerlink" href="#dump-data-load" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dump(log_vars</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">file</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">comment</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">timestamp</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">timestamp_fmt</span> <span class="pre">=</span> <span class="pre">'%Y-%m-%d_H%H-M%M-S%S',</span> <span class="pre">how</span> <span class="pre">=</span> <span class="pre">'binary',</span> <span class="pre">max_tries</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">print_output</span> <span class="pre">=</span> <span class="pre">True)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load(file)</span></code></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="buffered.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Signal Logging (Buffered)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../host-interface/python-wrapper.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Python Wrapper</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Sep 13, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Signal Logging</a><ul>
+<li><a class="reference internal" href="#types-of-logging">Types of Logging</a></li>
+<li><a class="reference internal" href="#internal-workings">Internal Workings</a><ul>
+<li><a class="reference internal" href="#specifications">Specifications</a><ul>
+<li><a class="reference internal" href="#buffered">Buffered</a></li>
+<li><a class="reference internal" href="#streaming">Streaming</a></li>
+<li><a class="reference internal" href="#specification-modifications">Specification Modifications</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c-code-modifications">C-Code Modifications</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#terminal-interface">Terminal Interface</a></li>
+<li><a class="reference internal" href="#python-interface">Python Interface</a><ul>
+<li><a class="reference internal" href="#import-needed-modules">1. Import needed modules:</a></li>
+<li><a class="reference internal" href="#instantiate-an-amdc-object-and-connect-it-to-the-amdc">2. Instantiate an <code class="docutils literal notranslate"><span class="pre">AMDC</span></code> object and connect it to the AMDC:</a></li>
+<li><a class="reference internal" href="#instantiate-an-amdc-logger-object">3. Instantiate an <code class="docutils literal notranslate"><span class="pre">AMDC_Logger</span></code> object:</a></li>
+<li><a class="reference internal" href="#synchronize-logger-with-amdc">4. Synchronize logger with AMDC:</a></li>
+<li><a class="reference internal" href="#register-variables-of-interest">5. Register variables of interest:</a></li>
+<li><a class="reference internal" href="#unregister-variables">6. Unregister variables:</a></li>
+<li><a class="reference internal" href="#buffered-vs-streaming">7. Buffered vs. Streaming</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#function-reference">Function Reference</a><ul>
+<li><a class="reference internal" href="#registering-unregistering">Registering / Unregistering</a></li>
+<li><a class="reference internal" href="#empty-log-slots">Empty Log Slots</a></li>
+<li><a class="reference internal" href="#log-status">Log Status</a></li>
+<li><a class="reference internal" href="#start-stop">Start / Stop</a></li>
+<li><a class="reference internal" href="#dump-data-load">Dump Data / Load</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    </body>
+</html>

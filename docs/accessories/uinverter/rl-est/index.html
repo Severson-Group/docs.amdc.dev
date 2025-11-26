@@ -1,0 +1,603 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2022-03-16T12:35:44-05:00" /><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="DAC Board" href="../../dac/index.html"><link rel="prev" title="uInverter Board Connections" href="../connections.html">
+        <link rel="canonical" href="https://docs.amdc.dev/accessories/uinverter/rl-est/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>RL Estimation - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../getting-started/user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../getting-started/user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../getting-started/user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../getting-started/user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../getting-started/user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../connections.html">Connections</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/accessories/uinverter/rl-est/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/accessories/uinverter/rl-est/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="rl-estimation">
+<h1>RL Estimation<a class="headerlink" href="#rl-estimation" title="Permalink to this heading">¶</a></h1>
+<p>This document describes System Identification based on the Frequency Response Function method.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>Controller design and tuning for any plant depends heavily on the plant parameters and hence it is important to accurately estimate the plant model.
+One method to do this estimation is to take a look at the frequency response of the plant (output) to a commanded input containing range of frequncies (e.g.: random noise).</p>
+</section>
+<section id="general-steps">
+<h2>General Steps<a class="headerlink" href="#general-steps" title="Permalink to this heading">¶</a></h2>
+<p>Steps for System ID of RL load:</p>
+<ol class="arabic simple">
+<li><p>Collect the current regulation command tracking (CT) frequency response function (FRF)</p>
+<ol class="arabic simple">
+<li><p>Tune the PI regulators to a “small” bandwidth (e.g. 100Hz) and set the fundamental frequency to 0Hz (i.e. no rotating current, dc values)</p></li>
+<li><p>Inject noise for the current reference <code class="docutils literal notranslate"><span class="pre">Id*</span></code>  or <code class="docutils literal notranslate"><span class="pre">Iq*</span></code>  – ensure the amplitude of the noise is small enough that the voltage commands do not saturate (e.g. try 0.5A peak noise)</p></li>
+<li><p>Collect the time-domain signals for the commanded current and actual current over about 1 sec, sampled at the control frequency (i.e. 10kHz)</p></li>
+<li><p>Using the provided MATLAB scripts, compute the estimated CT FRF: <code class="docutils literal notranslate"><span class="pre">I(s)</span> <span class="pre">/</span> <span class="pre">I*(s)</span></code></p></li>
+<li><p>Find the -3dB point on the FRF and identify the actual bandwidth of the current regulator (it may not match the tuned bandwidth)</p></li>
+</ol>
+</li>
+<li><p>Perform system identification to estimate the effective <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code> values as seen by the control system</p>
+<ol class="arabic simple">
+<li><p>Detune the PI regulators to a few Hz (e.g. try 1Hz)</p></li>
+<li><p>Inject noise for the dq voltage outputs <code class="docutils literal notranslate"><span class="pre">Vd*</span></code> and <code class="docutils literal notranslate"><span class="pre">Vq*</span></code>, one at a time</p></li>
+<li><p>Collect the time-domain signals for the commanded voltage and actual current over about 1 sec, sampled at the control frequency (i.e. 10kHz). If using PWM for the voltage output, make sure the switching freq is sufficiently high that it can be ignored and approximated as idealized voltage source (e.g., switch at 50-100kHz), but not too high such that dead-time effects start to become significant</p></li>
+<li><p>Using the provided MATLAB scripts, compute the estimated system impedance FRF: <code class="docutils literal notranslate"><span class="pre">I(s)</span> <span class="pre">/</span> <span class="pre">V(s)</span></code></p></li>
+<li><p>Curve fit the low and high frequency portions of the resulting FRF to find the estimated resistance <code class="docutils literal notranslate"><span class="pre">R</span></code> and inductance <code class="docutils literal notranslate"><span class="pre">L</span></code></p></li>
+</ol>
+</li>
+<li><p>Retune the PI controllers based on the new estimated parameters for <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code></p>
+<ol class="arabic simple">
+<li><p>Note how much the “datasheet” values differ from the estimated values</p></li>
+</ol>
+</li>
+<li><p>Recollect the current regulation CT FRF (see step 1 above)</p>
+<ol class="arabic simple">
+<li><p>Verify the bandwidth matches the tuned bandwidth (e.g. -3dB point matches)</p></li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="example-results">
+<h2>Example Results<a class="headerlink" href="#example-results" title="Permalink to this heading">¶</a></h2>
+<p>System Identification procedure will be explained here using a three phase <code class="docutils literal notranslate"><span class="pre">R-L</span> <span class="pre">load</span></code> connected to an inverter as an example.
+It is easier to analyze a three phase system in synchronous reference frame and hence, applying <code class="docutils literal notranslate"><span class="pre">KVL</span></code> across the load loop in synchronous reference frame gives a condensed voltage equation as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[
+V_{dq} (s) = RI_{dq} (s)\ +\ LsI_{dq} (s)
+\]</div>
+</div>
+<p>Which gives the plant (Load) transfer function as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[
+G_{plant} = \frac{I_{dq} (s)}{V_{dq} (s)} = \frac{1}{Ls + R}
+\]</div>
+</div>
+<p>The resistance and inductance values can be directly taken from the datasheet if the load is known.
+However, the actual load seen by the inverter differs from these datasheet values because of various other contributing elements like power loop resistance, parasitic inductance, etc.</p>
+<p>To accurately estimate the plant parameters, a Frequency Response Function <code class="docutils literal notranslate"><span class="pre">FRF</span></code> of the plant can be generated and the plant parameters can be extracted from that.</p>
+<p>To generate a plant’s frequency response, following steps can be followed:</p>
+<ol class="arabic simple">
+<li><p>A noise signal <code class="docutils literal notranslate"><span class="pre">V*</span></code> should be injected into the plant (If there is any other
+element (like a controller) in the loop, make sure to bypass it (by making controller bandwidth very low)). In synchronous reference
+frame, a noise voltage in d-axis or q-axis circuit <code class="docutils literal notranslate"><span class="pre">Vd*</span> <span class="pre">or</span> <span class="pre">Vq*</span></code>,can be injected one at a time.</p></li>
+<li><p>Capture the current signal in time domain, generated in response to the injected noise for about <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code></p></li>
+<li><p>The frequency response function <code class="docutils literal notranslate"><span class="pre">FRF</span></code>, <span class="math notranslate nohighlight">\((V(s)/I(s))\)</span> can be generated using the <code class="docutils literal notranslate"><span class="pre">generateFRF</span></code> MATLAB function as shown in figure below
+See the example code: <a class="reference download internal" download="" href="../../../_downloads/84917b9eb780f77899acd99066109fd5/plot_FRF.m"><code class="xref download docutils literal notranslate"><span class="pre">plot_FRF.m</span></code></a> and <a class="reference download internal" download="" href="../../../_downloads/b129cfda5580b3aeb7ea87c95cfcabe2/generateFRF.m"><code class="xref download docutils literal notranslate"><span class="pre">generateFRF.m</span></code></a>.</p></li>
+</ol>
+<p>Example Frequency Response Function of the <code class="docutils literal notranslate"><span class="pre">R-L</span> <span class="pre">load</span></code>:</p>
+<p><img alt="" src="../../../_images/FRF_RL.jpg" /></p>
+<ol class="arabic simple" start="4">
+<li><p>The frequency response function <code class="docutils literal notranslate"><span class="pre">FRF</span></code> is also the inverse of the load impedance <span class="math notranslate nohighlight">\(1/Z(s)\)</span> (i.e. admittance). For lower frequencies, the load can be
+estimated as a purely resistive load and for higher frequencies, the load can be estimated as a purely inductive load</p></li>
+<li><p>Estimated resistance, <span class="math notranslate nohighlight">\(R_{estimated}\)</span> can be found by taking the inverse of the curve fitted value of <code class="docutils literal notranslate"><span class="pre">FRF</span></code> at low frequencies and
+estimated inductive reactance, <span class="math notranslate nohighlight">\(X_{L-estimated}\)</span> can be found by taking the inverse of the curve fitted value of FRF at high frequencies.
+The value of inductance can be subsequently found using the <span class="math notranslate nohighlight">\(X_L\)</span> value.</p></li>
+</ol>
+<p>The datasheet values for the <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code> in the example case were <code class="docutils literal notranslate"><span class="pre">0.25</span> <span class="pre">Ohm</span></code> and <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">uH</span></code> respectively. However, as it turns out, after performing
+the system identification the estimated <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code> values turn out to be <code class="docutils literal notranslate"><span class="pre">0.65</span> <span class="pre">Ohm</span></code> and <code class="docutils literal notranslate"><span class="pre">121</span> <span class="pre">uH</span></code>!</p>
+<p>An important point to be noted for this exercise is that the current measurement needs to be accurate to achieve correct results. Before starting with
+this exercise, it is essential to ensure that the current measurements are precisely adjusted for gains and offsets.</p>
+<section id="understanding-the-frf-plot">
+<h3>Understanding the FRF Plot<a class="headerlink" href="#understanding-the-frf-plot" title="Permalink to this heading">¶</a></h3>
+<p>The output of the <code class="docutils literal notranslate"><span class="pre">generateFRF()</span></code> function is four vectors: a vector of <code class="docutils literal notranslate"><span class="pre">frequencies</span></code>, then three vectors <code class="docutils literal notranslate"><span class="pre">magnitude,</span> <span class="pre">phase</span> <span class="pre">and</span> <span class="pre">coherence</span></code>
+for values at each of these frequencies. The magnitude and phase output can be plotted to obtain the FRF function.
+But what is the <code class="docutils literal notranslate"><span class="pre">coherence</span></code> output used for?</p>
+<section id="coherence">
+<h4>Coherence<a class="headerlink" href="#coherence" title="Permalink to this heading">¶</a></h4>
+<p>Per the <a class="reference external" href="https://en.wikipedia.org/wiki/Coherence_(signal_processing)">Wikipedia article</a>:</p>
+<blockquote>
+<div><p>Coherence is a statistical measure that indicates the relationship between the input and output data. It will always be between zero and one.
+For an ideal constant parameter linear system with a single input <code class="docutils literal notranslate"><span class="pre">x(t)</span></code> and single output <code class="docutils literal notranslate"><span class="pre">y(t)</span></code>, the coherence will be equal to one.</p>
+<p>However, in the physical world an ideal linear system is rarely realized, noise is an inherent component of system measurement, and it is
+likely that a single input, single output linear system is insufficient to capture the complete system dynamics. Thus, the coherence will
+be less than one. If the coherence is less than one but greater than zero it is an indication that either: noise is entering the measurements,
+that the assumed function relating <code class="docutils literal notranslate"><span class="pre">x(t)</span></code> and <code class="docutils literal notranslate"><span class="pre">y(t)</span></code> is not linear, or that <code class="docutils literal notranslate"><span class="pre">y(t)</span></code> is producing output due to input <code class="docutils literal notranslate"><span class="pre">x(t)</span></code> as well as other inputs.
+If the coherence is equal to zero, it is an indication that <code class="docutils literal notranslate"><span class="pre">x(t)</span></code> and <code class="docutils literal notranslate"><span class="pre">y(t)</span></code> are completely unrelated.</p>
+</div></blockquote>
+<p>From the above discussion, it is important to always plot the coherence of the <code class="docutils literal notranslate"><span class="pre">FRF</span></code>, with the goal of it approaching one across all frequencies.
+If the coherence is low, the FRF data cannot be used to draw conclusions.</p>
+</section>
+</section>
+</section>
+<section id="after-system-identification">
+<h2>After System Identification!<a class="headerlink" href="#after-system-identification" title="Permalink to this heading">¶</a></h2>
+<p>As mentioned before, the controller design for any plant depends heavily on the plant parameters and inaccurate estimation of these
+parameters would lead to inaccurate tuning of the controller. To check for the controller performance a similar FRF can be obtained
+by injecting reference noise (e.g.: <code class="docutils literal notranslate"><span class="pre">Id*</span></code>) and capturing the resultant current <code class="docutils literal notranslate"><span class="pre">Id</span></code> in time domain and then plotting the FRF as explained
+above.</p>
+<p>The effect of accurately estimating the plant parameters for tuning can
+be seen in figures below, where the intended bandwidth is <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">Hz</span></code> and the bandwidth before system identification (Considering datasheet
+values of <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code>) was around <code class="docutils literal notranslate"><span class="pre">20</span> <span class="pre">Hz</span></code>! The bandwidth after using the estimated values from system identification is around <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">Hz</span></code>, which is as required.</p>
+<p>Before tuning:</p>
+<p><img alt="" src="../../../_images/FRF_Cont_B.png" /></p>
+<p>After tuning:</p>
+<p><img alt="" src="../../../_images/FRF_Cont_A.png" /></p>
+<p>This effect can be seen in the time domain as well, where we can see that the resulting current is more responsive to the noise when the controller is tuned using the estimated <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">L</span></code> values</p>
+<p>Current response before tuning:</p>
+<p><img alt="" src="../../../_images/IdrespB.png" /></p>
+<p>Current response after tuning:</p>
+<p><img alt="" src="../../../_images/IdrespA.png" /></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="../../dac/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">DAC Board</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../connections.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">uInverter Board Connections</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Mar 16, 2022</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">RL Estimation</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#general-steps">General Steps</a></li>
+<li><a class="reference internal" href="#example-results">Example Results</a><ul>
+<li><a class="reference internal" href="#understanding-the-frf-plot">Understanding the FRF Plot</a><ul>
+<li><a class="reference internal" href="#coherence">Coherence</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#after-system-identification">After System Identification!</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

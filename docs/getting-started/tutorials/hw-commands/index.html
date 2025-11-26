@@ -1,0 +1,660 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2024-09-13T14:41:04-05:00" /><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="Tutorial: Voltage Source Inverter" href="../vsi/index.html"><link rel="prev" title="Tutorial: Blink" href="../blink/index.html">
+        <link rel="canonical" href="https://docs.amdc.dev/getting-started/tutorials/hw-commands/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Tutorial: Hardware Commands - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../blink/index.html">Blink</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/getting-started/tutorials/hw-commands/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/getting-started/tutorials/hw-commands/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="tutorial-hardware-commands">
+<h1>Tutorial: Hardware Commands<a class="headerlink" href="#tutorial-hardware-commands" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Goal:</strong> Run built-in commands to control the AMDC drive I/O.</p></li>
+<li><p><strong>Complexity:</strong> 2 / 5</p></li>
+<li><p><strong>Estimated Time:</strong> 30 min</p></li>
+</ul>
+<p>This tutorial goes over:</p>
+<ul class="simple">
+<li><p>Built-in <code class="docutils literal notranslate"><span class="pre">hw</span></code> commands</p></li>
+</ul>
+<section id="tutorial-requirements">
+<h2>Tutorial Requirements<a class="headerlink" href="#tutorial-requirements" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Working AMDC hardware</p></li>
+<li><p>Completion of the <a class="reference internal" href="../blink/index.html"><span class="std std-doc">blink tutorial</span></a></p></li>
+<li><p>Multimeter and/or oscilloscope for validation of I/O</p></li>
+</ol>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">hw</span></code> commands, or “hardware” commands, are included in all firmware built for the AMDC.
+These are provided to do basic raw I/O manually from the command line.
+For example, read an ADC voltage value, set the PWM duty ratio of an output pin, read the encoder position, etc.</p>
+<p>Per the <code class="docutils literal notranslate"><span class="pre">help</span></code> message, the included sub-commands are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span> <span class="pre">&lt;on|off&gt;</span></code> - Turn on/off PWM switching</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span> <span class="pre">sw</span> <span class="pre">&lt;freq_switching&gt;</span> <span class="pre">&lt;deadtime_ns&gt;</span></code> - Set the PWM switching characteristics</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span> <span class="pre">duty</span> <span class="pre">&lt;pwm_idx&gt;</span> <span class="pre">&lt;percent&gt;</span></code> - Set a duty ratio</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">anlg</span> <span class="pre">read</span> <span class="pre">&lt;chnl_idx&gt;</span></code> - Read voltage on ADC channel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ild</span> <span class="pre">read</span></code> - Read the latest packet from ILD1420 sensor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enc</span> <span class="pre">steps</span></code> - Read encoder steps from power-up</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enc</span> <span class="pre">pos</span></code> - Read encoder position</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enc</span> <span class="pre">init</span></code> - Turn on blue LED until Z pulse found</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timer</span> <span class="pre">&lt;fpga|cpu&gt;</span> <span class="pre">now</span></code> - Read value from hardware timer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">led</span> <span class="pre">set</span> <span class="pre">&lt;led_idx&gt;</span> <span class="pre">&lt;r&gt;</span> <span class="pre">&lt;g&gt;</span> <span class="pre">&lt;b&gt;</span></code> - Set LED color (color is 0..255)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mux</span> <span class="pre">&lt;gpio|sts&gt;</span> <span class="pre">&lt;port&gt;</span> <span class="pre">&lt;device&gt;</span></code> - Map the device driver in the FPGA to the hardware port</p></li>
+</ul>
+</section>
+<section id="quick-hw-command-guide">
+<h2>Quick <code class="docutils literal notranslate"><span class="pre">hw</span></code> Command Guide<a class="headerlink" href="#quick-hw-command-guide" title="Permalink to this heading">¶</a></h2>
+<p>Common commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">...</span></code> sub-commands control the PWM outputs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">anlg</span> <span class="pre">...</span></code> sub-command reads the integrated ADC values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">enc</span> <span class="pre">...</span></code> sub-commands read the incremental encoder input</p></li>
+</ul>
+<p>Uncommon commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">led</span> <span class="pre">...</span></code> sub-command sets the RGB LED colors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">timer</span> <span class="pre">...</span></code> sub-command prints the current time from either the CPU or FPGA timer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">ild</span> <span class="pre">...</span></code> sub-command reads the value of a laser position sensor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">mux</span> <span class="pre">...</span></code> sub-command sets the mapping of signal muxes in the FPGA</p></li>
+</ul>
+</section>
+<section id="explanation-of-common-hw-sub-commands">
+<h2>Explanation of common <code class="docutils literal notranslate"><span class="pre">hw</span></code> sub-commands<a class="headerlink" href="#explanation-of-common-hw-sub-commands" title="Permalink to this heading">¶</a></h2>
+<p>This section describes useful sub-commands, what they do, and their arguments.
+Only a subset of commands are described since the others are not commonly used.</p>
+<section id="pwm-output">
+<h3>PWM Output<a class="headerlink" href="#pwm-output" title="Permalink to this heading">¶</a></h3>
+<p>There are three commands for PWM outputs.
+By default, the PWM outputs on the AMDC are all disabled (i.e. all gate signals driven low).
+Before using PWM, the outputs must be enabled using <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">on</span></code>.
+Turn them back off using <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">off</span></code>.
+If you try to turn on PWM output when it is already on, you will get a <code class="docutils literal notranslate"><span class="pre">FAILURE</span></code> command response.
+Similarly, turning off when already off results in a failure.</p>
+<p>The PWM switching parameters can be set dynamically via the <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">sw</span> <span class="pre">...</span></code> command.
+This command requires two parameters: the switching frequency (in Hz) and the dead-time (in ns).
+By default, the PWM switching parameters are 100 kHz and 100 ns of dead-time.
+The allowable range for switching frequency is from about 1.5 kHz to many MHz.
+Dead-time is limited to a minimum of 25 ns, but can be arbitarily high.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The PWM switching parameters can only be changed when the PWM output is off.</p>
+</div>
+<p>To set the duty ratio of a particular PWM output, the <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">duty</span> <span class="pre">...</span></code> command can be used.
+The PWM driver in the FPGA is set up to output signals for half-bridges, meaning that a single command of <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">duty</span> <span class="pre">...</span></code> will update two output pins on the AMDC.
+The high-side switch will be complementary from the low-side switch, and the appropriate dead-time is inserted per the configured switching parameters.
+The PWM index ranges from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">23</span></code> – the top left DB15 connector on the AMDC contains indices <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">2</span></code>.
+The bottom left DB15 connector contains <code class="docutils literal notranslate"><span class="pre">3</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>.
+This pattern repeats top-to-bottom, left-to-right, for all 24 outputs legs.
+The <code class="docutils literal notranslate"><span class="pre">percent</span></code> parameter ranges from <code class="docutils literal notranslate"><span class="pre">0.0</span></code> to <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<p>See the <a class="reference internal" href="../../../hardware/subsystems/power-stack.html"><span class="std std-doc">power stack hardware documentation</span></a> for more info on the hardware capabilities.</p>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h4>
+<p>Suppose you want to control a buck converter using a single output leg from the AMDC connected to output channel 0.
+In this example, the switching frequency should be 250 kHz and dead-time should be 400 ns.
+The PWM duty ratio should be 20%.
+The follow commands configure the output then turn on the switching.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hw</span> <span class="n">pwm</span> <span class="n">sw</span> <span class="mi">250000</span> <span class="mi">400</span>
+<span class="n">hw</span> <span class="n">pwm</span> <span class="n">duty</span> <span class="mi">0</span> <span class="mf">0.2</span>
+<span class="n">hw</span> <span class="n">pwm</span> <span class="n">on</span>
+</pre></div>
+</div>
+<p>Use your multimeter or oscilloscope to validate the PWM output from the AMDC is working as expected and is controllable using the discussed commands.</p>
+</section>
+</section>
+<section id="adc-input">
+<h3>ADC Input<a class="headerlink" href="#adc-input" title="Permalink to this heading">¶</a></h3>
+<p>The AMDC has an integrated ADC which samples 8 differential-pair analog inputs synchronous to the PWM carrier waveform (to minimize noise).
+The differential input range is -10V to +10V.
+To print the current voltage value of an input channel, use <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">anlg</span> <span class="pre">read</span> <span class="pre">...</span></code>.
+The argument for the channel is zero-based, <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">7</span></code>.</p>
+<p>See the <a class="reference internal" href="../../../hardware/subsystems/analog.html"><span class="std std-doc">analog hardware documentation</span></a> for more info on the hardware capabilities.</p>
+<section id="id1">
+<h4>Example<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+<p>For example, to read the raw voltage applied to the first analog input:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hw</span> <span class="n">anlg</span> <span class="n">read</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="encoder-input">
+<h3>Encoder Input<a class="headerlink" href="#encoder-input" title="Permalink to this heading">¶</a></h3>
+<p>The AMDC supports incremental encoder input: [<code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">Z</span></code>] where <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are the quadrature-encoded signals and <code class="docutils literal notranslate"><span class="pre">Z</span></code> is a once-per-revolution index pulse.</p>
+<p>The FPGA driver for the encoder records the encoder movement using <strong>steps</strong>.
+To get the raw steps moved since the FPGA was configured (i.e. since boot), use <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">enc</span> <span class="pre">steps</span></code>.
+For a rotary encoder spinning at positive speed, the steps output will continue to increase until the integer value wraps around.
+The steps output is independent of the <code class="docutils literal notranslate"><span class="pre">Z</span></code> index pulse.
+This means the steps output is only relative; it cannot be used for absolute position information.</p>
+<p>The FPGA also provides a <strong>position</strong> output, analgous to the steps output, but incorporating the <code class="docutils literal notranslate"><span class="pre">Z</span></code> pulse.
+In other words, when the <code class="docutils literal notranslate"><span class="pre">Z</span></code> pulse is seen, the FPGA resets the position variable back to 0.
+This means the position output can be used as an absolute position signal.
+To print this variable, call <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">enc</span> <span class="pre">pos</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The encoder position signal is not defined until the <code class="docutils literal notranslate"><span class="pre">Z</span></code> pulse is seen by the FPGA – the command (i.e. driver) will output <code class="docutils literal notranslate"><span class="pre">-1</span></code> until a valid position is available. If you do not see any valid data coming from the driver, verify that the encoder is properly initialized and <code class="docutils literal notranslate"><span class="pre">encoder_set_pulses_per_rev()</span></code> has been called.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The encoder is capable of reporting both the <em>instantaneous</em> steps and position, as well as the steps and position that were sampled at the time of the PWM-carrier-synced timing manager trigger. The latter is the default, but if the instantaneous steps and position values are required, they can be accessed via special functions in the encoder driver (see the <em>encoder driver documentation</em> page linked just below).</p>
+</div>
+<p>See the <a class="reference internal" href="../../../hardware/subsystems/encoder.html"><span class="doc std std-doc">encoder hardware documentation</span></a> for more info on the hardware capabilities, and the <a class="reference internal" href="../../../firmware/arch/drivers/encoder.html"><span class="doc std std-doc">encoder driver documentation</span></a> for more info on the C firmware layer used to interact with the encoder.</p>
+<section id="id2">
+<h4>Example<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
+<p>For example, to read the raw encoder position value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hw</span> <span class="n">enc</span> <span class="n">pos</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="rgb-leds">
+<h3>RGB LEDs<a class="headerlink" href="#rgb-leds" title="Permalink to this heading">¶</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>The LEDs are VERY bright! Full brightness is not recommended! The below example uses 10/255 = about 4% power for each color channel. Note that the perceived brightness is not linearly related to the color value and power.</p>
+</div>
+<p>The AMDC includes 4 RGB LEDs on the PCB.
+By default, the firmware cycles blinking patterns on the LEDs to indicate the firmware is running.
+The <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">led</span> <span class="pre">set</span> <span class="pre">...</span></code> command can set an arbilitary color to one LED.
+The LED index parameter is zero-based from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">3</span></code>.
+The color parameters are integers from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">255</span></code> – <code class="docutils literal notranslate"><span class="pre">0</span></code> means off, <code class="docutils literal notranslate"><span class="pre">255</span></code> means full on.</p>
+<section id="id3">
+<h4>Example<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
+<p>For example, to turn on all four LEDs in the following color order: [RED, GREEN, BLUE, WHITE]</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hw</span> <span class="n">led</span> <span class="nb">set</span> <span class="mi">0</span> <span class="mi">10</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="n">hw</span> <span class="n">led</span> <span class="nb">set</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">10</span> <span class="mi">0</span>
+<span class="n">hw</span> <span class="n">led</span> <span class="nb">set</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">10</span>
+<span class="n">hw</span> <span class="n">led</span> <span class="nb">set</span> <span class="mi">3</span> <span class="mi">10</span> <span class="mi">10</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
+<p><strong>Congratulations!</strong></p>
+<p>You now understand the built-in <code class="docutils literal notranslate"><span class="pre">hw</span></code> commands and how to use them.
+These commands are very useful for testing hardware and validating basic functionality.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="../vsi/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Tutorial: Voltage Source Inverter</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../blink/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tutorial: Blink</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Sep 13, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tutorial: Hardware Commands</a><ul>
+<li><a class="reference internal" href="#tutorial-requirements">Tutorial Requirements</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#quick-hw-command-guide">Quick <code class="docutils literal notranslate"><span class="pre">hw</span></code> Command Guide</a></li>
+<li><a class="reference internal" href="#explanation-of-common-hw-sub-commands">Explanation of common <code class="docutils literal notranslate"><span class="pre">hw</span></code> sub-commands</a><ul>
+<li><a class="reference internal" href="#pwm-output">PWM Output</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adc-input">ADC Input</a><ul>
+<li><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#encoder-input">Encoder Input</a><ul>
+<li><a class="reference internal" href="#id2">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rgb-leds">RGB LEDs</a><ul>
+<li><a class="reference internal" href="#id3">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    </body>
+</html>

@@ -1,0 +1,558 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2024-03-27T15:35:22-05:00" /><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Timing Manager" href="timing-manager.html"><link rel="prev" title="Eddy Current Sensor Driver" href="drivers/eddy-current-sensor.html">
+        <link rel="canonical" href="https://docs.amdc.dev/firmware/arch/system.html">
+
+    <link rel="shortcut icon" href="../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>System - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../getting-started/user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../getting-started/user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/index.html">Development</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/firmware/arch/system.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/firmware/arch/system.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="system">
+<h1>System<a class="headerlink" href="#system" title="Permalink to this heading">¶</a></h1>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">¶</a></h2>
+<p>The AMDC firmware is designed to include a “system” layer which functions as a <strong>simple</strong> real-time operating system (RTOS). Read about RTOS design principles <a class="reference external" href="https://en.wikipedia.org/wiki/Real-time_operating_system">on Wikipedia</a> before continuing…</p>
+<p>What makes AMDC’s RTOS design <strong>simple</strong>? Why is it used instead of a “real” RTOS (e.g. <a class="reference external" href="https://www.freertos.org/">FreeRTOS</a>)? What features does it expose to the user application? This document aims at answering these questions and more.</p>
+</section>
+<section id="system-design">
+<h2>System Design<a class="headerlink" href="#system-design" title="Permalink to this heading">¶</a></h2>
+<p>The AMDC <em>system</em> layer sits between the <em>driver</em> layer and the <em>user application</em> layer. Some system resources (such as the serial interface) are managed exclusively by the system layer – for example, if a user application needs to print a message to the console for debugging, it must request the system to do this action on its behalf (via the <code class="docutils literal notranslate"><span class="pre">sys/debug.c</span></code> module). Other system resources, such as PWM outputs or analog inputs, can be accessed directly by the user application via the driver layer.</p>
+<section id="tasks">
+<span id="id1"></span><h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading">¶</a></h3>
+<p>Tasks are the foundation upon which all system services are built. As described in previous documentation, a task is simply a block of code that runs periodically. Tasks can exist in the user space (used in user applications) or in the system space.</p>
+<p>Example tasks could be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">task1</span></code> runs at 1Hz and blinks an LED</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">task2</span></code> runs at 10kHz and regulates current through an RL load</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">task3</span></code> runs at 1kHz and handles serial communciation with UART interface</p></li>
+</ul>
+<p>Each example task includes a frequency of operation as well as a “high-level” goal. Usually, the task has <em>state</em> that is updated each time the task is run. In <code class="docutils literal notranslate"><span class="pre">task1</span></code>, the state might be the current LED status (on/off). Each time <code class="docutils literal notranslate"><span class="pre">task1</span></code> is run, the LED state toggles and the LED is refreshed.</p>
+<p>Notice how each task is independent – they all run at different frequencies and do different things – but together, they perform complex actions as a complete system. This is the crux of designing firmware to use a RTOS: splitting code into tasks which work together to solve a complex goal. You will need to do this when building user applications with AMDC.</p>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h4>
+<p><img alt="tasks-example" src="../../_images/tasks-example.svg" /></p>
+<p>In the above diagram, three tasks are shown operating over time (referred to as T1, T2, and T3). T3, shown in red, operates every time slice and consumes nearly half the quantum. T2, shown in green, operates at half the frequency of T3 and consumes less computation time. Finally, T1, shown in blue, runs at a third the rate of T3 and only for little bursts of time.</p>
+<p>Notice how the system is idle during the solid red regions on the top bar. Also, notice the inherit jitter in T1 – the scheduler runs it during the correct time slices, but depending on T2, T1’s periodicity changes slightly. During time slice 3, T1 occurs earlier in the time slice than in time slice 0 or 6. Jitter (or lack of) can be important in some applications and the developer must be aware of the system behavior.</p>
+</section>
+<section id="cooperation-between-tasks">
+<h4>Cooperation Between Tasks<a class="headerlink" href="#cooperation-between-tasks" title="Permalink to this heading">¶</a></h4>
+<p>The system scheduler (<code class="docutils literal notranslate"><span class="pre">sys/scheduler.c</span></code>) is responsible for running the registered tasks of the system. Tasks are <strong>non-preemptable</strong> by design. This means that once a task starts, it runs until it <em>yields</em> the processor – it cannot be interrupted by the system. Imagine a task which has a lot of work to do. It gets scheduled to run by the scheduler and starts execution. <strong>It then has complete control of the entire system.</strong> It can choose to run as long as it wants. Only when it stops doing work and <em>yields</em> the processor does the scheduler regain control. At this point, the scheduler chooses another task to run and the cycle repeats.</p>
+<p>Why is it important to understand that tasks are <strong>non-preemptable</strong>? Well, because of this fact, the scheduler is therefore designed for <strong>cooperative</strong> tasks (one would say that AMDC uses “cooperative scheduling”). The scheduler <em>relies</em> on the assumption that each task can be trusted – no tasks are malicous and will take over the system by not yielding the processor. It is up to the developer to ensure this is true, otherwise the system will not operate correctly.</p>
+<p>In practice, how does one create a cooperative task? This boils down to keeping tasks short. Only do a small amount of work, then stop and yield the processor. The maximum frequency of tasks (typically 10kHz) determines the total amount of time available for tasks during a time slice. At 10kHz scheduler frequency, the elementary time quantum is 100us. This means that all tasks registered with the scheduler must complete within 100us. Note that 100us is the <em>combined</em> time – if there are 10 tasks that need to run at 10kHz, the total sum of the run time for each task must be less than 100us otherwise the scheduler time quantum will be overrrun. This is bad and should be avoided.</p>
+<p>What if a task must perform complex actions that take too long? If a task must do a lot of work, the developer must break up the work into small chunks, then perform each chunk of work during its own time slice. Breaking up work into small chunks is an advanced topic and will be covered in later documentation.</p>
+<p>Read more about cooperative scheduling of tasks <a class="reference external" href="https://en.wikipedia.org/wiki/Cooperative_multitasking">on Wikipedia</a>.</p>
+</section>
+</section>
+<section id="commands">
+<span id="id2"></span><h3>Commands<a class="headerlink" href="#commands" title="Permalink to this heading">¶</a></h3>
+<p>Commands provide interactive operation of AMDC with the outside world. While the hardware I/O allows AMDC to change state based on the physical world, commands are designed for higher-level actions (i.e., “turn off LED” or “spin motor to 100RPM”). Commands are completely optional in user applications and are triggered by user input on the serial terminal.</p>
+<p>Example commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">led</span> <span class="pre">toggle</span> <span class="pre">red</span></code> – Toggle the red LED</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">motion</span> <span class="pre">rpm</span> <span class="pre">100</span></code> – Command a rotational speed of 100 RPM to a motion controller</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">motion</span> <span class="pre">bw</span> <span class="pre">10</span></code> – Set bandwidth of motion controller to 10 Hz</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">anlg</span> <span class="pre">read</span> <span class="pre">0</span></code> – Read hardware analog channel 0 voltage and display to terminal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">duty</span> <span class="pre">2</span> <span class="pre">50</span></code> – Set PWM output 2 to duty ratio of 50%</p></li>
+</ul>
+<p>Notice how commands are created by characters seperated by white space. The first chunk of characters is defined as the <em>base command</em>. For the above examples, base commands are <code class="docutils literal notranslate"><span class="pre">led</span></code>, <code class="docutils literal notranslate"><span class="pre">motion</span></code>, and <code class="docutils literal notranslate"><span class="pre">hw</span></code>. Subsequent sequences of characters seperated by white space are called <em>arguments</em> or <em>subcommands</em>.</p>
+<section id="handling-commands">
+<h4>Handling Commands<a class="headerlink" href="#handling-commands" title="Permalink to this heading">¶</a></h4>
+<p>The commands system module (<code class="docutils literal notranslate"><span class="pre">sys/commands.c</span></code>) is responsible for parsing the characters from the terminal and calling the appropriate <em>command handler</em>. A command handler processes a single base command – this includes all subcommands and arguments. Each base command is registered with the system during initialization and start-up so that the system knows it exists. All commands have a <em>help</em> message which the system will display if the user types “help”.</p>
+<p>The command handler signature follows standard C convention for the main function of a program called from the command line:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">argc</span></code> contains the number of arguments passed to the command. For example, if the user typed <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">arg1</span> <span class="pre">arg2</span></code>, <code class="docutils literal notranslate"><span class="pre">argc</span></code> would contain 3.</p>
+<p><code class="docutils literal notranslate"><span class="pre">argv</span></code> contains an array of character strings for each argument. For above example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">argv[0]</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">&quot;cmd&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">argv[1]</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">&quot;arg1&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">argv[2]</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">&quot;arg2&quot;</span></code></p></li>
+</ul>
+</section>
+<section id="command-flow">
+<h4>Command Flow<a class="headerlink" href="#command-flow" title="Permalink to this heading">¶</a></h4>
+<p>When the user types a command into the terminal, a complex set of operations is set in motion (see implementation in <code class="docutils literal notranslate"><span class="pre">sys/commands.c</span></code>). Below is a diagram of the flow of each character the user types. When developing user applications that include commands, the developer does not need to worry about the following information, as they simply implement the commmand handler (shown in green below). For completeness, the following discussion is presented as explanation for how the user-supplied command handler is (eventually) called.</p>
+<p><img alt="cmd-flow" src="../../_images/cmd-flow.svg" /></p>
+<p>What happens when a character is entered into the terminal? The user terminal reads the input character and sends it to the driver on their PC which talks with the USB-UART device on AMDC. The character is then sent over the physical medium to the AMDC hardware. The UART hardware peripherial buffers incoming characters in a small FIFO (first-in, first-out) structure (referred to as simply FIFO).</p>
+<p>At this point, the system firmware begins. The UART FIFO is drained and the incoming characters are copied into a much larger queue structure in system memory (shown in orange above). A task then runs periodically to parse these characters and form pending commands which get placed in another system level FIFO. Yet another task then runs each pending command in its own scheduler time slice, which calls the user defined command handler. The <code class="docutils literal notranslate"><span class="pre">argv</span></code> argument of the command handler now points to characters which reside in the orange incoming characters FIFO.</p>
+<p>These layers of communication, FIFOs, and queues are used to provide hard guarantees about system performance. They enforce the following:</p>
+<ul class="simple">
+<li><p>A single valid command is run during each time slice</p></li>
+<li><p>Commands have a limited number of arguments</p></li>
+<li><p>Each argument has a limited length</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="timing-manager.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Timing Manager</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="drivers/eddy-current-sensor.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Eddy Current Sensor Driver</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Mar 27, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">System</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#system-design">System Design</a><ul>
+<li><a class="reference internal" href="#tasks">Tasks</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#cooperation-between-tasks">Cooperation Between Tasks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#handling-commands">Handling Commands</a></li>
+<li><a class="reference internal" href="#command-flow">Command Flow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    </body>
+</html>

@@ -1,0 +1,893 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2025-04-16T20:24:41-05:00" /><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="Advanced Tutorials" href="../../advanced-tutorials/index.html"><link rel="prev" title="Tutorial: Profiling Tasks" href="../profiling-tasks/index.html">
+        <link rel="canonical" href="https://docs.amdc.dev/getting-started/tutorials/timing-manager/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Tutorial: Timing &amp; Sensors - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/getting-started/tutorials/timing-manager/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/getting-started/tutorials/timing-manager/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="tutorial-timing-sensors">
+<h1>Tutorial: Timing &amp; Sensors<a class="headerlink" href="#tutorial-timing-sensors" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Goal:</strong> Learn how to use the AMDC Timing Manager to synchronize task execution to sensor data acquisition.</p></li>
+<li><p><strong>Complexity:</strong> 4 / 5</p></li>
+<li><p><strong>Estimated Time:</strong> 60 min</p></li>
+</ul>
+<section id="tutorial-requirements">
+<h2>Tutorial Requirements<a class="headerlink" href="#tutorial-requirements" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Working AMDC Hardware</p></li>
+<li><p>Completion of the <a class="reference internal" href="../hw-commands/index.html"><span class="std std-doc">Hardware Commands</span></a> tutorial</p></li>
+<li><p>Completion of the <a class="reference internal" href="../vsi/index.html"><span class="std std-doc">Voltage Source Inverter</span></a> tutorial</p></li>
+<li><p>Completion of the <a class="reference internal" href="../profiling-tasks/index.html"><span class="std std-doc">Profiling Tasks</span></a> tutorial</p></li>
+<li><p>AMDC firmware version 1.4 or higher</p></li>
+</ol>
+<p>This tutorial expands on the code created in the <a class="reference internal" href="../vsi/index.html"><span class="std std-doc">Voltage Source Inverter</span></a> tutorial and uses commands created in the <a class="reference internal" href="../profiling-tasks/index.html"><span class="std std-doc">Profiling Tasks</span></a> tutorial. Both must be completed before this tutorial.</p>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>In control applications, it is often important to be able to synchronize sensor data acquisition and control task execution with the PWM carrier. This is desirable to eliminate electromagnetic noise in motor drives (for example, switching harmonics in the phase current measurements) because the inverter does not switch at the peak and trough of the PWM carrier.</p>
+<p>This tutorial shows how the AMDC’s <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> peripheral can be used to do the following:</p>
+<ol class="arabic simple">
+<li><p>synchronize the start of sensor data acquisition to the PWM carrier and</p></li>
+<li><p>guarantee that tasks are only run once new sensor data is available.</p></li>
+</ol>
+</section>
+<section id="scheduling-and-synchronizing">
+<h2>Scheduling and Synchronizing<a class="headerlink" href="#scheduling-and-synchronizing" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> leverages the underlying FPGA to generate a sensor acquisition start signal (<code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Trigger</span></code>) based on the PWM carrier and an interrupt (<code class="docutils literal notranslate"><span class="pre">Scheduler</span> <span class="pre">Interrupt</span></code>) once all sensors have finished acquiring their new data sample. The AMDC scheduler will only allow tasks to run one time per <code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Trigger</span></code> signal, regardless of how frequently the tasks have requested to be run.</p>
+<section id="timing-manager-modes">
+<h3>Timing Manager Modes<a class="headerlink" href="#timing-manager-modes" title="Permalink to this heading">¶</a></h3>
+<p>By default, the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> is set to <code class="docutils literal notranslate"><span class="pre">Legacy</span> <span class="pre">Mode</span></code>, in which the AMDC scheduler will start running tasks at the same time as starting sensor data acquisition (everytime <code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Trigger</span></code> is asserted).</p>
+<p><img alt="" src="../../../_images/tmLegacySimple.svg" /></p>
+<p>Alternatively, when configured in <code class="docutils literal notranslate"><span class="pre">Post-Sensor</span> <span class="pre">Mode</span></code>, the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> will instruct the AMDC scheduler to wait to execute tasks until the sensor data collection is complete (when the <code class="docutils literal notranslate"><span class="pre">Scheduler</span> <span class="pre">Interrupt</span></code> occurs).</p>
+<p><img alt="" src="../../../_images/tmPostSensorSimple.svg" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Post-Sensor</span> <span class="pre">Mode</span></code> guarantees that every task has access to new sensor data since the last time it was run. It eliminates a race condition between when the sensors collect their data and when the tasks start running.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In the timing diagrams above, one of these tasks is labeled as the <code class="docutils literal notranslate"><span class="pre">control</span> <span class="pre">task</span></code>. This is the task that is concerned with time synchronization of the sensor data as it is presumed to implement a control algorithm. The AMDC scheduler does not have any knowledge of this task being unique. It is treated the same as any other task. However, we are indicating it as our task of interest in this tutorial to facilitate our explanations. Later timing diagrams will <em>only</em> show the control task and neglect all other tasks shown above.</p>
+</div>
+</section>
+<section id="key-timing-parameters">
+<h3>Key Timing Parameters<a class="headerlink" href="#key-timing-parameters" title="Permalink to this heading">¶</a></h3>
+<p>There are multiple parameters that affect when and how fast tasks run:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TASK_NAME_UPDATES_PER_SEC</span></code>: This is set by the user in the <a class="reference internal" href="../vsi/index.html#template-task-h-file"><span class="std std-ref">task header file</span></a> for each task</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PWM_FREQUENCY</span></code>: The PWM switching frequency (frequency of the PWM carrier).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code>: This is the <code class="docutils literal notranslate"><span class="pre">User</span> <span class="pre">Event</span> <span class="pre">Ratio</span></code> of the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Sample</span> <span class="pre">Acquisition</span> <span class="pre">Time</span></code>: This is the time it takes the slowest sensor to acquire a data sample (only relevant to <code class="docutils literal notranslate"><span class="pre">Post-Sensor</span> <span class="pre">Mode</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">Task</span> <span class="pre">Run</span> <span class="pre">Time</span></code>: The cumulative time it takes for all the scheduled tasks to run.</p></li>
+</ul>
+<p>Read <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">this docs page</span></a> for detailed information on the Timing Manager.</p>
+</section>
+<section id="timing-configuration-rules">
+<h3>Timing Configuration Rules<a class="headerlink" href="#timing-configuration-rules" title="Permalink to this heading">¶</a></h3>
+<p>The <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> initiates sensor data acquisition (<code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Trigger</span></code>) every <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> PWM cycles. Tasks are allowed to run, at most, one time between <code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Trigger</span></code> events. This means that the system configuration must be carefully considered to ensure satisfactory task timing.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">Post-Sensor</span> <span class="pre">Mode</span></code>, the following three inequalities should be satisfied:</p>
+<div class="math-wrapper docutils container" id="equation-eq-tm1">
+<div class="math notranslate nohighlight" id="equation-eq-tm1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-tm1" title="Permalink to this equation">¶</a></span>\[
+\rm EVENT\_RATIO \leq \frac{\rm PWM\_FREQUENCY}{\rm TASK\_NAME\_UPDATES\_PER\_SEC}
+\]</div>
+</div>
+<div class="math-wrapper docutils container" id="equation-eq-tm2">
+<div class="math notranslate nohighlight" id="equation-eq-tm2">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-tm2" title="Permalink to this equation">¶</a></span>\[
+\rm EVENT\_RATIO \ge {\rm PWM\_FREQUENCY} \times {\rm Sensor\ Sample\ Acquisition\ Time}
+\]</div>
+</div>
+<div class="math-wrapper docutils container" id="equation-eq-tm3">
+<div class="math notranslate nohighlight" id="equation-eq-tm3">
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-tm3" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\frac{1}{\rm TASK\_NAME\_UPDATES\_PER\_SEC} \ &gt; \ &amp; \rm Total\ Task\ Run\ Time \quad + \\ &amp; \rm Sensor\ Sample\ Acquisition\ Time
+\end{split}\]</div>
+</div>
+<p>From these inequalities,</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#equation-eq-tm1">(1)</a> must be met for the highest frequency task to ensure it can run at its specified rate of <code class="docutils literal notranslate"><span class="pre">TASK_NAME_UPDATES_PER_SEC</span></code>;</p></li>
+<li><p><a class="reference internal" href="#equation-eq-tm2">(2)</a> ensures that the sensors don’t take up the entire timeslot;</p></li>
+<li><p><a class="reference internal" href="#equation-eq-tm3">(3)</a> ensures that we are able to run all tasks in the allotted time slot.</p></li>
+</ul>
+<p>These three combined inequalities give us both an upper and lower bound for <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> and <code class="docutils literal notranslate"><span class="pre">PWM_FREQUENCY</span></code> relative to each other.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For any tasks that must be run at precise intervals of <code class="docutils literal notranslate"><span class="pre">TASK_NAME_UPDATES_PER_SEC</span></code>, the right hand side of <a class="reference internal" href="#equation-eq-tm1">(1)</a> must be an integer. For the critical control task (the task that requires new sensor data each time it runs), inequality <a class="reference internal" href="#equation-eq-tm1">(1)</a> should become an equality:</p>
+<div class="math-wrapper docutils container" id="equation-eq-tmeq">
+<div class="math notranslate nohighlight" id="equation-eq-tmeq">
+<span class="eqno">(4)<a class="headerlink" href="#equation-eq-tmeq" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\frac{\rm PWM\_FREQUENCY}{\rm CONTROL\_TASK\_NAME\_UPDATES\_PER\_SEC} = \rm EVENT\_RATIO \\
+\\
+\end{split}\]</div>
+</div>
+<p>To understand why, see <a class="reference internal" href="#experiment-2-ratio-is-too-small">Experiment 2</a></p>
+</div>
+</section>
+</section>
+<section id="c-code">
+<h2>C-Code<a class="headerlink" href="#c-code" title="Permalink to this heading">¶</a></h2>
+<p>To perform the tutorial, make the following modifications to the C code you created through the <a class="reference internal" href="../vsi/index.html"><span class="std std-doc">Voltage Source Inverter</span></a> and <a class="reference internal" href="../profiling-tasks/index.html"><span class="std std-doc">Profiling Tasks</span></a> tutorials.</p>
+<section id="set-the-timing-manager-mode">
+<h3>Set the Timing Manager Mode<a class="headerlink" href="#set-the-timing-manager-mode" title="Permalink to this heading">¶</a></h3>
+<p>In this tutorial, we will use the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> in <code class="docutils literal notranslate"><span class="pre">Post-Sensor</span> <span class="pre">Mode</span></code>. Enable this in the <code class="docutils literal notranslate"><span class="pre">user_config.h</span></code> file by setting <code class="docutils literal notranslate"><span class="pre">USER_CONFIG_ISR_SOURCE</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">user_config.h</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Specify the source of the scheduler ISR</span>
+<span class="c1">// Mode 0: legacy mode - scheduler is triggered based on the PWM carrier events and ratio</span>
+<span class="c1">//         of carrier frequency to desired control frequency</span>
+<span class="c1">// Mode 1: post-sensor mode - scheduler is triggered when all the enabled sensors are done</span>
+<span class="c1">//         acquiring their data</span>
+
+<span class="cp">#define USER_CONFIG_ISR_SOURCE (1)</span>
+</pre></div>
+</div>
+</section>
+<section id="link-the-timing-manager-to-sensor-interfaces">
+<h3>Link the Timing Manager to Sensor Interfaces<a class="headerlink" href="#link-the-timing-manager-to-sensor-interfaces" title="Permalink to this heading">¶</a></h3>
+<p>We need to link the sensor interfaces we wish to synchronize with the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a>. In this tutorial, we will consider only the internal ADC (analog to digital converter) of the AMDC. However, in general, this can include other sensor peripherals, such as the encoder interface and AMDS.</p>
+<p>To link the ADC to the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a>, edit the  <code class="docutils literal notranslate"><span class="pre">app_controller_init()</span></code> function within <code class="docutils literal notranslate"><span class="pre">app_controller.c</span></code> to include the function call <code class="docutils literal notranslate"><span class="pre">timing_manager_enable_sensor(ADC)</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;drv/timing_manager.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_controller_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Enable data sampling for ADC</span>
+<span class="w">    </span><span class="n">timing_manager_enable_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Register &quot;ctrl&quot; command with system</span>
+<span class="w">    </span><span class="n">cmd_ctrl_register</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-sensor-data">
+<h3>Reading Sensor Data<a class="headerlink" href="#reading-sensor-data" title="Permalink to this heading">¶</a></h3>
+<p>Data can be obtained from the sensor interfaces in the usual manner, irrespective of the mode of the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a>. For example, the ADC can be read via <code class="docutils literal notranslate"><span class="pre">analog_getf(ANALOG_IN1,</span> <span class="pre">&amp;output)</span></code> (see the <a class="reference internal" href="../../../hardware/subsystems/analog.html"><span class="std std-doc">analog input page</span></a>). Note that we won’t be using the ADC’s actual numerical output in this tutorial, we’re just enabling it to activate the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a>.</p>
+</section>
+<section id="reporting-sensor-acquisition-time-and-sensor-data-staleness">
+<h3>Reporting sensor acquisition time and sensor data staleness<a class="headerlink" href="#reporting-sensor-acquisition-time-and-sensor-data-staleness" title="Permalink to this heading">¶</a></h3>
+<p>We’re also going to add functionality to report how old the ADC data is as well as how long it took the sensor to acquire that data. We’ll add a global variable <code class="docutils literal notranslate"><span class="pre">sensor_flag</span></code> to indicate when the app callback function should writeout a report of the sensor timing statistics.</p>
+<p>Add the following line to the top of <code class="docutils literal notranslate"><span class="pre">task_controller.h</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sensor_flag</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Add the following line to the top of <code class="docutils literal notranslate"><span class="pre">task_controller.c</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;drv/timing_manager.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;sys/commands.h&quot;</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">sensor_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Edit function <code class="docutils literal notranslate"><span class="pre">task_controller_callback(void</span> <span class="pre">*arg)</span></code> in <code class="docutils literal notranslate"><span class="pre">task_controller.c</span></code> to add the following code at the start of the function:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sensor_flag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cmd_resp_printf</span><span class="p">(</span><span class="s">&quot;ADC time to acquire: %lfus</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">timing_manager_get_time_per_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cmd_resp_printf</span><span class="p">(</span><span class="s">&quot;ADC time since done: %lfus</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">timing_manager_get_time_since_sensor_done</span><span class="p">(</span><span class="n">ADC</span><span class="p">));</span>
+<span class="w">    </span><span class="n">sensor_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Add the following line to the top of <code class="docutils literal notranslate"><span class="pre">cmd_ctrl.c</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ctrl_initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Add a new <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">sensor</span> <span class="pre">timing</span></code> command to your controller app.</p>
+<p>Edit function <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">cmd_ctrl(int</span> <span class="pre">argc,</span> <span class="pre">char</span> <span class="pre">**argv)</span></code> in <code class="docutils literal notranslate"><span class="pre">cmd_ctrl.c</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;sensor&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;timing&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ctrl_initialized</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cmd_resp_printf</span><span class="p">(</span><span class="s">&quot;ctrl must be initialized</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">sensor_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_SUCCESS_QUIET</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Edit function <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">cmd_ctrl(int</span> <span class="pre">argc,</span> <span class="pre">char</span> <span class="pre">**argv)</span></code> in <code class="docutils literal notranslate"><span class="pre">cmd_ctrl.c</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;init&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">task_controller_init</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SUCCESS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">ctrl_initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;deinit&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">task_controller_deinit</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SUCCESS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">ctrl_initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="determine-system-timing">
+<h2>Determine System Timing<a class="headerlink" href="#determine-system-timing" title="Permalink to this heading">¶</a></h2>
+<p>We will now have you use the updated project to determine the system timing parameters and construct a timing diagram for how the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> behaves.</p>
+<p>Re-build your project and program the AMDC.</p>
+<section id="step-1-determine-programmed-timing-parameters">
+<h3>Step 1: Determine programmed timing parameters<a class="headerlink" href="#step-1-determine-programmed-timing-parameters" title="Permalink to this heading">¶</a></h3>
+<p>Inspect your AMDC code to determine the following critical timing parameters:</p>
+<ul class="simple">
+<li><p>The value of <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code> in <code class="docutils literal notranslate"><span class="pre">task_controller.h</span></code>. From the <a class="reference internal" href="../vsi/index.html#template-task-h-file"><span class="std std-ref">VSI tutorial</span></a>, we expect its value is set to <code class="docutils literal notranslate"><span class="pre">(10000)</span></code>.</p></li>
+<li><p>The PWM frequency. This can be set with a hardware command <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">pwm</span> <span class="pre">sw</span></code>, but the default value in <code class="docutils literal notranslate"><span class="pre">common/drv/pwm.h</span></code> is <code class="docutils literal notranslate"><span class="pre">(100000.0)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code>. This is set in <code class="docutils literal notranslate"><span class="pre">common/drv/timing_manager.c</span></code> by the <code class="docutils literal notranslate"><span class="pre">timing_manager_init()</span></code> function to a default value of <code class="docutils literal notranslate"><span class="pre">TM_DEFAULT_PWM_RATIO</span></code>, which is <code class="docutils literal notranslate"><span class="pre">10</span></code>. Later in the tutorial, we will show you how to change this value.</p></li>
+</ul>
+</section>
+<section id="step-2-determine-sensor-acquisition-time">
+<h3>Step 2: Determine Sensor Acquisition Time<a class="headerlink" href="#step-2-determine-sensor-acquisition-time" title="Permalink to this heading">¶</a></h3>
+<p>On your serial terminal, send the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">init</span></code> to start the controller task.</p>
+<p>Send the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">sensor</span> <span class="pre">timing</span></code> to use your newly created functions to get the sensor timing information. Your terminal window should show a response from the AMDC similar to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADC</span> <span class="n">time</span> <span class="n">to</span> <span class="n">acquire</span><span class="p">:</span> <span class="mf">0.820000</span><span class="n">us</span>
+<span class="n">ADC</span> <span class="n">time</span> <span class="n">since</span> <span class="n">done</span><span class="p">:</span> <span class="mf">20.805000</span><span class="n">us</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ADC</span> <span class="pre">time</span> <span class="pre">to</span> <span class="pre">acquire</span></code> refers to how long it took the ADC to acquire its most recent sample. This is the <code class="docutils literal notranslate"><span class="pre">Sensor</span> <span class="pre">Sample</span> <span class="pre">Acquisition</span> <span class="pre">Time</span></code> from inequality <a class="reference internal" href="#equation-eq-tm2">(2)</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ADC</span> <span class="pre">time</span> <span class="pre">since</span> <span class="pre">done</span></code> is the “staleness” of the data. This refers to how long it has been since the ADC last finished a sample acquisition. This may be useful as a debugging tool when getting control code to work. Note that the value you obtain here will vary depending on the other tasks running on your AMDC.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The AMDC also has a hardware command <code class="docutils literal notranslate"><span class="pre">hw</span> <span class="pre">tm</span> <span class="pre">time</span> <span class="pre">adc</span></code> that can be used to obtain the <code class="docutils literal notranslate"><span class="pre">ADC</span> <span class="pre">time</span> <span class="pre">to</span> <span class="pre">acquire</span></code>.</p>
+</div>
+</section>
+<section id="step-3-determine-the-run-time-and-loop-time">
+<h3>Step 3: Determine the run time and loop time<a class="headerlink" href="#step-3-determine-the-run-time-and-loop-time" title="Permalink to this heading">¶</a></h3>
+<p>Issue the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">stats</span> <span class="pre">print</span></code>. The AMDC should respond with approximately the following values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Task</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="n">Loop</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">21431</span> <span class="n">samples</span>
+<span class="n">Loop</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">94.52</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">106.21</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">100.00</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.02</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">21513</span> <span class="n">samples</span>
+<span class="n">Run</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">3.25</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">3.92</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">3.40</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.00</span> <span class="n">usec</span>
+</pre></div>
+</div>
+<p>The concepts of run time and loop time were introduced in the <a class="reference internal" href="../profiling-tasks/index.html#step-4-profile-the-vsi-control-code"><span class="std std-ref">Profiling Tasks</span></a> tutorial.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">Mean</span></code> is how much time there is between successive executions of the control task. It should be <code class="docutils literal notranslate"><span class="pre">1</span></code> / <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code>. And in this case it is, at <code class="docutils literal notranslate"><span class="pre">1</span></code> / <code class="docutils literal notranslate"><span class="pre">10000</span></code> seconds.</p>
+</section>
+<section id="step-4-construct-system-timing-diagram">
+<h3>Step 4: Construct system timing diagram<a class="headerlink" href="#step-4-construct-system-timing-diagram" title="Permalink to this heading">¶</a></h3>
+<p>The information obtained above can now be used to create a timing diagram. This has been done for the default values that are provided in steps 1 - 3, shown below.</p>
+<p><img alt="" src="../../../_images/tmPostSensor.svg" /></p>
+<p>We can see that we are sampling the sensors once per control task. That is because our <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> of <code class="docutils literal notranslate"><span class="pre">10</span></code> fits perfectly with the ratio between the PWM frequency <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">kHz</span></code> and our control task’s frequency <code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">kHz</span></code>. This is the gold standard.</p>
+<p>We will now experiment with changes to the parameters of the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> and observe the effects on control task timings.</p>
+</section>
+</section>
+<section id="experiment-1-ratio-is-too-large">
+<h2>Experiment 1 - Ratio is too large<a class="headerlink" href="#experiment-1-ratio-is-too-large" title="Permalink to this heading">¶</a></h2>
+<p>Increasing the <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> above the limit of <a class="reference internal" href="#equation-eq-tm1">(1)</a> will cause tasks to run at less than their desired frequency (<code class="docutils literal notranslate"><span class="pre">TASK_NAME_UPDATES_PER_SEC</span></code>). In this experiment, we will cause the control task to run at less than 10kHz.</p>
+<p>Let’s increase <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> to 20 by putting <code class="docutils literal notranslate"><span class="pre">timing_manager_set_ratio(20)</span></code> in the <code class="docutils literal notranslate"><span class="pre">controller_init()</span></code> function. Edit <code class="docutils literal notranslate"><span class="pre">app_controller.c</span></code> to update this code:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define EVENT_RATIO 20</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_controller_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Enable data sampling for ADC</span>
+<span class="w">    </span><span class="n">timing_manager_enable_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set User Event Ratio</span>
+<span class="w">    </span><span class="n">timing_manager_set_ratio</span><span class="p">(</span><span class="n">EVENT_RATIO</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Register &quot;ctrl&quot; command with system</span>
+<span class="w">    </span><span class="n">cmd_ctrl_register</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>What does this do? We’ve made it so that the sensors will collect data every 20 PWM cycles. Since the AMDC’s OS will only run tasks one time per sensor acquisition, this also means that the scheduler will wait 20 PWM cycles to run the control task.</p>
+<p>Since our <code class="docutils literal notranslate"><span class="pre">PWM_FREQUENCY</span></code> is 100kHz, our sensors will collect data every 200us and our control task can only run once every 200us, instead of the 100us interval we specified in <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code>.</p>
+<p><img alt="" src="../../../_images/tmPostSensorRatio20.svg" /></p>
+<p>Rebuild and run the new program, and use the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">stats</span> <span class="pre">print</span></code> to view the loop time (after doing <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">init</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Task</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="n">Loop</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">26806</span> <span class="n">samples</span>
+<span class="n">Loop</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">193.78</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">206.22</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">200.00</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.02</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">26932</span> <span class="n">samples</span>
+<span class="n">Run</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">3.25</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">4.23</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">3.41</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.00</span> <span class="n">usec</span>
+</pre></div>
+</div>
+<p>Note that our <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">Mean</span></code> (time elapsed between successive executions of the control task) is indeed <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">us</span></code> instead of <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">us</span></code>. This proves that the control task is only running at half of <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code> because the inequality <a class="reference internal" href="#equation-eq-tm1">(1)</a> has been violated.</p>
+</section>
+<section id="experiment-2-ratio-is-too-small">
+<h2>Experiment 2 - Ratio is too small<a class="headerlink" href="#experiment-2-ratio-is-too-small" title="Permalink to this heading">¶</a></h2>
+<p>For control tasks (tasks which require new sensor data each time they run), <a class="reference internal" href="#equation-eq-tm1">(1)</a> is expected to be an equality. We will now explore what happens when <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> is decreased, so that <a class="reference internal" href="#equation-eq-tm1">(1)</a> is no longer an equality, but the inequalities of <a class="reference internal" href="#equation-eq-tm1">(1)</a>-<a class="reference internal" href="#equation-eq-tm3">(3)</a> are still satisfied.</p>
+<p>This scenario causes multiple sensor samples to occur between each cycle of the control task which we will now show creates a race condition in the control task.</p>
+<p>Let’s set the <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">app_controller.c</span></code> to update this code:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define EVENT_RATIO 1</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_controller_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Enable data sampling for ADC</span>
+<span class="w">    </span><span class="n">timing_manager_enable_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set User Event Ratio</span>
+<span class="w">    </span><span class="n">timing_manager_set_ratio</span><span class="p">(</span><span class="n">EVENT_RATIO</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Register &quot;ctrl&quot; command with system</span>
+<span class="w">    </span><span class="n">cmd_ctrl_register</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>What we’ve done now is tell the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> to sample the sensors every <code class="docutils literal notranslate"><span class="pre">1</span></code> PWM cycle.</p>
+<p><img alt="" src="../../../_images/tmPostSensorRatio1.svg" /></p>
+<p>The <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> triggers the sensors to sample every PWM cycle, but the control tasks do not run every cycle. Remember that the control tasks can only run directly following a sensor sampling, but that doesn’t mean that the control task always runs after every sensor sampling. In this way, the <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> can only slow down the rate of control tasks, not speed them up.</p>
+<p>Rebuild and run the new program, and use the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">stats</span> <span class="pre">print</span></code> to view the loop time (after doing <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">init</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Task</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="n">Loop</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">48373</span> <span class="n">samples</span>
+<span class="n">Loop</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">80.46</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">119.44</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">100.00</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.24</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">48624</span> <span class="n">samples</span>
+<span class="n">Run</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">9.85</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">17.02</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">10.25</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">1.40</span> <span class="n">usec</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">Mean</span></code> has returned to <code class="docutils literal notranslate"><span class="pre">100.00</span> <span class="pre">usec</span></code> (the value specified by <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code>). Unlike Experiment 1, the <a class="reference internal" href="../../../firmware/arch/timing-manager.html"><span class="std std-doc">Timing Manager</span></a> is no longer slowing down the rate of the control task.</p>
+<p>While the experiment 2 configuration doesn’t break any of the <a class="reference internal" href="#timing-configuration-rules">timing manager rules</a>, it is an example of a critical task not satisfying equality <a class="reference internal" href="#equation-eq-tm1">(1)</a>. Users are advised to avoid this configuration because the sensor data will have inconsistent staleness.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note that in this case, the task’s <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Mean</span></code> value has increased significantly. This is a <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/issues/424">bug under review</a> that may appear from sub-optimal timing configuration. Not all users experience this bug.</p>
+</div>
+</section>
+<section id="experiment-3-changing-pwm-frequency">
+<h2>Experiment 3 - Changing PWM frequency<a class="headerlink" href="#experiment-3-changing-pwm-frequency" title="Permalink to this heading">¶</a></h2>
+<p>If the AMDC’s <code class="docutils literal notranslate"><span class="pre">PWM_FREQUENCY</span></code> is changed, the user needs to appropriately update the <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> to be compatible with the desired <code class="docutils literal notranslate"><span class="pre">TASK_CONTROLLER_UPDATES_PER_SEC</span></code>.</p>
+<p>To illustrate this, let’s return to the situation with an <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> of <code class="docutils literal notranslate"><span class="pre">10</span></code>, but this time modify the PWM ratio from 100kHz to 50kHz. We can do this by adding the code <code class="docutils literal notranslate"><span class="pre">pwm_set_switching_freq(50000)</span></code> to our init function (remember to <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;drv/pwm.h&quot;</span></code> at the top of the file).</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">app_controller.c</span></code> to update this code:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;drv/pwm.h&quot;</span>
+
+<span class="cp">#define EVENT_RATIO 10</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_controller_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Enable data sampling for ADC</span>
+<span class="w">    </span><span class="n">timing_manager_enable_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set User Event Ratio</span>
+<span class="w">    </span><span class="n">timing_manager_set_ratio</span><span class="p">(</span><span class="n">EVENT_RATIO</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set PWM frequency</span>
+<span class="w">    </span><span class="n">pwm_set_switching_freq</span><span class="p">(</span><span class="mi">50000</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Register &quot;ctrl&quot; command with system</span>
+<span class="w">    </span><span class="n">cmd_ctrl_register</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we’re sampling sensors every <code class="docutils literal notranslate"><span class="pre">10</span></code> PWM cycles, but each PWM cycle takes twice as long as it used to. This means that our sensors are only sampled every 200us again, which will slow down our control task rate!</p>
+<p><img alt="" src="../../../_images/tmPostSensorFrequency50.svg" /></p>
+<p>Rebuild and run the new program, and use the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">stats</span> <span class="pre">print</span></code> to view the loop time (after doing <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">init</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Task</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="n">Loop</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">10847</span> <span class="n">samples</span>
+<span class="n">Loop</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">193.82</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">206.22</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">200.00</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.04</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">10973</span> <span class="n">samples</span>
+<span class="n">Run</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">3.25</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">4.24</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">3.39</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.00</span> <span class="n">usec</span>
+</pre></div>
+</div>
+<p>Indeed our <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">Mean</span></code> is back to <code class="docutils literal notranslate"><span class="pre">200us</span></code>.</p>
+<p>We can fix this by adjusting the <code class="docutils literal notranslate"><span class="pre">EVENT_RATIO</span></code> ratio from <code class="docutils literal notranslate"><span class="pre">10</span></code> down to <code class="docutils literal notranslate"><span class="pre">5</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;drv/pwm.h&quot;</span>
+
+<span class="cp">#define EVENT_RATIO 5</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_controller_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Enable data sampling for ADC</span>
+<span class="w">    </span><span class="n">timing_manager_enable_sensor</span><span class="p">(</span><span class="n">ADC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set User Event Ratio</span>
+<span class="w">    </span><span class="n">timing_manager_set_ratio</span><span class="p">(</span><span class="n">EVENT_RATIO</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// set PWM frequency</span>
+<span class="w">    </span><span class="n">pwm_set_switching_freq</span><span class="p">(</span><span class="mi">50000</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Register &quot;ctrl&quot; command with system</span>
+<span class="w">    </span><span class="n">cmd_ctrl_register</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we’re sampling sensors every <code class="docutils literal notranslate"><span class="pre">5</span></code> PWM cycles. Since each PWM cycle takes 20us, that means our sensor sampling and control task will run every 100us once again.</p>
+<p><img alt="" src="../../../_images/tmPostSensorFrequency50Ratio5.svg" /></p>
+<p>Rebuild and run the new program, and use the command <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">stats</span> <span class="pre">print</span></code> to view the loop time (after doing <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">init</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Task</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="n">Loop</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">27497</span> <span class="n">samples</span>
+<span class="n">Loop</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">93.69</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">106.35</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">100.00</span> <span class="n">usec</span>
+<span class="n">Loop</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.02</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Num</span><span class="p">:</span>	<span class="mi">27748</span> <span class="n">samples</span>
+<span class="n">Run</span> <span class="n">Min</span><span class="p">:</span>	<span class="mf">3.25</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Max</span><span class="p">:</span>	<span class="mf">3.84</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Mean</span><span class="p">:</span>	<span class="mf">3.39</span> <span class="n">usec</span>
+<span class="n">Run</span> <span class="n">Var</span><span class="p">:</span>	<span class="mf">0.00</span> <span class="n">usec</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="../../advanced-tutorials/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Advanced Tutorials</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../profiling-tasks/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tutorial: Profiling Tasks</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Apr 16, 2025</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tutorial: Timing &amp; Sensors</a><ul>
+<li><a class="reference internal" href="#tutorial-requirements">Tutorial Requirements</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#scheduling-and-synchronizing">Scheduling and Synchronizing</a><ul>
+<li><a class="reference internal" href="#timing-manager-modes">Timing Manager Modes</a></li>
+<li><a class="reference internal" href="#key-timing-parameters">Key Timing Parameters</a></li>
+<li><a class="reference internal" href="#timing-configuration-rules">Timing Configuration Rules</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c-code">C-Code</a><ul>
+<li><a class="reference internal" href="#set-the-timing-manager-mode">Set the Timing Manager Mode</a></li>
+<li><a class="reference internal" href="#link-the-timing-manager-to-sensor-interfaces">Link the Timing Manager to Sensor Interfaces</a></li>
+<li><a class="reference internal" href="#reading-sensor-data">Reading Sensor Data</a></li>
+<li><a class="reference internal" href="#reporting-sensor-acquisition-time-and-sensor-data-staleness">Reporting sensor acquisition time and sensor data staleness</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#determine-system-timing">Determine System Timing</a><ul>
+<li><a class="reference internal" href="#step-1-determine-programmed-timing-parameters">Step 1: Determine programmed timing parameters</a></li>
+<li><a class="reference internal" href="#step-2-determine-sensor-acquisition-time">Step 2: Determine Sensor Acquisition Time</a></li>
+<li><a class="reference internal" href="#step-3-determine-the-run-time-and-loop-time">Step 3: Determine the run time and loop time</a></li>
+<li><a class="reference internal" href="#step-4-construct-system-timing-diagram">Step 4: Construct system timing diagram</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experiment-1-ratio-is-too-large">Experiment 1 - Ratio is too large</a></li>
+<li><a class="reference internal" href="#experiment-2-ratio-is-too-small">Experiment 2 - Ratio is too small</a></li>
+<li><a class="reference internal" href="#experiment-3-changing-pwm-frequency">Experiment 3 - Changing PWM frequency</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

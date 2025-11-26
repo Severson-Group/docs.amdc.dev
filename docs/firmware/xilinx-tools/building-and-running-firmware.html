@@ -1,0 +1,917 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2024-04-02T11:28:32-05:00" /><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Flashing AMDC" href="flashing.html"><link rel="prev" title="Installing Xilinx Tools" href="installing-xilinx-tools.html">
+        <link rel="canonical" href="https://docs.amdc.dev/firmware/xilinx-tools/building-and-running-firmware.html">
+
+    <link rel="shortcut icon" href="../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Building and Running Firmware - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../getting-started/user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../getting-started/user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getting-started/user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/firmware/xilinx-tools/building-and-running-firmware.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/firmware/xilinx-tools/building-and-running-firmware.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="building-and-running-firmware">
+<h1>Building and Running Firmware<a class="headerlink" href="#building-and-running-firmware" title="Permalink to this heading">¶</a></h1>
+<p>Following these instructions will get the AMDC firmware environment up and running on your local machine for development and testing purposes.</p>
+<section id="required-software">
+<h2>Required Software<a class="headerlink" href="#required-software" title="Permalink to this heading">¶</a></h2>
+<p>Firmware development environment needs a few things:</p>
+<ul class="simple">
+<li><p>Xilinx Vivado 2019.1 and SDK (if you don’t have these, <a class="reference internal" href="installing-xilinx-tools.html"><span class="std std-doc">follow these steps to install them</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">em.avnet.com:picozed_7030_fmc2:part0:1.1</span></code> board definition</p>
+<ol class="arabic simple">
+<li><p>Go <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/issues/10#issuecomment-847993684">here</a></p></li>
+<li><p>Download the zip file and unzip it</p></li>
+<li><p>Move the resulting folder (<code class="docutils literal notranslate"><span class="pre">picozed_*</span></code>) to <code class="docutils literal notranslate"><span class="pre">C:\Xilinx\Vivado\2019.1\data\boards\board_files\...</span></code></p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="cloning-from-github">
+<h2>Cloning from GitHub<a class="headerlink" href="#cloning-from-github" title="Permalink to this heading">¶</a></h2>
+<p>There are two recomended options for cloning the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo from GitHub and creating a local working space on your computer. To choose between them, you must first decide if your user application(s) will be private or open-source. Most likely, your code will be private. This means that you will not contribute it back to the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo as an example application.</p>
+<section id="open-source-example-applications">
+<h3>Open-Source Example Applications<a class="headerlink" href="#open-source-example-applications" title="Permalink to this heading">¶</a></h3>
+<p>If you are <em>not</em> creating private user applications, i.e. your code will be contributed back to the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo as an example application:</p>
+<ol class="arabic simple">
+<li><p>Download the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> git repo to your local machine like normal:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/Severson-Group/AMDC-Firmware</span></code></p></li>
+</ol>
+</li>
+<li><p>Ensure it is in a permanent location (i.e., not <code class="docutils literal notranslate"><span class="pre">Downloads</span></code>)</p></li>
+<li><p>Ensure the path doesn’t contain any spaces.</p></li>
+</ol>
+<p>NOTE: <code class="docutils literal notranslate"><span class="pre">$REPO_DIR</span></code> represents the file system path of the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repository.</p>
+</section>
+<section id="private-user-applications">
+<h3>Private User Applications<a class="headerlink" href="#private-user-applications" title="Permalink to this heading">¶</a></h3>
+<p>For the majority of use cases, your user application(s) will be private and reside in a <em>different</em> repo than the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo (i.e. your own personal repo):</p>
+<ol class="arabic simple">
+<li><p>Create your master repo (which will eventually contain your private code as well as a copy of <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code>)</p>
+<ol class="arabic simple">
+<li><p>Ensure it is in a permanent location (i.e., not <code class="docutils literal notranslate"><span class="pre">Downloads</span></code>)</p></li>
+<li><p>Ensure the path doesn’t contain any spaces.</p></li>
+</ol>
+</li>
+<li><p>In this repo:</p>
+<ol class="arabic simple">
+<li><p>Add a git submodule for the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">add</span> <span class="pre">https://github.com/Severson-Group/AMDC-Firmware</span></code></p></li>
+<li><p>Optional (and suggested): add <code class="docutils literal notranslate"><span class="pre">branch</span> <span class="pre">=</span> <span class="pre">develop</span></code> to <code class="docutils literal notranslate"><span class="pre">.gitmodules</span></code> so your submodule will track the develop branch by default</p></li>
+<li><p><strong>Copy</strong> <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware/sdk/app_cpu1/user</span></code> to your repo’s root directory, and rename (perhaps as “my-AMDC-private-C-code”)</p></li>
+</ol>
+</li>
+</ol>
+<p>You should now have a master repo with two subfolders:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="o">-</span><span class="n">AMDC</span><span class="o">-</span><span class="n">workspace</span><span class="o">/</span>              <span class="o">&lt;=</span> <span class="n">master</span> <span class="n">repo</span>
+    <span class="n">AMDC</span><span class="o">-</span><span class="n">Firmware</span><span class="o">/</span>              <span class="o">&lt;=</span> <span class="n">AMDC</span><span class="o">-</span><span class="n">Firmware</span> <span class="k">as</span> <span class="n">library</span>
+        <span class="o">...</span>
+    <span class="n">my</span><span class="o">-</span><span class="n">AMDC</span><span class="o">-</span><span class="n">private</span><span class="o">-</span><span class="n">C</span><span class="o">-</span><span class="n">code</span><span class="o">/</span>     <span class="o">&lt;=</span> <span class="n">Your</span> <span class="n">private</span> <span class="n">user</span> <span class="n">C</span> <span class="n">code</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>NOTE: In the rest of this document, <code class="docutils literal notranslate"><span class="pre">$REPO_DIR</span></code> represents the file system path of the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repository, <em>not your master repo</em>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you plan to work on your private user repositories on multiple computers, it is recommended that you clone it to the same directory on each computer. Take this into consideration when first establishing your private repo (i.e., don’t clone it to the <code class="docutils literal notranslate"><span class="pre">D</span></code> drive if not all computers have a second hard drive).</p>
+<p>This is due to certain Xilinx SDK settings using absolute (instead of relative) file system paths.</p>
+</div>
+<section id="common-git-submodule-commands">
+<h4>Common <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span></code> commands<a class="headerlink" href="#common-git-submodule-commands" title="Permalink to this heading">¶</a></h4>
+<p>Your repo now contains <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> as a <em>git submodule</em>. Read about submodules <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">here</a> or <a class="reference external" href="https://www.vogella.com/tutorials/GitSubmodules/article.html">here</a>. The most common command you will use is the <strong>update</strong> command, which updates your submodule from the remote source. Execute this command from your master repo: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span></code>. If you have not initialized your submodules, append <code class="docutils literal notranslate"><span class="pre">--init</span></code> to the previous command.</p>
+</section>
+</section>
+</section>
+<section id="vivado">
+<h2>Vivado<a class="headerlink" href="#vivado" title="Permalink to this heading">¶</a></h2>
+<p>Vivado is used to configure the Zynq-7000 SoC (clocks, pins, etc). All FPGA development happens within Vivado. All users must set up a Vivado project and build a FPGA bitstream.</p>
+<p>If you are not doing anything specialized that would require changes to the FPGA, after following these steps, you do not need to use Vivado again. All your future development will happen within the SDK.</p>
+<section id="creating-vivado-project">
+<h3>Creating Vivado Project<a class="headerlink" href="#creating-vivado-project" title="Permalink to this heading">¶</a></h3>
+<p>Only source files and IP is version controlled which mean you must generate a local Vivado project. To do this:</p>
+<ol class="arabic simple">
+<li><p>Open Vivado Application</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tools</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Tcl</span> <span class="pre">Script...</span></code></p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\import_rev*.tcl</span></code> script (use appropriate script for the target AMDC hardware)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Upon successful project generation, the block diagram will open. If the block diagram does not open, fix the errors and try reimporting project. See the errors by opening the <code class="docutils literal notranslate"><span class="pre">Tcl</span> <span class="pre">Console</span></code> pane in Vivado.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Make sure the block diagram automatically opens after running the import script! <strong>No automatic block diagram opening means it will not work!</strong></p>
+<p>If the block diagram does not open automatically, check the <code class="docutils literal notranslate"><span class="pre">Messages</span></code> or <code class="docutils literal notranslate"><span class="pre">Tcl</span> <span class="pre">Console</span></code> panels for more information.</p>
+</div>
+<section id="common-errors">
+<h4>Common Errors<a class="headerlink" href="#common-errors" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Having spaces in the file system path for the Vivado project is not supported. For example, if your repo is located in your user directory and your username has a space in it: <code class="docutils literal notranslate"><span class="pre">C:\Users\**John</span> <span class="pre">Doe**\Documents\GitHub\AMDC-Firmare</span></code>. If this is the case, the project import will fail. Move the repo elsewhere and try again.</p></li>
+<li><p>The import script <strong>will not</strong> overwrite the <code class="docutils literal notranslate"><span class="pre">amdc/</span></code> Vivado project folder on disk. If you are trying to regenerate the Vivado project, you must delete the old <code class="docutils literal notranslate"><span class="pre">amdc/</span></code> folder before running the script.</p></li>
+<li><p>Vivado will fail during import of the project if the IP cores are “locked”. This can happen if you checkout a new branch of code and try to rebuild Vivado without deleting all the temporary files. The easiest way to fix this is to always delete and reclone the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> folder when changing code versions.</p></li>
+</ul>
+</section>
+</section>
+<section id="generating-bitstream">
+<h3>Generating Bitstream<a class="headerlink" href="#generating-bitstream" title="Permalink to this heading">¶</a></h3>
+<p>After generating the project itself, you need to generate a bitstream to load into the FPGA.</p>
+<ol class="arabic simple">
+<li><p>In Vivado…</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROGRAM</span> <span class="pre">AND</span> <span class="pre">DEBUG</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">Bitstream</span></code></p></li>
+<li><p>Click through the pop-ups until it starts actually working</p></li>
+<li><p>If there are <code class="docutils literal notranslate"><span class="pre">Launch</span> <span class="pre">Run</span> <span class="pre">Critical</span> <span class="pre">Messages</span></code> about <code class="docutils literal notranslate"><span class="pre">PCW...</span></code>, ignore them and click OK</p></li>
+</ol>
+<p>This step will take a while (~10 minutes). Upon successful generation, the bitstream is ready to load onto AMDC. This happens in the SDK section of this document.</p>
+</section>
+<section id="export-hardware">
+<h3>Export Hardware<a class="headerlink" href="#export-hardware" title="Permalink to this heading">¶</a></h3>
+<p>You now need to export the hardware from Vivado to the SDK environment.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Export</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">Hardware...</span></code></p></li>
+<li><p>Make sure to uncheck <code class="docutils literal notranslate"><span class="pre">Include</span> <span class="pre">bitstream</span></code></p></li>
+<li><p>Set location to export to: <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+</section>
+<section id="open-sdk-from-vivado">
+<h3>Open SDK from Vivado<a class="headerlink" href="#open-sdk-from-vivado" title="Permalink to this heading">¶</a></h3>
+<p>This is an important step. The first time you generate the FPGA hardware configuration files, etc, you must launch the Xilinx SDK <em>directly from Vivado</em>. This sets up a hardware wrapper project which is needed for the firmware, and some environment variables.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Launch</span> <span class="pre">SDK</span></code></p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk</span></code> for both “Exported location” and “Workspace”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+<li><p>SDK will open</p></li>
+<li><p>Ensure the project <code class="docutils literal notranslate"><span class="pre">amdc_rev*_wrapper_hw_platform_0</span></code> is in <code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">Explorer</span></code></p></li>
+</ol>
+<p>You may now close Vivado if you do not plan on changing the FPGA HDL. Also, you may now close the SDK. You will need to open it in the next section, but practice opening it directly – not from Vivado.</p>
+</section>
+</section>
+<section id="xilinx-sdk">
+<h2>Xilinx SDK<a class="headerlink" href="#xilinx-sdk" title="Permalink to this heading">¶</a></h2>
+<p>Xilinx SDK (referred to as just SDK) is used to program the DSPs on the Zynq-7000 (i.e., C firmware). You will use the SDK to write your code and compile it. Then, you will use it to program the AMDC with your new code and debug issues. Finally, you can use the SDK to flash the AMDC after code development is complete with a permanent image (i.e., will automatically boot when powered on).</p>
+<section id="open-sdk">
+<h3>Open SDK<a class="headerlink" href="#open-sdk" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Open Xilinx SDK 2019.1</p></li>
+<li><p>Set workspace to: <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk</span></code></p></li>
+<li><p>Once open, close the Welcome tab</p></li>
+</ol>
+</section>
+<section id="create-bsp-project">
+<h3>Create BSP Project<a class="headerlink" href="#create-bsp-project" title="Permalink to this heading">¶</a></h3>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>To run dual-core programs, you need to make a seperate BSP project targeting <strong>each core individually</strong>.
+Follow the below steps <em>twice</em>, but change the <code class="docutils literal notranslate"><span class="pre">Target</span> <span class="pre">Processor</span></code> for each one to CPU0/CPU1.
+Name each BSP project: <code class="docutils literal notranslate"><span class="pre">amdc_bsp_cpu0</span></code> and <code class="docutils literal notranslate"><span class="pre">amdc_bsp_cpu1</span></code>.</p>
+<p>After creating both BSPs, you must update the settings for <code class="docutils literal notranslate"><span class="pre">amdc_bsp_cpu1</span></code> to add an extra compiler flag: <code class="docutils literal notranslate"><span class="pre">-DUSE_AMP=1</span></code>.</p>
+<p><img alt="" src="../../_images/dual-core-use-amp-flag.png" /></p>
+<p>See the <a class="reference internal" href="dual-core.html"><span class="std std-doc">Dual Core</span></a> docs for more information.</p>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">New</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Board</span> <span class="pre">Support</span> <span class="pre">Package</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">name</span></code> to “amdc_bsp”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Finish</span></code></p></li>
+<li><p>Pop-up will appear</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">lwip***</span></code></p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">xilffs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+<li><p>The BSP will build</p></li>
+</ol>
+</section>
+<section id="import-projects-into-sdk">
+<h3>Import Projects into SDK<a class="headerlink" href="#import-projects-into-sdk" title="Permalink to this heading">¶</a></h3>
+<p>The SDK workspace will initially be empty (except for <code class="docutils literal notranslate"><span class="pre">amdc_rev*_wrapper...</span></code> from above and new <code class="docutils literal notranslate"><span class="pre">amdc_bsp</span></code>). You need to import the projects you want to use.</p>
+<section id="id1">
+<h4>Open-source example applications:<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+<p>Follow these steps to import projects directly from the core <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo (i.e. open-source example applications):</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Projects</span> <span class="pre">from</span> <span class="pre">File</span> <span class="pre">System...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Directory...</span></code></p></li>
+<li><p>Select: <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk</span></code></p></li>
+<li><p>Ensure all projects are selected</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Finish</span></code></p></li>
+</ol>
+</section>
+<section id="id2">
+<h4>Private user applications:<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
+<p>Follow these steps to import projects from your private user repo:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Projects</span> <span class="pre">from</span> <span class="pre">File</span> <span class="pre">System...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Directory...</span></code></p></li>
+<li><p>Select: <code class="docutils literal notranslate"><span class="pre">your</span> <span class="pre">master</span> <span class="pre">user</span> <span class="pre">repo</span></code> / <code class="docutils literal notranslate"><span class="pre">my-AMDC-private-C-code</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Finish</span></code></p></li>
+<li><p>Repeat steps 1 - 4, but this time in step 3 select <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk\app_cpu0</span></code></p></li>
+</ol>
+<p>After clicking <code class="docutils literal notranslate"><span class="pre">Finish</span></code>, the SDK will attempt to build the new private user applications. The compilation will fail. If it doesn’t, you did not import your private user application project correctly – delete the project from the SDK and try again until it fails to build.</p>
+<p>Once it fails to build your new imported project, follow the steps below to fix the compilation. This will restructure the compiler / linker so they know where to find the appropriate files.</p>
+</section>
+</section>
+<section id="fix-common-code-compilation">
+<h3>Fix <code class="docutils literal notranslate"><span class="pre">common</span></code> code compilation<a class="headerlink" href="#fix-common-code-compilation" title="Permalink to this heading">¶</a></h3>
+<p>This section explains how to configure the SDK build system to correctly use the AMDC <code class="docutils literal notranslate"><span class="pre">common</span></code> code from the submodule.</p>
+<p><strong>Only complete these steps if the build failed after you imported the user project!!!</strong> If there were no errors, skip this section. There should be no errors if you have imported the <code class="docutils literal notranslate"><span class="pre">app_cpu1</span></code> project as an open-source project (i.e. not a private user application).</p>
+<p>Link <code class="docutils literal notranslate"><span class="pre">common</span></code> folder to project:</p>
+<ol class="arabic simple">
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">Explorer</span></code>, delete <code class="docutils literal notranslate"><span class="pre">common</span></code> folder from <code class="docutils literal notranslate"><span class="pre">app_cpu1</span></code> project (if present)</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">app_cpu1</span></code> project properties</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C/C++</span> <span class="pre">General</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Paths</span> <span class="pre">and</span> <span class="pre">Symbols</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Source</span> <span class="pre">Location</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Link</span> <span class="pre">Folder...</span></code></p></li>
+<li><p>Check the <code class="docutils literal notranslate"><span class="pre">Link</span> <span class="pre">to</span> <span class="pre">folder</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">file</span> <span class="pre">system</span></code> box</p></li>
+<li><p>Browse to <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\sdk\app_cpu1\common</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Fix compiler includes to reference <code class="docutils literal notranslate"><span class="pre">common</span></code>:</p>
+<ol class="arabic simple" start="7">
+<li><p>Change to <code class="docutils literal notranslate"><span class="pre">Includes</span></code> tab</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit...</span></code> on <code class="docutils literal notranslate"><span class="pre">/app_cpu1/common</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Workspace...</span></code> and select <code class="docutils literal notranslate"><span class="pre">app_cpu1</span></code> / <code class="docutils literal notranslate"><span class="pre">common</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Fix strange SDK issue:</p>
+<ol class="arabic simple" start="12">
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit...</span></code> on <code class="docutils literal notranslate"><span class="pre">/app_cpu1/app_cpu1</span></code></p></li>
+<li><p>Change directory to <code class="docutils literal notranslate"><span class="pre">/app_cpu1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Fix another strange SDK issue:</p>
+<ol class="arabic simple" start="15">
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit...</span></code> on <code class="docutils literal notranslate"><span class="pre">/app_cpu1/amdc_bsp_cpu1/ps7_cortexa9_1/include</span></code></p></li>
+<li><p>Change directory to <code class="docutils literal notranslate"><span class="pre">/amdc_bsp_cpu1/ps7_cortexa9_1/include</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Fix another strange SDK issue:</p>
+<ol class="arabic simple" start="18">
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit...</span></code>  on  <code class="docutils literal notranslate"><span class="pre">/app_cpu1/src</span></code></p></li>
+<li><p>Change directory to  <code class="docutils literal notranslate"><span class="pre">/app_cpu1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Fix another strange SDK issue:</p>
+<ol class="arabic simple" start="21">
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit...</span></code>  on  <code class="docutils literal notranslate"><span class="pre">/app_cpu1/src/common</span></code></p></li>
+<li><p>Change directory to  <code class="docutils literal notranslate"><span class="pre">/app_cpu1/common</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Add library path for BSP:</p>
+<ol class="arabic simple" start="18">
+<li><p>Change to <code class="docutils literal notranslate"><span class="pre">Library</span> <span class="pre">Paths</span></code> tab</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Add...</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Workspace...</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">amdc_bsp_cpu1</span></code> / <code class="docutils literal notranslate"><span class="pre">ps7_cortex9_1</span></code> / <code class="docutils literal notranslate"><span class="pre">lib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+</ol>
+<p>Update linker library options:</p>
+<ol class="arabic simple" start="21">
+<li><p>Change to <code class="docutils literal notranslate"><span class="pre">C/C++</span> <span class="pre">Build</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Settings</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tool</span> <span class="pre">Settings</span></code> tab</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ARM</span> <span class="pre">v7</span> <span class="pre">gcc</span> <span class="pre">linker</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Inferred</span> <span class="pre">Options</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Software</span> <span class="pre">Platform</span></code></p></li>
+<li><p>Add the following for <code class="docutils literal notranslate"><span class="pre">Inferred</span> <span class="pre">Flags</span></code>: <code class="docutils literal notranslate"><span class="pre">-Wl,--start-group,-lxil,-lgcc,-lc,--end-group</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ARM</span> <span class="pre">v7</span> <span class="pre">gcc</span> <span class="pre">linker</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Libraries</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">m</span></code> under <code class="docutils literal notranslate"><span class="pre">Libraries</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">OK</span></code> to exit properties dialog</p></li>
+</ol>
+<section id="expected-paths-and-symbols-settings">
+<h4>Expected <code class="docutils literal notranslate"><span class="pre">Paths</span> <span class="pre">and</span> <span class="pre">Symbols</span></code> Settings<a class="headerlink" href="#expected-paths-and-symbols-settings" title="Permalink to this heading">¶</a></h4>
+<p>After following the above steps, the project build settings should resemble the following screenshots:</p>
+<p><img alt="" src="../../_images/screenshot1.png" />
+<img alt="" src="../../_images/screenshot2.png" />
+<img alt="" src="../../_images/screenshot3.png" />
+<img alt="" src="../../_images/screenshot4.png" /></p>
+</section>
+</section>
+<section id="target-correct-hardware-revision">
+<h3>Target Correct Hardware Revision<a class="headerlink" href="#target-correct-hardware-revision" title="Permalink to this heading">¶</a></h3>
+<p>The AMDC C code is configurable to be built for any hardware revision after and including <code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">D</span></code>. By default, it targets the latest version, which is <code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">F</span></code> (as of March 2024).</p>
+<p>If you are using an older hardware revision, (“REV ?” where “?” is D, E, etc), be sure to change the hardware target define in your <code class="docutils literal notranslate"><span class="pre">usr/user_config.h</span></code> file to <code class="docutils literal notranslate"><span class="pre">AMDC_REV_?</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define USER_CONFIG_HARDWARE_TARGET (AMDC_REV_?)</span>
+</pre></div>
+</div>
+</section>
+<section id="build-sdk-projects">
+<h3>Build SDK Projects<a class="headerlink" href="#build-sdk-projects" title="Permalink to this heading">¶</a></h3>
+<p>The SDK will attempt to build the projects you just imported. Wait until all projects are done compiling… Could take a few minutes…</p>
+<p>There shouldn’t be any errors. Ensure there are no errors for <code class="docutils literal notranslate"><span class="pre">amdc_bsp</span></code> and your desired application project (i.e. <code class="docutils literal notranslate"><span class="pre">app_cpu1</span></code>)</p>
+<p>All done! Ready to program AMDC!</p>
+</section>
+</section>
+<section id="ensure-git-synchronized">
+<h2>Ensure <code class="docutils literal notranslate"><span class="pre">git</span></code> Synchronized<a class="headerlink" href="#ensure-git-synchronized" title="Permalink to this heading">¶</a></h2>
+<p>At this point, you are done generating code / importing / exporting / etc. Now we will ensure git sees the correct changes.</p>
+<section id="discard-changes-to-amdc-firmware">
+<h3>Discard changes to AMDC-Firmware<a class="headerlink" href="#discard-changes-to-amdc-firmware" title="Permalink to this heading">¶</a></h3>
+<p>Your submodule <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> should be clean, i.e. no changes. Chances are, this is not true. Please revert your local changes to <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> to make it match the remote version.</p>
+<p>Vivado probably updated the <code class="docutils literal notranslate"><span class="pre">*.bd</span></code> file… Simply run: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">restore</span> <span class="pre">...</span></code> to put this file back to a clean state.</p>
+</section>
+<section id="add-gitignore-as-needed-private-user-code-only">
+<h3>Add <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> as needed (private user code only)<a class="headerlink" href="#add-gitignore-as-needed-private-user-code-only" title="Permalink to this heading">¶</a></h3>
+<p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> in your private user repo. If git sees changes to the following folders, create a gitignore file so that they are ignored.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.metadata/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Release/</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="making-private-repository-portable">
+<h2>Making Private Repository Portable<a class="headerlink" href="#making-private-repository-portable" title="Permalink to this heading">¶</a></h2>
+<p>Please read <a class="reference internal" href="create-private-repo.html"><span class="std std-doc">this document</span></a> for instructions on how to further configure your private repository to support expedited cloning.</p>
+</section>
+<section id="programming-amdc">
+<h2>Programming AMDC<a class="headerlink" href="#programming-amdc" title="Permalink to this heading">¶</a></h2>
+<p>Ensure the AMDC JTAG / UART is plugged into your PC and AMDC main power is supplied.</p>
+<section id="setup-sdk-project-debug-configuration">
+<h3>Setup SDK Project Debug Configuration<a class="headerlink" href="#setup-sdk-project-debug-configuration" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Right-click on the project you are trying to debug, e.g. <code class="docutils literal notranslate"><span class="pre">app_cpu0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">As</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">Configurations...</span></code></p></li>
+<li><p>Ensure you have a <code class="docutils literal notranslate"><span class="pre">System</span> <span class="pre">Debugger</span> <span class="pre">using</span> <span class="pre">Debug_foo.elf</span> <span class="pre">on</span> <span class="pre">Local</span></code> launch configuration ready for editing. <em>If not:</em></p>
+<ol class="arabic simple">
+<li><p>Right-click on <code class="docutils literal notranslate"><span class="pre">Xilinx</span> <span class="pre">C/C++</span> <span class="pre">application</span> <span class="pre">(System</span> <span class="pre">Debugger)</span></code> from left pane &gt; <code class="docutils literal notranslate"><span class="pre">New</span></code></p></li>
+<li><p>A new panel should appear on the right half of popup</p></li>
+</ol>
+</li>
+<li><p>Ensure the <code class="docutils literal notranslate"><span class="pre">Target</span> <span class="pre">Setup</span></code> tab is open</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Browse...</span></code> for <code class="docutils literal notranslate"><span class="pre">Bitstream</span> <span class="pre">File</span></code></p>
+<ol class="arabic simple">
+<li><p>Find the bitstream which Vivado generated (should be at <code class="docutils literal notranslate"><span class="pre">$REPO_DIR\amdc\amdc.runs\impl_1\amdc_rev*_wrapper.bit</span></code>) and click <code class="docutils literal notranslate"><span class="pre">Open</span></code></p></li>
+</ol>
+</li>
+<li><p>Check the following boxes: <code class="docutils literal notranslate"><span class="pre">Reset</span> <span class="pre">entire</span> <span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">Program</span> <span class="pre">FPGA</span></code>, <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">ps7_init</span></code>, <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">ps7_post_config</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Apply</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Close</span></code></p></li>
+</ol>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you are targeting dual-core operation, you must manually specify the <code class="docutils literal notranslate"><span class="pre">*.elf</span></code> file for both cores.</p>
+<p>In the second tab, browse for the ELF files which are located under the <code class="docutils literal notranslate"><span class="pre">Debug/</span></code> sub-folder.</p>
+<p>Uncheck the “stop on main” checkbox to ensure both cores start running right away during debug.</p>
+</div>
+<p>After following the above steps for dual-core operation, the debug configuration should resemble the following screenshots:
+<img alt="" src="../../_images/debug-config-dual-core-1.png" />
+<img alt="" src="../../_images/debug-config-dual-core-2.png" /></p>
+</section>
+<section id="running-project-on-amdc">
+<h3>Running Project on AMDC<a class="headerlink" href="#running-project-on-amdc" title="Permalink to this heading">¶</a></h3>
+<p>Now, you are ready to start the code on AMDC!</p>
+<ol class="arabic simple">
+<li><p>Right-click on application, e.g. <code class="docutils literal notranslate"><span class="pre">app_cpu0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">As</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Launch</span> <span class="pre">on</span> <span class="pre">Hardware</span> <span class="pre">(System</span> <span class="pre">Debugger)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SDK</span> <span class="pre">Log</span></code> panel in the GUI will show stream of message as AMDC is programmed</p>
+<ol class="arabic simple">
+<li><p>System reset will occur</p></li>
+<li><p>FPGA will be programmed</p></li>
+<li><p>Processor will start running your code (must click play button to start it running)</p></li>
+</ol>
+</li>
+<li><p>NOTE: You only have to do the right-click and debug from the menu the first time – next time, just click the debug icon from the icon ribbon in the GUI (located to left of play button).</p></li>
+</ol>
+</section>
+<section id="connecting-to-amdc-over-usb-uart">
+<h3>Connecting to AMDC over USB-UART<a class="headerlink" href="#connecting-to-amdc-over-usb-uart" title="Permalink to this heading">¶</a></h3>
+<p>To interface with the serial terminal on AMDC, your PC needs the appropriate driver:</p>
+<ul class="simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">D</span></code> hardware, the UART interface is the <code class="docutils literal notranslate"><span class="pre">Silicon</span> <span class="pre">Labs</span> <span class="pre">CP210x</span> <span class="pre">USB-UART</span> <span class="pre">Bridge</span></code></p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">E</span></code> hardware and beyond, the UART interface is from <code class="docutils literal notranslate"><span class="pre">FTDI</span></code> and should be natively supported by your operating system</p></li>
+</ul>
+<section id="for-silicon-labs-uart-usb-driver-rev-d-hardware">
+<h4>For Silicon Labs UART-USB Driver (<code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">D</span></code> hardware)<a class="headerlink" href="#for-silicon-labs-uart-usb-driver-rev-d-hardware" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Open: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers</p></li>
+<li><p>Download the right drivers for your platform and install them.</p></li>
+<li><p>Verify the drivers are installed:</p>
+<ol class="arabic simple">
+<li><p>Connect a micro USB cable to the “UART” input on AMDC</p></li>
+<li><p>Check that a <code class="docutils literal notranslate"><span class="pre">Silicon</span> <span class="pre">Labs</span> <span class="pre">CP210x</span> <span class="pre">USB-UART</span> <span class="pre">Bridge</span></code> appears as a connected device.</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="issues">
+<h2>Issues<a class="headerlink" href="#issues" title="Permalink to this heading">¶</a></h2>
+<p>Getting AMDC to start and run FPGA and C code can be hard. If it isn’t working, try repeating the programming steps. Make sure to reset the board by either power cycling AMDC or pushing <code class="docutils literal notranslate"><span class="pre">RESET</span></code> button on AMDC.</p>
+<p>If you are getting compilation errors in the SDK (especially during the linking phase), consider deleting the <code class="docutils literal notranslate"><span class="pre">amdc_bsp</span></code> project(s) and regenerating – doing so sometimes resolves common issues.</p>
+<p>NOTE: Pushing the <code class="docutils literal notranslate"><span class="pre">RESET</span></code> button on PCB <strong>is NOT</strong> exactly the same as doing a full power cycle of board. The <code class="docutils literal notranslate"><span class="pre">RESET</span></code> button performs a different type of reset (it keeps around debug configurations, etc). During development, you may need to perform a full power cycle, while other times, a simple <code class="docutils literal notranslate"><span class="pre">RESET</span></code> button push will work.</p>
+<p>Xilinx tools also have <strong>many</strong> quirks. Good luck getting everything working!</p>
+</section>
+<section id="copying-xilinx-files-projects">
+<h2>Copying Xilinx Files/Projects<a class="headerlink" href="#copying-xilinx-files-projects" title="Permalink to this heading">¶</a></h2>
+<p>When copying files from one Xilinx project to another, they may not show up in the Project Explorer after importing via File -&gt; Open Projects from File System. Solution 1 relies on you to delete a  <code class="docutils literal notranslate"><span class="pre">.project</span></code>  file and Xilinx to regenerate it. Solution 2 seems to overwrite  <code class="docutils literal notranslate"><span class="pre">.project</span></code>  files.</p>
+<section id="solution-1">
+<h3>Solution 1:<a class="headerlink" href="#solution-1" title="Permalink to this heading">¶</a></h3>
+<p>This can be fixed by Navigating to the folder you want to import and deleting the  <code class="docutils literal notranslate"><span class="pre">.project</span></code>  file found within that folder. Now it should import via File -&gt; Open Projects from File System.</p>
+</section>
+<section id="solution-2">
+<h3>Solution 2:<a class="headerlink" href="#solution-2" title="Permalink to this heading">¶</a></h3>
+<p>Another solution is to start in Vivado. After getting a successful block diagram and generating a bitstream, select File -&gt; Export -&gt; Export Hardware, Leave ‘Include Bitstream’ unchecked, and select the folder that contains the code you want to modify (If you are following these <a class="reference external" href="https://docs.amdc.dev/firmware/xilinx-tools/building-and-running-firmware.html#fix-common-code-compilation">instructions</a>,  <code class="docutils literal notranslate"><span class="pre">my-AMDC-private-C-code</span></code>  is the folder that you should select).</p>
+<p>Click OK, and select File -&gt; Launch SDK. Your Exported Location should be the same folder as before (<code class="docutils literal notranslate"><span class="pre">my-AMDC-private-C-code</span></code>), and your workspace should be the  <code class="docutils literal notranslate"><span class="pre">SDK</span></code>  folder found inside  <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code>.</p>
+<p>Click OK and close the welcome tab in Xilinx when it loads. There should only be  <code class="docutils literal notranslate"><span class="pre">amdc_rev*_wrapper_hw_platform_0</span></code>  in your Project Explorer. Now you can import files from the folders you selected earlier (<code class="docutils literal notranslate"><span class="pre">my-AMDC-private-C-code</span></code>  and  <code class="docutils literal notranslate"><span class="pre">SDK</span></code>) via File -&gt; Open Projects from File System.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="flashing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Flashing AMDC</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="installing-xilinx-tools.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Installing Xilinx Tools</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Apr 02, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Building and Running Firmware</a><ul>
+<li><a class="reference internal" href="#required-software">Required Software</a></li>
+<li><a class="reference internal" href="#cloning-from-github">Cloning from GitHub</a><ul>
+<li><a class="reference internal" href="#open-source-example-applications">Open-Source Example Applications</a></li>
+<li><a class="reference internal" href="#private-user-applications">Private User Applications</a><ul>
+<li><a class="reference internal" href="#common-git-submodule-commands">Common <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span></code> commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vivado">Vivado</a><ul>
+<li><a class="reference internal" href="#creating-vivado-project">Creating Vivado Project</a><ul>
+<li><a class="reference internal" href="#common-errors">Common Errors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generating-bitstream">Generating Bitstream</a></li>
+<li><a class="reference internal" href="#export-hardware">Export Hardware</a></li>
+<li><a class="reference internal" href="#open-sdk-from-vivado">Open SDK from Vivado</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#xilinx-sdk">Xilinx SDK</a><ul>
+<li><a class="reference internal" href="#open-sdk">Open SDK</a></li>
+<li><a class="reference internal" href="#create-bsp-project">Create BSP Project</a></li>
+<li><a class="reference internal" href="#import-projects-into-sdk">Import Projects into SDK</a><ul>
+<li><a class="reference internal" href="#id1">Open-source example applications:</a></li>
+<li><a class="reference internal" href="#id2">Private user applications:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fix-common-code-compilation">Fix <code class="docutils literal notranslate"><span class="pre">common</span></code> code compilation</a><ul>
+<li><a class="reference internal" href="#expected-paths-and-symbols-settings">Expected <code class="docutils literal notranslate"><span class="pre">Paths</span> <span class="pre">and</span> <span class="pre">Symbols</span></code> Settings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#target-correct-hardware-revision">Target Correct Hardware Revision</a></li>
+<li><a class="reference internal" href="#build-sdk-projects">Build SDK Projects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ensure-git-synchronized">Ensure <code class="docutils literal notranslate"><span class="pre">git</span></code> Synchronized</a><ul>
+<li><a class="reference internal" href="#discard-changes-to-amdc-firmware">Discard changes to AMDC-Firmware</a></li>
+<li><a class="reference internal" href="#add-gitignore-as-needed-private-user-code-only">Add <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> as needed (private user code only)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#making-private-repository-portable">Making Private Repository Portable</a></li>
+<li><a class="reference internal" href="#programming-amdc">Programming AMDC</a><ul>
+<li><a class="reference internal" href="#setup-sdk-project-debug-configuration">Setup SDK Project Debug Configuration</a></li>
+<li><a class="reference internal" href="#running-project-on-amdc">Running Project on AMDC</a></li>
+<li><a class="reference internal" href="#connecting-to-amdc-over-usb-uart">Connecting to AMDC over USB-UART</a><ul>
+<li><a class="reference internal" href="#for-silicon-labs-uart-usb-driver-rev-d-hardware">For Silicon Labs UART-USB Driver (<code class="docutils literal notranslate"><span class="pre">REV</span> <span class="pre">D</span></code> hardware)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#issues">Issues</a></li>
+<li><a class="reference internal" href="#copying-xilinx-files-projects">Copying Xilinx Files/Projects</a><ul>
+<li><a class="reference internal" href="#solution-1">Solution 1:</a></li>
+<li><a class="reference internal" href="#solution-2">Solution 2:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    </body>
+</html>

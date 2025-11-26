@@ -1,0 +1,1158 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta property="article:modified_time" content="2024-03-27T15:35:22-05:00" /><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="User Guide" href="../../user-guide/index.html"><link rel="prev" title="Tutorial: Custom Control Rate" href="../custom-control-rate/index.html">
+        <link rel="canonical" href="https://docs.amdc.dev/getting-started/advanced-tutorials/fpga-ip-core/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Tutorial: Custom FPGA IP Core - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../control-with-amdc/index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../control-with-amdc/current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/getting-started/advanced-tutorials/fpga-ip-core/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/getting-started/advanced-tutorials/fpga-ip-core/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="tutorial-custom-fpga-ip-core">
+<h1>Tutorial: Custom FPGA IP Core<a class="headerlink" href="#tutorial-custom-fpga-ip-core" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Goal:</strong> Run custom Verilog code in the FPGA.</p></li>
+<li><p><strong>Complexity:</strong> 5 / 5</p></li>
+<li><p><strong>Estimated Time:</strong> 90 min</p></li>
+</ul>
+<p>This tutorial goes over the procedure to create and add a custom FPGA IP core in Vivado.
+Step by step instructions are given which walk the user through each part.</p>
+<blockquote>
+<div><p>This tutorial goes over a toy C code accelerator application of IP cores.</p>
+<p>For a real-life example tutorial of IP cores used to drive external hardware devices, check out <a class="reference external" href="https://nathanpetersen.com/2020/07/17/designing-a-firmware-driver-for-serially-addressable-leds-for-xilinx-zynq-7000/">this blog post</a> which explains how the firmware drivers for the RGB LEDs are implemented in the AMDC.</p>
+</div></blockquote>
+<section id="tutorial-requirements">
+<h2>Tutorial Requirements<a class="headerlink" href="#tutorial-requirements" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Working AMDC hardware for testing</p></li>
+<li><p>Completion of the <a class="reference internal" href="../../tutorials/vsi/index.html"><span class="std std-doc">VSI tutorial</span></a></p></li>
+<li><p>Review of the <code class="docutils literal notranslate"><span class="pre">v1.0</span></code> firmware <a class="reference internal" href="../../../firmware/arch/system.html"><span class="doc std std-doc">system architecture documentation</span></a></p></li>
+<li><p>Working knowledge of digital logic and Verilog</p>
+<ul class="simple">
+<li><p>UW-Madison courses ECE 551/552</p></li>
+<li><p>Online tutorials, e.g., <a class="reference external" href="https://nandland.com/fpga-101/">1</a>, <a class="reference external" href="https://fpgatutorial.com/verilog/">2</a>, <a class="reference external" href="http://www.asic-world.com/verilog/veritut.html">3</a>, etc</p></li>
+</ul>
+</li>
+<li><p>Working knowledge of programming and embedded C code</p>
+<ul class="simple">
+<li><p>UW-Madison courses ECE <a class="reference external" href="https://ece353.engr.wisc.edu/">353</a>/354 and/or CS 400</p></li>
+<li><p>Online tutorials, e.g., <a class="reference external" href="https://www.w3schools.com/c/">1</a>, <a class="reference external" href="https://www.tutorialspoint.com/cprogramming/index.htm">2</a>, <a class="reference external" href="https://www.mygreatlearning.com/blog/embedded-c/">3</a>, <a class="reference external" href="https://www.electronicshub.org/basics-of-embedded-c-program/">4</a>, etc</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">¶</a></h2>
+<p>The AMDC processor is the Xilinx Zynq-7000 system-on-chip (SoC)—see its 1800 page <a class="reference external" href="https://docs.xilinx.com/v/u/en-US/ug585-Zynq-7000-TRM">Technical Reference Manual</a>.
+It includes a dual-core digital signal processor (DSP) and tightly coupled FPGA.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the official Xilinx documentation, the DSP part of the Zynq-7000 is referred to as the “Processing System” (PS), and the FPGA is called the “Programmable Logic” (PL).
+These names can be used interchangeably.</p>
+</div>
+<p>Xilinx provides extensive documentation for exactly the aim of this tutorial: FPGA IP cores.
+Seriously, there are over 20 PDFs/videos/resources provided specifically for this from Xilinx, see <a class="reference external" href="https://www.xilinx.com/support/documentation-navigation/design-hubs/2019-1/dh0003-vivado-designing-with-ip-hub.html">here</a>.
+The main Xilinx resources are this <a class="reference external" href="https://www.xilinx.com/content/dam/xilinx/support/documents/sw_manuals/xilinx2019_1/ug1119-vivado-creating-packaging-ip-tutorial.pdf">tutorial</a> and this <a class="reference external" href="https://www.xilinx.com/content/dam/xilinx/support/documents/sw_manuals/xilinx2019_1/ug1118-vivado-creating-packaging-custom-ip.pdf">user guide</a>.
+Unfortunately, these two PDFs alone are a combined 178 pages long, which can make it hard/overwhelming for new users.</p>
+<p>The goal of this tutorial is to walk advanced AMDC users—who care about using the FPGA—through the process of creating a basic IP core.
+The tutorial does not try to help the user understand every single piece of the system.
+If you want to truly understand FPGA design for the Xilinx Zynq-7000 architecture, you need to invest the hours to read the official documentation.</p>
+<p>Keep in mind that this tutorial is applicable to any system built on top of Xilinx’s system-on-chip (DSP + FPGA) architecture family, not just the AMDC + PicoZed + Zynq-7000 combination.</p>
+</section>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h2>
+<p>After completing this tutorial, answers to the following questions should become apparent:</p>
+<ul class="simple">
+<li><p>How do I run my custom Verilog code in the FPGA?</p></li>
+<li><p>How does the C code interact with Verilog code?</p></li>
+<li><p>Can the FPGA be used for hardware acceleration of C code?</p></li>
+<li><p>I need to implement a new hardware I/O driver to interface to a new sensor/accessory for the AMDC…how do I add it to the FPGA?</p></li>
+</ul>
+<p>Verilog is structured in files which contain <code class="docutils literal notranslate"><span class="pre">module</span></code> definitions.
+Each <code class="docutils literal notranslate"><span class="pre">module</span></code> has external inputs and outputs and can implement internal combinational and sequential logic.
+Modules can be instantiated inside other modules to build a hierarchy of “blocks”.
+Typically, external (i.e., off-chip) signals propagate up to and come from the top-level <code class="docutils literal notranslate"><span class="pre">module</span></code>.</p>
+<p>Consider the following Verilog module which implements an <code class="docutils literal notranslate"><span class="pre">add</span></code> operation of two registers, but with a constant offset and scaling of inputs.
+The math expression is: <span class="math notranslate nohighlight">\(y = 8 x_1 + x_2/4 - 10203\)</span>.
+It returns the result back to the caller block.</p>
+<div class="highlight-Verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">// my_custom_adder.v</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">my_custom_adder</span><span class="p">(</span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">,</span><span class="w"> </span><span class="n">in1</span><span class="p">,</span><span class="w"> </span><span class="n">in2</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+
+<span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">;</span>
+
+<span class="c1">// User-supplied arguments</span>
+<span class="k">input</span><span class="w"> </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">in1</span><span class="p">;</span>
+<span class="k">input</span><span class="w"> </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">in2</span><span class="p">;</span>
+
+<span class="c1">// Computed summation</span>
+<span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">        </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">32</span><span class="mb">&#39;b0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="n">in1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mh">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">in2</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mh">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">32</span><span class="mi">&#39;d10203</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+<p>We want to be able to use this module from the processor C code.
+How do we inject values from the C code into the inputs <code class="docutils literal notranslate"><span class="pre">in1</span></code> and <code class="docutils literal notranslate"><span class="pre">in2</span></code>?
+How do we access the output register <code class="docutils literal notranslate"><span class="pre">out</span></code>?</p>
+<p>In C code, we want to compare the performance of our Verilog-based FPGA adder “accelerator” block versus the C-code-based processor adder.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234567</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2345678</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// C code version</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="o">*</span><span class="n">in1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">in2</span><span class="o">/</span><span class="mi">4</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10203</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// FPGA version</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">somehow_access_my_custom_adder</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span><span class="w"> </span><span class="n">in2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The key question is: how do we implement the <code class="docutils literal notranslate"><span class="pre">somehow_access_my_custom_adder()</span></code> function above?</p>
+<p><strong>This is the role of the FPGA IP core.</strong></p>
+</section>
+<section id="fpga-ip-cores">
+<h2>FPGA IP Cores<a class="headerlink" href="#fpga-ip-cores" title="Permalink to this heading">¶</a></h2>
+<p>An IP (intellectual property) core, see <a class="reference external" href="https://en.wikipedia.org/wiki/Semiconductor_intellectual_property_core">Wikipedia article</a>, is a way to modularize and encapsulate digital logic for use in digital hardware.
+This applies more broadly than just the Xilinx Zynq-7000 architecture—IP cores are an industry-wide concept and any digital system can use IP cores, for example, digital logic design engineers for FPGAs and ASICs can use IP cores as reusable building blocks.
+Each IP core encapsulates a single “job” to be done in the digital logic.
+For example, an Ethernet MAC, HDMI interface, FFT calculation engine, video transcoder, digital communication protocol (e.g., SPI/CAN/UART/USB/etc), neural network inference accelerator, etc.</p>
+<p>The term “IP” refers to the custom logic and “smarts” that are contained within the digital logic.
+Users of the logic block do not have to understand the “IP” baked within to use the module, simply the block interface and I/O requirements.</p>
+<section id="hard-vs-soft-ip">
+<h3>Hard vs. Soft IP<a class="headerlink" href="#hard-vs-soft-ip" title="Permalink to this heading">¶</a></h3>
+<p>Due to the heterogeneous architecture of the Zynq-7000, the notion of “soft” and “hard” IP becomes relevant.
+The Zynq-7000 SoC includes hard IP, akin to standard DSPs from, e.g., TI, ST, NXP, etc.
+Think of hard IP as digital logic that is etched into the silicon—it cannot be altered or changed.
+Typically, hard IP runs faster than soft IP since there is less extraneous support circuitry to allow for customization at run-time.
+Examples of typical hard IP include CPU cores (e.g., <a class="reference external" href="https://developer.arm.com/Processors/Cortex-M0">ARM Cortex-M0</a>) and peripherals like UART/SPI/I2C/USB/etc.</p>
+<p>Soft IP is logic that is dynamically configurable, i.e., FPGA logic.
+For example, a soft processor is a processor that is implemented in the FPGA.
+It still runs code and acts like a hard processor, but tends to be slower, albeit, infinitely configurable.
+Xilinx provides its <a class="reference external" href="https://www.xilinx.com/products/design-tools/microblaze.html">MicroBlaze Soft Processor Core</a> IP which makes it easy to create additional processors (e.g., DSPs) in the FPGA.
+ARM provides the <a class="reference external" href="https://developer.arm.com/Processors/Cortex-M1">Cortex-M1</a> designed specifically for FPGAs.
+These can be instantiated many times to create a custom parallel architecture in the FPGA.
+Note that these soft processors run slower than the hard ARM cores in the Zynq-7000 SoC—around 3-10x slower clock frequencies.</p>
+<p>How do the IP cores in this tutorial and the AMDC-Firmware relate to soft/hard logic?
+By definition, all IP cores in the FPGA that have custom Verilog are soft IPs—the FPGA was dynamically configured at run-time to implement the desired logic functions.
+However, under the hood, if an IP core uses the “hard” logic in the FPGA (e.g., DSP slices, high-speed dedicated transceiver circuitry, etc), then the full IP core would be composed of both soft and hard IP, but overall, still be considered a soft IP.</p>
+<p>Note that soft IP provided by third-parties (e.g., Xilinx and others, see below) is generally not editable—the source code is often locked and must be implemented as a “black-box”.
+Commercial IP usually has strict licensing agreements which must be followed.
+All AMDC-Firmware IP cores (named as <code class="docutils literal notranslate"><span class="pre">amdc_***</span></code>) are open-source and editable by anyone.</p>
+</section>
+<section id="example-ip-cores-for-sale">
+<h3>Example IP Cores for Sale<a class="headerlink" href="#example-ip-cores-for-sale" title="Permalink to this heading">¶</a></h3>
+<p>Designers can purchase pre-made IP cores from many companies.
+For example, the three major FPGA providers (AMD/Xilinx, Intel/Altera, and Lattice) all sell IP cores to accelerate development using their products.</p>
+<p>A few examples you can buy/license:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.arrow.com/en/products/ip-fft/intel">FFT IP core from Intel/Altera</a> costs over $7k</p></li>
+<li><p><a class="reference external" href="https://www.avnet.com/shop/us/products/amd-xilinx/ef-di-can-xc-site-3074457345626042380/">CAN IP core from AMD/Xilinx</a> costs $18k</p></li>
+<li><p><a class="reference external" href="https://www.avnet.com/shop/us/products/amd-xilinx/ef-di-usb2-device-site-3074457345625974081/">USB 2.0 IP core from AMD/Xilinx</a> costs $14k</p></li>
+<li><p><a class="reference external" href="https://www.arrow.com/en/products/scaler-e3-u1/lattice-semiconductor">2D video frame scaling IP core from Lattice</a> costs $3.5k</p></li>
+<li><p><a class="reference external" href="http://www.ipcores.com/">IP Cores, Inc</a> IP core product offering</p></li>
+<li><p><a class="reference external" href="https://www.zipcores.com/ip-core-listings.html">ZIPcores</a> IP core products, e.g.,</p>
+<ul>
+<li><p><a class="reference external" href="https://www.zipcores.com/ultra-speed-fir-filter.html">FIR filters</a> costs $4k</p></li>
+<li><p><a class="reference external" href="https://www.zipcores.com/floating-point-square-root.html">Floating point square root</a> costs $4k</p></li>
+<li><p><a class="reference external" href="https://www.zipcores.com/i2c-master-serial-interface-controller.html">I2C master controller</a> costs $3k</p></li>
+</ul>
+</li>
+</ul>
+<p>As seen above, commercially available IP cores are relatively expensive for casual users, but can greatly accelerate the time to solution and reduce development risk.
+If you possess the skills to create custom Verilog code which can implement the desired functionality, designing and building your own IP cores can be a rewarding alternative compared to buying commercial solutions.</p>
+</section>
+</section>
+<section id="ip-cores-in-xilinx-vivado">
+<h2>IP Cores in Xilinx Vivado<a class="headerlink" href="#ip-cores-in-xilinx-vivado" title="Permalink to this heading">¶</a></h2>
+<p>In the AMDC-Firmware, Vivado manages the FPGA design using three entities:</p>
+<ol class="arabic simple">
+<li><p>The “block design” <code class="docutils literal notranslate"><span class="pre">.bd</span></code> file—encodes the different elements, configurations, and connections</p></li>
+<li><p>The constraints file <code class="docutils literal notranslate"><span class="pre">.xdc</span></code>—stores hardware-related information like port/pin mappings</p></li>
+<li><p>IP repo—folder of custom IP cores which integrate into the block design</p></li>
+</ol>
+<p>These files are visible directly in the <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a> repository:</p>
+<ol class="arabic simple">
+<li><p>Block design: <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/blob/develop/hw/amdc_reve.bd">/hw/amdc_reve.bd</a></p></li>
+<li><p>Constraints: <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/blob/develop/hw/constraints_amdc_reve.xdc">/hw/constraints_amdc_reve.xdc</a></p></li>
+<li><p>IP repo: <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/tree/develop/ip_repo">/ip_repo/</a></p></li>
+</ol>
+<section id="block-design-file">
+<h3>Block Design File<a class="headerlink" href="#block-design-file" title="Permalink to this heading">¶</a></h3>
+<p>The block design <code class="docutils literal notranslate"><span class="pre">.bd</span></code> file is the top-level visual representation of the FPGA design.
+Below is an example screenshot which shows off-chip inputs and outputs (I/O), IP cores (light blue), and hierarchy containers (dark blue) which are simply a way of making the block design appear cleaner.</p>
+<p><img alt="Example labeled block design" src="../../../_images/vivado_bd_labeled.png" /></p>
+<p>Vivado can also support plain HDL module blocks in the block design (i.e., not IP cores, just an instantiated Verilog file), but the AMDC-Firmware project does not use this approach. Plain modules are “static” meaning their I/O cannot be dynamically updated from the C code. Therefore, their functionality is rather limited.</p>
+<p>Notice that each IP core has three common inputs:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s00_axi_aclk</span></code>—clock input, runs at 200 MHz (often called <code class="docutils literal notranslate"><span class="pre">clk</span></code> in Verilog files)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s00_axi_aresetn</span></code>—asynchronous reset input, active low (often called <code class="docutils literal notranslate"><span class="pre">rst_n</span></code> in Verilog files)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S00_AXI</span></code>—bus of many signals which form the AXI4 interconnect</p></li>
+</ol>
+</section>
+<section id="axi-interconnect">
+<h3>AXI Interconnect<a class="headerlink" href="#axi-interconnect" title="Permalink to this heading">¶</a></h3>
+<p>The <a class="reference external" href="https://docs.xilinx.com/v/u/en-US/ug761_axi_reference_guide">AXI interconnect</a> is the bus that connects the DSP (processor) and the IP cores in the FPGA (the programmable logic).
+AXI is part of <a class="reference external" href="https://en.wikipedia.org/wiki/Advanced_Microcontroller_Bus_Architecture">ARM AMBA</a>, a family of microcontroller buses first introduced in 1996.
+AMBA 4.0, released in 2010, includes the second version of AXI, AXI4.
+Xilinx has adopted the Advanced eXtensible Interface (AXI) protocol for Intellectual Property (IP) cores.</p>
+<p>There are three types of AXI4 interfaces:</p>
+<ol class="arabic simple">
+<li><p>AXI4—for high-performance memory-mapped requirements</p></li>
+<li><p>AXI4-Stream—for high-speed streaming data.</p></li>
+<li><p>AXI4-Lite—for simple, low-throughput memory-mapped communication (e.g., to and from control and status registers)</p></li>
+</ol>
+<p>The AXI interconnect is the method by which the C code driver is able to read, write, and interact with the IP cores in the FPGA.
+Most IP cores in the AMDC-Firmware use <strong>AXI4-Lite</strong> since it implements a simple register interface for low-throughput data transfer.
+The remainder of this tutorial will walk through creating and testing a basic IP core using AXI4-Lite.</p>
+</section>
+<section id="ip-core-inputs-and-outputs">
+<h3>IP Core Inputs and Outputs<a class="headerlink" href="#ip-core-inputs-and-outputs" title="Permalink to this heading">¶</a></h3>
+<p>There are two types of input and output to/from an IP core: signal I/O and DSP-FPGA register I/O.</p>
+<section id="signal-i-o">
+<h4>Signal I/O<a class="headerlink" href="#signal-i-o" title="Permalink to this heading">¶</a></h4>
+<p>Vivado shows the signal inputs to an IP core on the left of the block and the IP core outputs on its right.
+Think of these inputs and outputs as the I/O which goes to/comes from a Verilog <code class="docutils literal notranslate"><span class="pre">module</span></code>.</p>
+<p>For example, notice that the <code class="docutils literal notranslate"><span class="pre">amdc_leds</span></code> IP core in the screenshot above has one output signal: <code class="docutils literal notranslate"><span class="pre">led_data</span></code>.
+This signal is wired directly to a port <code class="docutils literal notranslate"><span class="pre">user_led_din</span></code> which goes “off-chip”.
+This signal eventually appears at the actual LEDs on the AMDC hardware, and can be measured by a logic analyzer or oscilloscope.</p>
+<p>Similarly, the <code class="docutils literal notranslate"><span class="pre">amdc_adc</span></code> IP core has both inputs and outputs that go off-chip since it drives the external ADC via a SPI interface (<code class="docutils literal notranslate"><span class="pre">cnv</span></code>, <code class="docutils literal notranslate"><span class="pre">sclk</span></code>, <code class="docutils literal notranslate"><span class="pre">sdo[7:0]</span></code>).
+However, the <code class="docutils literal notranslate"><span class="pre">amdc_adc</span></code> IP core also has inputs which come from other FPGA IP cores (i.e., not off-chip)—the <code class="docutils literal notranslate"><span class="pre">pwm_carrier_high</span></code> and <code class="docutils literal notranslate"><span class="pre">pwm_carrier_low</span></code> signals are generated by another IP core. This concept of inputs and outputs matches that of normal HDL modules.</p>
+</section>
+<section id="dsp-fpga-register-i-o">
+<h4>DSP-FPGA Register I/O<a class="headerlink" href="#dsp-fpga-register-i-o" title="Permalink to this heading">¶</a></h4>
+<p>Since IP cores have registers which can be read/written from the DSP C code, there is another notion of input and output, this time at a register level.
+Setting an IP core register from the C code feels like another input to the IP core, however, this is not visible from the block design view.
+All DSP-FPGA interactions and registers are contained within the IP core—the only indication of DSP-FPGA interaction is the <code class="docutils literal notranslate"><span class="pre">S00_AXI</span></code> bus going to the IP core left side.</p>
+</section>
+</section>
+</section>
+<section id="creating-axi4-lite-ip-core-in-vivado">
+<h2>Creating AXI4-Lite IP Core in Vivado<a class="headerlink" href="#creating-axi4-lite-ip-core-in-vivado" title="Permalink to this heading">¶</a></h2>
+<p>This section goes over all the required steps to create and add the <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> module IP core and hook it up in the block design.
+It is assumed the reader has already installed the Xilinx Vivado software per <a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html"><span class="doc std std-doc">these instructions</span></a>, as well as built the Vivado project per the first part of <a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html"><span class="doc std std-doc">these instructions</span></a>.
+If not, go back and complete the steps now.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The instructions below attempt to show and explain all the steps. However, Vivado has many quirks so users might find things not working for them.
+If so, please reach out for help via the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> <a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware/discussions">GitHub Discussions page</a>.
+Per the feedback, we will try to update this tutorial to make these steps as fool-proof as possible.</p>
+<p>Vivado works well and does the right things, but requires careful user inputs to get it to do what is desired.
+It is quirky.</p>
+</div>
+<section id="ip-creation-wizard">
+<h3>1. IP Creation Wizard<a class="headerlink" href="#ip-creation-wizard" title="Permalink to this heading">¶</a></h3>
+<p>Vivado comes with an IP creation wizard that automatically writes all the required Verilog for a base IP core.
+To use this, follow these instructions:</p>
+<ol class="arabic simple">
+<li><p>Open Vivado, load the <code class="docutils literal notranslate"><span class="pre">amdc</span></code> project, and open the block design</p></li>
+<li><p>Start the IP wizard: <code class="docutils literal notranslate"><span class="pre">Tools</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">and</span> <span class="pre">Package</span> <span class="pre">New</span> <span class="pre">IP</span></code></p></li>
+<li><p>Read the window and click <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code></p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">AXI4</span> <span class="pre">peripheral</span></code> and click <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code></p></li>
+</ol>
+<section id="peripheral-details">
+<h4>Peripheral Details<a class="headerlink" href="#peripheral-details" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Update the name to be <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> (note: all AMDC-Firmware IP uses the <code class="docutils literal notranslate"><span class="pre">amdc_***</span></code> namespace, but for this tutorial, no need for that)</p></li>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">Description</span></code> box to a short (5-10 word) description of the new IP core</p></li>
+<li><p>Ensure the <code class="docutils literal notranslate"><span class="pre">IP</span> <span class="pre">location</span></code> is the <code class="docutils literal notranslate"><span class="pre">/ip_repo/</span></code> folder of the <code class="docutils literal notranslate"><span class="pre">AMDC-Firmware</span></code> repo installation</p></li>
+<li><p>Review the screenshot below as an example</p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code></p></li>
+</ol>
+<a class="reference internal image-reference" href="../../../_images/vivado_ip_wizard1.png"><img alt="Example dialog contents for peripheral details" src="../../../_images/vivado_ip_wizard1.png" style="width: 600px;" /></a>
+</section>
+<section id="add-interfaces">
+<h4>Add Interfaces<a class="headerlink" href="#add-interfaces" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Keep the AXI interface <code class="docutils literal notranslate"><span class="pre">Name</span></code> as default: <code class="docutils literal notranslate"><span class="pre">S00_AXI</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Interface</span> <span class="pre">Type</span></code> to <code class="docutils literal notranslate"><span class="pre">Lite</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Interface</span> <span class="pre">Mode</span></code> to <code class="docutils literal notranslate"><span class="pre">Slave</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Width</span> <span class="pre">(Bits)</span></code> to <code class="docutils literal notranslate"><span class="pre">32</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">Registers</span></code> to <code class="docutils literal notranslate"><span class="pre">4</span></code></p></li>
+<li><p>Review the screenshot below as an example</p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code></p></li>
+</ol>
+<a class="reference internal image-reference" href="../../../_images/vivado_ip_wizard2.png"><img alt="Example dialog content for add interfaces" src="../../../_images/vivado_ip_wizard2.png" style="width: 600px;" /></a>
+</section>
+<section id="create-peripheral">
+<h4>Create Peripheral<a class="headerlink" href="#create-peripheral" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Read the dialog and ensure the <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">Steps</span></code> is <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">IP</span> <span class="pre">to</span> <span class="pre">repository</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Finish</span></code></p></li>
+</ol>
+<p>The wizard will close and a new loading pop-up will appear.
+After a few seconds, it will finish and the block design will appear again.</p>
+<p>Look around. Nothing has changed! So where did the new IP core go?</p>
+<p>Check in <code class="docutils literal notranslate"><span class="pre">git</span></code>: the new IP core indeed was created and all its contents are located at <code class="docutils literal notranslate"><span class="pre">/ip_repo/my_custom_adder_1.0/</span></code>.</p>
+</section>
+</section>
+<section id="adding-ip-to-block-design">
+<h3>2. Adding IP to Block Design<a class="headerlink" href="#adding-ip-to-block-design" title="Permalink to this heading">¶</a></h3>
+<p>Once you create the IP core as above, it does not automatically appear in the block design.
+The following steps are required to instantiate it and “hook it up” so it can be used.</p>
+<section id="instantiate-ip-core">
+<h4>Instantiate IP Core<a class="headerlink" href="#instantiate-ip-core" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>From the block design, click the <code class="docutils literal notranslate"><span class="pre">+</span></code> button and search by name for the IP core: <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code></p></li>
+<li><p>Double click the name of the IP core and it will be added to the block design</p></li>
+</ol>
+<a class="reference internal image-reference" href="../../../_images/vivado_add_ip1.png"><img alt="../../../_images/vivado_add_ip1.png" src="../../../_images/vivado_add_ip1.png" style="width: 400px;" /></a>
+<p>The new IP core will be <em>somewhere</em> in the block design.
+Scroll around until you find it.
+For example, when creating this tutorial, it was added like this:</p>
+<p><img alt="New IP core location" src="../../../_images/vivado_add_ip2.png" /></p>
+<p>If desired, the IP core can be dragged around to a new location.
+Or, Vivado can automatically redraw the block design based on how it thinks the “best” arrangement would be by clicking the <code class="docutils literal notranslate"><span class="pre">Regenerate</span> <span class="pre">Layout</span></code> button from the Diagram pane toolbar (the forward circular arrow, 3rd from right in the above image).</p>
+</section>
+<section id="hook-up-ip-core">
+<h4>Hook Up IP Core<a class="headerlink" href="#hook-up-ip-core" title="Permalink to this heading">¶</a></h4>
+<p>Notice that the new IP core has only three inputs, like discussed earlier.
+However, by default, these are not connected to anything.
+To hook them up, do the following:</p>
+<ol class="arabic simple">
+<li><p>Attach the clock <code class="docutils literal notranslate"><span class="pre">s00_axi_aclk</span></code> to the common clock that all other IPs use by clicking on the pin and dragging the mouse to the common clock signal</p></li>
+<li><p>Attach the reset <code class="docutils literal notranslate"><span class="pre">s00_axi_aresetn</span></code> to the common reset signal like above</p></li>
+</ol>
+<p>Once <code class="docutils literal notranslate"><span class="pre">clock</span></code> and <code class="docutils literal notranslate"><span class="pre">reset</span></code> are connected, it should look like this.
+Here, the signals are highlighted to easily see where they go—do this by <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code>-clicking on the nets.</p>
+<a class="reference internal image-reference" href="../../../_images/vivado_add_ip3.png"><img alt="../../../_images/vivado_add_ip3.png" src="../../../_images/vivado_add_ip3.png" style="width: 600px;" /></a>
+<p>Finally, the IP core <code class="docutils literal notranslate"><span class="pre">AXI</span></code> interface needs to be hooked up.
+Do this by clicking on the <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Connection</span> <span class="pre">Automation</span></code> from the green <code class="docutils literal notranslate"><span class="pre">Designer</span> <span class="pre">Assistance</span></code> bar.
+A pop-up appears.</p>
+<p>By default, it should have selected the unconnected AXI interface to the new IP core.
+There should be no settings to change here.
+Simply click <code class="docutils literal notranslate"><span class="pre">OK</span></code>.</p>
+<a class="reference internal image-reference" href="../../../_images/vivado_add_ip4.png"><img alt="../../../_images/vivado_add_ip4.png" src="../../../_images/vivado_add_ip4.png" style="width: 600px;" /></a>
+<p>Congrats! The IP core is now properly instantiated and hooked up.</p>
+</section>
+</section>
+<section id="ip-core-base-address">
+<h3>3. IP Core Base Address<a class="headerlink" href="#ip-core-base-address" title="Permalink to this heading">¶</a></h3>
+<p>As will become apparent later, the “base address” of the IP core is very important.</p>
+<p>The base address of the IP core is assigned in Vivado from the <code class="docutils literal notranslate"><span class="pre">Address</span> <span class="pre">Editor</span></code> pane.
+By default, it gets the next available IP core address:</p>
+<a class="reference internal image-reference" href="../../../_images/vivado_ip_address.png"><img alt="../../../_images/vivado_ip_address.png" src="../../../_images/vivado_ip_address.png" style="width: 600px;" /></a>
+<p>Here, the address was assigned as: <code class="docutils literal notranslate"><span class="pre">0x43DB0000</span></code>.
+We will use this value later.</p>
+</section>
+<section id="summary-of-empty-ip-core">
+<h3>4. Summary of “Empty” IP Core<a class="headerlink" href="#summary-of-empty-ip-core" title="Permalink to this heading">¶</a></h3>
+<p>Let’s take a moment to understand the current state of the FPGA and our new IP core.</p>
+<p>We created an IP core that uses AXI4-Lite for external communication.
+It has 4 internal registers which are accessible from the C code via memory-mapped operations.
+The IP core has no custom functionality since it is only composed of the template code from the IP Wizard.</p>
+<p>Think of the blank IP core as exposing 4 additional read/write (R/W) variables to the C code that are not standard RAM—these new “variables” are actually 32-bit wide registers in the FPGA. We will unpack what this means in the remainder of the tutorial.</p>
+</section>
+<section id="editing-ip-cores">
+<span id="id1"></span><h3>5. Editing IP Cores<a class="headerlink" href="#editing-ip-cores" title="Permalink to this heading">¶</a></h3>
+<p>The “empty” IP core which comes from the IP wizard is not very useful.
+Unfortunately, it is rather difficult to edit the IP core to add custom features.
+The following steps must be followed in order to edit the contents of the IP core.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The next sections in this tutorial will give concrete examples of these steps and provide screenshots as we add the <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> module.</p>
+<p>This section is meant to be a reference guide for future projects.</p>
+</div>
+<ol class="arabic simple">
+<li><p>In the block design, right-click on the instantiated IP core and select <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">in</span> <span class="pre">IP</span> <span class="pre">Packager</span></code></p></li>
+<li><p>In the pop-up, leave the defaults and click <code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+<li><p>It will load and then <strong>open a new instance of Vivado</strong> where the top-level is the IP core (no longer the top-level block design of the full FPGA)</p></li>
+<li><p>Inside this new Vivado instance, make edits to the Verilog source code which composes the IP core</p></li>
+<li><p>Once done and ready to save, go to the <code class="docutils literal notranslate"><span class="pre">Package</span> <span class="pre">IP</span> <span class="pre">--</span> <span class="pre">my_customer_adder</span></code> pane</p></li>
+<li><p>Click each of the steps under <code class="docutils literal notranslate"><span class="pre">Package</span> <span class="pre">Steps</span></code> which does not have a green checkmark and click the link to make the step have a green checkbox</p></li>
+<li><p>Once all steps are green, select the last step: <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">and</span> <span class="pre">Package</span> <span class="pre">IP</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Re-Package</span> <span class="pre">IP</span></code> at the bottom</p></li>
+<li><p>In the pop-up, click <code class="docutils literal notranslate"><span class="pre">Yes</span></code> to close the project and return back to the top-level block design</p></li>
+</ol>
+<p>Now, the IP core itself has been updated.
+However, the “old” instantiated IP core in the block design still has the “old” code.
+To propagate the new changes to the existing IP cores in the block design, the IP needs to be “upgraded”.</p>
+<ol class="arabic simple">
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Reports</span> <span class="pre">&gt;</span> <span class="pre">Report</span> <span class="pre">IP</span> <span class="pre">Status</span></code> (or, click the link from the yellow toolbar if it appeared)</p></li>
+<li><p>Locate the <code class="docutils literal notranslate"><span class="pre">IP</span> <span class="pre">Status</span></code> pane which appears after the report runs</p></li>
+<li><p>Review the changes and select <code class="docutils literal notranslate"><span class="pre">Upgrade</span> <span class="pre">Selected</span></code></p></li>
+<li><p>After it finishes upgrading, click <code class="docutils literal notranslate"><span class="pre">Skip</span></code> to not rebuild at this moment</p></li>
+<li><p>Re-run the <code class="docutils literal notranslate"><span class="pre">IP</span> <span class="pre">Status</span></code> report and it should show no changes are found</p></li>
+</ol>
+<p>Editing IP source and propagating the changes into the actual block design can be a source of pain.
+If you edit the source files directly (like through VS Code), you still need to do the <code class="docutils literal notranslate"><span class="pre">Report</span> <span class="pre">IP</span> <span class="pre">Status</span></code> steps above to have Vivado recognize your changes.
+However, you shouldn’t need to re-package the IP if you edit in an external editor.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you make changes to the IP core but it doesn’t seem to change/fix anything, Vivado might not be building your latest changes.
+Make sure to run the <code class="docutils literal notranslate"><span class="pre">IP</span> <span class="pre">Status</span> <span class="pre">Report</span></code> to ensure the new changes have propagated to the instantiated IP cores in the block design.</p>
+</div>
+</section>
+<section id="adding-custom-adder-logic-to-ip-core">
+<h3>6. Adding Custom Adder Logic to IP Core<a class="headerlink" href="#adding-custom-adder-logic-to-ip-core" title="Permalink to this heading">¶</a></h3>
+<p>We will now follow the <a class="reference internal" href="#editing-ip-cores">steps from above</a> to add the <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> Verilog module to the new IP core.</p>
+<section id="create-source-file">
+<h4>Create Source File<a class="headerlink" href="#create-source-file" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Outside of Vivado, create a <code class="docutils literal notranslate"><span class="pre">src</span></code> folder in the new IP repo folder to house the custom code: <code class="docutils literal notranslate"><span class="pre">ip_repo\my_custom_adder_1.0\src</span></code></p></li>
+<li><p>In your favorite text editor, create a file in this <code class="docutils literal notranslate"><span class="pre">src/</span></code> folder named <code class="docutils literal notranslate"><span class="pre">my_custom_adder.v</span></code></p></li>
+<li><p>Populate this file with the module as defined in the beginning of this tutorial</p></li>
+<li><p>Save the file</p></li>
+</ol>
+</section>
+<section id="add-source-file-to-ip-core">
+<h4>Add Source File to IP Core<a class="headerlink" href="#add-source-file-to-ip-core" title="Permalink to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>Open Vivado to the block design which has the “empty” <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> IP core</p></li>
+<li><p>Right-click the <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> IP core, select <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">in</span> <span class="pre">IP</span> <span class="pre">Packager</span></code>, and click <code class="docutils literal notranslate"><span class="pre">OK</span></code></p></li>
+<li><p>Click the <code class="docutils literal notranslate"><span class="pre">+</span></code> to add sources to the IP
+<img alt="" src="../../../_images/vivado_edit_ip1.png" /></p></li>
+<li><p>In the pop-up, ensure <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">or</span> <span class="pre">create</span> <span class="pre">design</span> <span class="pre">sources</span></code> is selected and click <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Files</span></code></p></li>
+<li><p>Browse to the <code class="docutils literal notranslate"><span class="pre">my_custom_adder.v</span></code> file you created and select it</p></li>
+<li><p>Uncheck <code class="docutils literal notranslate"><span class="pre">Copy</span> <span class="pre">sources</span> <span class="pre">into</span> <span class="pre">IP</span> <span class="pre">Directory</span></code> since they are already in the right location</p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Finish</span></code></p></li>
+</ol>
+<p>Now, the new Verilog file should appear in the <code class="docutils literal notranslate"><span class="pre">Sources</span></code> pane.
+Double-click it to open an editor from within Vivado.</p>
+<a class="reference internal image-reference" href="../../../_images/vivado_edit_ip2.png"><img alt="../../../_images/vivado_edit_ip2.png" src="../../../_images/vivado_edit_ip2.png" style="width: 100%;" /></a>
+</section>
+<section id="integrate-custom-logic-to-axi4-lite-interface">
+<h4>Integrate Custom Logic to AXI4-Lite Interface<a class="headerlink" href="#integrate-custom-logic-to-axi4-lite-interface" title="Permalink to this heading">¶</a></h4>
+<p>Even though we added the right Verilog source file, the IP core will still behave the same.
+We need to modify the existing template Verilog files to instantiate our new module.</p>
+<ol class="arabic simple">
+<li><p>From the <code class="docutils literal notranslate"><span class="pre">Sources</span></code> pane, open the top-level wrapper for the IP core, <code class="docutils literal notranslate"><span class="pre">hdl/my_custom_adder_v1_0.v</span></code>, in the built-in editor</p></li>
+<li><p>Scroll through the source code</p></li>
+<li><p>Notice all this top-level wrapper does is instantiate the other auto-generated Verilog file: <code class="docutils literal notranslate"><span class="pre">hdl/my_custom_adder_v1_0_S00_AXI.v</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">hdl/my_custom_adder_v1_0_S00_AXI.v</span></code> in the editor (you will need to expand the dropdown in the <code class="docutils literal notranslate"><span class="pre">Sources</span></code> pane to find it)</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">*_S00_AXI.v</span></code> file implements a slave for the AXI4-Lite interface.
+Scroll down and skim the template code.
+For the most part, we will never edit this code.</p>
+<p>Find the 4 registers named <code class="docutils literal notranslate"><span class="pre">slv_reg0</span></code> through <code class="docutils literal notranslate"><span class="pre">slv_reg3</span></code>.
+These are the 32-bit wide registers which we can write to from C code.
+Read the template code to see how read and write operations work.
+Notice that the data from the read/write bus is loaded/stored from/to these slave registers.
+This is the core of how the C code interfaces to the FPGA!</p>
+<p>Finally, we will implement our custom adder.</p>
+<ol class="arabic simple">
+<li><p>Scroll to the bottom of the file with the AXI interface: <code class="docutils literal notranslate"><span class="pre">hdl/my_custom_adder_v1_0_S00_AXI.v</span></code></p></li>
+<li><p>Find the comment that says: <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">Add</span> <span class="pre">user</span> <span class="pre">logic</span> <span class="pre">here</span></code></p></li>
+<li><p>Below that comment, add the following logic:</p></li>
+</ol>
+<div class="highlight-Verilog notranslate"><div class="highlight"><pre><span></span><span class="n">my_custom_adder</span><span class="w"> </span><span class="n">adder</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">S_AXI_ACLK</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">S_AXI_ARESETN</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">in1</span><span class="p">(</span><span class="n">slv_reg0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">in2</span><span class="p">(</span><span class="n">slv_reg1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">my_custom_adder_output</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>Now, our adder will compute the desired output where <code class="docutils literal notranslate"><span class="pre">in1</span></code> and <code class="docutils literal notranslate"><span class="pre">in2</span></code> come from the slave registers</p>
+<p>Handling custom logic “read” operations from the slave registers is easy—just as above, we can make use of any slave register by simply using it as normal.</p>
+<p>However, custom logic “write” operations to the slave registers is a bit more complicated.
+By default, the template Verilog code simply returns the appropriate slave register contents based on the requested address—see how the <code class="docutils literal notranslate"><span class="pre">reg_data_out</span></code> signal is used.
+In Verilog, you cannot have two sources driving a single register without them coordinating access.</p>
+<p>To get around this, we will simply override the return value for our output signal.</p>
+<ol class="arabic simple">
+<li><p>Create a new 32-bit wide register near the top of the Verilog file (put it near the <code class="docutils literal notranslate"><span class="pre">slv_reg0</span></code> definition): <code class="docutils literal notranslate"><span class="pre">reg</span> <span class="pre">[31:0]</span> <span class="pre">my_custom_adder_output;</span></code></p></li>
+<li><p>Update the assignment of <code class="docutils literal notranslate"><span class="pre">reg_data_out</span></code> for case <code class="docutils literal notranslate"><span class="pre">2'h2</span></code> to be <code class="docutils literal notranslate"><span class="pre">my_custom_adder_output</span></code> instead of <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code></p></li>
+</ol>
+<a class="reference internal image-reference" href="../../../_images/vivado_edit_ip3.png"><img alt="../../../_images/vivado_edit_ip3.png" src="../../../_images/vivado_edit_ip3.png" style="width: 500px;" /></a>
+<p>Now, read requests at offset “2” (i.e., for the second slave register <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code>) will return our adder module output, not the actual contents of <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code>.</p>
+<p>It is interesting to think about <em>write</em> operations to <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code> from the C code.
+The template Verilog will still update the value stored in <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code>, but this has no effect.
+To the user, <code class="docutils literal notranslate"><span class="pre">slv_reg2</span></code> has become a “read-only” register, as desired!</p>
+</section>
+</section>
+<section id="re-package-ip-core">
+<h3>7. Re-Package IP Core<a class="headerlink" href="#re-package-ip-core" title="Permalink to this heading">¶</a></h3>
+<p>Following the <a class="reference internal" href="#editing-ip-cores">steps from above</a>, re-package <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> IP core and return to the top-level FPGA block design.</p>
+<ol class="arabic simple">
+<li><p>Ensure all Verilog source files are saved</p></li>
+<li><p>Go back to the <code class="docutils literal notranslate"><span class="pre">Package</span> <span class="pre">IP</span></code> pane</p></li>
+<li><p>Notice that the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Groups</span></code> step is not a green checkbox</p></li>
+<li><p>Click the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Groups</span></code> step and click <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">changes</span> <span class="pre">from</span> <span class="pre">File</span> <span class="pre">Groups</span> <span class="pre">Wizard</span></code></p></li>
+<li><p>Now, all the steps are green except the last</p></li>
+<li><p>Select the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">and</span> <span class="pre">Package</span></code> step</p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Re-Package</span> <span class="pre">IP</span></code></p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Yes</span></code> to close the temporary project</p></li>
+</ol>
+</section>
+<section id="upgrade-the-ip">
+<h3>8. Upgrade the IP<a class="headerlink" href="#upgrade-the-ip" title="Permalink to this heading">¶</a></h3>
+<p>Follow the <a class="reference internal" href="#editing-ip-cores">above steps</a> to upgrade the IP status.</p>
+</section>
+<section id="generate-the-bitstream">
+<h3>9. Generate the Bitstream<a class="headerlink" href="#generate-the-bitstream" title="Permalink to this heading">¶</a></h3>
+<p>Finally, click the <code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">Bitstream</span></code> as usual to create the bitstream file.</p>
+</section>
+<section id="export-hardware">
+<h3>10. Export Hardware<a class="headerlink" href="#export-hardware" title="Permalink to this heading">¶</a></h3>
+<p>After successful bitstream generation, re-export the hardware from Vivado, like was done in the <a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html"><span class="doc std std-doc">building and running firmware guide</span></a>. You should see a pop-up in the SDK after re-exporting the hardware. Select <code class="docutils literal notranslate"><span class="pre">Yes</span></code> in the pop-up to confirm the hardware export from Vivado.</p>
+<p><strong>Whew! The new custom IP core is complete!</strong></p>
+</section>
+</section>
+<section id="access-ip-core-from-c-code">
+<h2>Access IP Core from C Code<a class="headerlink" href="#access-ip-core-from-c-code" title="Permalink to this heading">¶</a></h2>
+<p>Per the above section and discussion, you should now be aware that the access to the IP core comes from the slave registers which the AXI4-Lite interface reads and writes. Let’s understand our new IP core from the prospective of the C code.</p>
+<section id="memory-mapped-fpga-registers">
+<h3>Memory-Mapped FPGA Registers<a class="headerlink" href="#memory-mapped-fpga-registers" title="Permalink to this heading">¶</a></h3>
+<p>The core “magic” of the AXI4-Lite interface to the FPGA is the hardware support in the DSP for memory operations.
+When the C code reads/writes to memory addresses near the IP core base address, this causes an AXI read/write transaction to occur.
+The template Verilog from the IP Wizard implements the slave side for the transaction response.</p>
+<p>Let’s read/write from/to a slave register in our new IP core from C code:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="c1">// Base address of our new IP core</span>
+<span class="c1">// </span>
+<span class="c1">// This is simply a pointer with a manually assigned address per Vivado,</span>
+<span class="c1">// which might seem odd since we never do this in typical programming</span>
+<span class="c1">//</span>
+<span class="c1">// Recall this value came from the Address Editor pane in Vivado,</span>
+<span class="c1">// and also gets exported into the xparameters.h file</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">base_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="mh">0x43DB0000</span><span class="p">;</span>
+
+<span class="c1">// Define pointer to slv_reg3 (it was unused in the FPGA design)</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">slv_reg3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">base_addr</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+
+<span class="c1">// Write to the FPGA register slv_reg3 in a couple ways</span>
+<span class="o">*</span><span class="n">slv_reg3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x123</span><span class="p">;</span>
+<span class="n">base_addr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x123</span><span class="p">;</span>
+
+<span class="c1">// Read slv_reg3 from FPGA</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">slv_reg3_from_fpga</span><span class="p">;</span>
+<span class="n">slv_reg3_from_fpga</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">slv_reg3</span><span class="p">;</span><span class="w"> </span><span class="c1">// should return 0x123</span>
+<span class="n">slv_reg3_from_fpga</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"> </span><span class="c1">// should also return 0x123</span>
+</pre></div>
+</div>
+<p>Note that above, the IP core base address was hardcoded to <code class="docutils literal notranslate"><span class="pre">0x43DB0000</span></code>.
+This is not a good practice since Vivado manages the addresses and might change them if new IP cores are added to the block design.
+Instead, once the SDK environment is set up (i.e., the BSP project is created), all IP core base addresses (and other related info) are available as auto-generated defines in the <code class="docutils literal notranslate"><span class="pre">xparameters.h</span></code> file.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;xparameters.h&quot;</span>
+
+<span class="c1">// Now, access the base address:</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">base_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">XPAR_MY_CUSTOM_ADDER_S00_AXI_BASEADDR</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="access-my-custom-adder-from-c-code">
+<h3>Access <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> from C Code<a class="headerlink" href="#access-my-custom-adder-from-c-code" title="Permalink to this heading">¶</a></h3>
+<p>We can <strong>finally</strong> implement our <code class="docutils literal notranslate"><span class="pre">somehow_access_my_custom_adder()</span></code> function from the first part of this tutorial:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">somehow_access_my_custom_adder</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in1</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Get pointer to our custom IP core</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">base_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="mh">0x43DB0000</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Apply inputs</span>
+<span class="w">    </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in2</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// No need to wait for the IP core to finish since the adder logic</span>
+<span class="w">    </span><span class="c1">// only takes one clock cycle to run and compute the value.</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// The AXI transactions themselves take multiple clock cycles!</span>
+
+<span class="w">    </span><span class="c1">// Return output</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading">¶</a></h2>
+<p>Let’s test on hardware to ensure the new IP core works as expected.
+Futhermore, let’s profile the execution time from the C code side and see if our new IP core adder can accelerate the processor version.</p>
+<section id="code-performance-timing">
+<h3>Code Performance Timing<a class="headerlink" href="#code-performance-timing" title="Permalink to this heading">¶</a></h3>
+<p>Add a new command to the AMDC user code which allows us to profile the code.
+If adding commands is unfamiliar, review the template code provided in the <a class="reference internal" href="../../tutorials/vsi/index.html"><span class="doc std std-doc">VSI tutorial</span></a>.</p>
+<p>The command will require the two number inputs from the user and return the computed output.
+It will compute the output <code class="docutils literal notranslate"><span class="pre">N</span></code> times and return the average execution time.
+This will be done for the FPGA version or the C code version.</p>
+<p><strong>Command:</strong> <code class="docutils literal notranslate"><span class="pre">adder</span> <span class="pre">test</span> <span class="pre">[cpu|fpga]</span> <span class="pre">&lt;N&gt;</span> <span class="pre">&lt;in1&gt;</span> <span class="pre">&lt;in2&gt;</span></code></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;drv/cpu_timer.h&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">cmd_adder</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">STREQ</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_INVALID_ARGUMENTS</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">in2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now_start</span><span class="p">,</span><span class="w"> </span><span class="n">now_stop</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">total_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// in units of CPU cycles</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="s">&quot;cpu&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">now_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu_timer_now</span><span class="p">();</span>
+
+<span class="w">                </span><span class="c1">// Compute result using CPU</span>
+<span class="w">                </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="o">*</span><span class="n">in1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">in2</span><span class="o">/</span><span class="mi">4</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10203</span><span class="p">;</span>
+
+<span class="w">                </span><span class="n">now_stop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu_timer_now</span><span class="p">();</span>
+<span class="w">                </span><span class="n">total_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">now_stop</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">now_start</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="s">&quot;fpga&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Pointer to our custom IP core</span>
+<span class="w">            </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">base_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="mh">0x43DB0000</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">now_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu_timer_now</span><span class="p">();</span>
+
+<span class="w">                </span><span class="c1">// Compute result using FPGA</span>
+<span class="w">                </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in1</span><span class="p">;</span>
+<span class="w">                </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in2</span><span class="p">;</span>
+<span class="w">                </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base_addr</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="w">                </span><span class="n">now_stop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu_timer_now</span><span class="p">();</span>
+<span class="w">                </span><span class="n">total_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">now_stop</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">now_start</span><span class="p">);</span><span class="w">    </span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_INVALID_ARGUMENTS</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">total_time_usec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu_timer_ticks_to_usec</span><span class="p">(</span><span class="n">total_time</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cmd_resp_printf</span><span class="p">(</span><span class="s">&quot;out: %d</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cmd_resp_printf</span><span class="p">(</span><span class="s">&quot;average time [us] per operation: %f</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                            </span><span class="n">total_time_usec</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">N</span><span class="p">));</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_SUCCESS</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">CMD_INVALID_ARGUMENTS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="results">
+<h3>Results<a class="headerlink" href="#results" title="Permalink to this heading">¶</a></h3>
+<p>Run on hardware and get results.</p>
+<p><em>This section will be updated soon with actual numbers of execution time from lab hardware testing.</em></p>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
+<p><strong>Congrats!</strong> If you made it this far, be proud of yourself.
+Getting custom Verilog code into the FPGA via an IP core and accessing it from C code memory-mapped operations is quite the feat.</p>
+<p>You can now add custom logic to the FPGA. <a class="reference external" href="https://nosweatshakespeare.com/quotes/famous/the-worlds-your-oyster/">The world is your oyster!</a></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="../../user-guide/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">User Guide</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../custom-control-rate/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tutorial: Custom Control Rate</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2025, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Mar 27, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tutorial: Custom FPGA IP Core</a><ul>
+<li><a class="reference internal" href="#tutorial-requirements">Tutorial Requirements</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#fpga-ip-cores">FPGA IP Cores</a><ul>
+<li><a class="reference internal" href="#hard-vs-soft-ip">Hard vs. Soft IP</a></li>
+<li><a class="reference internal" href="#example-ip-cores-for-sale">Example IP Cores for Sale</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ip-cores-in-xilinx-vivado">IP Cores in Xilinx Vivado</a><ul>
+<li><a class="reference internal" href="#block-design-file">Block Design File</a></li>
+<li><a class="reference internal" href="#axi-interconnect">AXI Interconnect</a></li>
+<li><a class="reference internal" href="#ip-core-inputs-and-outputs">IP Core Inputs and Outputs</a><ul>
+<li><a class="reference internal" href="#signal-i-o">Signal I/O</a></li>
+<li><a class="reference internal" href="#dsp-fpga-register-i-o">DSP-FPGA Register I/O</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-axi4-lite-ip-core-in-vivado">Creating AXI4-Lite IP Core in Vivado</a><ul>
+<li><a class="reference internal" href="#ip-creation-wizard">1. IP Creation Wizard</a><ul>
+<li><a class="reference internal" href="#peripheral-details">Peripheral Details</a></li>
+<li><a class="reference internal" href="#add-interfaces">Add Interfaces</a></li>
+<li><a class="reference internal" href="#create-peripheral">Create Peripheral</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-ip-to-block-design">2. Adding IP to Block Design</a><ul>
+<li><a class="reference internal" href="#instantiate-ip-core">Instantiate IP Core</a></li>
+<li><a class="reference internal" href="#hook-up-ip-core">Hook Up IP Core</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ip-core-base-address">3. IP Core Base Address</a></li>
+<li><a class="reference internal" href="#summary-of-empty-ip-core">4. Summary of “Empty” IP Core</a></li>
+<li><a class="reference internal" href="#editing-ip-cores">5. Editing IP Cores</a></li>
+<li><a class="reference internal" href="#adding-custom-adder-logic-to-ip-core">6. Adding Custom Adder Logic to IP Core</a><ul>
+<li><a class="reference internal" href="#create-source-file">Create Source File</a></li>
+<li><a class="reference internal" href="#add-source-file-to-ip-core">Add Source File to IP Core</a></li>
+<li><a class="reference internal" href="#integrate-custom-logic-to-axi4-lite-interface">Integrate Custom Logic to AXI4-Lite Interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#re-package-ip-core">7. Re-Package IP Core</a></li>
+<li><a class="reference internal" href="#upgrade-the-ip">8. Upgrade the IP</a></li>
+<li><a class="reference internal" href="#generate-the-bitstream">9. Generate the Bitstream</a></li>
+<li><a class="reference internal" href="#export-hardware">10. Export Hardware</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#access-ip-core-from-c-code">Access IP Core from C Code</a><ul>
+<li><a class="reference internal" href="#memory-mapped-fpga-registers">Memory-Mapped FPGA Registers</a></li>
+<li><a class="reference internal" href="#access-my-custom-adder-from-c-code">Access <code class="docutils literal notranslate"><span class="pre">my_custom_adder</span></code> from C Code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing">Testing</a><ul>
+<li><a class="reference internal" href="#code-performance-timing">Code Performance Timing</a></li>
+<li><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
