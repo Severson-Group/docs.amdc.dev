@@ -133,7 +133,7 @@ The following simple procedure can be used without any feedback control:
 
 #### Determine precise offset
 
-Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `theta_off` while using closed-loop control to rotate the shaft at the highest possible speed. The correct offset is determined by observing the estimated electrical angle $\hat{\theta}_e$ using the voltage in the $\gamma-\delta$ reference frame that is constructed based on estimated rotor states as shown in the figure below. 
+Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `theta_off` while using closed-loop control to rotate the shaft at the highest possible speed. The correct offset is determined by observing the estimated electrical angle $\hat{\theta}_e$ using the voltage in the $\gamma-\delta$ frame that is constructed based on estimated rotor states as shown in the figure below. 
 
 ```{image} resources/reference-frame.svg
 :alt: Torque Variation with Rotor Angle
@@ -158,7 +158,7 @@ $$
 \left. v_{\gamma} \right|_{i=0} = -\omega_e \lambda_{\mathrm{pm}} \sin(\theta_e - \hat{\theta}_e)
 $$
 
-The $v_d$ value should be zero if the estimated angle $\hat{\theta}_e$ is accurate and there is no estimation error (i.e., $\theta_e - \hat{\theta}_e = 0$). Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
+If there is no estimation error (i.e., $\theta_e - \hat{\theta}_e = 0$), the $\gamma-\delta$ frame aligns with $d-q$ frame and $v_d = v_{\gamma}$ value should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
 
 1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `theta_off` obtained in [Finding the offset](#finding-the-offset).
