@@ -143,7 +143,7 @@ Friction and cogging torque in the motor decrease the accuracy of the estimate i
 The voltage vector in the figure above can be expressed in complex vector form as follows. Note that $\omega_e$ is the electrical angular velocity with units of radians per second.
 
 $$
-\vec{v} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_e \lambda_{\mathrm{pm}} e^{j{\theta}_e}
+\vec{V} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_e \lambda_{\mathrm{pm}} e^{j{\theta}_e}
 $$
 
 This voltage vector can be converted into the $\gamma-\delta$ reference frame as follows.
