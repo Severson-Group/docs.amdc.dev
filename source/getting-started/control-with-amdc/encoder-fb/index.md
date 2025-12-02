@@ -140,7 +140,7 @@ Friction and cogging torque in the motor decrease the accuracy of the estimate i
 :width: 250px
 :align: right
 ```
-The voltage can be expressed in complex vector form as follows. Note that $\omega_e$ is the electrical angular velocity with units of radians per second.
+The voltage vector in the figure above can be expressed in complex vector form as follows. Note that $\omega_e$ is the electrical angular velocity with units of radians per second.
 
 $$
 \vec{v} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_e \lambda_{\mathrm{pm}} e^{j{\theta}_e}
