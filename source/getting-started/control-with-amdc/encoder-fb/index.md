@@ -152,10 +152,10 @@ $$
 v_{\gamma} + j\ v_{\delta} = \vec{V} e^{-j\hat{\theta}_e}
 $$
 
-When the current commands are set to $i_d = i_q = 0$, $v_{\gamma}$ can be expressed as follows.
+When the current commands are set to $\vec{i} = 0$, $v_{\gamma}$ can be expressed as follows.
 
 $$
-\left. v_{\gamma} \right|_{i=0} = -\omega_e \lambda_{\mathrm{pm}} \sin(\theta_e - \hat{\theta}_e)
+\left. v_{\gamma} \right|_{\vec{i}=0} = -\omega_e \lambda_{\mathrm{pm}} \sin(\theta_e - \hat{\theta}_e)
 $$
 
 If there is no estimation error (i.e., $\theta_e - \hat{\theta}_e = 0$), the $\gamma-\delta$ frame aligns with the $d-q$ frame and $v_d$ value should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
