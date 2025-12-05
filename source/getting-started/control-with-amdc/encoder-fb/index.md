@@ -59,7 +59,7 @@ First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module
 The [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module also has a function called `encoder_get_steps()` which returns the encoder's count since power-on. One rotation direction increments, the other decrements. This value does not wrap around (it ignores `encoder_set_counts_per_rev()` and the z-pulse). Users are advised to use `encoder_get_position()`, which does wrap around and tracks the z-pulse.
 ```
 
-Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This is done by 1) removing the offset and 2) converting counts into radians. For the the angles defined as shown in the image above, this is simply calculated as
+Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This is done by 1) removing the offset and 2) converting counts into radians. For the angles defined as shown in the image above, this is simply calculated as
 
 $$
 \theta_{\rm m} = \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left( \theta_{\rm enc} - \theta_{\rm off} \right)
@@ -137,32 +137,33 @@ The following simple procedure can be used without any feedback control:
 
 #### Determine precise offset
 
-Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `theta_off` while using closed-loop control to rotate the shaft at the highest possible speed. The correct offset is determined by observing the estimated electrical angle $\hat{\theta}_e$ using the voltage in the $\gamma-\delta$ frame that is constructed based on estimated rotor states as shown in the figure below. 
+Friction and cogging torque in the motor decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). The precise offset can be found by fine-tuning the `theta_off` while using closed-loop control to rotate the shaft at the highest possible speed. 
 
 ```{image} resources/reference-frame.svg
 :alt: Torque Variation with Rotor Angle
 :width: 250px
 :align: right
 ```
-The voltage vector in the figure above can be expressed in complex vector form as follows. Note that $\omega_e$ is the electrical angular velocity with units of radians per second.
+
+The correct offset is determined by observing the estimated electrical angle $\hat{\theta}_\mathrm{e}$ using the voltage in the $\gamma-\delta$ frame that is constructed based on estimated rotor states, as shown in the figure on the right. The voltage vector in the figure can be expressed in complex vector form as follows. Note that ${\theta}_{\mathrm{e}} = p \times {\theta}_{\mathrm{m}}$ is the electrical angle where $p$ is the number of pole-pairs and $\omega_\mathrm{e} = \dot{\theta}_{\mathrm{e}}$ is the electrical angular velocity with units of radians per second.
 
 $$
-\vec{V} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_e \lambda_{\mathrm{pm}} e^{j{\theta}_e}
+\vec{V} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_\mathrm{e} \lambda_{\mathrm{pm}} e^{j{\theta}_\mathrm{e}}
 $$
 
 This voltage vector can be converted into the $\gamma-\delta$ reference frame as follows.
 
 $$
-v_{\gamma} + j\ v_{\delta} = \vec{V} e^{-j\hat{\theta}_e}
+v_{\gamma} + j\ v_{\delta} = \vec{V} e^{-j\hat{\theta}_\mathrm{e}}
 $$
 
 When the current commands are set to $\vec{i} = 0$, $v_{\gamma}$ can be expressed as follows.
 
 $$
-\left. v_{\gamma} \right|_{\vec{i}=0} = -\omega_e \lambda_{\mathrm{pm}} \sin(\theta_e - \hat{\theta}_e)
+\left. v_{\gamma} \right|_{\vec{i}=0} = -\omega_\mathrm{e} \lambda_{\mathrm{pm}} \sin(\theta_\mathrm{e} - \hat{\theta}_\mathrm{e})
 $$
 
-If there is no estimation error (i.e., $\theta_e - \hat{\theta}_e = 0$), the $\gamma-\delta$ frame aligns with the $d-q$ frame and $v_d$ value should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_d = 0$.
+If there is no estimation error (i.e., $\theta_\mathrm{e} - \hat{\theta}_\mathrm{e} = 0$), the $\gamma-\delta$ frame aligns with the $\mathrm{d}-\mathrm{q}$ and $v_\mathrm{d}$ value should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_\mathrm{d} = 0$.
 
 1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `theta_off` obtained in [Finding the offset](#finding-the-offset).
