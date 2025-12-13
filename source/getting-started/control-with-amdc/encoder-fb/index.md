@@ -148,7 +148,7 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
 
 - $\hat{\theta}_\mathrm{e}$ is the incorrect eletrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
-- the $\gamma-\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
+- the $\gamma$-$\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
 - the $\mathrm{d}$-$\mathrm{q}$ vectors and $\theta_\mathrm{e}$ angle depict the actual $\mathrm{d}$-$\mathrm{q}$ frame of the motor.
 
 Note that ${\theta}_{\mathrm{e}} = p {\theta}_{\mathrm{m}}$ is the electrical angle where $p$ is the number of pole-pairs of the motor and $\omega_\mathrm{e} = \dot{\theta}_{\mathrm{e}}$ is the electrical angular velocity with units of radians per second.
@@ -159,7 +159,7 @@ $$
 \vec{V} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_\mathrm{e} \lambda_{\mathrm{pm}} e^{j{\theta}_\mathrm{e}}
 $$
 
-This voltage vector can be converted into the $\gamma-\delta$ reference frame as follows.
+This voltage vector can be converted into the $\gamma$-$\delta$ reference frame as follows.
 
 $$
 v_{\gamma} + j\ v_{\delta} = \vec{V} e^{-j\hat{\theta}_\mathrm{e}}
@@ -171,7 +171,7 @@ $$
 \left. v_{\gamma} \right|_{\vec{i}=0} = -\omega_\mathrm{e} \lambda_{\mathrm{pm}} \sin(\theta_\mathrm{e} - \hat{\theta}_\mathrm{e})
 $$
 
-If there is no estimation error (i.e., $\theta_\mathrm{e} - \hat{\theta}_\mathrm{e} = 0$), the $\gamma-\delta$ frame aligns with the $\mathrm{d}-\mathrm{q}$ and $v_\mathrm{d}$ value should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_\mathrm{d} = 0$.
+If there is no estimation error (i.e., $\theta_\mathrm{e} - \hat{\theta}_\mathrm{e} = 0$), the $\gamma$-$\delta$ frame aligns with the $\mathrm{d}$-$\mathrm{q}$ and the $v_\mathrm{d}$ value seen by the controller should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_\gamma=v_\mathrm{d} = 0$.
 
 1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `theta_off` obtained in [Finding the offset](#finding-the-offset).
