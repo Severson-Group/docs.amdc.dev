@@ -11,6 +11,10 @@ Tend = 0.2;
 p = 1;  % number of pole
 speed_cmd = 3000;  % rotational speed (r/min)
 
+% Parameters for plant
+J_z = 29.54e-6;
+b = 4.28e-6; 
+
 % Parameters for low pass filter
 f_lpf = 100;  % low pass fileter cut-off frequency (Hz)
 omega_lpf = 2*pi*f_lpf;  % low pass fileter cut-off frequency (rad/s)
@@ -20,10 +24,6 @@ pole_1_Hz = -10;
 pole_2_Hz = -100;
 w1 = 2*pi*pole_1_Hz;
 w2 = 2*pi*pole_2_Hz;
-
-% Parameters for observer
-J_z = 29.54e-6;
-b = 4.28e-6; 
 
 f_sf = 10;  % motion state fileter cut-off frequency (Hz)
 wb_sf = 2*pi*f_sf;
@@ -41,30 +41,32 @@ Kp_speed = omega_b_speed*J_z;
 Ki_speed = omega_b_speed*b;
 
 %% Run simulation
-set_param('compute_speed/Speed Controller LPF', 'Commented', 'off');
-set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
-set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
+% set_param('compute_speed/Speed Controller LPF', 'Commented', 'off');
+% set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
+% set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
 sim('compute_speed.slx');
 run1 = Simulink.sdi.Run.getLatest;
 
-set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
-set_param('compute_speed/Speed Controller PLL', 'Commented', 'off');
-set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
-sim('compute_speed.slx');
-run2 = Simulink.sdi.Run.getLatest;
-
-set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
-set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
-set_param('compute_speed/Speed Control Observer', 'Commented', 'off');
-sim('compute_speed.slx');
-run3 = Simulink.sdi.Run.getLatest;
+% set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
+% set_param('compute_speed/Speed Controller PLL', 'Commented', 'off');
+% set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
+% sim('compute_speed.slx');
+% run2 = Simulink.sdi.Run.getLatest;
+% 
+% set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
+% set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
+% set_param('compute_speed/Speed Control Observer', 'Commented', 'off');
+% sim('compute_speed.slx');
+% run3 = Simulink.sdi.Run.getLatest;
 
 %% Post processing
 % List of variables to extract
-obj2ext = {'time', 'omega_raw', 'omega_lpf', 'omega_pll', 'omega_sf'};
-runs = {run1, run2, run3};
+% obj2ext = {'time', 'omega_raw', 'omega_lpf', 'omega_pll', 'omega_sf'};
+obj2ext = {'time', 'omega'};
+% runs = {run1, run2, run3};
+runs = {run1};
 
-for r = 1:3
+for r = 1:1
     runObj = runs{r};
     for i = 1:length(obj2ext)
         sigID = getSignalIDsByName(runObj, obj2ext{i});
@@ -86,15 +88,15 @@ lw = 1;  % line width
 figure1 = figure;
 % Plot omega
 hold on;
-plot(time{3}, squeeze(sig_val{3}.omega_raw), 'Color', 'k', 'LineWidth', lw);
-plot(time{1}, squeeze(sig_val{1}.omega_lpf), 'Color', 'r', 'LineWidth', lw);
-plot(time{2}, squeeze(sig_val{2}.omega_pll), 'Color', 'b', 'LineWidth', lw);
-plot(time{3}, squeeze(sig_val{3}.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
+% plot(time{3}, squeeze(sig_val{3}.omega_raw), 'Color', 'k', 'LineWidth', lw);
+plot(time{1}, squeeze(sig_val{1}.omega), 'Color', 'r', 'LineWidth', lw);
+% plot(time{2}, squeeze(sig_val{2}.omega_pll), 'Color', 'b', 'LineWidth', lw);
+% plot(time{3}, squeeze(sig_val{3}.omega_sf), '--', 'Color', 'g', 'LineWidth', lw);
 xlabel('Time [s]','Interpreter','latex');
 ylabel('$\Omega$ (rad/s)','Interpreter','latex');
 xlim([0 Tend]);
 % ylim([0 400]);
-legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', '$\Omega_{\mathrm{sf}}$', 'Interpreter','latex','Location','east');
+% legend('$\Omega_{\mathrm{raw}}$','$\Omega_{\mathrm{lpf}}$', '$\Omega_{\mathrm{pll}}$', '$\Omega_{\mathrm{sf}}$', 'Interpreter','latex','Location','east');
 
 set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
 
