@@ -4,7 +4,11 @@ close all
 Ts = 1e-4;
 Tsim = 1e-5;
 
-load_system('compute_speed') % load Simulink model
+
+%% Switch winding that you develop
+load_system('speedControlSimulation') % load Simulink model
+% The input of this function should be 'lowPassFilter', 'pllEncoder', 'observer'
+switch_speed_calculation('observer')
 
 Tend = 0.2;
 
@@ -44,7 +48,7 @@ Ki_speed = omega_b_speed*b;
 % set_param('compute_speed/Speed Controller LPF', 'Commented', 'off');
 % set_param('compute_speed/Speed Controller PLL', 'Commented', 'on');
 % set_param('compute_speed/Speed Control Observer', 'Commented', 'on');
-sim('compute_speed.slx');
+sim('speedControlSimulation.slx');
 run1 = Simulink.sdi.Run.getLatest;
 
 % set_param('compute_speed/Speed Controller LPF', 'Commented', 'on');
@@ -103,3 +107,25 @@ set(findall(gcf, '-property', 'FontName'), 'FontName', 'Times New Roman');
 set(figure1,'Units','inches','Position',[(Inch_SS(3)-width)/2 (Inch_SS(4)-height)/2 width height]);
 print(figure1, '-dsvg','-noui','plot_results');
 print(figure1, '-dpng','-r300','plot_results');
+
+function switch_speed_calculation(speed_calculation_type)
+    % Define maps for plant and controller models
+    speed_calculation_models = containers.Map( ...
+        {'lowPassFilter', 'pllEncoder', 'observer'}, ...
+        {'lowPassFilter', 'pllEncoder', 'observer'} ...
+    );
+
+    if ~isKey(speed_calculation_models, speed_calculation_type)
+        error('Unknown speed calculation type: %s. Choose from: %s', speed_calculation_type, strjoin(keys(speed_calculation_models), ', '));
+    end
+
+    speed_calculation_name = speed_calculation_models(speed_calculation_type);
+
+    % Load the referenced models
+    load_system(speed_calculation_name);
+
+    % Update the reference blocks
+    set_param('speedControlSimulation', 'ModelName', speed_calculation_name);
+
+    fprintf('Speed calculation block has been switched to referenced model of %s and %s\n', controller_name);
+end
