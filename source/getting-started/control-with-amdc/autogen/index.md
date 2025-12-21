@@ -7,7 +7,7 @@
 - A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be used for creating the Simulink automatic code generation.
 
 <p align="center">
-  <img src="images/integrator-model.svg" alt="Integrator model" width="400">
+  <img src="images/integrator-model.svg" alt="Integrator model" width="300">
 </p>
 
 ## Procedure
