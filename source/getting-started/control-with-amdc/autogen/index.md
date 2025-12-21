@@ -20,58 +20,62 @@
 
 - Provide a preferred file organization so that the AMDC can access the generated C-code
 
-### Create a Setup Model
+### 1. Create a Setup Model
 
-- Save a new .m file as setup.m.
-- Open a blank model of Simulink.
-- Add a Discrete-time integrator
-- Let us make a continuous time transfer function as a Plant (= 1).
-- Add rate transition block before the integrator.
-- In the rate transition, put T_{\mathrm{s}} as a sampling time.
-
-- Make a (discrete time) integrator 
-- Provide a process of how to create a reference model (see [this](https://github.com/Severson-Group/AMDC-Examples/blob/develop/docs/autogen/Autogen.md#creating-a-referenced-model))
-
-### Model Setting
-
-- Press Model Settings and go to Solver. In the Solver Selection, press Fixed-step. Set Fixed-step size as Tsim. 
+1. Save a new .m file as setup.m and define Ts = 1/(10e3), Tsim = Ts/10.
+2. Open a blank model of Simulink.
+3. Add a Step function with the default setting.
+4. Add a Discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) with the default setting.
+5. Add a rate transition block before the integrator. In the rate transition, put $T_{\mathrm{s}}$ as a sampling time.
+6. Add a rate transition block after the integrator. In the rate transition, set the sampling time to -1.
+7. Add a continuous-time transfer function as a Plant (= 1).
+8. Add a Sum function and connect each block as shown below.
 
 <p align="center">
-  <img src="images/step-setting.svg" alt="Integrator model" width="400">
+  <img src="images/autogen-model.svg", width="600">
 </p>
 
-- In the Model Settings, go to Code Generation and click Browse for the System target file. Select ert.tlc Embedded coder.
+### 2. Model Setting
+
+1. Press Model Settings and go to Solver. In the Solver Selection, press Fixed-step. Set Fixed-step size as Tsim. 
+2. In the Model Settings, go to Code Generation and click Browse for the System target file. Select ert.tlc Embedded coder.
+3. In the Model Settings, go to Model Settings and click Code Generation. In the Build process section, check Generate code only.
+4. In the Code Generation, go to Optimization and choose None for the Leverage target hardware instruction set extensions in the Target specific optimizations.
+5. In the Code Generation, go to Templates and uncheck Generate an example main program in the Custom templates section. Then, click Apply and OK.
+
+### 3. Create a Reference Model
+
+1. Select the discrete-time integrator, and right-click. Select Create Subsystem from Selection.
 
 <p align="center">
-  <img src="images/system-target-file.svg" alt="Integrator model" width="400">
-</p
+  <img src="images/autogen-model-susbsystem.svg", width="600">
+</p>
 
-- In the Model Settings, go to Model Settings and click Code Generation. In the Build process section, check Generate code only.
+2. Right-click on the subsystem. Select Block parameters (Subsystem), check 'Treat as atomic unit', and click OK.
+3. Right-click on the subsystem and select Subsystem & Model Reference. Select Convert and click Reference Model.
+4. In the Input Parameters section, define the New model name as integrator.
+5. Click Apply and Convert
+6. Rename the reference model to be integrator.
 
-<p align="center">
-  <img src="images/generate-code-only.svg" alt="Integrator model" width="400">
-</p
+### 4. Reference Model Setting
 
-- In the Code Generation, go to Optimization and choose None for the Leverage target hardware instruction set extensions in the Target specific optimizations.
+1. Double-click the integrator subsystem and click Model Settings. Click Model Settings in the Reference Model section.
+2. Click Solver and in the Solver details, put Ts.
+3. Save the Simulink file.
 
-<p align="center">
-  <img src="images/set-none-optimization.svg" alt="Integrator model" width="400">
-</p
+### 5. Generate C-code
 
-- In the Code Generation, go to Templates and uncheck Generate an example main program in the Custom templates section. Then, click Apply and OK.
-
-<p align="center">
-  <img src="images/custom-template-uncheck.svg" alt="Integrator model" width="400">
-</p
-
-### Create a Reference Model
-
-- Make a (discrete time) integrator 
-- Provide a process of how to create a reference model (see [this](https://github.com/Severson-Group/AMDC-Examples/blob/develop/docs/autogen/Autogen.md#creating-a-referenced-model))
-
-### Generate C-code
-
-- Provide a process of how to generate C-code using Autogen feature, i.e., run `slbuild(modelName.slx)` command. 
+1. Open the setup.m.
+2. Copy and paste the following code. 
+```m
+%% Autogen code for the controller
+model='integrator'; % Name of the controller to be built
+slbuild(model);     % Generates the autogen code
+oldFolder = cd('C:integrator_ert_rtw\');
+command = 'for /r %i in (*.c, *.h) do copy /y %i ..\autogen';
+[status, cmdout] = system(command);
+cd(oldFolder);
+```
 
 ### Integration with AMDC
 
