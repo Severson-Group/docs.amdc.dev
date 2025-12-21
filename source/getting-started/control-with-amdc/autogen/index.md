@@ -32,7 +32,7 @@
 8. Add a Sum function and connect each block as shown below.
 
 <p align="center">
-  <img src="images/autogen-model.svg", width="600">
+  <img src="images/autogen-model.svg", width="700">
 </p>
 
 ### 2. Model Setting
