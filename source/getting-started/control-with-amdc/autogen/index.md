@@ -122,7 +122,7 @@ cd(oldFolder);
 
 ### Integration with AMDC
 
-- Provide an example C-code to call the Autogen files within SDK, i.e., we need a following code:
+Now, the user needs to update the user C code to incorporate the Autogen code generated from Simulink. To do this, update `task_controller.c` as follows:
 
 `task_controller.c`:
 
@@ -143,7 +143,7 @@ int task_controller_init(void)
 {
   // ...
 
-  // Initialize autogen step  
+  // Initialize Autogen step  
   integrator_initialize();
 
   // ...
@@ -164,5 +164,7 @@ void task_controller_callback(void *arg)
 ```
 
 ## Results
+
+THIS SECTION WILL BE UPDATED!
 
 - After running the AMDC, show the input and output value through logging feature.
