@@ -35,16 +35,26 @@ my-AMDC-workspace/              <= master repo
     simulink/                   <= Now create this folder
 ```
 
-### Create a Setup Model
+### Create a Simulink Model
 
-1. Save a new .m file as setup.m and define Ts = 1/(10e3), Tsim = Ts/10.
-2. Open a blank model of Simulink.
-3. Add a Step function with the default setting.
-4. Add a Discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) with the default setting.
-5. Add a rate transition block before the integrator. In the rate transition, put $T_{\mathrm{s}}$ as a sampling time.
-6. Add a rate transition block after the integrator. In the rate transition, set the sampling time to -1.
-7. Add a continuous-time transfer function as a Plant (= 1).
-8. Add a Sum function and connect each block as shown below.
+1. In `simulink` folder, create a new MATLAB file (e.g., `setup.m`).
+2. In `setup.m`, define `fs = 10e3`, `Ts = 1/fs`, `Tsim = Ts/10`.
+
+User can copy-paste the following MATLAB code:
+
+```MATLAB
+fs = 10e3;      % sampling frequency (Hz)
+Ts = 1/fs;      % sampling time (sec)
+Tsim = Ts/10;   % simulation time (s) 
+```
+
+3. Open a blank model of Simulink.
+4. Add a Step block with the default setting.
+5. Add a Discrete-time integrator block with the default setting.
+6. Add a rate transition block before the integrator. In the rate transition, put `Ts` as a sampling time.
+7. Add a rate transition block after the integrator. In the rate transition, set the sampling time to `-1`.
+8. Add a continuous-time transfer block as a Plant (= 1).
+9. Add a Sum function and connect each block as shown below.
 
 ```{image} images/autogen-model.svg
 :alt: Autogen model
@@ -54,15 +64,28 @@ my-AMDC-workspace/              <= master repo
 
 ### Model Setting
 
-1. Press Model Settings and go to Solver. In the Solver Selection, press Fixed-step. Set Fixed-step size as Tsim. 
-2. In the Model Settings, go to Code Generation and click Browse for the System target file. Select ert.tlc Embedded coder.
-3. In the Model Settings, go to Model Settings and click Code Generation. In the Build process section, check Generate code only.
-4. In the Code Generation, go to Optimization and choose None for the Leverage target hardware instruction set extensions in the Target specific optimizations.
-5. In the Code Generation, go to Templates and uncheck Generate an example main program in the Custom templates section. Then, click Apply and OK.
+1. In `Modeling` tab, press `Model Settings` in `TOP MODEL` section.
+  - Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`
+  - Set `Fixed-step-size` as `Tsim`.
+2. Go to `Code Generation`.
+  - Click `Browse` for the `System target file`. 
+  - Select `ert.tlc Embedded coder`.
+  - In the `Build process` section, check `Generate code only`.
+3. Go to `Optimization` under `Code Generation`.
+  - Choose `None` for the `Leverage target hardware instruction set extensions` in the `Target specific optimizations`.
+4. Go to `Templates` under `Code Generation`.
+  - Uncheck `Generate an example main program` in the `Custom templates` section.
+5. Click `Apply` and `OK`.
 
-### Create a Reference Model
+### Create a Referenced Model
 
-1. Select the discrete-time integrator, and right-click. Select Create Subsystem from Selection.
+1. Select the discrete-time integrator, and right-click.
+2. Select `Create Subsystem from Selection`.
+3. Right-click on the subsystem created. Select `Block parameters (Subsystem)`, check `Treat as atomic unit`, and click `OK`.
+4. Right-click on the subsystem and select `Subsystem & Model Reference`. Select `Convert` and click `Referenced Model ...`.
+5. In the `Input Parameters` section, define the `New model name` as `integrator`.
+6. Click `Apply` and `Convert`.
+7. Rename the referenced model block to be `integrator`. The expected Simulink model is shown below:
 
 ```{image} images/autogen-model-subsystem.svg
 :alt: Autogen model subsystem
@@ -70,22 +93,18 @@ my-AMDC-workspace/              <= master repo
 :align: center
 ```
 
-2. Right-click on the subsystem. Select Block parameters (Subsystem), check 'Treat as atomic unit', and click OK.
-3. Right-click on the subsystem and select Subsystem & Model Reference. Select Convert and click Reference Model.
-4. In the Input Parameters section, define the New model name as integrator.
-5. Click Apply and Convert
-6. Rename the reference model to be integrator.
+### Referenced Model Setting
 
-### Reference Model Setting
-
-1. Double-click the integrator subsystem and click Model Settings. Click Model Settings in the Reference Model section.
-2. Click Solver and in the Solver details, put Ts.
+1. Double-click the `integrator` referenced model and click `Model Settings` under `Modeling` tab.
+2. Click `Model Settings` in the `REFERENCED MODEL` section.
+  - Set `Fixed-step-size` as `Ts`.
 3. Save the Simulink file.
 
 ### Generate C-code
 
-1. Open the setup.m.
-2. Copy and paste the following code. 
+1. Open the `setup.m`.
+2. Copy and paste the following code.
+
 ```MATLAB
 %% Autogen code for the controller
 model='integrator';  % name of the controller to be built
