@@ -8,7 +8,7 @@ A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be use
 
 ```{image} images/integrator-model.svg
 :alt: Integrator model
-:width: 400px
+:width: 300px
 :align: center
 ```
 
