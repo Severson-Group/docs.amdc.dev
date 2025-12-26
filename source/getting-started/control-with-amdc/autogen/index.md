@@ -69,9 +69,10 @@
 2. Copy and paste the following code. 
 ```m
 %% Autogen code for the controller
-model='integrator'; % Name of the controller to be built
-slbuild(model);     % Generates the autogen code
+model='integrator';  % name of the controller to be built
+slbuild(model);      % generates the autogen code
 oldFolder = cd('C:integrator_ert_rtw\');
+% Copy only .c and .h files in autogen folder
 command = 'for /r %i in (*.c, *.h) do copy /y %i ..\autogen';
 [status, cmdout] = system(command);
 cd(oldFolder);
