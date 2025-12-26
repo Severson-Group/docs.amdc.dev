@@ -124,8 +124,43 @@ cd(oldFolder);
 
 - Provide an example C-code to call the Autogen files within SDK, i.e., we need a following code:
 
+`task_controller.c`:
+
 ```c
-controller_4DOF_step();
+// ...
+
+int task_controller_clear(void)
+{
+  // ...
+
+  // Clear state struct for Simulink controller
+  memset(((void *) &integrator_DW_DW), 0, sizeof(DW_integrator_T));
+
+  // ...
+}
+
+int task_controller_init(void)
+{
+  // ...
+
+  // Initialize autogen step  
+  integrator_initialize();
+
+  // ...
+}
+
+void task_controller_callback(void *arg)
+{
+  // ...
+
+  // Update controller input parameters
+  integrator_U.STEP = STEP;
+
+  // Call Autogen code
+  integrator_step();
+
+  // ...
+}
 ```
 
 ## Results
