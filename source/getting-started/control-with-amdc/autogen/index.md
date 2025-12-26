@@ -1,10 +1,10 @@
 # Simulink Automatic Code Generation for AMDC
 
-- This article explains how to implement the Simulink automatic code generation (autogen) by demonstrating an example using a simple integrator.
+This article explains how to implement the Simulink automatic code generation (autogen) by demonstrating an example using a simple integrator.
 
 ## Example of Model Configuration
 
-- A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be used for creating the Simulink automatic code generation.
+A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be used for creating the Simulink automatic code generation.
 
 ```{image} images/integrator-model.svg
 :alt: Integrator model
@@ -16,13 +16,13 @@
 
 ### Pre-Requisites
 
-- User needs to install the dedicated MATLAB/Simulink toolbox/features - Embedded coder.  
+User needs to install the dedicated MATLAB/Simulink toolbox/features - Embedded coder.  
 
 ### File Organization
 
-- Provide a preferred file organization so that the AMDC can access the generated C-code
+Provide a preferred file organization so that the AMDC can access the generated C-code
 
-### 1. Create a Setup Model
+### Create a Setup Model
 
 1. Save a new .m file as setup.m and define Ts = 1/(10e3), Tsim = Ts/10.
 2. Open a blank model of Simulink.
@@ -39,7 +39,7 @@
 :align: center
 ```
 
-### 2. Model Setting
+### Model Setting
 
 1. Press Model Settings and go to Solver. In the Solver Selection, press Fixed-step. Set Fixed-step size as Tsim. 
 2. In the Model Settings, go to Code Generation and click Browse for the System target file. Select ert.tlc Embedded coder.
@@ -47,7 +47,7 @@
 4. In the Code Generation, go to Optimization and choose None for the Leverage target hardware instruction set extensions in the Target specific optimizations.
 5. In the Code Generation, go to Templates and uncheck Generate an example main program in the Custom templates section. Then, click Apply and OK.
 
-### 3. Create a Reference Model
+### Create a Reference Model
 
 1. Select the discrete-time integrator, and right-click. Select Create Subsystem from Selection.
 
@@ -63,13 +63,13 @@
 5. Click Apply and Convert
 6. Rename the reference model to be integrator.
 
-### 4. Reference Model Setting
+### Reference Model Setting
 
 1. Double-click the integrator subsystem and click Model Settings. Click Model Settings in the Reference Model section.
 2. Click Solver and in the Solver details, put Ts.
 3. Save the Simulink file.
 
-### 5. Generate C-code
+### Generate C-code
 
 1. Open the setup.m.
 2. Copy and paste the following code. 
