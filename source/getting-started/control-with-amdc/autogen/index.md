@@ -48,7 +48,7 @@ Ts = 1/fs;      % sampling time (sec)
 Tsim = Ts/10;   % simulation time (s) 
 ```
 
-3. Open a blank model of Simulink.
+3. Open a blank model of Simulink, and save as `setupModel.slx` in `simulink` folder.
 4. Add a `Step` block with the default setting.
 5. Add a `Discrete-Time Integrator` block with the default setting.
 6. Add a `Rate Transition` block before the integrator. In this block, put `Ts` as a sampling time.
@@ -99,6 +99,8 @@ Tsim = Ts/10;   % simulation time (s)
 2. Click `Model Settings` in the `REFERENCED MODEL` section.
     1. Set `Fixed-step-size` as `Ts`.
 3. Save the Simulink file.
+
+The example of Simulink file along with the referenced model is stored [here](./simulink/).
 
 ### Generate C-code
 
