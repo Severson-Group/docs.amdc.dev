@@ -49,12 +49,12 @@ Tsim = Ts/10;   % simulation time (s)
 ```
 
 3. Open a blank model of Simulink.
-4. Add a Step block with the default setting.
-5. Add a Discrete-time integrator block with the default setting.
-6. Add a rate transition block before the integrator. In the rate transition, put `Ts` as a sampling time.
-7. Add a rate transition block after the integrator. In the rate transition, set the sampling time to `-1`.
-8. Add a continuous-time transfer block as a Plant (= 1).
-9. Add a Sum function and connect each block as shown below.
+4. Add a `Step` block with the default setting.
+5. Add a `Discrete-Time Integrator` block with the default setting.
+6. Add a `Rate Transition` block before the integrator. In this block, put `Ts` as a sampling time.
+7. Add a `Rate Transition` block after the integrator. In this block, set the sampling time to `-1`.
+8. Add a continuous-time `Transfer Fcn` block as a Plant (= 1).
+9. Add a `Sum` function and connect each block as shown below.
 
 ```{image} images/autogen-model.svg
 :alt: Autogen model
