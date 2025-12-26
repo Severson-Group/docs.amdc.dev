@@ -6,9 +6,11 @@
 
 - A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be used for creating the Simulink automatic code generation.
 
-<p align="center">
-  <img src="images/integrator-model.svg" alt="Integrator model" width="350">
-</p>
+```{image} images/integrator-model.svg
+:alt: Integrator model
+:width: 400px
+:align: center
+```
 
 ## Procedure
 
@@ -31,9 +33,11 @@
 7. Add a continuous-time transfer function as a Plant (= 1).
 8. Add a Sum function and connect each block as shown below.
 
-<p align="center">
-  <img src="images/autogen-model.svg", width="700">
-</p>
+```{image} images/autogen-model.svg
+:alt: Autogen model
+:width: 400px
+:align: center
+```
 
 ### 2. Model Setting
 
@@ -47,9 +51,11 @@
 
 1. Select the discrete-time integrator, and right-click. Select Create Subsystem from Selection.
 
-<p align="center">
-  <img src="images/autogen-model-susbsystem.svg", width="600">
-</p>
+```{image} images/autogen-model-subsystem.svg
+:alt: Autogen model subsystem
+:width: 400px
+:align: center
+```
 
 2. Right-click on the subsystem. Select Block parameters (Subsystem), check 'Treat as atomic unit', and click OK.
 3. Right-click on the subsystem and select Subsystem & Model Reference. Select Convert and click Reference Model.
@@ -67,7 +73,7 @@
 
 1. Open the setup.m.
 2. Copy and paste the following code. 
-```m
+```MATLAB
 %% Autogen code for the controller
 model='integrator';  % name of the controller to be built
 slbuild(model);      % generates the autogen code
