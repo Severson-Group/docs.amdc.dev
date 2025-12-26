@@ -65,16 +65,16 @@ Tsim = Ts/10;   % simulation time (s)
 ### Model Setting
 
 1. In `Modeling` tab, press `Model Settings` in `TOP MODEL` section.
-  - Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`
-  - Set `Fixed-step-size` as `Tsim`.
+    1. Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`
+    2. Set `Fixed-step-size` as `Tsim`.
 2. Go to `Code Generation`.
-  - Click `Browse` for the `System target file`. 
-  - Select `ert.tlc Embedded coder`.
-  - In the `Build process` section, check `Generate code only`.
+    1. Click `Browse` for the `System target file`. 
+    2. Select `ert.tlc Embedded coder`.
+    3. In the `Build process` section, check `Generate code only`.
 3. Go to `Optimization` under `Code Generation`.
-  - Choose `None` for the `Leverage target hardware instruction set extensions` in the `Target specific optimizations`.
+    1. Choose `None` for the `Leverage target hardware instruction set extensions` in the `Target specific optimizations`.
 4. Go to `Templates` under `Code Generation`.
-  - Uncheck `Generate an example main program` in the `Custom templates` section.
+    1. Uncheck `Generate an example main program` in the `Custom templates` section.
 5. Click `Apply` and `OK`.
 
 ### Create a Referenced Model
@@ -97,7 +97,7 @@ Tsim = Ts/10;   % simulation time (s)
 
 1. Double-click the `integrator` referenced model and click `Model Settings` under `Modeling` tab.
 2. Click `Model Settings` in the `REFERENCED MODEL` section.
-  - Set `Fixed-step-size` as `Ts`.
+    1. Set `Fixed-step-size` as `Ts`.
 3. Save the Simulink file.
 
 ### Generate C-code
