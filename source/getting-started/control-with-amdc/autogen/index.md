@@ -65,10 +65,10 @@ Tsim = Ts/10;   % simulation time (s)
 ### Model Setting
 
 1. In `Modeling` tab, press `Model Settings` in `TOP MODEL` section.
-    1. Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`
+    1. Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`.
     2. Set `Fixed-step-size` as `Tsim`.
 2. Go to `Code Generation`.
-    1. Click `Browse` for the `System target file`. 
+    1. Click `Browse` for the `System target file`.
     2. Select `ert.tlc Embedded coder`.
     3. In the `Build process` section, check `Generate code only`.
 3. Go to `Optimization` under `Code Generation`.
@@ -126,4 +126,4 @@ controller_4DOF_step();
 
 ## Results
 
-- After running the AMDC, show the input and output value through logging feature
+- After running the AMDC, show the input and output value through logging feature.
