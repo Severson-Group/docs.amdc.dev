@@ -4,11 +4,7 @@ This article explains how to implement the Simulink automatic code generation (A
 
 ## Simulink Autogen Code
 
-Autogen is the process of converting a user Simulink model for a controller into equivalent C code for an embedded system (such as the AMDC). The Autogen feature in Simulink can be used to conveniently convert complex controller implementations into C-code for implementing it on the AMDC.
-
-## Example of Model Configuration
-
-A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be used for creating the Simulink automatic code generation.
+Autogen is the process of converting a user Simulink model for a controller into equivalent C code for an embedded system (such as the AMDC). The Autogen feature in Simulink can be used to conveniently convert complex controller implementations into C-code for implementing it on the AMDC. This article presents a step-by-step process of using Autogen to convert a simle integrator (as shown in the figure below) into C code.
 
 ```{image} images/integrator-model.svg
 :alt: Integrator model
@@ -20,11 +16,24 @@ A simple discrete-time integrator ($\frac{K T_{\mathrm{s}}}{z - 1}$) will be use
 
 ### Pre-Requisites
 
-User needs to install the dedicated MATLAB/Simulink toolbox/features - Embedded coder.  
+User needs to install at least the following dedicated MATLAB/Simulink toolboxes/features:
+
+- Simulink
+- Embedded coder
+- Simulink coders  
 
 ### File Organization
 
-Provide a preferred file organization so that the AMDC can access the generated C-code
+This article assumes that the uses has completed this tutorial, where you set up your repository. To follow this Autogen tutorial, create a new `simulink` folder in your repository and organize the files as shown below:
+
+```markdown
+my-AMDC-workspace/              <= master repo
+    AMDC-Firmware/              <= AMDC-Firmware as library
+        ...
+    my-AMDC-private-C-code/     <= Your private user C code
+        ...
+    simulink/                   <= Now create this folder
+```
 
 ### Create a Setup Model
 
