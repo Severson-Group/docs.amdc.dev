@@ -6,7 +6,7 @@ Tsim = Ts/10;   % simulation time (s)
 
 %% Autogen code for the controller
 model='integrator';  % name of the controller to be built
-slbuild(model);      % generates the autogen code
+slbuild(model);      % generates the Autogen code
 oldFolder = cd('C:integrator_ert_rtw\');
 % Copy only .c and .h files in autogen folder
 command = 'for /r %i in (*.c, *.h) do copy /y %i ..\autogen';

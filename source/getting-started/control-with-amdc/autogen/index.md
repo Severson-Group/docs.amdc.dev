@@ -1,6 +1,10 @@
 # Simulink Automatic Code Generation for AMDC
 
-This article explains how to implement the Simulink automatic code generation (autogen) by demonstrating an example using a simple integrator.
+This article explains how to implement the Simulink automatic code generation (Autogen) by demonstrating an example using a simple integrator.
+
+## Simulink Autogen Code
+
+Autogen is the process of converting a user Simulink model for a controller into equivalent C code for an embedded system (such as the AMDC). The Autogen feature in Simulink can be used to conveniently convert complex controller implementations into C-code for implementing it on the AMDC.
 
 ## Example of Model Configuration
 
@@ -76,7 +80,7 @@ Provide a preferred file organization so that the AMDC can access the generated 
 ```MATLAB
 %% Autogen code for the controller
 model='integrator';  % name of the controller to be built
-slbuild(model);      % generates the autogen code
+slbuild(model);      % generates the Autogen code
 oldFolder = cd('C:integrator_ert_rtw\');
 % Copy only .c and .h files in autogen folder
 command = 'for /r %i in (*.c, *.h) do copy /y %i ..\autogen';
