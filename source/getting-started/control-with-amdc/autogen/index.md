@@ -24,7 +24,7 @@ User needs to install at least the following dedicated MATLAB/Simulink toolboxes
 
 ### File Organization
 
-This article assumes that the uses has completed this tutorial, where you set up your repository. To follow this Autogen tutorial, create a new `simulink` folder in your repository and organize the files as shown below:
+This article assumes that the uses has completed the [Blink tutorial](../../tutorials/blink/index.md), where you set up your repository. To follow this Autogen tutorial, create a new `simulink` folder in your repository and organize the files as shown below:
 
 ```markdown
 my-AMDC-workspace/              <= master repo
