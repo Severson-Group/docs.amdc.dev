@@ -35,7 +35,7 @@
 
 ```{image} images/autogen-model.svg
 :alt: Autogen model
-:width: 400px
+:width: 600px
 :align: center
 ```
 
@@ -53,7 +53,7 @@
 
 ```{image} images/autogen-model-subsystem.svg
 :alt: Autogen model subsystem
-:width: 400px
+:width: 600px
 :align: center
 ```
 
@@ -88,7 +88,9 @@ cd(oldFolder);
 
 - Provide an example C-code to call the Autogen files within SDK, i.e., we need a following code:
 
-https://github.com/Severson-Group/ARL-eturbo/blob/1ae4479c934d486e06f233d98f9384fda36a545d/Embedded/My-C-Code/usr/bm_4dof/task_bm_4dof.c#L649
+```c
+controller_4DOF_step();
+```
 
 ## Results
 
