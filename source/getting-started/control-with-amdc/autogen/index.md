@@ -118,6 +118,8 @@ command = 'for /r %i in (*.c, *.h) do copy /y %i ..\autogen';
 cd(oldFolder);
 ```
 
+3. Run the `setup.m`, and Autogen code are created in `simulink/autogen` folder.
+
 ### Integration with AMDC
 
 - Provide an example C-code to call the Autogen files within SDK, i.e., we need a following code:
