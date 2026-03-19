@@ -2,261 +2,182 @@
 
 ## Background
 
-Modern motor drive systems rely on real-time embedded controllers such as the AMDC to execute control algorithms. Traditionally, these control algorithms are implemented manually in C/C++, which can be time-consuming and error-prone—especially for complex systems.
+Modern motor drive systems rely on embedded controllers to execute control algorithms in real time. Traditionally, these algorithms are implemented manually in C/C++, which is time-consuming and prone to implementation errors, especially for complex control systems.
 
-Simulink provides a graphical environment for modeling, simulating, and validating control systems. Using Simulink’s **Automatic Code Generation (Autogen)** capability, control algorithms designed in a block-diagram form can be directly converted into C code suitable for embedded deployment.
+However, Simulink provides a MATLAB-based graphical environment for modeling and simulating control systems. It is extensively used to model, simulate, and analyze complex dynamical systems, including motor drives. The GUI and block diagram environment in Simulink make it user-friendly and easy to validate system performance and controller performance.
 
-This workflow offers several key advantages:
+The process of converting a user Simulink model for a controller to equivalent C-code for an embedded system (such as the AMDC) is called Automatic Code Generation (Autogen). By using Autogen capability, control algorithms developed in a block-diagram form can be automatically converted into C code for execution on embedded platforms. This enables developers to design, simulate, and validate control strategies before deploying them to hardware. As a result, it improves development efficiency, reduces implementation errors, and provides a more intuitive framework for control system design.
 
-- Rapid prototyping of control algorithms  
-- Built-in simulation and validation before deployment  
-- Reduced implementation errors compared to manual coding  
-- Clear visualization of control logic  
 
-In this workflow, Simulink is used to design the controller, and the generated code is integrated into the AMDC firmware to execute in real time.
+## Control Approach with Simulink and AMDC
 
----
+The Simulink + AMDC workflow separates control development into two domains:
 
-## Autogen Control Workflow
+- **Design domain (Simulink):**  
+  The control algorithm is developed and validated using a graphical model.
 
-The overall workflow consists of three major steps:
+- **Execution domain (AMDC):**  
+  The generated C code is executed in real time on the embedded controller.
 
-1. **Design controller in Simulink**
-2. **Generate C code using Autogen**
-3. **Integrate generated code into AMDC**
+In this workflow, the Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data.
 
-### Simulink Model Structure
+The Simulink model is typically structured into three subsystems:
 
-To properly generate code for AMDC, the Simulink model should be organized into three subsystems:
+1. **Input/Output (I/O):** Used for simulation and visualization only  
+2. **Plant:** Represents the physical system (used for simulation)  
+3. **Controller:** Contains the control logic to be deployed  
 
-1. **Input/Output (I/O)**  
-   Handles signal inputs, outputs, and visualization (e.g., scopes).  
-   → *Not included in generated code*
+Only the **controller subsystem** is converted into embedded C code.
 
-2. **Plant**  
-   Represents the physical system (e.g., motor, load).  
-   → *Used only for simulation*
-
-3. **Controller**  
-   Contains the control logic to be deployed on AMDC  
-   → *This is the only part converted into C code*
-
-```
-Simulink Model
-├── I/O (simulation only)
-├── Plant (simulation only)
-└── Controller (code generated → AMDC)
-```
-
-The controller must be implemented using **discrete-time blocks**, since the AMDC operates in discrete time.
-
----
 
 ## Generated Code and Execution Model
 
-After code generation, Simulink produces C code that represents the controller as a **black-box function**.
+Simulink Autogen produces C code that represents the controller as a callable function. This generated code should be treated as a **black-box implementation** of the Simulink controller.
 
-### Key Characteristics
+The generated code has the following structure:
 
-- The controller is executed through a single function:
-
+- A function that executes the control algorithm:
+  
 ```c
 modelName_step();
 ```
 
-- Inputs and outputs are passed using structs:
+- Input and output data structures:
 
 ```c
-modelName_U   // Inputs
-modelName_Y   // Outputs
+modelName_U   // Inputs to controller
+modelName_Y   // Outputs from controller
 ```
 
-### Control Execution in AMDC
+Within the AMDC, the control task is responsible for executing the controller at a fixed time interval. The execution sequence is:
 
-The AMDC should call the generated controller at a fixed time interval:
+1. **Populate inputs** using sampled sensor data  
+2. **Call the controller step function**  
+3. **Route outputs** to actuators (e.g., PWM duty cycles)  
+
+A conceptual example is shown below:
 
 ```c
 void control_task_callback(void)
 {
-    // 1. Populate inputs (e.g., sensor readings)
+    // Populate inputs
     modelName_U.current = measured_current;
     modelName_U.voltage = measured_voltage;
 
-    // 2. Run controller
+    // Execute controller
     modelName_step();
 
-    // 3. Use outputs (e.g., PWM duty cycles)
+    // Apply outputs
     set_pwm_duty(modelName_Y.duty);
 }
 ```
 
-Key points:
+This fixed-time execution model is fundamental to digital control implementation on the AMDC.
 
-- AMDC follows: input → step → output  
-- Runs at a fixed timestep  
 
----
+## Development Environment and Workflow
 
-## Development Environment Setup
+To develop control code using Simulink Autogen, the following software components are required:
 
-To use Simulink Autogen with AMDC, the following environment is required:
+- MATLAB  
+- Simulink  
+- Simulink Coder  
+- Embedded Coder  
 
-### Required Software
+Additional toolboxes may be required depending on the specific control design.
 
-- MATLAB (latest version recommended)
-- Simulink
-- Simulink Coder
-- Embedded Coder
+### Recommended Workflow
 
-Additional toolboxes may be required depending on the control design.
+The recommended workflow for developing control code is:
 
----
+1. Develop and validate the control algorithm in Simulink  
+2. Isolate the controller subsystem  
+3. Generate C code using Simulink Autogen  
+4. Integrate generated code into the AMDC project  
+5. Execute and validate on hardware  
 
-### Required Simulink Configuration
+The generated code (typically located in a folder such as `modelName_ert_rtw`) should be added to the AMDC project as both:
 
-The following settings must be applied before generating code:
+- Include path  
+- Source files  
 
-1. **Solver Configuration**
-   - Set to **Fixed-step**
 
-2. **Code Generation Target**
-   - Set to `ert.tlc` (Embedded Coder target)
+## Important Considerations for Simulink Models
 
-3. **Controller Subsystem**
-   - Must be:
-     - Atomic subsystem
-     - Converted to **Referenced Model**
+For successful development and integration of control code, the following considerations must be observed:
 
----
+### 1. Discrete-Time Implementation
 
-### Code Generation
+All blocks within the controller must be discrete-time, since the AMDC executes control logic at fixed sampling intervals.
 
-Code is generated using:
 
-```matlab
-slbuild('modelName')
-```
+### 2. Fixed-Step Solver
 
-After generation:
+The Simulink model must use a fixed-step solver to ensure compatibility with real-time execution.
 
-- A folder `modelName_ert_rtw` is created
-- Key files:
-  - `modelName.c`
-  - `modelName.h`
 
----
+### 3. Consistent Sample Time
 
-### Important Notes
+The entire controller subsystem should operate at a single, well-defined sample time prior to:
 
-- Only the controller is converted to code  
-- Generated code should be reviewed if necessary  
-- Do not delete any generated files  
-- Folder paths should not contain whitespace  
+- Converting to an atomic subsystem  
+- Creating a referenced model  
 
----
 
-## Integration with AMDC
+### 4. Code Generation Settings
 
-To integrate the generated code into AMDC:
+- The code generation target should be set to **Embedded Coder (`ert.tlc`)**  
+- The build configuration should enable **"Generate Code Only"**  
 
-### 1. Add Generated Code to Project
 
-- Include the autogen folder in:
-  - Include paths
-  - Source paths
+### 5. Referenced Model Usage
 
----
+The controller subsystem should be:
 
-### 2. Create Control Task
+- Converted to an **atomic subsystem**  
+- Then converted to a **referenced model**  
 
-A dedicated control task should:
+Any updates to model settings should be performed after opening the referenced model as the top model.
 
-- Initialize the controller:
 
-```c
-modelName_initialize();
-```
+### 6. AMDC Integration Details
 
-- Execute periodically:
+- All generated source files should be included in the project  
+- The autogenerated folder must be added to compiler include paths  
+- The file `ert_main.c` should be excluded from the build  
 
-```c
-modelName_step();
-```
 
----
+### 7. File and Path Constraints
 
-### 3. Data Flow Mapping
+- File paths must not contain whitespace  
+- Generated files should not be modified unless necessary  
 
-The AMDC is responsible for:
 
-| Step | Description |
-|------|------------|
-| Input | Read sensor data and populate `modelName_U` |
-| Execute | Call `modelName_step()` |
-| Output | Route `modelName_Y` to actuators (e.g., PWM) |
+## Example Model
 
----
+An example Simulink model is provided to demonstrate this workflow. The model includes:
 
-## Important Considerations
+- A fully configured controller subsystem  
+- Proper solver and code generation settings  
+- A referenced model ready for code generation  
 
-### 1. Discrete-Time Design
+The example can be used directly to:
 
-All controller blocks must operate in discrete time.
+1. Generate code using Simulink Autogen  
+2. Integrate the generated files into an AMDC project  
+3. Execute the control loop on hardware  
 
-### 2. Fixed Execution Rate
+This example serves as a reference implementation for developing custom control algorithms using the Simulink + AMDC workflow.
 
-The AMDC must call the controller at a consistent timestep.
-
-### 3. Separation of Concerns
-
-- Simulation (Plant, I/O) ≠ Embedded code (Controller)  
-- Only controller logic runs on hardware  
-
-### 4. Code Structure Awareness
-
-- Controller is treated as a black box  
-- Only inputs/outputs are accessible  
-
-### 5. Debugging Strategy
-
-- Validate behavior in Simulink first  
-- Then verify integration on AMDC  
-
----
-
-## Example
-
-### Objective
-
-- Read analog input (0–9V)  
-- Convert to PWM duty (0–0.9)  
-- Apply saturation limits  
-
-### Workflow
-
-1. Build controller in Simulink  
-2. Generate code using `slbuild`  
-3. Integrate into AMDC control task  
-
-After generation, the following files are used:
-
-```
-exampleController.c
-exampleController.h
-```
-
-These contain the full implementation of the controller logic.
-
----
 
 ## Conclusion
 
-Using Simulink Autogen with the AMDC provides a powerful and efficient workflow for control development.
+The Simulink Autogen workflow provides a structured and efficient approach for implementing control algorithms on the AMDC.
 
-Key benefits include:
+By separating control design from embedded implementation, this approach enables:
 
-- Faster development cycles  
+- Rapid development and iteration  
 - Improved reliability through simulation  
-- Simplified integration with embedded systems  
+- Clear mapping between design and execution  
 
-This approach allows developers to focus on control design while leveraging automatic tools for code generation and deployment.
+This methodology is recommended for developing advanced control systems on the AMDC platform.
