@@ -157,7 +157,7 @@ A simple example is provided to illustrate the Simulink Autogen workflow and its
 
 The functional behavior of this example can be understood using the following system diagram:
 
-![Autogen Example Block Diagram](./resources/autogenExample.svg)
+<img src="./resources/autogenExample.svg" width="800"/>
 
 In this structure:
 
