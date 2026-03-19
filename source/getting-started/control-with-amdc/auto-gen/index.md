@@ -189,9 +189,7 @@ These files define the controller as a callable function with input and output s
 
 ## Conclusion
 
-The Simulink Autogen workflow provides a structured and efficient approach for implementing control algorithms on the AMDC.
-
-By separating control design from embedded implementation, this approach enables:
+The Simulink Autogen workflow provides a structured and efficient approach for implementing control algorithms on the AMDC. By separating control design from embedded implementation, this approach enables:
 
 - Rapid development and iteration  
 - Improved reliability through simulation  
