@@ -148,21 +148,13 @@ For successful development and integration of control code, the following consid
 
 ## Example Model
 
-A simple example is provided to demonstrate the Simulink Autogen workflow and its integration with the AMDC. This example illustrates how a control algorithm developed in Simulink is translated into embedded code and executed within the AMDC control framework.
-
-### Example Objective
-
-The example implements a simple control function with the following behavior:
+A simple example is provided to illustrate the Simulink Autogen workflow and its integration with the AMDC. This example serves as a reference for how a Simulink-based controller is translated into embedded code and executed within the AMDC framework. The example implements a simple control function with the following behavior:
 
 1. Read an analog input in the range of **0–9 V**  
 2. Map the input to a PWM duty ratio in the range of **0–0.9**  
 3. Apply saturation limits:
    - Output is limited to **0.9** if the input exceeds 9 V  
    - Output is limited to **0** if the input is below 0 V  
-
----
-
-### System-Level Representation
 
 The functional behavior of this example can be understood using the following system diagram:
 
@@ -176,8 +168,6 @@ In this structure:
 
 This reflects the execution model described earlier, where the AMDC samples inputs, executes the controller, and applies outputs at a fixed time interval.
 
----
-
 ### Simulink Model
 
 The complete Simulink model used in this example is provided below:
@@ -185,44 +175,17 @@ The complete Simulink model used in this example is provided below:
 - Simulink model: [`autogenExample.slx`](./resources/autogenExample.slx)  
 - Initialization script: [`autogenExampleInit.m`](./resources/autogenExampleInit.m)  
 
-The Simulink model follows the recommended structure:
+The Simulink model follows the recommended structure, with the controller implemented as a referenced model and appropriate solver and code generation settings already configured. Within the model, the block `exampleController` represents the controller subsystem that is converted into C code using Simulink Autogen, which can be done by running the script `autogenExampleInit.m`.
 
-- A **controller subsystem** containing the control logic  
-- The controller is configured as a **referenced model** for code generation  
-- Proper solver and code generation settings are already applied  
-
-Within the model, the block `exampleController` represents the controller subsystem that is converted into C code using Simulink Autogen.
-
----
 
 ### Generated Code Structure
 
-After running the initialization script (`autogenExampleInit.m`), Simulink generates code for the controller subsystem.
-
-This results in a folder:
-
-```
-exampleController_ert_rtw/
-```
-
-This folder contains multiple generated files. The most relevant files are:
+After running the initialization script (`autogenExampleInit.m`), Simulink generates code for the controller subsystem, resulting in a folder named `exampleController_ert_rtw`. Among the generated files, the most relevant are:
 
 - `exampleController.c` — implementation of the control logic  
 - `exampleController.h` — interface definitions (inputs, outputs, function declarations)  
 
 These files define the controller as a callable function with input and output structures, consistent with the execution model described earlier.
-
----
-
-### Role of the Example
-
-This example serves as a reference implementation for the Simulink + AMDC workflow. It demonstrates:
-
-- How control logic is expressed in Simulink  
-- How this logic is converted into embedded C code  
-- How the generated controller integrates into the AMDC execution framework  
-
-Users can use this example as a starting point for developing more advanced control algorithms by modifying the controller subsystem in the provided Simulink model.
 
 
 ## Conclusion
