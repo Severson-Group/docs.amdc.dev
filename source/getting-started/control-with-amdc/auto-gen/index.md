@@ -30,28 +30,13 @@ Only the **controller subsystem** is converted into embedded C code.
 
 ## Generated Code and Execution Model
 
-Simulink Autogen produces C code that represents the controller as a callable function. This generated code should be treated as a black-box implementation of the Simulink controller. The generated code has the following structure:
-
-- A function that executes the control algorithm:
-  
-```c
-modelName_step();
-```
-
-- Input and output data structures:
-
-```c
-modelName_U   // Inputs to controller
-modelName_Y   // Outputs from controller
-```
-
-Within the AMDC, the control task is responsible for executing the controller at a fixed time interval. The execution sequence is:
+Simulink Autogen produces C code that represents the controller as a callable function. This generated code should be treated as a black-box implementation of the Simulink controller. Within the AMDC, the control task is responsible for executing the controller at a fixed time interval. This fixed-time execution model is fundamental to digital control implementation on the AMDC. The execution sequence is:
 
 1. Populate inputs using sampled sensor data  
 2. Call the controller step function 
 3. Route outputs to actuators (e.g., PWM duty cycles)  
 
-A conceptual example is shown below:
+The generated code has the following structure:
 
 ```c
 void control_task_callback(void)
@@ -68,8 +53,18 @@ void control_task_callback(void)
 }
 ```
 
-This fixed-time execution model is fundamental to digital control implementation on the AMDC.
+- A function that executes the control algorithm:
+  
+```c
+modelName_step();
+```
 
+- Input and output data structures:
+
+```c
+modelName_U   // Inputs to controller
+modelName_Y   // Outputs from controller
+```
 
 ## Development Environment and Workflow
 
