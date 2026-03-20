@@ -53,18 +53,19 @@ void control_task_callback(void)
 }
 ```
 
-- A function that executes the control algorithm:
-  
-```c
-modelName_step();
-```
-
 - Input and output data structures:
 
 ```c
 modelName_U   // Inputs to controller
 modelName_Y   // Outputs from controller
 ```
+
+- A function that executes the control algorithm:
+  
+```c
+modelName_step();
+```
+
 
 ## Development Environment and Workflow
 
