@@ -49,7 +49,7 @@ void control_task_callback(void)
     // Apply outputs
     set_pwm_duty(modelName_Y.duty);  // Outputs from controller
 }
-
+```
 
 ## Development Environment and Workflow
 
