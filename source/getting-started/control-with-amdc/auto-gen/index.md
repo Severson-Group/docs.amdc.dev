@@ -50,18 +50,6 @@ void control_task_callback(void)
     set_pwm_duty(modelName_Y.duty);  // Outputs from controller
 }
 
-- Input and output data structures:
-
-```c
-modelName_U   // Inputs to controller
-modelName_Y   // Outputs from controller
-```
-
-- A function that executes the control algorithm:
-  
-```c
-modelName_step();
-```
 
 ## Development Environment and Workflow
 
