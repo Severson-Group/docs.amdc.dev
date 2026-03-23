@@ -40,16 +40,15 @@ The generated code has the following structure:
 void control_task_callback(void)
 {
     // Populate inputs
-    modelName_U.current = measured_current;
-    modelName_U.voltage = measured_voltage;
+    modelName_U.current = measured_current;  // Inputs to controller
+    modelName_U.voltage = measured_voltage;  // Inputs to controller
 
     // Execute controller
-    modelName_step();
+    modelName_step();  // A function that executes the control algorithm
 
     // Apply outputs
-    set_pwm_duty(modelName_Y.duty);
+    set_pwm_duty(modelName_Y.duty);  // Outputs from controller
 }
-```
 
 - Input and output data structures:
 
