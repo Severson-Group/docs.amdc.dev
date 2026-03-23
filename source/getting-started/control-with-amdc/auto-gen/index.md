@@ -80,7 +80,7 @@ Additional toolboxes may be required depending on the specific control design.
 The recommended workflow for developing control code is:
 
 1. Develop and validate the control algorithm in Simulink  
-2. Isolate the controller subsystem  
+2. Convert the controller to an atomic subsystem and then to a referenced model
 3. Generate C code using Simulink Autogen  
 4. Integrate generated code into the AMDC project  
 5. Execute and validate on hardware  
