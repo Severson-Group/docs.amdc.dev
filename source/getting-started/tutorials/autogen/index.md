@@ -6,15 +6,15 @@
 
 This tutorial goes over:
 
-- Organization of your repository to implement the Simulink Autogen codebase
-- Creation a Simulink simulation model used to generate Autogen code
+- Organization of your repository to store the Simulink Autogen codebase
+- Creation a Simulink simulation model to generate Autogen code
 - Control implementation using the AMDC hardware
 
 ## Tutorial Requirements
 
 1. Working AMDC hardware
 2. Completion of the ["Voltage Source Inverter" tutorial](../vsi/)
-3. Read ["Control with AMDC Using Simulink Autogen" article](../../control-with-amdc/autogen/index.md) and install MATLAB toolboxes required for generating C-code  
+3. Read ["Control with AMDC Using Simulink Autogen" article](../../control-with-amdc/autogen/index.md) to understand an overview of Autogen  
 
 ## File Organization
 
@@ -26,12 +26,23 @@ my-AMDC-workspace/               <= master repo
 |    |-- simulink/               <= Now create this folder
 |    |-- cmd_ctrl.h
 |-- control/
-     |-- AMDC-Firmware/          <= AMDC-Firmware as library
+     |-- AMDC-Firmware/          <= AMDC-Firmware as submodule
      |-- my-AMDC-private-C-code/ <= Your private user C code
          |-- usr/
              | -- controller/    <= Your private user app
                  | -- autogen/   <= Autogen code
 ```
+
+## Install Required MATLAB/Simulink Toolbox
+
+To develop control code using Simulink Autogen, the following software components are required:
+
+- [MATLAB](https://www.mathworks.com/help/matlab/index.html)
+- [Simulink](https://www.mathworks.com/help/simulink/index.html)
+- [Simulink Coder](https://www.mathworks.com/help/rtw/index.html)  
+- [Embedded Coder](https://www.mathworks.com/help/ecoder/index.html)
+
+Additional toolboxes may be required depending on the specific control design.
 
 ## Create a Simulink Model
 

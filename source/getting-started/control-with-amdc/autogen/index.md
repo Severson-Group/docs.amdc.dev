@@ -26,17 +26,6 @@ In this workflow, the Simulink model represents the control logic, while the AMD
 
 Only the **controller subsystem** is converted into embedded C code.
 
-## Development Environment and Workflow
-
-To develop control code using Simulink Autogen, the following software components are required:
-
-- [MATLAB](https://www.mathworks.com/help/matlab/index.html)
-- [Simulink](https://www.mathworks.com/help/simulink/index.html)
-- [Simulink Coder](https://www.mathworks.com/help/rtw/index.html)  
-- [Embedded Coder](https://www.mathworks.com/help/ecoder/index.html)
-
-Additional toolboxes may be required depending on the specific control design.
-
 ### Recommended Workflow
 
 The recommended workflow for developing control code is:
