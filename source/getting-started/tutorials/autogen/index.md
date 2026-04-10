@@ -37,8 +37,6 @@ my-AMDC-workspace/               <= master repo
 
 To develop control code using Simulink Autogen, the following software components are required:
 
-- [MATLAB](https://www.mathworks.com/help/matlab/index.html)
-- [Simulink](https://www.mathworks.com/help/simulink/index.html)
 - [Simulink Coder](https://www.mathworks.com/help/rtw/index.html)  
 - [Embedded Coder](https://www.mathworks.com/help/ecoder/index.html)
 
