@@ -1,41 +1,38 @@
-# Simulink Automatic Code Generation for AMDC
+# Tutorial: Autogen
 
-This article explains how to implement the Simulink automatic code generation (Autogen) by demonstrating an example using a simple integrator.
+- **Goal:** Generate Autogen code based on Simulink model.
+- **Complexity:** 3 / 5
+- **Estimated Time:** 40 min
 
-## Simulink Autogen Code
+This tutorial goes over:
 
-Autogen is the process of converting a user Simulink model for a controller into equivalent C code for an embedded system (such as the AMDC). The Autogen feature in Simulink can be used to conveniently convert complex controller implementations into C-code for implementing it on the AMDC. This article presents a step-by-step process of using Autogen to convert a simle integrator (as shown in the figure below) into C code.
+- How to organize your repository to effectively implement the Simulink Autogen codebase
+- Creation a Simulink simulation model used to generate Autogen code
+- Control implementation using the AMDC hardware
 
-```{image} images/integrator-model.svg
-:alt: Integrator model
-:width: 300px
-:align: center
-```
+## Tutorial Requirements
 
-## Procedure
+1. Working AMDC hardware
+2. Completion of the ["Voltage Source Inverter" tutorial](../vsi/)
+3. Read ["Control with AMDC Using Simulink Autogen" article](../../control-with-amdc/autogen) and install MATLAB toolboxes required for Autogen code  
 
-### Pre-Requisites
+## Step 1: File Organization
 
-User needs to install at least the following dedicated MATLAB/Simulink toolboxes/features:
-
-- Simulink
-- Embedded coder
-- Simulink coders  
-
-### File Organization
-
-This article assumes that the uses has completed the [Blink tutorial](../../tutorials/blink/index.md), where you set up your repository. To follow this Autogen tutorial, create a new `simulink` folder in your repository and organize the files as shown below:
+The first step is to organize your repository. Create a new `modeling/simulink` folder in your repository and organize the files as shown below:
 
 ```markdown
 my-AMDC-workspace/              <= master repo
+    modeling/
+        simulink/               <= Now create this folder
     AMDC-Firmware/              <= AMDC-Firmware as library
         ...
     my-AMDC-private-C-code/     <= Your private user C code
         ...
-    simulink/                   <= Now create this folder
 ```
 
-### Create a Simulink Model
+## Step 2: Create a Simulink Model
+
+Now that you create a Simulink model used to generate Autogen code.  
 
 1. In `simulink` folder, create a new MATLAB file (e.g., `setup.m`).
 2. In `setup.m`, define `fs = 10e3`, `Ts = 1/fs`, `Tsim = Ts/10`.
@@ -61,6 +58,38 @@ Tsim = Ts/10;   % simulation time (s)
 :width: 600px
 :align: center
 ```
+
+
+
+
+The first step is building baseline firmware for the AMDC.
+The default code provided in the `AMDC-Firmware` GitHub repository will be used for this.
+This tutorial will not modify any code: only build, compile, and load it.
+
+
+
+This article explains how to implement the Simulink automatic code generation (Autogen) by demonstrating an example using a simple integrator.
+
+## Simulink Autogen Code
+
+Autogen is the process of converting a user Simulink model for a controller into equivalent C code for an embedded system (such as the AMDC). The Autogen feature in Simulink can be used to conveniently convert complex controller implementations into C-code for implementing it on the AMDC. This article presents a step-by-step process of using Autogen to convert a simle integrator (as shown in the figure below) into C code.
+
+```{image} images/integrator-model.svg
+:alt: Integrator model
+:width: 300px
+:align: center
+```
+
+## Procedure
+
+### Pre-Requisites
+
+User needs to install at least the following dedicated MATLAB/Simulink toolboxes/features:
+
+- Simulink
+- Embedded coder
+- Simulink coders  
+
 
 ### Model Setting
 
