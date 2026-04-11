@@ -83,7 +83,7 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 ### Model Setting
 
 1. In `Modeling` tab, press `Model Settings` in `TOP MODEL` section.
-    1. Under the `Solver`tree, in the `Solver Selection`, press `Fixed-step`.
+    1. Under the `Solver` tree, in the `Solver Selection`, press `Fixed-step`.
     2. Set `Fixed-step-size` as `Tsim`.
 2. Go to `Code Generation`.
     1. Click `Browse` for the `System target file`.
@@ -97,13 +97,13 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 
 ### Create a Referenced Model
 
-1. Select the discrete-time integrator, and right-click.
+1. Select the duty ratio calculation blocks, and right-click.
 2. Select `Create Subsystem from Selection`.
 3. Right-click on the subsystem created. Select `Block parameters (Subsystem)`, check `Treat as atomic unit`, and click `OK`.
 4. Right-click on the subsystem and select `Subsystem & Model Reference`. Select `Convert` and click `Referenced Model ...`.
-5. In the `Input Parameters` section, define the `New model name` as `integrator`.
+5. In the `Input Parameters` section, define the `New model name` as `generateDuty`.
 6. Click `Apply` and `Convert`.
-7. Rename the referenced model block to be `integrator`. The expected Simulink model is shown below:
+7. Rename the referenced model block to be `generateDuty`. The expected Simulink model is shown below:
 
 ```{image} images/autogen-model-subsystem.svg
 :alt: Autogen model subsystem
