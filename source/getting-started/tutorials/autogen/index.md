@@ -143,7 +143,7 @@ cd(oldFolder);
 
 These files define the controller as a callable function with input and output structures, consistent with the execution model described earlier.
 
-4. Open the SDK, and make sure that the `autogen` folder appears as part under the `Project Explorer`. If it does not, refresh the project.
+4. Open the SDK, and make sure that the `autogen` folder appears under the `Project Explorer`. If it does not, refresh the project.
 
 ### Integration with AMDC
 
