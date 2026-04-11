@@ -1,8 +1,8 @@
 # Integrator Anti-Windup
 
-This article describes how to evaluate performance of anti-windup. A windup might occur when the controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability.
+This article describes how to evaluate performance of anti-windup. A windup might occur when a controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability.
 
-The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Since perfect anti-windup is unachievable, it is crucial to simulate realistic windup and anti-windup behaviors to examine specific scenarios that are likely to occur in practice. To help readers understand this, an example of Simulink model (available [here](../integrator-anti-windup/simulink/)) is provided in this article to demonstrate how such scenario can be simulated and how the anti-windup strategy can address them.
+The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Since perfect anti-windup is unachievable, it is important to simulate realistic windup and anti-windup behaviors to examine specific scenarios that are likely to occur in practice. To help readers understand this, an example of Simulink model (available [here](../integrator-anti-windup/simulink/)) is provided in this article to demonstrate how such scenarios can be simulated and how anti-windup strategies can address them.
 
 ## Exploring Windup Phenomena in Integrators
 
@@ -14,7 +14,7 @@ Generally, the primary components of a control diagram are the controller and pl
     :align: center
 ```
 
-In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This system can be interpreted from following examples:
+In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
 
 1. Current regulation:
     - Plant input: Voltage command
@@ -22,24 +22,24 @@ In this example, a simple plant model of 1/(s+1) is employed, with the saturatio
     - Physical limitation: The realistic command voltage to the plant is restricted by the capability of the DC power supply
 
 2. Speed control:
-    - Plant input: $q$-axis current command
+    - Plant input: $q$-axis current (torque) command
     - Output: Rotational speed of the electric machinery
-    - Physical limitation: The practical command current to the plant is limited by the coil current density.
+    - Physical limitation: The practical command current to the plant is limited by the motor's current (torque) rating.
 
 3. Temperature control:
     - Plant input: Heat
     - Output: Resulting system temperature
     - Physical limitation: The heater’s power rating (e.g., 1 kW) limits the actuator.
 
-In this example, the PI controller is employed to achieve the desired system response. The PI gains are set to achieve the first response with a bandwidth of 10 Hz, i.e., $K_\text{p} = 2\pi \times 10$, and $K_\text{i} = 2\pi \times 10$.
+The PI controller is employed to achieve the desired system response. In this article, the PI gains are set to achieve a first order response with a bandwidth of 10 Hz, i.e., $K_\text{p} = 2\pi \times 10$, and $K_\text{i} = 2\pi \times 10$.
 
-### Technical Challenges on Windup
+### Technical Challenges with Windup
 
-This section provides the practical challenges from the actuator’s input limitations, especially on the command tracking and disturbance suppression, and introduces the definition of an integral windup.
+This section provides an overview of practical challenges due to actuator input limitations, especially in order to command tracking and disturbance suppression, and introduces the definition of integrator windup. Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. The objective of this analysis is to evaluate the impact of the saturation block on the output performance.
 
 #### Command Tracking without/with Actuator Limitations
 
-Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. The objective of this analysis is to evaluate the impact of the saturation block on the output performance. The simulation results are shown below, where two scenarios are compared: one “without saturation block (red line)” and one “with the saturation block (blue line)”. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
+The simulation results are shown below, where two scenarios are compared: one “without saturation block (red line)” and one “with the saturation block (blue line)”. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
 
 ```{image} images/Output-sat-c.svg
     :align: center
@@ -60,11 +60,11 @@ Let us examine why this phenomenon occurs by analyzing the manipulated variable 
     :width: 600
 ```
 
-In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continue to increase the manipulated variable after getting the larger error. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known as an integral windup.
+In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continues to increase the manipulated variable after getting the larger error. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known integrator windup.
 
 #### Disturbance Suppression without/with Actuator Limitations
 
-Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine whether disturbances affect the behavior of the integrator. In this scenario, the command is set as 0, and the disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.
+Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the command is set as 0, and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.
 
 ```{image} images/Disturbance.svg
     :align: center
@@ -80,7 +80,7 @@ In the transient response of `Output` when the disturbance ends, it is observed 
 
 ## Anti-Windup Techniques
 
-To avoid the integral windup, the mitigation strategy known as the anti-windup strategy is now introduced. The block diagram incorporating an integrator with the anti-windup is shown in the figure below.
+To avoid the integral windup, anti-windup techniques are now introduced. The block diagram incorporating an integrator with anti-windup is shown in the figure below.
 
 ```{image} images/control-diagram-overview.svg
     :align: center
@@ -96,7 +96,7 @@ These two methods are now explained in detail.
 
 ### Clamping
 
-Clamping is a straightforward anti-windup strategy where the integrator is simply "clamped" to prevent it from exceeding a certain limitation, which is called simple clamping in this article. Advanced clamping, on the other hand, is a more sophisticated from simple clamping that engages only under specific conditions.
+Clamping is a straightforward anti-windup strategy where the integrator is simply "clamped" to prevent it from exceeding a certain limitation, which is called simple clamping in this article. Advanced clamping, on the other hand, is more sophisticated in that it engages only under specific conditions.
 
 ### Simple Clamping
 
