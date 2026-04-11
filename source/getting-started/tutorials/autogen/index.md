@@ -13,18 +13,17 @@ This tutorial goes over:
 ## Tutorial Requirements
 
 1. Working AMDC hardware
-2. Completion of the ["Voltage Source Inverter" tutorial](../vsi/)
+2. Completion of the ["Voltage Source Inverter" tutorial](../vsi/index.md)
 3. Read ["Control with AMDC Using Simulink Autogen" article](../../control-with-amdc/autogen/index.md) to understand an overview of Autogen  
 
 ## File Organization
 
-The first step is to organize your repository. Create a new `modeling/simulink` folder in your repository and organize the files as shown below:
+The first step is to organize your repository. Create a new `modeling/simulink` folder in your repository as shown below:
 
 ```markdown
 my-AMDC-workspace/               <= master repo
 |-- modeling/
 |    |-- simulink/               <= Now create this folder
-|    |-- cmd_ctrl.h
 |-- control/
      |-- AMDC-Firmware/          <= AMDC-Firmware as submodule
      |-- my-AMDC-private-C-code/ <= Your private user C code
@@ -44,28 +43,36 @@ Additional toolboxes may be required depending on the specific control design.
 
 ## Create a Simulink Model
 
-Now that you create a Simulink model used to generate Autogen code.  
+Now that you create a Simulink model that will be used to generate Autogen code. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
 
-1. In `simulink` folder, create a new MATLAB file (e.g., `setup.m`).
-2. In `setup.m`, define `fs = 10e3`, `Ts = 1/fs`, `Tsim = Ts/10`.
-
-User can copy-paste the following MATLAB code:
+1. In `simulink` folder, create a new MATLAB file named `setup.m`.
+2. In `setup.m`, copy-paste the following MATLAB code:
 
 ```MATLAB
 fs = 10e3;      % sampling frequency (Hz)
 Ts = 1/fs;      % sampling time (sec)
 Tsim = Ts/10;   % simulation time (s) 
+
+omega = 377.0;  % (rad/s)
+Do    = 0.8;    % (--)
 ```
 
-**Need to update the following step to create a duty cycle**
+3. Open a blank model of Simulink, and save it as `setupModel.slx` in the `simulink` folder.
+4. Add a `Constant` block and set its value to `omega`.
+5. Add an `Integrator` block and connect it to the `Constant` block.
+6. Add a `Constant` block and set its value to `Do`.
+7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time `Ts`.
+8. Create Simulink blocks to implement the following duty ratio calculation developed [here](../vsi/index.md/#c-code-controller):
 
-3. Open a blank model of Simulink, and save as `setupModel.slx` in `simulink` folder.
-4. Add a `Step` block with the default setting.
-5. Add a `Discrete-Time Integrator` block with the default setting.
-6. Add a `Rate Transition` block before the integrator. In this block, put `Ts` as a sampling time.
-7. Add a `Rate Transition` block after the integrator. In this block, set the sampling time to `-1`.
-8. Add a continuous-time `Transfer Fcn` block as a Plant (= 1).
-9. Add a `Sum` function and connect each block as shown below.
+```c
+// Calculate desired duty ratios
+double duty_a = 0.5 + Do/2.0 * cos(theta);
+double duty_b = 0.5 + Do/2.0 * cos(theta - 2.0*M_PI/3.0);
+double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
+```
+
+9. Add a `Rate Transition` block after the duty ratio calculations. In these blocks, set the sampling time to `-1`.
+10. The expected block diagram is shown below:
 
 ```{image} images/autogen-model.svg
 :alt: Autogen model
@@ -118,6 +125,8 @@ The example of Simulink file along with the referenced model is stored [here](./
 1. Open the `setup.m`.
 2. Copy and paste the following code.
 
+Need to update this!!
+
 ```MATLAB
 %% Autogen code for the controller
 model='integrator';  % name of the controller to be built
@@ -139,7 +148,7 @@ These files define the controller as a callable function with input and output s
 
 ### Integration with AMDC
 
-Now, the user needs to update the user C code to incorporate the autogen code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes your developed code at a fixed sampling interval, where you need to include following:
+Now, the user needs to update the user C code developed in the ["Voltage Source Inverter" tutorial](../vsi/) to incorporate the autogen code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes the developed code at a fixed sampling interval, and the following items need to be included:
 
 1. Populate inputs (e.g., sampled sensor data)  
 2. Call the controller step function
@@ -172,6 +181,11 @@ int task_controller_init(void)
   // ...
 }
 
+double Ts    = 1.0 / (double) TASK_CONTROLLER_UPDATES_PER_SEC;
+double theta = 0.0;    // [rad]
+double omega = 377.0;  // [rad/s]
+double Do    = 0.8;    // [--]
+
 void task_controller_callback(void *arg)
 {
   // ...
@@ -180,11 +194,27 @@ void task_controller_callback(void *arg)
   modelName_U.current = measured_current;  // Inputs to controller
   modelName_U.voltage = measured_voltage;  // Inputs to controller
 
+  // Update theta
+  theta += (Ts * omega);
+
+  // Wrap to 2*pi
+  theta = fmod(theta, 2.0 * M_PI);
+
+  // Calculate desired duty ratios
+  double duty_a = 0.5 + Do/2.0 * cos(theta);
+  double duty_b = 0.5 + Do/2.0 * cos(theta - 2.0*M_PI/3.0);
+  double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
+
+  // Update PWM peripheral in FPGA
+  pwm_set_duty(0, duty_a); // Set HB1 duty ratio (INV1, PWM1 and PWM2)
+  pwm_set_duty(1, duty_b); // Set HB2 duty ratio (INV1, PWM3 and PWM4)
+  pwm_set_duty(2, duty_c); // Set HB3 duty ratio (INV1, PWM5 and PWM6)
+
   // Update controller input parameters
-  integrator_U.STEP = STEP;
+  generateDuty.STEP = STEP;
 
   // Call Autogen code
-  integrator_step();
+  generateDuty_step();
 
   // Apply outputs
   set_pwm_duty(modelName_Y.duty);  // Outputs from controller
