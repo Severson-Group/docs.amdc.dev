@@ -222,7 +222,7 @@ In this example, the input `theta` is generated within the code. However, this c
 
 ## Running the AMDC
 
-We are now ready to run the new control code with Autogen! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md) tutorial.
+We are now ready to run the new control code with Autogen! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md).
 
 ## Conclusion
 
