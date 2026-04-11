@@ -147,7 +147,7 @@ These files define the controller as a callable function with input and output s
 
 ### Integration with AMDC
 
-Now, the user needs to update the user C code developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) to incorporate the autogen code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes the developed code at a fixed sampling interval, and the following items need to be included:
+Now, the user needs to update the user C code developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) to incorporate the Autogen code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes the developed code at a fixed sampling interval, and the following items need to be included:
 
 1. Populate inputs, such as constant values or sampled sensor data. The input variables are defined with `_U` suffix (e.g.,  `generateDuty_U`).
 2. Call the controller step function
@@ -222,10 +222,10 @@ In this example, the input `theta` is generated within the code. However, this c
 
 ## Running the AMDC
 
-We are now ready to run the new control code with autogen! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md) tutorial.
+We are now ready to run the new control code with Autogen! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md) tutorial.
 
 ## Conclusion
 
 **Congratulations!**
 
-You have now built an updated user app with autogen code for the voltage source inverter. These techniques can be extended for many other control problems, e.g., current regulation, motion control, or even more advanced controller. By modifying the Simulink model and continuously generating C code, you can effectively develop new control algorithms.
+You have now built an updated user app with Autogen code for the voltage source inverter. These techniques can be extended for many other control problems, e.g., current regulation, motion control, or even more advanced controller. By modifying the Simulink model and continuously generating C code, you can effectively develop new control algorithms.
