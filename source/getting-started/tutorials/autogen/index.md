@@ -125,8 +125,6 @@ The example of Simulink file along with the referenced model is stored [here](./
 1. Open the `setup.m`.
 2. Copy and paste the following code.
 
-Need to update this!!
-
 ```MATLAB
 %% Autogen code for the controller
 model='generateDuty';  % name of the controller to be built
@@ -220,8 +218,6 @@ void task_controller_callback(void *arg)
 ```{note}
 In this example, the input `theta` is generated within the code. However, this can be obtained from sensor measurements, such as encoder readings.
 ```
-
-
 
 ## Running the AMDC
 
