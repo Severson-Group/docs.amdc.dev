@@ -59,7 +59,7 @@ Do    = 0.8;    % (--)
 
 3. Open a blank model of Simulink, and save it as `setupModel.slx` in the `simulink` folder.
 4. Add a `Constant` block and set its value to `omega`.
-5. Add an `Integrator` block and connect it to the `Constant` block.
+5. Add an `Integrator` block and connect it to the `Constant` block. Rename the output signal of this integrator to be `theta`.
 6. Add a `Constant` block and set its value to `Do`.
 7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time `Ts`.
 8. Create Simulink blocks to implement the following duty ratio calculation developed [here](../vsi/index.md/#c-code-controller):
