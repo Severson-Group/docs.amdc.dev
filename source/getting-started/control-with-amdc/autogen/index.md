@@ -38,7 +38,7 @@ The recommended workflow for developing control code is:
 
 For successful development and integration of control code, the following considerations must be observed:
 
-1. **Discrete-Time Implementation**: All blocks within the controller must be discrete-time, since the AMDC executes control logic at fixed sampling intervals.
+1. **Discrete-Time Implementation**: All blocks within the controller must be discrete-time, since the AMDC executes control logic at fixed sampling intervals. More information about the discrete time blocks in Simulink can be found [here](https://www.mathworks.com/help/simulink/discrete.html).
 2. **Fixed-Step Solver**: The Simulink model must use a fixed-step solver to ensure compatibility with real-time execution.
 3. **Consistent Sample Time**: The entire controller subsystem should operate at a single, well-defined sample time before converting to an atomic subsystem and creating a referenced model.
 4. **Code Generation Settings**: The code generation target should be set to Embedded Coder (`ert.tlc`). The build configuration should enable "Generate Code Only".
