@@ -2,11 +2,10 @@
 
 ## Background
 
-Modern motor drive systems rely on embedded controllers to execute control algorithms in real time. Traditionally, these algorithms are implemented manually in C/C++, which is time-consuming and prone to implementation errors, especially for complex control systems.
+Simulink provides a MATLAB-based graphical environment for modeling and simulating control systems. It is extensively used to model, simulate, and analyze complex dynamical systems, including motor drives. The GUI and block diagram environment in Simulink make it user-friendly and easy to validate system performance and controller performance.
 
-However, Simulink provides a MATLAB-based graphical environment for modeling and simulating control systems. It is extensively used to model, simulate, and analyze complex dynamical systems, including motor drives. The GUI and block diagram environment in Simulink make it user-friendly and easy to validate system performance and controller performance.
+The Simulink model needs to be converted into an equivalent C code for an embedded system (such as the AMDC). Automatic Code Generation (Autogen) can automatically convert control algorithms developed in a block-diagram form into C code for execution on embedded platforms. This enables developers to simulate and validate control strategies before deploying them to hardware, which reduces implementation errors and provides a more intuitive framework for control system design.
 
-The process of converting a user Simulink model for a controller to equivalent C-code for an embedded system (such as the AMDC) is called Automatic Code Generation (Autogen). By using the Autogen capability, control algorithms developed in a block-diagram form can be automatically converted into C code for execution on embedded platforms. This enables developers to design, simulate, and validate control strategies before deploying them to hardware. As a result, it improves development efficiency, reduces implementation errors, and provides a more intuitive framework for control system design.
 
 ## Control Approach with Simulink and AMDC
 
