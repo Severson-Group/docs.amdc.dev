@@ -8,21 +8,25 @@ To apply the controller built in Simulink to the AMDC platform, we need Automati
 
 ## Control Approach with Simulink and AMDC
 
-The Simulink + AMDC workflow separates control development into two domains:
+The figure below shows the Simulink + AMDC workflow. The Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data. 
 
-- **Design domain (Simulink):**  
-  The control algorithm is developed and validated using a graphical model.
 
-- **Execution domain (AMDC):**  
-  The generated C code is executed in real time on the embedded controller.
 
-In this workflow, the Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data. The Simulink model is typically structured into three subsystems:
+The Simulink model is typically structured into three subsystems:
 
 1. **Input/Output (I/O):** Used for simulation and visualization only  
 2. **Plant:** Represents the physical system (used for simulation)  
 3. **Controller:** Contains the control logic to be deployed  
 
 Only the **controller subsystem** is converted into embedded C code.
+
+Then, the Simulink + AMDC workflow separates control development into two domains:
+
+- **Design domain (Simulink):**  
+  The control algorithm is developed and validated using a graphical model.
+
+- **Execution domain (AMDC):**  
+  The generated C code is executed in real time on the embedded controller.
 
 ### Recommended Workflow
 
@@ -39,7 +43,7 @@ The recommended workflow for developing control code is:
 For successful development and integration of control code, the following considerations must be observed:
 
 1. **Discrete-Time Implementation**: All blocks within the controller must be [discrete-time](https://www.mathworks.com/help/simulink/discrete.html), since the AMDC executes control logic at fixed sampling intervals.
-2. **Fixed-Step Solver**: The Simulink model must use a fixed-step solver to ensure compatibility with real-time execution.
+2. **Fixed-Step Solver**: The Simulink model must use a [fixed-step solver](https://www.mathworks.com/help/simulink/ug/fixed-step-solvers-in-simulink.html) to ensure compatibility with real-time execution.
 3. **Consistent Sample Time**: The entire controller subsystem should operate at a single, well-defined sample time before converting to an atomic subsystem and creating a referenced model.
 4. **Code Generation Settings**: The code generation target should be set to Embedded Coder (`ert.tlc`). The build configuration should enable "Generate Code Only".
 5. **Referenced Model Usage**: The controller subsystem should be converted to an [atomic subsystem](https://www.mathworks.com/help/simulink/slref/subsystem.html#mw_f323006c-a286-47ea-85e6-a692c87bdabe), then converted to a referenced model. Any updates to model settings should be performed after opening the referenced model as the top model.
