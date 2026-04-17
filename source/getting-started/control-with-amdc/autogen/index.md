@@ -4,8 +4,7 @@
 
 Simulink provides a MATLAB-based graphical environment for modeling and simulating control systems. It is extensively used to model, simulate, and analyze complex dynamical systems, including motor drives. The GUI and block diagram environment in Simulink make it user-friendly and easy to validate system performance and controller performance.
 
-The Simulink model needs to be converted into an equivalent C code for an embedded system (such as the AMDC), which can be done by Automatic Code Generation (Autogen). By automatically converting the control block diagrams into C code, it enables developers to simulate and validate control strategies before deploying them to hardware, which reduces implementation errors and provides a more intuitive framework for control system design.
-
+To apply the controller built in Simulink to the AMDC platform, we need Automatic Code Generation (Autogen) that can convert the Simulink block diagrams into an equivalent C code for an embedded system. It enables developers to simulate and validate control strategies before deploying them to hardware, which reduces implementation errors and provides a more intuitive framework for control system design.
 
 ## Control Approach with Simulink and AMDC
 
