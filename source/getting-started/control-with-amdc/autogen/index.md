@@ -8,9 +8,11 @@ To apply the controller built in Simulink to the AMDC platform, we need Automati
 
 ## Control Approach with Simulink and AMDC
 
-The figure below shows the Simulink + AMDC workflow. The Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data. 
+The figure below shows the Simulink + AMDC workflow. The Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data.
 
-
+```{image} resources/block-diagram.svg
+:height: 10em
+```
 
 The Simulink model is typically structured into three subsystems:
 
