@@ -29,7 +29,7 @@ Only the **controller subsystem** is converted into embedded C code.
 The recommended workflow for developing control code is:
 
 1. Develop and validate the control algorithm in Simulink.  
-2. Convert the controller to an atomic subsystem and then to a referenced model (More information about referenced models can be found [here](https://www.mathworks.com/help/simulink/model-reference.html)).
+2. Convert the controller to an atomic subsystem and then to a referenced model (Information about referenced models can be found [here](https://www.mathworks.com/help/simulink/model-reference.html)).
 3. Generate C code using Simulink Autogen.  
 4. Integrate generated code into the AMDC project.  
 5. Execute and validate on hardware.  
