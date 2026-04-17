@@ -8,21 +8,25 @@ To apply the controller built in Simulink to the AMDC platform, we need Automati
 
 ## Control Approach with Simulink and AMDC
 
-The Simulink + AMDC workflow separates control development into two domains:
+The figure below shows the Simulink + AMDC workflow. The Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data. 
 
-- **Design domain (Simulink):**  
-  The control algorithm is developed and validated using a graphical model.
 
-- **Execution domain (AMDC):**  
-  The generated C code is executed in real time on the embedded controller.
 
-In this workflow, the Simulink model represents the control logic, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data. The Simulink model is typically structured into three subsystems:
+The Simulink model is typically structured into three subsystems:
 
 1. **Input/Output (I/O):** Used for simulation and visualization only  
 2. **Plant:** Represents the physical system (used for simulation)  
 3. **Controller:** Contains the control logic to be deployed  
 
 Only the **controller subsystem** is converted into embedded C code.
+
+Then, the Simulink + AMDC workflow separates control development into two domains:
+
+- **Design domain (Simulink):**  
+  The control algorithm is developed and validated using a graphical model.
+
+- **Execution domain (AMDC):**  
+  The generated C code is executed in real time on the embedded controller.
 
 ### Recommended Workflow
 
