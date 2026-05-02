@@ -18,18 +18,19 @@ This tutorial goes over:
 
 ## File Organization
 
-The first step is to organize your repository. Create a new `modeling/simulink` folder and an `autogen` folder in your repository, as shown below:
+The first step is to organize your repository. Create a new `autogen` folder and `vsi` folder folder in your repository, as shown below:
 
 ```markdown
-my-AMDC-workspace/               <= master repo
-|-- modeling/
-|    |-- simulink/               <= Now create this folder
-|-- control/
+research repo/
+|-- firmware/
      |-- AMDC-Firmware/          <= AMDC-Firmware as submodule
-     |-- my-AMDC-private-C-code/ <= Your private user C code
-         |-- usr/
+     |-- project-firmware/       
+         |-- usr/                <= Your private user C code
              | -- controller/    <= Your private user app
                  | -- autogen/   <= Now create this folder
+|-- modeling/
+|    |-- simulink/
+|        |-- vsi/                <= Now create this folder
 ```
 
 ## Install Required MATLAB/Simulink Toolbox
@@ -45,7 +46,7 @@ Additional toolboxes may be required depending on the specific control design.
 
 Now that you create a Simulink model that will be used to generate Autogen code. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
 
-1. In `simulink` folder, create a new MATLAB file named `setup.m`.
+1. In `simulink/vsi` folder, create a new MATLAB file named `setup.m`.
 2. In `setup.m`, copy-paste the following MATLAB code:
 
 ```MATLAB
@@ -131,7 +132,7 @@ model='generateDuty';  % name of the controller to be built
 slbuild(model);      % generates the Autogen code
 oldFolder = cd('C:generateDuty_ert_rtw\');
 % Copy only .c and .h files in autogen folder
-command = 'for /r %i in (*.c, *.h) do copy /y %i ..\..\..\control\my-AMDC-private-C-code\usr\controller\autogen';
+command = 'for /r %i in (*.c, *.h) do copy /y %i ..\..\..\..\firmware\project-firmware\usr\controller\autogen';
 [status, cmdout] = system(command);
 cd(oldFolder);
 ```
