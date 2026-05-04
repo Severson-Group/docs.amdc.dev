@@ -64,6 +64,12 @@ The message structure is equal between both `DATA0` and `DATA1`. However, each m
 
 _NOTE: there is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments._
 
+### Daisy Chain Protocol Implementation
+
+The physical routing, interleaving, and transmission of the sensor data across the dual UART TX lines are managed by a specialized firmware implementation known as the Daisy Chain Protocol. This protocol leverages DMA (Direct Memory Access) streams, selective channel masking, and a thread-safe routing architecture to ensure zero-CPU-overhead data receiving.
+
+For a comprehensive breakdown of the DMA setup and the modified sample-and-transmit fast path, please refer to the detailed [Daisy Chain Protocol Documentation](../daisy-chain-protocol/index.md).
+
 ### Interrupt-Driven Design
 
 After start-up, the AMDS firmware is completely interrupt driven. This means that all processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.

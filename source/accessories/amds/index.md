@@ -40,6 +40,7 @@ However, it is a complete system which could be interfaced to any other host dev
 
 amds-in-action/index
 firmware/index
+daisy-chain-protocol/index
 mainboard/index
 sensor-cards/index
 ```
