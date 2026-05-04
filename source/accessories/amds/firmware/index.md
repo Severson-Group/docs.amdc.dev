@@ -70,6 +70,8 @@ The physical routing, interleaving, and transmission of the sensor data across t
 
 For a comprehensive breakdown of the DMA setup and the modified sample-and-transmit fast path, please refer to the detailed [Daisy Chain Protocol Documentation](../daisy-chain-protocol/index.md).
 
+For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](../flashing/index.md)
+
 ### Interrupt-Driven Design
 
 After start-up, the AMDS firmware is completely interrupt driven. This means that all processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
