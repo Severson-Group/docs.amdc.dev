@@ -4,7 +4,7 @@ samplingFrequency_Hz = 10e3;              % sampling frequency (Hz)
 samplingTime_s = 1/samplingFrequency_Hz;  % sampling time (s)
 simulationTime_s = samplingTime_s/10;     % simulation time (s) 
 
-omegaElec_radps = 377.0;  % elctrical angular velocity (rad/s)
+omegaElec_radps = 377.0;  % electrical angular velocity (rad/s)
 dutyAmplitude = 0.8;      % amplitude of the duty-ratio waveform (--)
 
 % Autogen code for the controller
