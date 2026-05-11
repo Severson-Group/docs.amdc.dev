@@ -12,7 +12,7 @@ model='generate_duty';  % name of the controller to be built
 slbuild(model);      % generates the Autogen code
 oldFolder = cd('C:generate_duty_ert_rtw\');
 % Copy only .c and .h files in autogen folder
-command = 'for /r %i in (*.c, *.h) do copy /y %i ..\..\..\..\firmware\project-firmware\usr\controller\autogen';
+command = 'for /r %i in (*.c, *.h) do copy /y %i ..\..\..\firmware\project-firmware\usr\controller\autogen';
 [status, cmdout] = system(command);
 cd(oldFolder);
 
