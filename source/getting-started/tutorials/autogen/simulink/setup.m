@@ -1,7 +1,7 @@
 clear; clc;
 
 samplingFrequency_Hz = 10e3;              % sampling frequency (Hz)
-samplingTime_s = 1/samplingFrequency_Hz;  % sampling time (sec)
+samplingTime_s = 1/samplingFrequency_Hz;  % sampling time (s)
 simulationTime_s = samplingTime_s/10;     % simulation time (s) 
 
 omegaElec_radps = 377.0;  % elctrical angular velocity (rad/s)
