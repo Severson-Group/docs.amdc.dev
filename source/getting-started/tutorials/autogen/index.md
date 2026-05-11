@@ -75,8 +75,8 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 9. Add a `Rate Transition` block after the duty ratio calculations. In these blocks, set the sampling time to `-1`.
 10. The expected block diagram is shown below:
 
-```{image} images/autogen-model.svg
-:alt: Autogen model
+```{image} images/setup-model.svg
+:alt: Setup model
 :width: 600px
 :align: center
 ```
@@ -106,8 +106,8 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 6. Click `Apply` and `Convert`.
 7. Rename the referenced model block to be `GenerateDuty`. The expected Simulink model is shown below:
 
-```{image} images/autogen-model-subsystem.svg
-:alt: Autogen model subsystem
+```{image} images/autogen-model-final.svg
+:alt: Autogen model finals
 :width: 600px
 :align: center
 ```
