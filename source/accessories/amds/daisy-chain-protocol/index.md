@@ -1,6 +1,18 @@
-# Daisy Chain Protocol
+# Daisy Chaining AMDS Boards
 
-This document outlines the architecture, setup, and features of the Daisy Chain protocol implementation, allowing robust data routing, selective sampling, and high-speed multi-board communication.
+This document outlines the architecture, setup, and salient details of the AMDS's Daisy Chain capability.
+
+## Overview
+
+The AMDC and AMDS allow up to three AMDS boards to be daisy chained together on each of the AMDC's GPIO ports, as shown below.
+
+```{image} images/daisy-chain.svg
+:width: 100%
+```
+
+Each AMDS board can run the same firmware, and does not need to know it is in a daisy chain. The cabling between each pair of boards runs at the same baudrate (20 Mbps).
+
+Currently released AMDS hardware relies on a daisy chain adapter board placed between AMDS's to add the necessary transceivers. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
 
 ## Multi-Target Firmware Project (Custom Build Configurations)
 
