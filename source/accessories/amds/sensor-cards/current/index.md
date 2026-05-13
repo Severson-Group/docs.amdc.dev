@@ -15,7 +15,7 @@ REV C
 
 The current measurement card was designed to the following specifications:
 
-1. Current measurement range of +/- 55A (rms)
+1. Current measurement range
 2. Noise immunity
 3. Quick adjustment of the sensing range
 4. High sensor bandwidth
@@ -27,13 +27,14 @@ The high level block diagram of the current sensor card is shown below:
 ![](images/current-sensor-blockdiagram.svg)
 
 ### Current Sensor
-LEM LA 55-P current sensor is selected for this design, as it is the only sensor available from LEM with an open aperture and PC pins that can measure +/-55A. 
-The open aperture was a requirement as it allows for the range to be easily scaled down just by adding turns to the primary. 
-The LA 55-P is a closed loop compensated hall effect transducer that has an accuracy of +/-0.65% and linearity of <0.15% which is quite good compared to other sensors from LEM. 
-It has an excellent bandwidth of 200khz and a low impedance current output that is inherently more immune to noise than a high impedance voltage output. 
 
+The LEM LA 55-P and LA 100-P current sensors with an open aperture and PC pins are introduced in this article. The open aperture was selected because it allows the measurement range to be easily scaled down by adding turns to the primary conductor. These sensors provide an excellent bandwidth of 200 kHz and a low-impedance current output, which is inherently more immune to noise than a high-impedance voltage output. The following section describes how to determine the burden resistor and current sensor gain for the LA 55-P and LA 100-P sensors.
 
-### Burden Resistor (_R_<sub>_BURDEN_</sub>)
+### LA 55-P
+
+The LA 55-P is a closed loop compensated hall effect transducer that has measurement range of +/- 55A (rms), an accuracy of +/-0.65%, and linearity of <0.15%.
+
+#### Burden Resistor (_R_<sub>_BURDEN_</sub>)
 A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. For a sensing range of 70A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
 
 _V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</sub> _R_<sub>_BURDEN_</sub>
@@ -42,10 +43,28 @@ _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143Ω
 
 The LA 55-P datasheet specifies the burden resistor value must be between 135Ω and 155Ω so a 150Ω resistor was selected.
 
-### Current Sensor Gain
+#### Current Sensor Gain
 The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A]. 
 
 To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
+
+### LA 100-P
+
+The LA 100-P is a closed loop compensated hall effect transducer that has measurement range of +/- 150A (rms), an accuracy of +/-0.45%, and linearity of <0.15%.
+
+```{note}
+The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor. The rest of this document is specific to the LA 100-P variant.
+```
+
+#### Burden Resistor (_R_<sub>_BURDEN_</sub>)
+For a sensing range of 150A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
+
+_R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7Ω 
+
+The LA 100-P datasheet specifies the burden resistor value must be between 0Ω and 33Ω so a 28Ω resistor was selected.
+
+#### Current Sensor Gain
+The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A]. 
 
 ### Voltage Reference (LDO)
 The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
@@ -133,9 +152,9 @@ A user may want to change some of the passive components based on the range requ
 | R8 | 0603 |
 | C5 | 0603 |
 
-
 ## Datasheets
-- [Current Sensor](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/LA55P_Current%20Sensor.pdf)
+- [Current Sensor (LA 55-P)](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/LA55P_Current%20Sensor.pdf)
+- [Current Sensor (LA 100-P)](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/LA100P_Current%20Sensor.pdf)
 - [Op Amp](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/OPA320_OpAmp.pdf)
 - [Voltage Reference (LDO)](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/REF5045_LDO.pdf)
 - [Analog to Digital Converter](https://github.com/Severson-Group/AMDS/blob/develop/CurrentCard/datasheets/ADS_8860_ADC.pdf)
