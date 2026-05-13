@@ -64,7 +64,7 @@ _R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7Ω
 The LA 100-P datasheet specifies the burden resistor value must be between 0Ω and 33Ω so a 28Ω resistor was selected.
 
 #### Current Sensor Gain
-The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 0.014 [V/A]. 
+The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A]. 
 
 ### Voltage Reference (LDO)
 The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
