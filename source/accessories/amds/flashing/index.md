@@ -12,13 +12,20 @@ This guide provides step-by-step instructions on how to configure, build, and fl
 
 1. Launch STM32CubeIDE.
 2. Go to **File > Open Projects from File System...**
-3. Select the directory containing the firmware source code and click **Finish**.
+3. Select the directory containing the firmware source code (`AMDS\Mainboard\Firmware\mainboard\`) and click **Finish**.
 
 ## Step 2: Set the Build Configuration (Target Macro)
 
-The firmware uses preprocessor macros to conditionally compile the correct peripheral assignments and active sensor masks for your specific board.
+The firmware uses preprocessor macros to conditionally compile the correct peripheral assignments and active sensor masks for your specific board. Two targets are currently supported:
 
-1. Right-click on `motherboard_v1` and go to **Build Configuration > Set Active > AMDS or 2S**
+- `AMDS`: This is the standard AMDS hardware as documented on this website.
+- `2S`: This is a new target that has only two sensor cards on hardware that is not yet publicly released.
+
+```{tip}
+Nearly all users are on AMDS hardware. When in doubt, select the `AMDS` option.
+```
+
+1. Right-click on `mainboard` and go to **Build Configuration > Set Active > AMDS or 2S**
 
 *Note: Alternatively, simply select the appropriate active configuration the Build "hammer" dropdown menu.*
 
@@ -40,9 +47,13 @@ If you did not set the build configuration in the previous steps you will see ma
 2. Power on the target board.
 3. In STM32CubeIDE, go to **Run > Debug Configurations...**
 4. Double-click **STM32 Cortex-M C/C++ Application** to create a new configuration.
-5. In the **Main** tab, ensure the correct `.elf` file is selected from your recent build.
+5. In the **Main** tab, ensure the correct `.elf` file is selected in `C/C++ Application` as either `AMDS/mainboard.elf` or `2S/mainboard.elf`.
 6. In the **Debugger** tab, ensure the Debug probe is set to **ST-LINK** and the interface is set to **SWD**.
 7. Click **Apply**.
+
+```{image} images/debugger-config-options.svg
+:width: 75%
+```
 
 ## Step 5: Flash and Verify
 
@@ -55,10 +66,10 @@ If you did not set the build configuration in the previous steps you will see ma
 For the AMDS board, a good indicator that things are running smoothly is the 4 LEDS near the MCU blinking in order.
 ```
 
-## Switching Between Boards
+## Switching Between Targets
 
-Because the project shares a single codebase, programming a different board type is simple:
+Because the project shares a single codebase, programming a different target (`AMDS` vs `2S`) is simple:
 
 1. Disconnect the current board and connect the new one.
 2. Return to **Step 2** and swap the target macro.
-3. Rebuild (Step 3) and Flash (Step 5).
+3. Rebuild (**Step 3**) and Flash (**Step 5**).
