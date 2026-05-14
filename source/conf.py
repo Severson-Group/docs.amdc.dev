@@ -34,7 +34,8 @@ extensions = [
     'sphinx_last_updated_by_git',
     'sphinx_copybutton',
     'sphinx_sitemap',
-    'matplotlib.sphinxext.plot_directive'
+    'matplotlib.sphinxext.plot_directive',
+    'sphinx_multiversion'
 ]
 
 myst_enable_extensions = [
@@ -77,6 +78,24 @@ sitemap_filename = 'sitemap.xml'
 
 html_extra_path = ['robots.txt']
 
+
+html_sidebars = {
+    "**": [
+        "sidebar/brand.html",
+        "sidebar/search.html",
+        "versioning.html",
+        "sidebar/scroll-start.html",
+        "sidebar/navigation.html",
+        "sidebar/scroll-end.html",
+    ]
+}
+
+
+# Sphinx-multiversion configuration
+# Whitelist pattern for remotes (set to None to use local branches only)
+smv_remote_whitelist = r'^.*$'
+
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -87,6 +106,7 @@ html_static_path = ['_static']
 html_css_files = [
     'css/custom.css',
 ]
+
 
 
 # Matplotlib options
