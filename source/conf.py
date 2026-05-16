@@ -93,7 +93,7 @@ html_sidebars = {
 
 # Sphinx-multiversion configuration
 # Whitelist pattern for remotes (set to None to use local branches only)
-smv_remote_whitelist = r'^.*$'
+smv_remote_whitelist = r'^v\d\..*|main$'
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
