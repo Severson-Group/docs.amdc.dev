@@ -1,8 +1,9 @@
 {% if versions %}
 <h4>{{ _('Versions') }}</h4>
-<ul>
-  {%- for item in versions %}
-  <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+<ul style="display:flex; flex-direction:column-reverse">
+  {%- for item in versions.tags %}
+  <li style="flex: 0 0 auto;"><a href="{{ item.url }}">{{ item.name }}</a></li>
   {%- endfor %}
+  <li><a href="{{ versions.branches[0].url }}">Latest</a></li>
 </ul>
 {% endif %}

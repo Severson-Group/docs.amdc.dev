@@ -83,9 +83,9 @@ html_sidebars = {
     "**": [
         "sidebar/brand.html",
         "sidebar/search.html",
-        "versioning.html",
         "sidebar/scroll-start.html",
         "sidebar/navigation.html",
+        "versioning.html",
         "sidebar/scroll-end.html",
     ]
 }
