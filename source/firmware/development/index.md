@@ -75,9 +75,10 @@ This is depicted in the above diagram as the `hotfix1` branch.
 
 For a new minor or major release, a new release branch needs to be created.
 
-1. Create a new release branch from `develop` and call it `vA.B.x`
-2. Update GitHub's default repo branch to be the latest release branch which was just created
-3. Update the documentation website to reflect the minor or major (breaking) changes
+1. Tag the most recent commit to `main` on docs.amdc.dev as the ***previous*** release with `vA.B` formatting
+2. Create a new release branch from `develop` on AMDC-firmware and call it `vA.B.x`
+3. Update GitHub's default repo branch to be the latest release branch which was just created
+4. Update the documentation website to reflect the minor or major (breaking) changes
 
 ### Tag and Release
 
