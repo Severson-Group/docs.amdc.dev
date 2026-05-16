@@ -4,7 +4,7 @@
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= ./sphinx-multiversion
+SPHINXBUILD   ?= sphinx-multiversion
 SOURCEDIR     = source
 BUILDDIR      = build
 
@@ -20,7 +20,7 @@ help:
 	@$(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 
 local:
-	./sphinx-build "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
+	sphinx-build "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 
 # We are no longer using make functionality of sphinx-build
 # because sphinx-multiverison does not support it
