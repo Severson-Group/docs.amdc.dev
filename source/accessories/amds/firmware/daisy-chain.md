@@ -50,3 +50,10 @@ Implementation details:
 - **Single-Stream Optimization**: If only one UART has a 3 byte packet (i.e., a different number of packets are broadcast due to `active_sensor_mask != 0xFF` on an upstream AMDS), the code follows a Single-Stream Fast Path.
 - **Fall-Back, Slow Path**: If a packet gets fragmented across a DMA boundary or becomes misaligned, the system reverts to a 1-byte-at-a-time State Machine (the "Slow Path") to recover the stream.
 - **Thread-safe Invocation**: The AMDS attempts to broadcast all DMA data within a single call to `process_routing()` from the `SYNC_ADC` interrupt context. However, if this times out, the firmware provides a fall-back path: the main `while(1)` loop constantly checks `drv_uart_has_dma_data()` and invokes `process_routing()` in a thread-safe manner if any further data arrives.
+
+## Performance
+
+Daisy chain benchmark testing shows the following complete transmission times from assertion of `SYNC_ADC` to the last bit arriving at the AMDC:
+
+- **24 sensors** (3x AMDS boards, each with 8 sensor cards): `27 us`
+- **6 sensors** (3x 2S boards, each with 2 sensor cards): `13.7 us`
