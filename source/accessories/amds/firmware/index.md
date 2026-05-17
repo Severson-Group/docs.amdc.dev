@@ -93,6 +93,8 @@ As compared to the generalized `adc_sample_all_daughtercards()` function, `adc_s
 - **Hardware Cycle Counting**: Rather than using `NOP` loops for the 1300ns ADC wait time, the fast path uses the Cortex-M7 DWT Cycle Counter (`DWT->CYCCNT`) for deterministic waiting.
 - **Instruction Interleaving**: The code optimizes wait states by starting SPI reads, and transmitting UART header bytes (`0x90`) while the CPU is waiting for the SPI RX buffers to fill.
 
+Both code paths optimize timing by using the ST32 MCU's UART transmit shift register to queue up two bytes of UART transmit data at a time. This is done by optimizing calls to the inline `drv_uart_putc_fast()` function. When the shift register is empty, the function accepts new data without delay. When the shift register is occupied, the function blocks until it can take the new data byte. If the UART tranmit interface is idle, two back-to-back calls can be made to this function without any blocking delay.
+
 ### Daisy Chain
 
 The AMDS firmware includes support for up to three AMDS boards to be connected in series into a "daisy chain," allowing for 24 sensor cards worth of data to be sent to master. Details of this are provided in [AMDS Daisy Chain](daisy-chain.md).
