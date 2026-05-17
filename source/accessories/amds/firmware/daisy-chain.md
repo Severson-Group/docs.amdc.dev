@@ -10,23 +10,20 @@ The AMDC and AMDS allow up to three AMDS boards to be daisy chained together on 
 :width: 100%
 ```
 
-Each AMDS board can run the same firmware, and does not need to know it is in a daisy chain. The cabling between each pair of boards runs at the same baudrate (20 Mbps).
+Each AMDS can run the same firmware, and does not need to know it is in a daisy chain. To each AMDS, the board "downstream" from it (i.e., the board with a lower number in the image above) appears as `master`.
 
-Currently released AMDS hardware relies on a daisy chain adapter board placed between AMDS's to add the necessary transceivers. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
+## Hardware
+
+The cabling between each pair of boards runs at the same baudrate (20 Mbps).
+
+Currently released AMDS hardware relies on a daisy chain adapter board placed between each pair of AMDS boards to add the necessary transceivers. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
 
 ## Direct Memory Access (DMA) Setup for Receiving Data
 
-To ensure zero-CPU overhead when receiving incoming UART data, the protocol utilizes DMA streams.
+To ensure near zero-CPU overhead when receiving incoming UART data, the firmware utilizes DMA streams.
 
 - **Circular Buffers**: Incoming daisy-chain data is placed into `DAISY_RX1_Pool` and `DAISY_RX2_Pool`, both of which are 256-byte circular buffers (`AMDS_RX_BUF_SIZE`). Utilizing a 256-byte size allows for 8-bit integer math to handle wrap-around without complex modulo logic.
 - **Error Recovery**: In high-noise environments, UART hardware errors (Parity, Overrun, Noise, or Frame errors) can cause the hardware to drop the `DMAR` (DMA Receiver) bit, halting the stream. The UART Interrupt Service Routines (ISRs) actively monitor for these flags, clear them, and immediately re-enable the DMA requests to ensure continuous stream operation without resetting the device.
-
-## Selective Channel Transmitting
-
-To optimize processing and transmission bandwidth, the system supports disabling unused sensor channels.
-
-- **Active Sensor Mask**: A global variable `active_sensor_mask` acts as a bitmask where `1 = Active` and `0 = Inactive`.
-- **Target Defaults**: By default, `TARGET_AMDS` activates all 8 channels (`0xFF`), while `TARGET_2S` activates a subset of channels (`0x11`).
 
 ## Modified Sample-and-Transmit Fast Path
 
