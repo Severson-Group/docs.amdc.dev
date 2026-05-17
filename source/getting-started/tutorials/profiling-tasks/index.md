@@ -64,10 +64,6 @@ int task_controller_init(void)
 // ...
 ```
 
-```{warning}
-Ensure that you
-```
-
 Next, add task functions which wrap the `print()` and `reset()` functions for the timing stats:
 
 `task_controller.c`:
