@@ -80,6 +80,19 @@ To optimize processing and transmission bandwidth, the system supports disabling
 The AMDC platform system default is to send all 8 channels. If a reduced number of channels are being sent, the user must alert the AMDC to this by calling `amdc_set_enabled()`, as the AMDS does not communicate configuration settings with master.
 ```
 
+#### Optimized Sample-and-Transmit Fast Path
+
+The AMDS firmware has been optimized to minimize time from `SYNC_ADC` until the last bit of data is transmitted to the master. The code path used depends on the value of `active_sensor_mask`:
+
+- `active_sensor_mask != OxFF`: a generalized function `adc_sample_all_daughtercards()` is used.
+- `active_sensor_mask == OxFF`: a highly optimized function `adc_sample_and_transmit_fast_path()` is used.
+
+As compared to the generalized `adc_sample_all_daughtercards()` function, `adc_sample_and_transmit_fast_path` decreases latency by doing the following:
+
+- **Avoid `active_sensor_mask` Conditional Checks**: to remove processor time associated with `if` statements.
+- **Hardware Cycle Counting**: Rather than using `NOP` loops for the 1300ns ADC wait time, the fast path uses the Cortex-M7 DWT Cycle Counter (`DWT->CYCCNT`) for deterministic waiting.
+- **Instruction Interleaving**: The code optimizes wait states by starting SPI reads, and transmitting UART header bytes (`0x90`) while the CPU is waiting for the SPI RX buffers to fill.
+
 ### Daisy Chain
 
 The AMDS firmware includes support for up to three AMDS boards to be connected in series into a "daisy chain," allowing for 24 sensor cards worth of data to be sent to master. Details of this are provided in [AMDS Daisy Chain](daisy-chain.md).
