@@ -2,7 +2,6 @@ sphinx>=6.0,<7
 furo>=2023.05
 myst_parser>=2.0
 sphinx_design>=0.4.1
-sphinx-last-updated-by-git>=0.3
 sphinx-copybutton>=0.4
 sphinx-sitemap>=2.2
 pygments>=2.10

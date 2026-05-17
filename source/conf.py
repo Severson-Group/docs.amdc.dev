@@ -31,7 +31,6 @@ author = 'Electric Machinery and Levitation Laboratory'
 extensions = [
     'myst_parser',
     'sphinx_design',
-    'sphinx_last_updated_by_git',
     'sphinx_copybutton',
     'sphinx_sitemap',
     'matplotlib.sphinxext.plot_directive',
