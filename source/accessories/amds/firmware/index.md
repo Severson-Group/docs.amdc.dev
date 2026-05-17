@@ -103,10 +103,6 @@ After start-up, the AMDS firmware is interrupt driven. This means that all criti
 
 In the typical flow, the master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. The ADCs on the sensor cards start their conversions and store the latest data in the AMDS memory. Once this is complete, the AMDS sends the data back to the master. Then the AMDS will wait for the next `SYNC_ADC` interrupt.
 
-## Building and Flashing
-
-For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](building-and-running-firmware.md).
-
 ## Performance Limitations
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
