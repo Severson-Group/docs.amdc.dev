@@ -8,6 +8,14 @@ This guide provides step-by-step instructions on how to configure, build, and fl
 - **Hardware:** ST-Link V2/V3 or equivalent hardware debugger/programmer.
 - **Target Board:** Either an AMDS board or AMDS-compatible board.
 
+## Multi-Target Firmware Project (Custom Build Configurations)
+
+The firmware is designed to operate on multiple target hardware platforms using a single, unified codebase.
+
+- **Target Definitions**: The firmware uses `TARGET_AMDS` and `TARGET_2S` preprocessor macros to conditionally compile board-specific configurations.
+- **Dynamic Peripheral Assignment**: Depending on the selected target, the system correctly configures the corresponding hardware peripherals. For example, `TARGET_AMDS` utilizes `UART4` and `UART5` for the Daisy Chain RX lines, while `TARGET_2S` relies on `USART6` and `USART1`.
+- **Custom Run Configurations**: You can program either an AMDS or other devices without creating separate project branches, simply by toggling the target macro in your build/run configurations.
+
 ## Step 1: Open the Project
 
 1. Launch STM32CubeIDE.

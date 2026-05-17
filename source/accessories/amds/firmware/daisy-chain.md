@@ -14,14 +14,6 @@ Each AMDS board can run the same firmware, and does not need to know it is in a 
 
 Currently released AMDS hardware relies on a daisy chain adapter board placed between AMDS's to add the necessary transceivers. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
 
-## Multi-Target Firmware Project (Custom Build Configurations)
-
-The firmware is designed to operate on multiple target hardware platforms using a single, unified codebase.
-
-- **Target Definitions**: The firmware uses `TARGET_AMDS` and `TARGET_2S` preprocessor macros to conditionally compile board-specific configurations.
-- **Dynamic Peripheral Assignment**: Depending on the selected target, the system correctly configures the corresponding hardware peripherals. For example, `TARGET_AMDS` utilizes `UART4` and `UART5` for the Daisy Chain RX lines, while `TARGET_2S` relies on `USART6` and `USART1`.
-- **Custom Run Configurations**: You can program either an AMDS or other devices without creating separate project branches, simply by toggling the target macro in your build/run configurations.
-
 ## Direct Memory Access (DMA) Setup for Receiving Data
 
 To ensure zero-CPU overhead when receiving incoming UART data, the protocol utilizes DMA streams.
