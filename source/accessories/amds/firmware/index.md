@@ -32,7 +32,7 @@ The two TX signals are controlled by the AMDS and go to the master. These are on
 
 The format of the data sent on the TX signals is UART. This means there is no clock line between the master and AMDS: the interface is completely asynchronous. The UART is configured to run at 20 Mbps. Conceptually, the TX lines are actually two distinct UART devices, each with only one-way communication. Both UARTs are configured as 8-bit data, 2 stop bits, and odd parity.
 
-##### Data Format
+### Data Format
 
 The ADCs on the sensor cards are assumed to be 16-bit devices which are all compatible with each other (i.e. they can be daisy-chained and support equal clock rates). See each sensor card's hardware design files for specs on the specific ADCs which are supported. The 16-bit raw data from the ADCs are packed into bytes which are sent across the `DATA0` and `DATA1` UART lines. `DATA0` is used to send the contents of the first four sensor cards and `DATA1` sends the last four sensor card data. The transmissions happen in parallel between the data lines.
 
@@ -64,13 +64,23 @@ The message structure is equal between both `DATA0` and `DATA1`. However, each m
 
 _NOTE: there is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments._
 
-### Daisy Chain Protocol Implementation
+#### Selective Channel Transmitting
 
-The physical routing, interleaving, and transmission of the sensor data across the dual UART TX lines are managed by a specialized firmware implementation known as the Daisy Chain Protocol. This protocol leverages DMA (Direct Memory Access) streams, selective channel masking, and a thread-safe routing architecture to ensure zero-CPU-overhead data receiving.
+To optimize processing and transmission bandwidth, the system supports disabling unused sensor channels.
 
-For a comprehensive breakdown of the DMA setup and the modified sample-and-transmit fast path, please refer to the detailed [Daisy Chain Protocol Documentation](daisy-chain.md).
+**Active Sensor Mask**: The AMDS codebase contains a global variable `active_sensor_mask` that acts as a bitmask where `1 = Active` and `0 = Inactive` for each of the 8 AMDS sensor cards. This variable determines which sensor cards' data are sent to the master each time a `SYNC_ADC` is received by the AMDS. For example,
 
-For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](building-and-running-firmware.md)
+- `active_sensor_mask = 0xFF;`: AMDS will send all 8 channels
+- `active_sensor_mask = 0x01;`: AMDS will only send sensor card channel 1
+- `active_sensor_mask = 0x06;`: AMDS will only send sensor card channels 2 and 3
+
+```{hint}
+The AMDC platform system default is to send all 8 channels. If a reduced number of channels are being sent, the user must alert the AMDC to this by calling `amdc_set_enabled()`, as the AMDS does not communicate configuration settings with master.
+```
+
+### Daisy Chain
+
+The AMDS firmware includes support for up to three AMDS boards to be connected in series into a "daisy chain," allowing for 24 sensor cards worth of data to be sent to master. Details of this are provided in [AMDS Daisy Chain](daisy-chain.md).
 
 ### Interrupt-Driven Design
 
@@ -78,7 +88,11 @@ After start-up, the AMDS firmware is completely interrupt driven. This means tha
 
 In the typical flow, the master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. The ADCs on the sensor cards start their conversions and store the latest data in the AMDS memory. Once this is complete, the AMDS sends the data back to the master. Then the AMDS will wait for the next `SYNC_ADC` interrupt.
 
-### Performance Limitations
+## Building and Flashing
+
+For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](building-and-running-firmware.md).
+
+## Performance Limitations
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
 
@@ -105,7 +119,7 @@ The channels in the above scope capture show the following signals from top to b
 
 **Note**: The AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
 
-#### Performance Specifications
+### Performance Specifications
 
 Given a control frequency of `Fs` and PWM switching frequency of `Fsw`, the following constraints must be satisfied for the AMDS firmware to perform well:
 
