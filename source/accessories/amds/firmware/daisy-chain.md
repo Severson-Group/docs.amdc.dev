@@ -22,6 +22,35 @@ Upon receiving a `SYNC_ADC` signal, the AMDS performs the following operations:
     - Header packets are incremented by `0x04`
     - Data is transmitted to the corresponding downstream port; for example, if the packet arrived via the upstream  `DATA0` port, it will go out the downstream `DATA0` port
 
+The data will arrive on the AMDC `DATA0` and `DATA1` lines in the following arrangment:
+
+| AMDS | Sensor Card                | `DATAx`        | Header | AMDC `AMDC_CH_x_DATA_REG_OFFSET` define |
+|:----:|:--------------------------:|:--------------:|:------:|:--------------------------------------: |
+| 1    | 1                          | 0              | 0x90   | 1                                       |
+|      | 2                          | 0              | 0x91   | 2                                       |
+|      | 3                          | 0              | 0x92   | 3                                       |
+|      | 4                          | 0              | 0x93   | 4                                       |
+|      | 5                          | 1              | 0x90   | 5                                       |
+|      | 6                          | 1              | 0x91   | 6                                       |
+|      | 7                          | 1              | 0x92   | 7                                       |
+|      | 8                          | 1              | 0x93   | 8                                       |
+| 2    | 1                          | 0              | 0x94   | 9                                       |
+|      | 2                          | 0              | 0x95   | 10                                      |
+|      | 3                          | 0              | 0x96   | 11                                      |
+|      | 4                          | 0              | 0x97   | 12                                      |
+|      | 5                          | 1              | 0x94   | 13                                      |
+|      | 6                          | 1              | 0x95   | 14                                      |
+|      | 7                          | 1              | 0x96   | 15                                      |
+|      | 8                          | 1              | 0x97   | 16                                      |
+| 3    | 1                          | 0              | 0x98   | 17                                      |
+|      | 2                          | 0              | 0x99   | 18                                      |
+|      | 3                          | 0              | 0x9A   | 19                                      |
+|      | 4                          | 0              | 0x9B   | 20                                      |
+|      | 5                          | 1              | 0x98   | 21                                      |
+|      | 6                          | 1              | 0x99   | 22                                      |
+|      | 7                          | 1              | 0x9A   | 23                                      |
+|      | 8                          | 1              | 0x9B   | 24                                      |
+
 ## Hardware
 
 The cabling between each pair of boards runs at the same baudrate (20 Mbps).
