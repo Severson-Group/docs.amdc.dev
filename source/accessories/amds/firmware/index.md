@@ -68,9 +68,9 @@ _NOTE: there is no full CRC included in the transmission. The simple protocol re
 
 The physical routing, interleaving, and transmission of the sensor data across the dual UART TX lines are managed by a specialized firmware implementation known as the Daisy Chain Protocol. This protocol leverages DMA (Direct Memory Access) streams, selective channel masking, and a thread-safe routing architecture to ensure zero-CPU-overhead data receiving.
 
-For a comprehensive breakdown of the DMA setup and the modified sample-and-transmit fast path, please refer to the detailed [Daisy Chain Protocol Documentation](../daisy-chain-protocol/index.md).
+For a comprehensive breakdown of the DMA setup and the modified sample-and-transmit fast path, please refer to the detailed [Daisy Chain Protocol Documentation](daisy-chain.md).
 
-For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](../flashing/index.md)
+For instructions on programming the AMDS, please refer to [Building and Flashing Documentation](building-and-running-firmware.md)
 
 ### Interrupt-Driven Design
 
@@ -125,3 +125,10 @@ The AMDS firmware works, albeit with limitations as described above. Some ideas 
 2. The total sampling and data transmission latency as seen by the master (AMDC) could be improved. In the current firmware, the time from when the `SYNC_ADC` line is toggled to when the newly sampled data has fully been received by the master is about 11 µs. This places limitations on the control rate of the master (AMDC). The improvements can come in several parts: 1) the actual ADC sampling time can be shorten by using the `BUSY` signal from each ADC in an ISR to end the ADC sampling window. These are not used in the current firmware. Instead, the simpler approach of busy waiting until the max timeout occurs is used (i.e. wait for 1300 ns). However, the nominal wait time is only about 50% of this. 2) The data transmission time could be shorten by removing/reducing the overhead in the packet format, i.e., removing the header bytes.
 
 3. There is no robust CRC error detection on the data transmission from the AMDS to the master device, although the UART parity is used. Future improvements could add a footer CRC to ensure the received message at the master is valid. Error correction codes could also be used to further increase the communication robustness in high EMI environments (e.g. SECDED). There is no free lunch: all of these methods would increase the data transmission latency from the AMDS.
+
+```{toctree}
+:hidden:
+
+daisy-chain
+building-and-running-firmware
+```
