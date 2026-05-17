@@ -86,7 +86,7 @@ The AMDS firmware includes support for up to three AMDS boards to be connected i
 
 ### Interrupt-Driven Design
 
-After start-up, the AMDS firmware is completely interrupt driven. This means that all processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
+After start-up, the AMDS firmware is interrupt driven. This means that all critical processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
 
 In the typical flow, the master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. The ADCs on the sensor cards start their conversions and store the latest data in the AMDS memory. Once this is complete, the AMDS sends the data back to the master. Then the AMDS will wait for the next `SYNC_ADC` interrupt.
 
