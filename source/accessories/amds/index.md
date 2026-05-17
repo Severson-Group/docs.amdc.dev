@@ -32,8 +32,8 @@ However, it is a complete system which could be interfaced to any other host dev
   - Low voltage
   - Current
 
+- Up to 3 AMDS boards daisy chained per AMDC port (up to 24 sensor cards)
 - Synchronous sensor sampling to PWM carrier waveform (up to 100 kHz)
-- Data request rate up to 10 kHz to host device
 
 ```{toctree}
 :hidden:
