@@ -66,6 +66,7 @@ The message structure is equal between both `DATA0` and `DATA1`. However, each m
 There is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments.
 ```
 
+(active-sensor-mask)=
 #### Selective Channel Transmitting
 
 To optimize processing and transmission bandwidth, the system supports disabling unused sensor channels.
@@ -131,7 +132,7 @@ The channels in the above scope capture show the following signals from top to b
 - <span style="color:darkturquoise;font-weight:bold">C3</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
 
 ```{hint}
-The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#selective-channel-transmitting). 
+The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#active-sensor-mask). 
 ```
 
 ### Performance Specifications
