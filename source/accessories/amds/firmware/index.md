@@ -62,7 +62,9 @@ The message structure is equal between both `DATA0` and `DATA1`. However, each m
 | ---- | ---- | ---- |
 | 0x93 | MSB of sample 4 | LSB of sample 4|
 
-_NOTE: there is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments._
+```{note}
+There is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments.
+```
 
 #### Selective Channel Transmitting
 
@@ -117,7 +119,9 @@ The channels in the above scope capture show the following signals from top to b
 - <span style="color:deeppink;font-weight:bold">C2</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
 - <span style="color:darkturquoise;font-weight:bold">C3</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
 
-**Note**: The AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
+```{hint}
+The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#selective-channel-transmitting). 
+```
 
 ### Performance Specifications
 
@@ -128,11 +132,13 @@ Given a control frequency of `Fs` and PWM switching frequency of `Fsw`, the foll
 
 For application with SiC or GaN inverters where `Fsw` is typically much faster than `Fs`, the AMDS firmware works well.
 
-**Warning:** When `Fs` is close to `Fsw` (i.e. control frequency is equal to PWM frequency), **the current AMDS firmware design will not work well.**
+```{warning}
+When `Fs` is close to `Fsw` (i.e. control frequency is equal to PWM frequency), **the current AMDS firmware design will not work well.**
+```
 
 ## Future Improvements
 
-The AMDS firmware works, albeit with limitations as described above. Some ideas to improve the system are now described:
+The AMDS firmware works, albeit with limitations as described above. Some ideas to improve the system are now listed:
 
 1. The AMDS cannot be configured from the master. Improvements could use an additional TX/RX pair to enable simple register protocol for config. This could be used to set digital filter bandwidths, turn on/off sensor card slots for faster sampling, etc.
 
