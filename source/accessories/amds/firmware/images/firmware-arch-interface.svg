@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="9.4784193in"
-   height="2.2370632in"
-   viewBox="0 0 240.75185 56.821404"
+   width="4.0617533in"
+   height="2.2320428in"
+   viewBox="0 0 103.16853 56.693886"
    version="1.1"
    id="svg8"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
-   sodipodi:docname="daisy-chain.svg"
+   sodipodi:docname="firmware-arch-interface.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -221,18 +221,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="497.50013"
-     inkscape:cy="90.156114"
+     inkscape:zoom="5.6"
+     inkscape:cx="202.14286"
+     inkscape:cy="124.82143"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
      units="in"
-     inkscape:window-width="2560"
-     inkscape:window-height="1382"
+     inkscape:window-width="1947"
+     inkscape:window-height="1109"
      inkscape:window-x="0"
-     inkscape:window-y="30"
-     inkscape:window-maximized="1"
+     inkscape:window-y="283"
+     inkscape:window-maximized="0"
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1">
@@ -240,7 +240,7 @@
        id="grid1"
        units="mm"
        originx="-0.16896537"
-       originy="-0.7572246"
+       originy="-0.7572292"
        spacingx="0.26458333"
        spacingy="0.26458333"
        empcolor="#0099e5"
@@ -259,7 +259,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -278,14 +277,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="75.903069"
-       y="244.52847"
+       x="77.980415"
+       y="244.18694"
        id="text4522"><tspan
          sodipodi:role="line"
          id="tspan4520"
-         x="75.903069"
-         y="244.52847"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">AMDS1</tspan></text>
+         x="77.980415"
+         y="244.18694"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">AMDS</tspan></text>
     <rect
        style="fill:#d5e5ff;fill-opacity:1;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect4518-6"
@@ -331,171 +330,33 @@
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="41.010414"
-       y="274.40454"
+       y="274.40457"
        id="text4522-2"><tspan
          sodipodi:role="line"
          id="tspan4520-9"
          x="41.010414"
-         y="274.40454"
+         y="274.40457"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">SYNC_ADC</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="45.888668"
+       x="45.956894"
        y="250.52798"
        id="text4522-2-8"><tspan
          sodipodi:role="line"
          id="tspan4520-9-9"
-         x="45.888668"
+         x="45.956894"
          y="250.52798"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA0</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="45.888668"
+       x="46.12846"
        y="262.49832"
        id="text4522-2-8-1"><tspan
          sodipodi:role="line"
          id="tspan4520-9-9-8"
-         x="45.888668"
-         y="262.49832"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA1</tspan></text>
-    <rect
-       style="fill:#ffd5d5;fill-opacity:1;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect4518-8"
-       width="34.076862"
-       height="56.393871"
-       x="137.9023"
-       y="237.07474" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="144.69473"
-       y="244.65601"
-       id="text4522-7"><tspan
-         sodipodi:role="line"
-         id="tspan4520-1"
-         x="144.69473"
-         y="244.65601"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">AMDS2</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-3)"
-       d="M 137.58333,252.0425 H 104.41291"
-       id="path4545-5"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-8-73)"
-       d="M 137.65478,263.94875 H 104.51041"
-       id="path4545-6-5"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-8-7-5)"
-       d="m 103.5477,275.72748 h 32.71271"
-       id="path4545-6-2-8"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="109.80207"
-       y="274.40454"
-       id="text4522-2-5"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-6"
-         x="109.80207"
-         y="274.40454"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">SYNC_ADC</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="114.68033"
-       y="250.52798"
-       id="text4522-2-8-7"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-9-9"
-         x="114.68033"
-         y="250.52798"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA0</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="114.68033"
-       y="262.49832"
-       id="text4522-2-8-1-4"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-9-8-1"
-         x="114.68033"
-         y="262.49832"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA1</tspan></text>
-    <rect
-       style="fill:#ffd5d5;fill-opacity:1;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect4518-8-9"
-       width="34.076862"
-       height="56.393871"
-       x="206.69395"
-       y="237.03906" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="213.48639"
-       y="244.62033"
-       id="text4522-7-7"><tspan
-         sodipodi:role="line"
-         id="tspan4520-1-5"
-         x="213.48639"
-         y="244.62033"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">AMDS3</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-3-4)"
-       d="M 206.37499,252.00682 H 173.20457"
-       id="path4545-5-3"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-8-73-2)"
-       d="M 206.44644,263.91307 H 173.30207"
-       id="path4545-6-5-9"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-8-7-5-6)"
-       d="m 172.33936,275.6918 h 32.71271"
-       id="path4545-6-2-8-0"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="178.59373"
-       y="274.40454"
-       id="text4522-2-5-5"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-6-5"
-         x="178.59373"
-         y="274.40454"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">SYNC_ADC</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="183.54021"
-       y="250.52798"
-       id="text4522-2-8-7-6"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-9-9-3"
-         x="183.54021"
-         y="250.52798"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA0</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:'Cambria Math';-inkscape-font-specification:'Cambria Math';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="183.47198"
-       y="262.49832"
-       id="text4522-2-8-1-4-2"><tspan
-         sodipodi:role="line"
-         id="tspan4520-9-9-8-1-6"
-         x="183.47198"
+         x="46.12846"
          y="262.49832"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';stroke-width:0.264583">DATA1</tspan></text>
   </g>

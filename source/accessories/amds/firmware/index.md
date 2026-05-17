@@ -18,7 +18,7 @@ While the architecture of the AMDS firmware is fairly simple, the I/O interface,
 
 The AMDS firmware is designed to interface to the master controller over three logical wires: one signal from the master, and two data lines to the master. Physically, these signals are all differential pairs for noise immunity.
 
-![](images/firmware_arch_interface.svg)
+![](images/firmware-arch-interface.svg)
 
 #### RX Signal: `SYNC_ADC`
 
