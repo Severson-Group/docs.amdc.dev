@@ -1,4 +1,4 @@
-# Building and Flashing
+# Building and Running Firmware
 
 This guide provides step-by-step instructions on how to configure, build, and flash the AMDS firmware onto different hardware targets (e.g., AMDS and 2S).
 

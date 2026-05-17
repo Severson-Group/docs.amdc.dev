@@ -1,4 +1,4 @@
-# Daisy Chaining AMDS Boards
+# AMDS Daisy Chain
 
 This document outlines the architecture, setup, and salient details of the AMDS's Daisy Chain capability.
 
