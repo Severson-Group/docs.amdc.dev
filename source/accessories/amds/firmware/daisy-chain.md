@@ -55,9 +55,43 @@ The data will arrive on the AMDC `DATA0` and `DATA1` lines in the following arra
 
 The cabling between each pair of boards runs at the same baudrate (20 Mbps).
 
-Currently released AMDS hardware relies on a daisy chain adapter board placed between each pair of AMDS boards to add the necessary transceivers. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
+Currently released AMDS hardware relies on a daisy chain adapter board placed between each pair of AMDS boards to add the necessary transceivers, as illustrated below. Details on this board can be found in the AMDS git repo's [`AMDS/Accessories/DaisyChainAdapter` directory](https://github.com/Severson-Group/AMDS/tree/develop/Accessories/DaisyChainAdapter).
 
-Custom cabling must be used between AMDS boards to transpose the UART `RX` and `TX` pins.
+```{image} images/daisy-chain-adapter.svg
+:width: 75%
+:align: center
+:class: only-light
+```
+
+```{image} images/daisy-chain-adapter-dark.svg
+:width: 75%
+:align: center
+:class: only-dark
+```
+
+Custom cabling must be used between the daisy chain adapter board and the AMDS board to transpose the UART `RX` and `TX` pins, as listed below. This type of cable can be readily manufactured as a do-it-yourself project, or ordered from a custom cable manufacturer such as [ShowMeCables](https://www.showmecables.com/). The cable should use high density, VGA-style 15 pin connectors to match the AMDS `CON1A` port.
+
+```{table} **Custom Cable** for Daisy Chain Adapter Implementation
+:align: center
+
+| DCA Pin | DCA Name      | AMDS Pin | AMDS Name     |
+|:-------:|:-------------:|:--------:|:-------------:|
+| 1       | 5V_CN         | 1        | 5V_CN         |
+| 2       | UARTA_IN_P    | 12       | UARTA_OUT_P   |
+| 3       | UARTA_IN_N    | 13       | UARTA_OUT_N   |
+| 4       | UARTB_IN_P    | 14       | UARTB_OUT_P   |
+| 5       | UARTB_IN_N    | 15       | UARTB_OUT_N   |
+| 6       | NC            | 6        | NC            |
+| 7       | NC            | 7        | SPI1_IP       |
+| 8       | NC            | 8        | SPI1_IM       |
+| 9       | NC            | 9        | SPI2_IP       |
+| 10      | NC            | 10       | SPI2_IM       |
+| 11      | GND_CN        | 11       | GND_CN        |
+| 12      | UARTA_OUT_P   | 2        | UARTA_IN_P    |
+| 13      | UARTA_OUT_N   | 3        | UARTA_IN_N    |
+| 14      | UARTB_OUT_P   | 4        | UARTB_IN_P    |
+| 15      | UARTB_OUT_N   | 5        | UARTB_IN_N    |
+```
 
 ## Architecture
 
