@@ -94,6 +94,12 @@ html_sidebars = {
 # Whitelist pattern for remotes (set to None to use local branches only)
 smv_remote_whitelist = r'^v\d\..*|main$'
 
+# Whitelist pattern for tags
+smv_tag_whitelist = r'^v\d\..*$'
+
+# Whitelist pattern for branches
+smv_branch_whitelist = r'^main$'
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
