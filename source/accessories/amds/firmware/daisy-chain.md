@@ -31,6 +31,13 @@ Currently released AMDS hardware relies on a daisy chain adapter board placed be
 ```{image} images/daisy-chain-adapter.svg
 :width: 75%
 :align: center
+:class: only-light
+```
+
+```{image} images/daisy-chain-adapter-dark.svg
+:width: 75%
+:align: center
+:class: only-dark
 ```
 
 Custom cabling must be used between the daisy chain adapter board and the AMDS board to transpose the UART `RX` and `TX` pins, as listed below. This type of cable can be readily manufactured as a do-it-yourself project, or ordered from a custom cable manufacturer such as [ShowMeCables](https://www.showmecables.com/). The cable should use high density, VGA-style 15 pin connectors to match the AMDS `CON1A` port.
