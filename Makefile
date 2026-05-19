@@ -31,7 +31,7 @@ ifeq ($(UNAME_AVAIL), "true")
 ifeq ($(UNAME), Darwin)
 	#We are on OSX
 	mkdir -p tmptmp
-	TMPDIR=$PWD/tmptmp $(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
+	TMPDIR=$(CURDIR)/tmptmp $(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 	rm -r tmptmp
 else
 	#We are on Linux
