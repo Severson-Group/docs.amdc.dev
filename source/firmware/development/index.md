@@ -71,11 +71,12 @@ Occasionally, a bug might need to be fixed in a previous release branch, but doe
 In this case, do not change `develop` -- simply fix the bug where it needs to be fixed.
 This is depicted in the above diagram as the `hotfix1` branch.
 
+(minor-or-major-release)=
 #### Minor or Major
 
 For a new minor or major release, a new release branch needs to be created.
 
-1. Tag the most recent commit to `main` on docs.amdc.dev as the ***previous*** release with `vA.B` formatting
+1. Tag the most recent commit to `main` on [docs.amdc.dev](https://github.com/Severson-Group/docs.amdc.dev) as the ***previous*** firmware release with `vA.B` formatting (see the [Developers guide](../../contribution/index.md))
 2. Create a new release branch from `develop` on AMDC-firmware and call it `vA.B.x`
 3. Update GitHub's default repo branch to be the latest release branch which was just created
 4. Update the documentation website to reflect the minor or major (breaking) changes
