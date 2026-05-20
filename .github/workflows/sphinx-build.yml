@@ -35,7 +35,7 @@ jobs:
       run: |
         rm -rf docs # not sure if this is needed...
         mkdir docs
-        cp -rf build/html/* docs/
+        cp -rf build/* docs/
         cd docs
         echo "docs.amdc.dev" > CNAME
         touch .nojekyll # need this due to "_*" dirs getting ignored by GitHub
