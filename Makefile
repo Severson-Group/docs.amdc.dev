@@ -56,5 +56,5 @@ clean:
 ifeq ($(OS),Windows_NT)
 	del /s "$(BUILDDIR)"
 else
-	rm -r "$(BUILDDIR)/"*
+	rm -rf "$(BUILDDIR)/"* || true
 endif
