@@ -33,14 +33,19 @@ ifeq ($(UNAME), Darwin)
 	mkdir -p tmptmp
 	TMPDIR=$(CURDIR)/tmptmp $(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 	rm -r tmptmp
+	cp ./index.html "$(BUILDDIR)/index.html"
 else
 	#We are on Linux
 	@$(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
+	cp ./index.html "$(BUILDDIR)/index.html"
 endif
 else
 	#We are on Windows_NT
 	@$(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
+	copy .\index.html "$(BUILDDIR)\index.html"
 endif
+
+
 local:
 	sphinx-build "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 
