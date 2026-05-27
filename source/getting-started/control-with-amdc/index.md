@@ -5,9 +5,12 @@ The AMDC Platform provides a versatile and open foundation for establishing high
 | Control Topic | Aim / Goal / Outcome |
 |---|---|
 | [Current Sensor Calibration](current-sensor-cal/index.md) | Approach and tools to calibrate current sensor gain and offset. |
+| [Autogen](autogen/index.md) | Autogen that can convert the Simulink block diagrams into an equivalent C code. |
+
 
 ```{toctree}
 :hidden:
 
 Current Sensor Calibration <current-sensor-cal/index>
+Autogen <autogen/index>
 ```
