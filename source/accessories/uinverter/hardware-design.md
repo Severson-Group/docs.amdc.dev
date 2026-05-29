@@ -56,7 +56,7 @@ For three-phase current regulation, phase currents need to be sensed and fed bac
 ```{image} images/uInverter_current_sense.svg
 :class: only-light
 ```
-```{image} images/uInverter_current_sense.svg
+```{image} images/uInverter_current_sense-dark.svg
 :class: only-dark
 ```
 
