@@ -9,7 +9,6 @@ This document describes the requirement and design considerations for the select
 
 ## Block Diagram
 
-![High level schematic](images/uInverter.svg)
 ```{image} images/uInverter.svg
 :class: only-light
 ```
