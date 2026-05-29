@@ -42,7 +42,6 @@ The output of the voltage sensor is a current in the range of +/-25mA, which is 
 ### Level shift stage
 The voltage across the burden resistor is a bipolar signal (voltage span includes both positive and negative voltages). A non-inverting level translation circuit is designed using Op Amps as shown here:
 
-![](images/volt-sensor-opamp-stage.svg)
 ```{image} images/volt-sensor-opamp-stage.svg
 :class: only-light
 ```
