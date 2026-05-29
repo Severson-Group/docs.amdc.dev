@@ -24,7 +24,12 @@ The current measurement card was designed to the following specifications:
 ## Block Diagram
 The high level block diagram of the current sensor card is shown below:
 
-![](images/current-sensor-blockdiagram.svg)
+```{image} images/current-sensor-blockdiagram.svg
+:class: only-light
+```
+```{image} images/current-sensor-blockdiagram-dark.svg
+:class: only-dark
+```
 
 ### Current Sensor
 LEM LA 55-P current sensor is selected for this design, as it is the only sensor available from LEM with an open aperture and PC pins that can measure +/-55A. 
@@ -56,7 +61,12 @@ The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readi
 
 A non-inverting level translation circuit is implemented using Op Amps as shown here:
 
-![](images/current-sensor-opamp-stage.svg)
+```{image} images/current-sensor-opamp-stage.svg
+:class: only-light
+```
+```{image} images/current-sensor-opamp-stage-dark.svg
+:class: only-dark
+```
 
 This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of 0-$V_{\rm REF}$.
 

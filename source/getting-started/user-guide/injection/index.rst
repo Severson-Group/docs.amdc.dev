@@ -82,6 +82,10 @@ Use Case 2: Controller Output
 
 .. image:: images/control-diagram-inj-ctrl-output.svg
     :align: center
+    :class: only-light
+.. image:: images/control-diagram-inj-ctrl-output-dark.svg
+    :align: center
+    :class: only-dark
 
 By inserting an injection point for the :code:`Controller Output`, the injection can be used to either add a simulated disturbance, or to replace the controller and apply open-loop inputs to the `Plant`.
 

@@ -10,6 +10,12 @@ This document describes the requirement and design considerations for the select
 ## Block Diagram
 
 ![High level schematic](images/uInverter.svg)
+```{image} images/uInverter.svg
+:class: only-light
+```
+```{image} images/uInverter-dark.svg
+:class: only-dark
+```
 
 ## Requirements 
 
@@ -48,7 +54,12 @@ The driver suits the application requirements well.
 
 For three-phase current regulation, phase currents need to be sensed and fed back to the AMDC. A precision resistor is used in the phase leg to sense the phase current. A difference amplifier is used to amplify the voltage across this resistor and bring it to the voltage level suited for the analog input to AMDC. The amplifier increases the signal to noise ratio of the current sense signal.
 
-![uInverter differential amplifier](images/uInverter_current_sense.svg)
+```{image} images/uInverter_current_sense.svg
+:class: only-light
+```
+```{image} images/uInverter_current_sense.svg
+:class: only-dark
+```
 
 The supply voltage available from the AMDC analog sensing connector is ±15V, and the AMDC accepts analog signal value in the range of ±10V -- see the AMDC [](/hardware/subsystems/analog.md) for more information.
 
@@ -189,7 +200,12 @@ To aviod any damage to components on the AMDC board, the DC supply voltage must 
 
 A filter capacitor is connected to the voltage sensing node (see image below) to filter out high frequency noise in DC link voltage measurement.
 
-![DC link voltage sensing filter](images/uInverter_DC_link_filter.svg)
+```{image} images/uInverter_DC_link_filter.svg
+:class: only-light
+```
+```{image} images/uInverter_DC_link_filter-dark.svg
+:class: only-dark
+```
 
 The bandwidth of the low pass filter formed by this capacitor and the voltage divider resistors is computed as:
 
