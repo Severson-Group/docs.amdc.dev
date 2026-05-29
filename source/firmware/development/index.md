@@ -13,6 +13,11 @@ This greatly helps to explain the concepts below.
 
 ```{image} images/amdc-git-branch-flow.svg
 :width: 100%
+:class: only-light
+```
+```{image} images/amdc-git-branch-flow-dark.svg
+:width: 100%
+:class: only-dark
 ```
 
 All development intended to impact a future release is done on topic branches from the latest `develop` branch.

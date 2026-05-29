@@ -28,6 +28,11 @@ Each injection point can be visualized like this:
 
 .. image:: images/inj-point.svg
     :align: center
+    :class: only-light
+
+.. image:: images/inj-point-dark.svg
+    :align: center
+    :class: only-dark
 
 Each :code:`Function Generator` block in the stack implements one type of function: constant, white noise, triangle, square, chirp, sine, etc.
 The output is formed via the mux selecting either: (i) just the function generator output, or (ii) a sum/difference of the function generator output with the input signal.
@@ -45,6 +50,11 @@ Consider the following (typical) control structure:
 
 .. image:: images/control-diagram.svg
     :align: center
+    :class: only-light
+
+.. image:: images/control-diagram-dark.svg
+    :align: center
+    :class: only-dark
 
 The :code:`Controller` tries to regulate the :code:`Output` to match the :code:`Reference`.
 The :code:`Controller Output` is applied to the :code:`Plant`, along with the :code:`Disturbance`.
@@ -56,6 +66,11 @@ Use Case 1: References
 
 .. image:: images/control-diagram-inj-ref.svg
     :align: center
+    :class: only-light
+
+.. image:: images/control-diagram-inj-ref-dark.svg
+    :align: center
+    :class: only-dark
 
 The first use case is to place an injection point supplying the :code:`Reference` signal.
 Doing so allows generic signals to be commanded to the system, such as constants, noise, etc.
@@ -67,6 +82,10 @@ Use Case 2: Controller Output
 
 .. image:: images/control-diagram-inj-ctrl-output.svg
     :align: center
+    :class: only-light
+.. image:: images/control-diagram-inj-ctrl-output-dark.svg
+    :align: center
+    :class: only-dark
 
 By inserting an injection point for the :code:`Controller Output`, the injection can be used to either add a simulated disturbance, or to replace the controller and apply open-loop inputs to the `Plant`.
 
