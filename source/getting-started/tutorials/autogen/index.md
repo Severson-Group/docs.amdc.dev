@@ -44,7 +44,7 @@ Additional toolboxes may be required depending on the specific control design.
 
 ## Create a Simulink Model
 
-Now that you create a Simulink model that will be used to generate Autogen code. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
+The next step is to create a Simulink model that can be used for Autogen. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
 
 1. In `simulink/vsi` folder, create a new MATLAB file named `setup.m`.
 2. In `setup.m`, copy-paste the following MATLAB code:
