@@ -119,7 +119,7 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
     1. Under the `Solver` tree, set `Fixed-step-size` as `samplingTime_s`.
 3. Save the Simulink file.
 
-The example of Simulink file along with the referenced model is stored [here](./simulink/). Note that this Simulink model was created using MATLAB R2024b.
+The example of Simulink file along with the referenced model is stored [here](https://github.com/Severson-Group/docs.amdc.dev/tree/main/source/getting-started/tutorials/autogen/simulink). Note that this Simulink model was created using MATLAB R2024b.
 
 ### Generate C-code
 
