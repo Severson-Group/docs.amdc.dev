@@ -62,7 +62,7 @@ dutyAmplitude = 0.8;      % amplitude of the duty-ratio waveform (--)
 4. Add a `Constant` block and set its value to `omegaElec_radps`.
 5. Add an `Integrator` block and connect it to the `Constant` block. Rename the output signal of this integrator to be `thetaElec_rad`.
 6. Add a `Constant` block and set its value to `dutyAmplitude`.
-7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time `samplingTime_s`.
+7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time to `samplingTime_s`.
 8. Create Simulink blocks to implement the following duty ratio calculation developed [here](../vsi/index.md/#c-code-controller):
 
 ```c
