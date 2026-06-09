@@ -115,13 +115,13 @@ The time for the trigger signal to reach the sensor card ADCs and for them to co
 This can be seen in the timing block diagram and scope capture below.
 
 ```{image} images/sampling_timing.svg
-:width: 75%
+:width: 100%
 ```
 
 The figure shown above assumes that the Timing Manager has been configured to sample the sensors only at the valley of the PWM triangle carrier, and attempts to sample every period (i.e., the sampling sub-rate ratio is 1). Also, note that in the figure, the AMDS sensor sampling time consumes about 90% of the total time slice---this leaves a very small time for the control code to run and does not represent practical configuration. Typically, the AMDS sampling time should consume much less of the total cycle time.
 
 ```{image} images/scope_single.webp
-:width: 75%
+:width: 100%
 ```
 
 The channels in the above scope capture show the following signals from top to bottom:
