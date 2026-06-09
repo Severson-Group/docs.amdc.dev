@@ -128,7 +128,7 @@ The channels in the above scope capture show the following signals from top to b
 
 - <span style="color:grey;font-weight:bold">UART DATA0</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
 - <span style="color:orange;font-weight:bold">UART DATA1</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
-- - <span style="color:deeppink;font-weight:bold">ADC_SYNC</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
+- <span style="color:deeppink;font-weight:bold">ADC_SYNC</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
 
 ```{hint}
 The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#active-sensor-mask). 
