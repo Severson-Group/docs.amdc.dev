@@ -110,7 +110,7 @@ In the typical flow, the master is operating its PWM output and thus triggering 
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
 
-The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1 µs. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 4 µs. The latency for data transmission back to the master over the `DATAx` signals is about 6 µs. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 11 µs.
+The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1 µs. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 3 µs. The latency for data transmission back to the master over the `DATAx` signals is about 9 µs. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 12 µs.
 
 This can be seen in the timing block diagram and scope capture below.
 
@@ -120,16 +120,15 @@ This can be seen in the timing block diagram and scope capture below.
 
 The figure shown above assumes that the Timing Manager has been configured to sample the sensors only at the valley of the PWM triangle carrier, and attempts to sample every period (i.e., the sampling sub-rate ratio is 1). Also, note that in the figure, the AMDS sensor sampling time consumes about 90% of the total time slice---this leaves a very small time for the control code to run and does not represent practical configuration. Typically, the AMDS sampling time should consume much less of the total cycle time.
 
-```{image} images/scope_single.jpg
+```{image} images/scope_single.webp
 :width: 75%
 ```
 
 The channels in the above scope capture show the following signals from top to bottom:
 
-- <span style="color:gold;font-weight:bold">C1</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
-- <span style="color:limegreen;font-weight:bold">C4</span>: The `DOUT` signal on a sensor card, showing the data streaming from the sensor card to the processor on the AMDS mainboard.
-- <span style="color:deeppink;font-weight:bold">C2</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
-- <span style="color:darkturquoise;font-weight:bold">C3</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
+- <span style="color:grey;font-weight:bold">UART DATA0</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
+- <span style="color:orange;font-weight:bold">UART DATA1</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
+- - <span style="color:deeppink;font-weight:bold">ADC_SYNC</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
 
 ```{hint}
 The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#active-sensor-mask). 
