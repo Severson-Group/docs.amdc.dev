@@ -14,7 +14,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs80" />
+     id="defs80">
+    <rect
+       x="166.21488"
+       y="291.96694"
+       width="232.46281"
+       height="25.785124"
+       id="rect80" />
+  </defs>
   <sodipodi:namedview
      id="namedview80"
      pagecolor="#ffffff"
@@ -24,9 +31,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="5.0416667"
-     inkscape:cx="401.2562"
-     inkscape:cy="489.81818"
+     inkscape:zoom="2.5208333"
+     inkscape:cx="479.80165"
+     inkscape:cy="360"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
      inkscape:window-x="-11"
@@ -531,42 +538,31 @@
        id="path80" />
     <text
        xml:space="preserve"
-       style="writing-mode:lr-tb;direction:ltr;fill:#000000"
-       x="366.61209"
-       y="362.94373"
-       id="text80"><tspan
-         x="366.61209"
-         y="362.94373"
-         id="tspan81"
-         sodipodi:role="line">Transmission Time = ~9us</tspan></text>
+       id="text80"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.6667px;font-family:Arial;-inkscape-font-specification:Arial;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect80);fill:#000000;stroke-width:8"
+       transform="translate(-3.5702479,57.917356)"><tspan
+         x="166.21484"
+         y="305.17789"
+         id="tspan1">Transmission Time = ~3us</tspan></text>
     <text
        xml:space="preserve"
-       style="writing-mode:lr-tb;direction:ltr;fill:#000000"
-       x="168.16284"
-       y="363.67496"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.6667px;font-family:Arial;-inkscape-font-specification:Arial;writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:8"
+       x="356.23141"
+       y="362.97519"
+       id="text81"><tspan
+         sodipodi:role="line"
+         id="tspan81"
+         x="356.23141"
+         y="362.97519">Transmission Time = ~9us</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;line-height:0;font-family:Arial;-inkscape-font-specification:'Arial Bold';writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:8"
+       x="200.33058"
+       y="556.56201"
        id="text82"><tspan
          sodipodi:role="line"
          id="tspan82"
-         x="168.16284"
-         y="363.67496">Transmission Time = ~3us</tspan></text>
-    <text
-       xml:space="preserve"
-       style="writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:5.9;stroke-dasharray:none"
-       x="334.41321"
-       y="570.04956"
-       id="text84"><tspan
-         sodipodi:role="line"
-         id="tspan83"></tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.6667px;writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:8;stroke-dasharray:none"
-       x="200.92561"
-       y="556.36365"
-       id="text85"><tspan
-         sodipodi:role="line"
-         id="tspan84"
-         x="200.92561"
-         y="556.36365"
-         style="font-size:18.6667px">Total Acquisition Time = ~12us</tspan></text>
+         x="200.33058"
+         y="556.56201">Total Acquisition Time = ~12us</tspan></text>
   </g>
 </svg>
