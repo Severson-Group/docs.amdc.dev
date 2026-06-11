@@ -37,6 +37,7 @@ jobs:
         mkdir docs
         cp -rf build/* docs/
         cd docs
+        cp -rf ./main/* ./ # Fix old links which don't specify main subdir
         echo "docs.amdc.dev" > CNAME
         touch .nojekyll # need this due to "_*" dirs getting ignored by GitHub
         git config --local user.email "action@github.com"
