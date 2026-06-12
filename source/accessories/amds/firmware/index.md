@@ -18,7 +18,7 @@ While the architecture of the AMDS firmware is fairly simple, the I/O interface,
 
 The AMDS firmware is designed to interface to the master controller over three logical wires: one signal from the master, and two data lines to the master. Physically, these signals are all differential pairs for noise immunity.
 
-```{image} images/firmware_arch_interface.svg
+```{image} images/firmware-arch-interface.svg
 :class: only-light
 ```
 ```{image} images/firmware_arch_interface-dark.svg
@@ -35,9 +35,9 @@ After all sensorcards have been sampled, the AMDS streams all sampled data back 
 
 The two TX signals are controlled by the AMDS and go to the master. These are only used to send ADC sample data to the master. As soon as all ADCs are sampled, the AMDS starts sending the latest data to the master using the two TX wires. Two lanes are used so that the data can be transmitted at twice the speed, thus reducing latency.
 
-The format of the data sent on the TX signals is UART. This means there is no clock line between the master and AMDS: the interface is completely asynchronous. The UART is configured to run at 25 Mbps. Conceptually, the TX lines are actually two distinct UART devices, each with only one-way communication. Both UARTs are configured as 8-bit data, 2 stop bits, and odd parity.
+The format of the data sent on the TX signals is UART. This means there is no clock line between the master and AMDS: the interface is completely asynchronous. The UART is configured to run at 20 Mbps. Conceptually, the TX lines are actually two distinct UART devices, each with only one-way communication. Both UARTs are configured as 8-bit data, 2 stop bits, and odd parity.
 
-##### Data Format
+### Data Format
 
 The ADCs on the sensor cards are assumed to be 16-bit devices which are all compatible with each other (i.e. they can be daisy-chained and support equal clock rates). See each sensor card's hardware design files for specs on the specific ADCs which are supported. The 16-bit raw data from the ADCs are packed into bytes which are sent across the `DATA0` and `DATA1` UART lines. `DATA0` is used to send the contents of the first four sensor cards and `DATA1` sends the last four sensor card data. The transmissions happen in parallel between the data lines.
 
@@ -67,42 +67,79 @@ The message structure is equal between both `DATA0` and `DATA1`. However, each m
 | ---- | ---- | ---- |
 | 0x93 | MSB of sample 4 | LSB of sample 4|
 
-_NOTE: there is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments._
+```{note}
+There is no full CRC included in the transmission. The simple protocol relies on the parity check in the UART packet. This is not a terribly robust approach, but has worked well is moderate EMI environments.
+```
+
+(active-sensor-mask)=
+#### Selective Channel Transmitting
+
+To optimize processing and transmission bandwidth, the system supports disabling unused sensor channels.
+
+**Active Sensor Mask**: The AMDS codebase contains a global variable `active_sensor_mask` that acts as a bitmask where `1 = Active` and `0 = Inactive` for each of the 8 AMDS sensor cards. This variable determines which sensor cards' data are sent to the master each time a `SYNC_ADC` is received by the AMDS. For example,
+
+- `active_sensor_mask = 0xFF;`: AMDS will send all 8 channels
+- `active_sensor_mask = 0x01;`: AMDS will only send sensor card channel 1
+- `active_sensor_mask = 0x06;`: AMDS will only send sensor card channels 2 and 3
+
+```{hint}
+The AMDC platform system default is to send all 8 channels. If a reduced number of channels are being sent, the user must alert the AMDC to this by calling `amdc_set_enabled()`, as the AMDS does not communicate configuration settings with master.
+```
+
+#### Optimized Sample-and-Transmit Fast Path
+
+The AMDS firmware has been optimized to minimize time from `SYNC_ADC` until the last bit of data is transmitted to the master. The code path used depends on the value of `active_sensor_mask`:
+
+- `active_sensor_mask != OxFF`: a generalized function `adc_sample_all_daughtercards()` is used.
+- `active_sensor_mask == OxFF`: a highly optimized function `adc_sample_and_transmit_fast_path()` is used.
+
+As compared to the generalized `adc_sample_all_daughtercards()` function, `adc_sample_and_transmit_fast_path` decreases latency by doing the following:
+
+- **Avoid `active_sensor_mask` Conditional Checks**: to remove processor time associated with `if` statements.
+- **Hardware Cycle Counting**: Rather than using `NOP` loops for the 1300ns ADC wait time, the fast path uses the Cortex-M7 DWT Cycle Counter (`DWT->CYCCNT`) for deterministic waiting.
+- **Instruction Interleaving**: The code optimizes wait states by starting SPI reads, and transmitting UART header bytes (`0x90`) while the CPU is waiting for the SPI RX buffers to fill.
+
+Both code paths optimize timing by using the ST32 MCU's UART transmit shift register to queue up two bytes of UART transmit data at a time. This is done by optimizing calls to the inline `drv_uart_putc_fast()` function. When the shift register is empty, the function accepts new data without delay. When the shift register is occupied, the function blocks until it can take the new data byte. If the UART tranmit interface is idle, two back-to-back calls can be made to this function without any blocking delay.
+
+### Daisy Chain
+
+The AMDS firmware includes support for up to three AMDS boards to be connected in series into a "daisy chain," allowing for 24 sensor cards worth of data to be sent to master. Details of this are provided in [AMDS Daisy Chain](daisy-chain.md).
 
 ### Interrupt-Driven Design
 
-After start-up, the AMDS firmware is completely interrupt driven. This means that all processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
+After start-up, the AMDS firmware is interrupt driven. This means that all critical processing occurs within an interrupt context, not the main loop. The interrupt which used to drive the firmware occurs on the rising and falling edges of the `SYNC_ADC` signal.
 
 In the typical flow, the master is operating its PWM output and thus triggering the `SYNC_ADC` ISR periodically. The ADCs on the sensor cards start their conversions and store the latest data in the AMDS memory. Once this is complete, the AMDS sends the data back to the master. Then the AMDS will wait for the next `SYNC_ADC` interrupt.
 
-### Performance Limitations
+## Performance Limitations
 
 The AMDS firmware design directly affects the operation limits of the `SYNC_ADC` signal. It will continue to work up to some threshold, at which point some ISRs will be missed and the performance will drop. However, the system will not "crash" -- it will continue to work, albeit not as well.
 
-The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1 µs. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 4 µs. The latency for data transmission back to the master over the `DATAx` signals is about 6 µs. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 11 µs.
+The time for the trigger signal to reach the sensor card ADCs and for them to convert the analog value to digital is minimal, less than 1 µs. The time for the sensor cards to send their data back to the AMDS mainboard processor is around 3 µs. The latency for data transmission back to the master over the `DATAx` signals is about 9 µs. With all delays accumulated, the total time to trigger, sample, and transmit the data is just under 12 µs.
 
 This can be seen in the timing block diagram and scope capture below.
 
 ```{image} images/sampling_timing.svg
-:width: 75%
+:width: 100%
 ```
 
 The figure shown above assumes that the Timing Manager has been configured to sample the sensors only at the valley of the PWM triangle carrier, and attempts to sample every period (i.e., the sampling sub-rate ratio is 1). Also, note that in the figure, the AMDS sensor sampling time consumes about 90% of the total time slice---this leaves a very small time for the control code to run and does not represent practical configuration. Typically, the AMDS sampling time should consume much less of the total cycle time.
 
-```{image} images/scope_single.jpg
-:width: 75%
+```{image} images/scope_single.webp
+:width: 100%
 ```
 
 The channels in the above scope capture show the following signals from top to bottom:
 
-- <span style="color:gold;font-weight:bold">C1</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
-- <span style="color:limegreen;font-weight:bold">C4</span>: The `DOUT` signal on a sensor card, showing the data streaming from the sensor card to the processor on the AMDS mainboard.
-- <span style="color:deeppink;font-weight:bold">C2</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
-- <span style="color:darkturquoise;font-weight:bold">C3</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
+- <span style="color:grey;font-weight:bold">UART DATA0</span>: The `DATA0` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 1-4.
+- <span style="color:orange;font-weight:bold">UART DATA1</span>: The `DATA1` line from the AMDS back to the AMDC, showing 12 bytes (4 x 3-Byte packets) of UART data. This is the data for AMDS sensor card channels 5-8.
+- <span style="color:deeppink;font-weight:bold">ADC_SYNC</span>: The `SYNC_ADC` signal from the AMDC to the AMDS, where every edge triggers the ISR on the AMDS which samples and returns the data.
 
-**Note**: The AMDS firmware always assumes all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. This acts to limit the overall sampling throughput.
+```{hint}
+The default value of `active_sensor_mask` will have the AMDS assume that all eight sensor cards must be sampled. Even when they are not populated, the firmware timing remains as if all sensor cards were in pairs of daisy chains. The only way to improve sample throughput when fewer cards are used is to update `active_sensor_mask` as described [above](#active-sensor-mask). 
+```
 
-#### Performance Specifications
+### Performance Specifications
 
 Given a control frequency of `Fs` and PWM switching frequency of `Fsw`, the following constraints must be satisfied for the AMDS firmware to perform well:
 
@@ -111,11 +148,13 @@ Given a control frequency of `Fs` and PWM switching frequency of `Fsw`, the foll
 
 For application with SiC or GaN inverters where `Fsw` is typically much faster than `Fs`, the AMDS firmware works well.
 
-**Warning:** When `Fs` is close to `Fsw` (i.e. control frequency is equal to PWM frequency), **the current AMDS firmware design will not work well.**
+```{warning}
+When `Fs` is close to `Fsw` (i.e. control frequency is equal to PWM frequency), **the current AMDS firmware design will not work well.**
+```
 
 ## Future Improvements
 
-The AMDS firmware works, albeit with limitations as described above. Some ideas to improve the system are now described:
+The AMDS firmware works, albeit with limitations as described above. Some ideas to improve the system are now listed:
 
 1. The AMDS cannot be configured from the master. Improvements could use an additional TX/RX pair to enable simple register protocol for config. This could be used to set digital filter bandwidths, turn on/off sensor card slots for faster sampling, etc.
 
@@ -123,4 +162,9 @@ The AMDS firmware works, albeit with limitations as described above. Some ideas 
 
 3. There is no robust CRC error detection on the data transmission from the AMDS to the master device, although the UART parity is used. Future improvements could add a footer CRC to ensure the received message at the master is valid. Error correction codes could also be used to further increase the communication robustness in high EMI environments (e.g. SECDED). There is no free lunch: all of these methods would increase the data transmission latency from the AMDS.
 
-4. There is no need to transmit the data from all eight sensor cards if they are not all populated. Theoretically, a user could run the AMDS interface MUCH faster with fewer sensor cards installed, if changes are made such that only real data acquired from populated sensor cards are transmitted back to the master.
+```{toctree}
+:hidden:
+
+daisy-chain
+building-and-running-firmware
+```
