@@ -53,7 +53,7 @@ The recommended approach to reading the shaft position from the encoder is illus
 :align: center
 ```
 
-First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
+First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
 
 ```{tip}
 The [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module also has a function called `encoder_get_steps()` which returns the encoder's count since power-on. One rotation direction increments, the other decrements. This value does not wrap around (it ignores `encoder_set_counts_per_rev()` and the z-pulse). Users are advised to use `encoder_get_position()`, which does wrap around and tracks the z-pulse.
