@@ -217,7 +217,7 @@ Note that this low pass filter approach will always produce a lagging speed esti
 
 ### Observer Approach
 
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#1), which implements a mechanical model of the rotor as shown below.
+To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#enc-ref-1), which implements a mechanical model of the rotor as shown below.
 
 ```{image} resources/ObserverFigure.svg
 :alt: Observer Figure
@@ -229,14 +229,17 @@ The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this 
 - `J`: the inertia of the rotor  
 - `b` the damping coefficient of the rotor.
 
-It is also necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model.
+It is also necessary to provide the electromechanical torque, $T_\mathrm{em}$ as input to the mechanical model.
 
 The `PI` portion of the observer closes the loop on the speed, with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
+
 $$
-K_p = \omega_{sf}b, K_i = \omega_{sf}J
+K_\mathrm{p} = \omega_\mathrm{sf}b, K_\mathrm{i} = \omega_\mathrm{sf}J
 $$
 
 This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  An observer bandwidth of 10 Hz is typical of most systems, but similar to the low pass filter approach, users may need to alter this based on the unique aspects of their system.
 
 # References
-<a id="1"></a> 1.  R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
+
+(enc-ref-1)=
+1. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
