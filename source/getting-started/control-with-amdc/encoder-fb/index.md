@@ -47,7 +47,7 @@ The AMDC provides a convenience function that can be used as an alternate to `en
 
 The recommended approach to reading the shaft position from the encoder is illustrated in the figure below:
 
-```{image} resources/EncoderCodeBlockDiagram.svg
+```{image} resources/encoder-code-block-diagram.svg
 :alt: Encoder Code Block Diagram.svg
 :width: 700px
 :align: center
@@ -219,7 +219,7 @@ Note that this low pass filter approach will always produce a lagging speed esti
 
 To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#enc-ref-1), which implements a mechanical model of the rotor as shown below.
 
-```{image} resources/ObserverFigure.svg
+```{image} resources/observer-figure.svg
 :alt: Observer Figure
 :width: 600px
 :align: center
