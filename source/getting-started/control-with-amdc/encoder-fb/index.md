@@ -77,7 +77,7 @@ The user can experimentally determine whether the encoder count increases with c
 
 Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the $\theta_{\rm m}$. This can be accomplished in C by using the `mod` function. This is shown in the final block in the diagram.
 
-Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already know; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
+Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already known; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
 ```C
 double task_get_theta_m(void)
 {
