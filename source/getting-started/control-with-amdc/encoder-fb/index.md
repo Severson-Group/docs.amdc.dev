@@ -198,9 +198,8 @@ The user needs to compute a rotor speed signal from the obtained position signal
 A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
 
 $$
-\Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s} 
+\Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s}
 $$
-
 
 Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder. 
 
@@ -212,13 +211,13 @@ $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
 $$
 
-Here, $T_{\rm s}$ is the control sample rate and $\omega_b$ is the low pass filter bandwidth. The user must select this bandwidth to obtain a sufficiently clean speed signal.  The optimal bandwidth to use is going to vary based on the motor system. Typically, a bandwidth of 10 Hz is a reasonable starting point. This can be reduced if the speed signal remains too noisy, or increased for higher speed controls. 
+Here, $T_{\rm s}$ is the control sample rate and $\omega_b$ is the low pass filter bandwidth. The user must select this bandwidth to obtain a sufficiently clean speed signal.  The optimal bandwidth to use is going to vary based on the motor system. Typically, a bandwidth of 10 Hz is a reasonable starting point. This can be reduced if the speed signal remains too noisy, or increased for higher speed controls.
 
 Note that this low pass filter approach will always produce a lagging speed estimate due to phase delay in the filter transfer function. This may be unacceptable higher performance motor control algorithms.
 
 ### Observer Approach
 
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#1), which implements a mechanical model of the rotor as shown below. 
+To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#1), which implements a mechanical model of the rotor as shown below.
 
 ```{image} resources/ObserverFigure.svg
 :alt: Observer Figure
@@ -228,9 +227,9 @@ To obtain a no-lag estimate of the rotor speed, users may create an observer [[1
 
 The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this observer, the user needs to know the system parameters:
 - `J`: the inertia of the rotor  
-- `b` the damping coefficient of the rotor. 
+- `b` the damping coefficient of the rotor.
 
-It is also necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model. 
+It is also necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model.
 
 The `PI` portion of the observer closes the loop on the speed, with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
 $$
