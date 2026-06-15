@@ -47,9 +47,9 @@ The AMDC provides a convenience function that can be used as an alternate to `en
 
 The recommended approach to reading the shaft position from the encoder is illustrated in the figure below:
 
-```{image} resources/encoder-code-block-diagram.svg
+```{image} resources/encoder-code-flow.svg
 :alt: Encoder Code Block Diagram.svg
-:width: 700px
+:width: 75%
 :align: center
 ```
 
