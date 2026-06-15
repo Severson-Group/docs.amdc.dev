@@ -17,6 +17,13 @@ The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.
 :alt: Motor Cross-Section with Encoder Angles
 :width: 350px
 :align: right
+:class: only-light
+```
+```{image} resources/motor-cross-section-dark.svg
+:alt: Motor Cross-Section with Encoder Angles
+:width: 350px
+:align: right
+:class: only-dark
 ```
 
 This document assumes the configuration shown to the right, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as a mechanical angle $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
@@ -51,6 +58,13 @@ The recommended approach to reading the shaft position from the encoder is illus
 :alt: Encoder Code Block Diagram.svg
 :width: 75%
 :align: center
+:class: only-light
+```
+```{image} resources/encoder-code-flow-dark.svg
+:alt: Encoder Code Block Diagram.svg
+:width: 75%
+:align: center
+:class: only-dark
 ```
 
 First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
@@ -120,6 +134,13 @@ The example code shown above makes use of an encoder offset value, `theta_off`. 
 :alt: Torque Variation with Rotor Angle
 :width: 250px
 :align: right
+:class: only-light
+```
+```{image} resources/torque-plot-dark.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-dark
 ```
 
 The approximate encoder offset can be found by taking advantage of the motor having the torque characteristic shown on the right. This depicts shaft torque as the shaft is rotated counter-clockwise and corresponds to [the image at the start of the section](#rotor-position); positive torque is in the counter-clockwise direction.
@@ -143,6 +164,13 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 :alt: Torque Variation with Rotor Angle
 :width: 250px
 :align: right
+:class: only-light
+```
+```{image} resources/reference-frame-dark.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-dark
 ```
 
 The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
@@ -223,6 +251,13 @@ To obtain a no-lag estimate of the rotor speed, users may create an observer [[1
 :alt: Observer Figure
 :width: 600px
 :align: center
+:class: only-light
+```
+```{image} resources/observer-figure-dark.svg
+:alt: Observer Figure
+:width: 600px
+:align: center
+:class: only-dark
 ```
 
 The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this observer, the user needs to know the system parameters:
