@@ -1,0 +1,32 @@
+/* These settings fix the MathJAX output to look
+ * better in the rendered HTML */
+
+mjx-assistive-mml {
+    height: 0;
+}
+
+span.eqno {
+    float: right;
+}
+
+span.eqno a.headerlink {
+    display: none;
+}
+
+/* Prevent the fig captions to show the ID link by default.
+ * Only show on mouse hover.
+ */
+
+figcaption:hover a.headerlink {
+    display: inline;
+}
+
+figcaption a.headerlink {
+    display: none;
+}
+
+div.google-analytics-tracking-info {
+    padding: 0.75rem 0;
+    font-size: smaller;
+    color: var(--color-foreground-secondary);
+}
