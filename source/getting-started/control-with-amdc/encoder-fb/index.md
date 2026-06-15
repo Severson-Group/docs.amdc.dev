@@ -195,7 +195,7 @@ Most motor control applications also require the user to compute rotor speed. Th
 
 ### Difference Equation Approach
 
-A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
+A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_\mathrm{raw}$.
 
 $$
 \Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s}
