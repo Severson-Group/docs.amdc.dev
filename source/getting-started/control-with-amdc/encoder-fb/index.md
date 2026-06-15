@@ -191,7 +191,7 @@ An example of the results is shown in the plot below. After the calibration proc
 
 ## Computing Speed from Position
 
-The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. 
+Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying acuracy and implementation complexity, and the most common approaches are now presented.
 
 ### Difference Equation Approach
 
@@ -201,7 +201,7 @@ $$
 \Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s}
 $$
 
-Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder. 
+Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder.
 
 ### Low Pass Filter Approach
 
