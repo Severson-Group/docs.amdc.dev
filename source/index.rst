@@ -26,6 +26,14 @@ AMDC Platform Documentation
 
 .. toctree::
    :hidden:
+   :caption: Applications
+
+   applications/current-control/index
+   applications/speed-control/index
+   applications/maglev-control/index
+
+.. toctree::
+   :hidden:
    :caption: Hardware
 
    hardware/index
