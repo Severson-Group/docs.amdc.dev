@@ -50,19 +50,20 @@ The next step is to create a Simulink model that can be used for Autogen. In thi
 2. In `setup.m`, copy-paste the following MATLAB code:
 
 ```MATLAB
-samplingFrequency_Hz = 10e3;              % sampling frequency (Hz)
-samplingTime_s = 1/samplingFrequency_Hz;  % sampling time (s)
-simulationTime_s = samplingTime_s/10;     % simulation time (s) 
+f_s_Hz = 10e3;              % sampling frequency (Hz)
+t_s_s = 1/f_s_Hz;           % sampling time (s)
+t_sim_s = t_s_s/10;         % simulation time (s) 
+t_end_s = 10;               % simulation end time (s)
 
-omegaElec_radps = 377.0;  % electrical angular velocity (rad/s)
-dutyAmplitude = 0.8;      % amplitude of the duty-ratio waveform (--)
+omega_e_radps = 377.0;      % electrical angular velocity (rad/s)
+duty_amp = 0.8;             % amplitude of the duty-ratio waveform (--)
 ```
 
 3. Open a blank model of Simulink, and save it as `setup_model.slx` in the `simulink` folder.
-4. Add a `Constant` block and set its value to `omegaElec_radps`.
-5. Add an `Integrator` block and connect it to the `Constant` block. Rename the output signal of this integrator to be `thetaElec_rad`.
-6. Add a `Constant` block and set its value to `dutyAmplitude`.
-7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time to `samplingTime_s`.
+4. Add a `Constant` block and set its value to `omega_e_radps`.
+5. Add an `Integrator` block and connect it to the `Constant` block. Rename the output signal of this integrator to be `theta_e_rad`.
+6. Add a `Constant` block and set its value to `duty_amp`.
+7. Add two `Rate Transition` blocks and connect them to the `Integrator` and `Constant` blocks created above. In each `Rate Transition` block, set the sampling time to `t_s_s`.
 8. Create Simulink blocks to implement the following duty ratio calculation developed [here](../vsi/index.md/#c-code-controller):
 
 ```c
@@ -84,8 +85,9 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 ### Model Setting
 
 1. In `Modeling` tab, press `Model Settings` in `TOP MODEL` section.
-    1. Under the `Solver` tree, in the `Solver Selection`, press `Fixed-step`.
-    2. Set `Fixed-step-size` as `simulationTime_s`.
+    1. Under the `Solver` tree, in the `Simulation time`, set the `Stop time` as `t_end_s`.
+    2. In the `Solver Selection`, press `Fixed-step`.
+    3. Set `Fixed-step-size` as `t_sim_s`.
 2. Go to `Code Generation`.
     1. Click `Browse` for the `System target file`.
     2. Select `ert.tlc Embedded coder`.
@@ -104,7 +106,7 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 4. Right-click on the subsystem and select `Subsystem & Model Reference`. Select `Convert` and click `Referenced Model ...`.
 5. In the `Input Parameters` section, define the `New model name` as `generate_duty`.
 6. Click `Apply` and `Convert`.
-7. Rename the referenced model block to be `GenerateDuty`. The expected Simulink model is shown below:
+7. Rename the referenced model block to be `Generate Duty`. The expected Simulink model is shown below:
 
 ```{image} images/autogen-model-final.svg
 :alt: Autogen model finals
@@ -114,9 +116,10 @@ double duty_c = 0.5 + Do/2.0 * cos(theta - 4.0*M_PI/3.0);
 
 ### Referenced Model Setting
 
-1. Double-click the `GenerateDuty` referenced model and click `Model Settings` under `Modeling` tab.
+1. Double-click the `Generate Duty` referenced model and click `Model Settings` under `Modeling` tab.
 2. Click `Model Settings` in the `REFERENCED MODEL` section.
-    1. Under the `Solver` tree, set `Fixed-step-size` as `samplingTime_s`.
+    1. Under the `Solver` tree, in the `Simulation time`, set the `Stop time` as `t_end_s`.
+    2. Set `Fixed-step-size` as `t_s_s`.
 3. Save the Simulink file.
 
 The example of Simulink file along with the referenced model is stored [here](https://github.com/Severson-Group/docs.amdc.dev/tree/main/source/getting-started/tutorials/autogen/simulink). Note that this Simulink model was created using MATLAB R2024b.
