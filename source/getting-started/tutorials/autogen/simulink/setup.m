@@ -1,11 +1,12 @@
 clear; clc;
 
-samplingFrequency_Hz = 10e3;              % sampling frequency (Hz)
-samplingTime_s = 1/samplingFrequency_Hz;  % sampling time (s)
-simulationTime_s = samplingTime_s/10;     % simulation time (s) 
+f_s_Hz = 10e3;              % sampling frequency (Hz)
+t_s_s = 1/f_s_Hz;           % sampling time (s)
+t_sim_s = t_s_s/10;         % simulation time (s) 
+t_end_s = 10;               % simulation end time (s)
 
-omegaElec_radps = 377.0;  % electrical angular velocity (rad/s)
-dutyAmplitude = 0.8;      % amplitude of the duty-ratio waveform (--)
+omega_e_radps = 377.0;      % electrical angular velocity (rad/s)
+duty_amp = 0.8;             % amplitude of the duty-ratio waveform (--)
 
 % Autogen code for the controller
 slbuild("generate_duty");
