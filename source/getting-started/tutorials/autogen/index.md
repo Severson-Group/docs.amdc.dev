@@ -203,8 +203,8 @@ void task_controller_callback(void *arg)
   theta = fmod(theta, 2.0 * M_PI);
 
   // Populate inputs
-  generate_duty_U.Do = Do;  // Inputs to controller as a constant value
-  generate_duty_U.theta = theta;  // Inputs to controller as feedback
+  generate_duty_U.duty_amp = Do;        // Inputs to controller as a constant value
+  generate_duty_U.theta_e_rad = theta;  // Inputs to controller as feedback
 
   // Call Autogen code
   generate_duty_step();
