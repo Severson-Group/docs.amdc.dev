@@ -17,7 +17,15 @@ The design requirements for the power input and distribution on the AMDC can be 
 
 ## Block Diagram
 
-![](images/amdc-power-distribution.svg)
+```{image} images/amdc-power-distribution.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-power-distribution-dark.svg
+:align: center
+:class: only-dark
+```
 
 ### 1. Input
 
