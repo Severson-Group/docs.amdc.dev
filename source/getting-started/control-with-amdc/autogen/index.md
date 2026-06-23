@@ -12,6 +12,12 @@ The figure below shows the Simulink + AMDC workflow. The Simulink model represen
 
 ```{image} resources/block-diagram.svg
 :height: 10em
+:class: only-light
+```
+
+```{image} resources/block-diagram-dark.svg
+:height: 10em
+:class: only-dark
 ```
 
 The Simulink model is typically structured into three subsystems:
