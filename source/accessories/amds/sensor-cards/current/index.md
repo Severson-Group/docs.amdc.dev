@@ -91,25 +91,30 @@ A single-ended ADC was selected. The ADC used is the Texas Instruments [ADS8860]
 The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
 The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
 
-#### Final Primary Current-to-ADC Input Voltage Relationship
+#### Relationship Between Input and ADC voltage
 
-From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{out}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the general relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated, and the relationship for each revision of the current sensor board is provided below:
 
-##### Revision B
+##### General Expression
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
+$$ 
+I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
+$$
+
+##### Revision A, B
+
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-V_{\text{out, RevB}} = 2.4922 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA,B}} - 2.4922) \qquad {\rm [A]}
 $$
 
 ##### Revision C
-In this design, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
-V_{\text{out, RevC}} = 2.5126 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
-
 
 ### Connectors
 - There are two screw terminals `P5` and `P6` to connect the conductor in which the current is to be measured
