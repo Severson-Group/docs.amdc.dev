@@ -1,12 +1,12 @@
 # Analog Encoder Interface Board
 
-**This file outlines the use of the Analog Encoder Interface Board and important revision changes.**
+This file outlines the use of the Analog Encoder Interface Board. The Analog Encoder Interface Board is intended to amplify signals from an analog encoder (sin/cos outputs) to be able to measure rotor position with using the analog input ports of the AMDC.
+
+<img alt="image" src="image/aei-top-view.webp">
 
 ## Relevant Hardware Versions
 
-| Hardware               | Version |
-|------------------------|---------|
-| AMDC                   | F       |
+- AMDC Rev E and newer.
 
 ## Revision History
 
@@ -14,9 +14,6 @@
 |----------|-------------------------------------------------------------- |
 | REV A    |implements buffer circuit to amplify signal from analog encoder|
 
-## Purpose
-
-The Analog Encoder Interface Board is intended to amplify signals from an analog encoder (sin/cos outputs) to be able to measure rotor position with using the analog input ports of the AMDC.
 
 ## Design Requirements and Considerations
 
