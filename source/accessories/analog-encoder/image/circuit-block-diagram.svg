@@ -21,9 +21,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#606060"
-     inkscape:zoom="0.88431547"
-     inkscape:cx="670.57517"
-     inkscape:cy="326.24104"
+     inkscape:zoom="1.4610857"
+     inkscape:cx="502.36615"
+     inkscape:cy="241.94337"
      inkscape:window-width="1920"
      inkscape:window-height="1022"
      inkscape:window-x="0"
@@ -975,43 +975,29 @@
      inkscape:connector-curvature="0" />
   <g
      id="g42">
-    <text
-       xml:space="preserve"
+    <path
+       d="m 558.42036,325.54375 h 2.388 v 0.852 h -2.388 v 2.472 h -0.864 v -2.472 h -2.388 v -0.852 h 2.388 v -2.484 h 0.864 z"
        id="text15"
-       style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect22);fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.2;stroke-opacity:1"
-       transform="matrix(1.063827,0,0,1.063827,-35.614767,-20.620194)"><tspan
-         x="554.56836"
-         y="330.19975"
-         id="tspan3">+</tspan></text>
-    <text
-       xml:space="preserve"
+       style="white-space:pre;fill-rule:evenodd;stroke-width:3.2"
+       transform="matrix(1.063827,0,0,1.063827,-35.614767,-20.620194)"
+       aria-label="+" />
+    <path
+       d="m 556.22414,355.18417 v -0.936 h 2.904 v 0.936 z"
        id="text42"
-       style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect42);fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.2;stroke-opacity:1"
-       transform="matrix(1.063827,0,0,1.063827,-35.533808,-21.158636)"><tspan
-         x="555.74414"
-         y="357.93217"
-         id="tspan4">-
-</tspan></text>
+       style="white-space:pre;fill-rule:evenodd;stroke-width:3.2"
+       transform="matrix(1.063827,0,0,1.063827,-35.533808,-21.158636)"
+       aria-label="-&#10;" />
   </g>
-  <g
-     id="g42-9"
-     transform="translate(1.6164316,-128.92342)">
-    <text
-       xml:space="preserve"
-       id="text15-1"
-       style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect22-5);display:inline;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.2;stroke-opacity:1"
-       transform="matrix(1.063827,0,0,1.063827,-35.614767,-20.620194)"><tspan
-         x="554.56836"
-         y="330.19975"
-         id="tspan5">+</tspan></text>
-    <text
-       xml:space="preserve"
-       id="text42-2"
-       style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect42-6);display:inline;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.2;stroke-opacity:1"
-       transform="matrix(1.063827,0,0,1.063827,-35.533808,-21.158636)"><tspan
-         x="555.74414"
-         y="357.93217"
-         id="tspan6">-
-</tspan></text>
-  </g>
+  <path
+     d="m 558.42036,325.54375 h 2.388 v 0.852 h -2.388 v 2.472 h -0.864 v -2.472 h -2.388 v -0.852 h 2.388 v -2.484 h 0.864 z"
+     id="text15-1"
+     style="white-space:pre;fill-rule:evenodd;stroke-width:3.2"
+     transform="matrix(1.063827,0,0,1.063827,-33.998335,-149.54361)"
+     aria-label="+" />
+  <path
+     d="m 556.22414,355.18417 v -0.936 h 2.904 v 0.936 z"
+     id="text42-2"
+     style="white-space:pre;fill-rule:evenodd;stroke-width:3.2"
+     transform="matrix(1.063827,0,0,1.063827,-33.917376,-150.08206)"
+     aria-label="-&#10;" />
 </svg>
