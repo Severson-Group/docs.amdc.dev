@@ -643,6 +643,7 @@ Example :code:`ramp` injection where the :code:`valueMin = 0.3`, :code:`valueMax
 **Syntax:** :code:`inj ramp <name> <set|add|sub> <valueMin> <valueMax> <period>`
 
 Injects a sawtooth wave ranging from the min value to the max value, over the period.
+The waveform starts at the min value.
 
 The :code:`period` parameter is in seconds.
 
