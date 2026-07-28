@@ -10,9 +10,7 @@ This file outlines the use of the Analog Encoder Interface Board. The Analog Enc
 
 ## Revision History
 
-| Revision |                           Changelog                           |
-|----------|-------------------------------------------------------------- |
-| REV A    |implements buffer circuit to amplify signal from analog encoder|
+You can view the changelog [here](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/Accessories/AnalogEncoderInterface/CHANGELOG.md)
 
 
 ## Design Requirements and Considerations
