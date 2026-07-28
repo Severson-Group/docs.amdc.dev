@@ -10,8 +10,7 @@ This file outlines the use of the Analog Encoder Interface Board. The Analog Enc
 
 ## Revision History
 
-You can view the changelog [here](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/Accessories/AnalogEncoderInterface/CHANGELOG.md)
-
+See the [changelog](https://github.com/Severson-Group/AMDC-Hardware/tree/develop/Accessories/AnalogEncoderInterface/CHANGELOG.md).
 
 ## Design Requirements and Considerations
 
@@ -40,7 +39,7 @@ The following block diagram illustrates how this board conditions sin/cos positi
 
 The blue box shows the functionality of the Analog Encoder Interface Board. It removes the DC offset of each signal in the differential pair of encoder outputs and amplifies each signal by a gain of 10.
 
-The red box illustrates example functionality that can be implemented in the AMDC to use the resulting signals to calculate shaft speed and position.
+The green `AMDC` box illustrates example functionality that can be implemented in the AMDC to use the resulting signals to calculate shaft speed and position.
 
 ## External Connectors
 
