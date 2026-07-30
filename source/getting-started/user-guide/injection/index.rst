@@ -242,6 +242,7 @@ Per the :code:`help` output, the :code:`inj` sub-commands are:
 - :code:`chirp <name> <set|add|sub> <gain> <freqMin> <freqMax> <period>` - Inject chirp
 - :code:`triangle <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject triangle
 - :code:`square <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject square
+- :code:`ramp <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject ramp
 
 Start by typing :code:`inj list` to see all registered injection points.
 
