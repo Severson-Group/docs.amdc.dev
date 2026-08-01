@@ -66,7 +66,7 @@ The input to the saturation block (`preSat`) is the unsaturated manipulated vari
 
 #### Disturbance Suppression with Actuator Limitations
 
-Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds. THe disturbance causes the plan output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.
+Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds. The disturbance causes the plant output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.
 
 ```{image} images/Disturbance.svg
     :align: center
@@ -132,7 +132,7 @@ The Simulink simulation of tracking a step command introduced earlier is now rep
 
 In the `Output` waveforms, an overshoot is observed when there is no anti-windup. However, with the simple clamping method, the overshoot is eliminated.
 
-The reasons for this improvement can be understood by studying the `postSat` and `Iout` waveforms. In `postSat`, the manipulated variables are saturated at 10, which causes `Iout` to rapidly increase when there is no-antiwindup. However, the simple clamping technique prevents the integrator from accumulating a value beyond the saturation block limit. This leaves the controller ready to respond rapidly when the error decreases toward zero.
+The reasons for this improvement can be understood by studying the `postSat` and `Iout` waveforms. In `postSat`, the manipulated variables are saturated at 10, which causes `Iout` to rapidly increase when there is no anti-windup. However, the simple clamping technique prevents the integrator from accumulating a value beyond the saturation block limit. This leaves the controller ready to respond rapidly when the error decreases toward zero.
 
 #### Disturbance Suppression
 
@@ -223,7 +223,7 @@ Significant differences in the advanced clamping only appear when the system is 
 
 While very significant improvements in performance are observed in the waveforms above through the use of advanced clamping, this result was obtained by setting an exceptionally low $K_\text{p}$ gain. In systems with standard proportional gains, a change in the error's direction likely produces an instantaneous proportional response large enough to eliminate the drawbacks of simple clamping.
 
-Example system where advanced clamping may be important are current regulators for electric machines that have very low inductance $L$ relative to resistance $R$. The typical control tuning for motors involves selecting $K_\text{p}$ and $K_\text{i}$ to cancel the plant's $RL$ pole, resulting in the relationship $K_\text{p} = \tfrac{L}{R}K_\text{i}$. Machines that are likely to exhibit exceedingly low inductances typically have coreless, slotless, or PCB stators and are being increasingly developed in ultra-lightweight applications, such as electric aircraft.
+Example systems where advanced clamping may be important are current regulators for electric machines that have very low inductance $L$ relative to resistance $R$. The typical control tuning for motors involves selecting $K_\text{p}$ and $K_\text{i}$ to cancel the plant's $RL$ pole, resulting in the relationship $K_\text{p} = \tfrac{L}{R}K_\text{i}$. Machines that are likely to exhibit exceedingly low inductances typically have coreless, slotless, or PCB stators and are being increasingly developed in ultra-lightweight applications, such as electric aircraft.
 
 ### Back-tracking
 
