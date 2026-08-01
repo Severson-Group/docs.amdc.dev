@@ -51,6 +51,11 @@ AMDC Platform Documentation
    DAC <accessories/dac/index>
    accessories/test-board/index
 
+.. toctree::
+   :hidden:
+   :caption: Contribution
+
+   contribution/index
 
 Welcome to the AMDC Platform documentation.
 This is an ever-growing collection of knowledge about the AMDC.

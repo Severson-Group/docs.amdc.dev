@@ -22,7 +22,12 @@ The voltage measurement card was designed to the following specifications:
 ## Block Diagram
 The high level block diagram of the voltage sensor card is shown below:
 
-![](images/Voltage_card.svg)
+```{image} images/Voltage_card.svg
+:class: only-light
+```
+```{image} images/Voltage_card-dark.svg
+:class: only-dark
+```
 
 ### Voltage Sensor
 The voltage sensor selected is the LEM LV 25-P, which basically senses the current proportional to the voltage to be measured. The sensor has a nominal input current of 10mA, an accuracy of 0.8%, and a linearity error under 0.2%. Two 25kΩ, 5W input resistors `R9` and `R10` are used to get a differential voltage measuring range up to +/- 500V. 
@@ -37,7 +42,12 @@ The output of the voltage sensor is a current in the range of +/-25mA, which is 
 ### Level shift stage
 The voltage across the burden resistor is a bipolar signal (voltage span includes both positive and negative voltages). A non-inverting level translation circuit is designed using Op Amps as shown here:
 
-![](images/volt-sensor-opamp-stage.svg)
+```{image} images/volt-sensor-opamp-stage.svg
+:class: only-light
+```
+```{image} images/volt-sensor-opamp-stage-dark.svg
+:class: only-dark
+```
 
 This circuit is used to translate the voltage across the burden resistor, which is bipolar, to the ADC input range of 0-4.5V. The resistor values can be calculated analytically using the following formula:
 

@@ -45,9 +45,9 @@ pip install -r requirements.txt
 
 ```
 make clean
-make html
+make local
 ```
 
-3. Browse local docs in your browser by opening: `build/html/index.html`
+3. Browse local docs in your browser by opening: `build/index.html`
 
 See [this discussion thread](https://github.com/Severson-Group/docs.amdc.dev/discussions/56) for more information on local development.

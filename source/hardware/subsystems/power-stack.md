@@ -19,7 +19,15 @@ The power stack interface was designed with the following requirements:
 
 ## Block Diagram
 
-![](images/amdc-power-stack.svg)
+```{image} images/amdc-power-stack.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-power-stack-dark.svg
+:align: center
+:class: only-dark
+```
 
 The full power stack interface block diagram is shown above. It is compacted into 8x duplicated channels for easy representation. The connectors and jumpers depicted *outside* of the blue box are not replicated on the PCB.
 
