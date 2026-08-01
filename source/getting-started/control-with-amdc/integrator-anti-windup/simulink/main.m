@@ -27,7 +27,37 @@ Ki = wb;  % I gain
 Kb = Ki/Kp;  % Back-calculation coefficient
 
 % Select anti-windup methods that you want to simulate
-sim_scenario = ["No anti-windup","Simple clamping","Advanced clamping","Back-tracking"];
+advanced_clamping_special = 1;  % Use special parameters to make advanced clamping better
+
+if advanced_clamping_special == 1
+    Tsim = 1e-3;  % Simulation sampling time [s]
+    Tend = 10;  % Simulation end time [s]
+    
+    ref = 1;  % Reference
+    start = 5;  % Reference start time [s]
+    stop = 11;  % Reference end time [s]
+    
+    d_ref = 3;  % Disturbance
+    d_start = 0.5;  % Disturbance start time [s]
+    d_stop = 11;  % Disturbance end time [s]
+    
+    upper_limit = 5;  % Upper limit
+    lower_limit = -5;  % Lower limit
+    
+    %% Set controller parameters
+    fb = 10;  % Controller bandwidth [Hz]
+    wb = 2*pi*fb;  % Controller bandwidth [rad/s]
+    
+    Kp = 0.0001*wb;  % P gain
+    Ki = wb;  % I gain
+end
+
+if advanced_clamping_special == 1
+    sim_scenario = "Advanced clamping";
+else
+    sim_scenario = ["No anti-windup","Simple clamping","Advanced clamping","Back-tracking"];
+end
+
 num_sim_scenario = length(sim_scenario);
 
 % List of variables to extract from Simulink
@@ -46,8 +76,10 @@ for i = 1:num_sim_scenario
     case "Advanced clamping"
         Clamping_enable = 1; Advanced_clamping_enable = 1; Back_tracking_enable = 0;
     case "Back-tracking"
-        Clamping_enable = 0; Advanced_clamping_enable = 0; Back_tracking_enable = 1;
+        Clamping_enable = 0; Advanced_clamping_enable = 0; Back_tracking_enable = 1;    
     end
+
+    % Change parameters only for the special advanced clamping scenario
     
     % Run simulation
     out = sim('simpleModel');
@@ -87,7 +119,7 @@ for j = 3:length(interested_signals)
             plot(results{i}(:, 1), results{i}(:, j), ...
                 'color',colors{i},'LineStyle',lineStyles{i},'Linewidth',lw);
         end
-        legend(['Command', sim_scenario],'Interpreter','latex','Location','east');
+        legend(["Command", sim_scenario],'Interpreter','latex','Location','east');
     else
         for i = 1:num_sim_scenario
             plot(results{i}(:, 1),results{i}(:, j), ...
