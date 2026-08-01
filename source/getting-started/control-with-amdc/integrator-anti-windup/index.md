@@ -6,11 +6,11 @@ Integrator windup can occur when a controller with an integrator faces limitatio
 
 ## Windup Phenomena in Integrators
 
-A generalized control system is now introduced and used to explain the phenomonom of integrator windup. This control system is progressively refined in later sections to introduce anti-windup techniques.
+A generalized control system is now introduced and used to explain the phenomenon of integrator windup. This control system is progressively refined in later sections to introduce anti-windup techniques.
 
 ### Block Diagram with Saturation
 
-The primary components of a control diagram are the controller and plant. The controller's output actuates the plant and is referred to as the "manipulated variable" in this article. In practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the `Saturation` block, demonstrating the physical limitations of the actuator input.
+The primary components of a control diagram are the controller and plant. The controller's output actuates the plant and is referred to as the "manipulated variable" in this article. In practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram representation, where the actuator limitations are modeled with a `Saturation` block.
 
 ```{image} images/control-diagram-sat.svg
     :align: center
@@ -37,11 +37,11 @@ The PI controller is employed to achieve the desired system response. In this ar
 
 ### Technical Challenges with Windup
 
-This section provides an overview of practical challenges due to actuator input limitations, especially in order to command tracking and disturbance suppression, and introduces the definition of integrator windup. Let us analyze the simulation result with the block diagram above to investigate the technical challenges of windup. The objective of this analysis is to evaluate the impact of the saturation block on the output performance.
+This section provides an overview of practical challenges due to actuator input limitations to command tracking and disturbance rejection and introduces the definition of integrator windup. The system depicted in the block diagram above is simulated to demonstrate two windup scenarios. The objective of this analysis is to evaluate the impact of the actuator limitation (modeled with the saturation block in the diagram) on the output performance.
 
-#### Command Tracking without/with Actuator Limitations
+#### Command Tracking with Actuator Limitations
 
-The simulation results are shown below, where two scenarios are compared: one “without saturation block (red line)” and one “with the saturation block (blue line)”. Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
+Command tracking simulation results are shown below, where two scenarios are compared: one “without saturation block" (red line) and one “with the saturation block" (blue line). Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
 
 ```{image} images/Output-sat-c.svg
     :align: center
@@ -53,7 +53,7 @@ The simulation results are shown below, where two scenarios are compared: one �
     :width: 600
 ```
 
-As observed in the top figure, the command tracks correctly when no saturation block is present, whereas overshoot occurs when the saturation block is included. The bottom figure illustrates the output of the integrator `Iout`. With the saturated block, `Iout` becomes larger than that without the saturation block.
+As observed in the top figure, the command tracks correctly when no saturation block is present (no actuator limitations), whereas overshoot occurs when the saturation block is included (the practical scenario). The bottom figure illustrates the output of the integrator `Iout`. With the saturation block, `Iout` becomes larger than that without the saturation block.
 
 Let us examine why this phenomenon occurs by analyzing the manipulated variable before and after the saturation block.
 
@@ -62,11 +62,11 @@ Let us examine why this phenomenon occurs by analyzing the manipulated variable 
     :width: 600
 ```
 
-In the previous saturation block (`preSat`), the manipulated variable instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the voltage reference in the post saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continues to increase the manipulated variable after getting the larger error. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known integrator windup.
+The input to the saturation block (`preSat`) is the unsaturated manipulated variable. This instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the manipulated variable after the saturation block (`postSat`) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continues to try to increase the manipulated variable as long as the error is nonzero. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known as integrator windup.
 
-#### Disturbance Suppression without/with Actuator Limitations
+#### Disturbance Suppression with Actuator Limitations
 
-Disturbances can degrade the system by introducing unexpected/rapid changes. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the command is set as 0, and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds, requiring the disturbance to be suppressed and the output to track back to 0.
+Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds. THe disturbance causes the plan output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.
 
 ```{image} images/Disturbance.svg
     :align: center
@@ -78,7 +78,7 @@ Disturbances can degrade the system by introducing unexpected/rapid changes. Let
     :width: 600
 ```
 
-In the transient response of `Output` when the disturbance ends, it is observed that with the saturation block, there is a larger negative overshoot and slower convergence to 0 compared to the case without the saturation block. This is because the integrator continues to integrate error caused by the disturbance.
+In the transient response of `Output`, when the disturbance ends it is observed that with the saturation block, there is a larger negative overshoot and slower convergence to 0 compared to the case without the saturation block. This is because the integrator continues to integrate error caused by the disturbance despite its accumulate value not resulting in changes to the manipulated variable.
 
 ## Anti-Windup Techniques
 
