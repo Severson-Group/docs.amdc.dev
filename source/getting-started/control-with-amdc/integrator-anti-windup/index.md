@@ -236,11 +236,9 @@ The idea of back-tracking method is to use a feedback loop to unwind the interna
 
 For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_\text{b}$ is a feedback gain of the back-tracking. In contrast, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
 
-```{tip}
-The selection of $K_\text{b}$ is highly nuanced upon the specific event being managed. Making an incorrect choice for $K_\text{b}$ can lead to the clamping method better. In practice, the feedback gain of $K_\text{b}$ is determined by trial and error, depending on the user’s requirements, such as the allowable overshoot and desired response speed. There is a paper that shows an example of how to determine the $K_\text{b}$ known as a `conditioned PI controller`. In this literature, the $K_\text{b}$ is determined as $K_\text{b} = K_\text{i}/K_\text{p}$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
-```
+The selection of $K_\text{b}$ is nuanced and depends upon the specific event being managed. Making an incorrect choice for $K_\text{b}$ can lead to inferior performance as compared to the clamping method. In practice, the feedback gain of $K_\text{b}$ is often determined by trial and error, depending on the user’s requirements, such as the allowable overshoot and desired response speed. Reference [[1]](#aw-ref-1) shows an example of how to determine $K_\text{b}$ that is known as a `conditioned PI controller`. Here, $K_\text{b} = K_\text{i}/K_\text{p}$. For detailed information, refer to [this paper](https://www.sciencedirect.com/science/article/pii/000510988790029X).
 
-Here is a Simulink simulation of the no anti-windup, simple clamping, advanced clamping, and back-tracking.
+The simulations presented earlier in this article are now re-considered with the back-tracking anti-windup method. In these simulations, $K_\text{b} = K_\text{i}/K_\text{p}$.
 
 #### Command Tracking
 
@@ -259,7 +257,7 @@ Here is a Simulink simulation of the no anti-windup, simple clamping, advanced c
     :width: 600
 ```
 
-From the `Output` waveform, it is evident that the back-tracking technique marginally improves its response than clamping.
+From the `Output` waveform, it is evident that the back-tracking technique marginally improves the response over clamping.
 
 #### Disturbance Suppression
 
@@ -273,6 +271,9 @@ From the `Output` waveform, it is evident that the back-tracking technique margi
     :width: 600
 ```
 
-The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved the performance. Interestingly, the clamping methods is better to suppress disturbance than the back-tracking in this example. It should be noted that these results were achieved using the back-tracking gain of $K_\text{b} = K_\text{i}/K_\text{p}$, which might be required to adjust based on the specific condition and simulation outcomes.
+The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved performance over having no anti-windup. Interestingly, for this example, the clamping methods yield better performance. However, this is not a general result and careful tuning of $K_\text{b}$ can likely offer enhanced back-tracking performance.
 
+## References
 
+(aw-ref-1)=
+1. R. Hanus, M. Kinnaert, and J-L. Henrotte, "Conditioning technique, a general anti-windup and bumpless transfer method," in Automatica 23, no. 6, pp. 729-739, 1987, doi: [10.1016/0005-1098(87)90029-X](https://doi.org/10.1016/0005-1098(87)90029-X).
