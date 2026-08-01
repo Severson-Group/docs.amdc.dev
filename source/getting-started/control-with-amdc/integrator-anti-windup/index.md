@@ -16,7 +16,7 @@ The primary components of a control diagram are the controller and plant. The co
     :align: center
 ```
 
-In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. The saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
+In this example, a simple plant model of $1/(s+1)$ is employed, with the saturation block located before the plant. The saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
 
 1. Current regulation:
     - Manipulated variable: Voltage
@@ -82,13 +82,15 @@ In the transient response of `Output`, when the disturbance ends it is observed 
 
 ## Anti-Windup Techniques
 
-To avoid the integral windup, anti-windup techniques are now introduced. The block diagram incorporating an integrator with anti-windup is shown in the figure below.
+To avoid integrator windup, anti-windup techniques are now introduced. The block diagram incorporating an integrator with anti-windup is shown in the figure below.
 
 ```{image} images/control-diagram-overview.svg
     :align: center
 ```
 
-In the anti-windup methods, if the manipulated variable reaches the specified `Limit`, the integrator is to keep the integrated value from increasing past the specified limit. There are multiple ways to implement integrator anti-windup, however, two common methods are introduced in this article:
+The goal of anti-windup methods is to configure the integrator so that it does not integrate to grow the manipulated variable beyond what the actuator is capable of realizing. In terms of the block diagram, this means that if the manipulated variable reaches the specified `Limit` of the saturation block, the integrator stops integrating.
+
+There are multiple ways to implement integrator anti-windup. The following two common methods are introduced in this article:
 
 1. [**Clamping**](#clamping): Turn off the integrator to stop further accumulation of the value. This can be divided into two methods, i.e., [simple clamping](#simple-clamping) and [advanced clamping](#advanced-clamping).
 
@@ -98,18 +100,18 @@ These two methods are now explained in detail.
 
 ### Clamping
 
-Clamping is a straightforward anti-windup strategy where the integrator is simply "clamped" to prevent it from exceeding a certain limitation, which is called simple clamping in this article. Advanced clamping, on the other hand, is more sophisticated in that it engages only under specific conditions.
+Clamping is a straightforward anti-windup strategy where the integrator is "clamped" to prevent it from exceeding a certain limitation. This article presents two implementations that differ based on the logic determining when the integrator clamps.
 
 ### Simple Clamping
 
-The simple version of clamping simply stops integrating when `preSat` $\neq$ `postSat`. The block diagram of the integrator with the simple clamping method is shown below.
+The "simple" version of clamping stops integrating when `preSat` $\neq$ `postSat`. The contents of the `Integrator with anti-windup` block are shown below for this method.
 
 ```{image} images/anti-windup-simple-clamping.svg
     :align: center
     :width: 70%
 ```
 
-Here is a Simulink simulation of the no anti-windup and simple clamping.
+The Simulink simulation of tracking a step command introduced earlier is now repeated with simple clamping. Results are shown below:
 
 #### Command Tracking
 
@@ -128,9 +130,13 @@ Here is a Simulink simulation of the no anti-windup and simple clamping.
     :width: 600
 ```
 
-In the `Output` waveforms, an overshoot is observed when there is no anti-windup. However, with the simple clamping method, the overshoot is eliminated. In the `postSat`, the manipulated variables are saturated up to 10, where the manipulated variable converge more rapidly in the simple clamping. In the integrator output, no overshoots are present when using simple clamping.
+In the `Output` waveforms, an overshoot is observed when there is no anti-windup. However, with the simple clamping method, the overshoot is eliminated.
+
+The reasons for this improvement can be understood by studying the `postSat` and `Iout` waveforms. In `postSat`, the manipulated variables are saturated at 10, which causes `Iout` to rapidly increase when there is no-antiwindup. However, the simple clamping technique prevents the integrator from accumulating a value beyond the saturation block limit. This leaves the controller ready to respond rapidly when the error decreases toward zero.
 
 #### Disturbance Suppression
+
+The previously considered disturbance scenario is also simulated for simple clamping.
 
 ```{image} images/Disturbance.svg
     :align: center
@@ -142,28 +148,30 @@ In the `Output` waveforms, an overshoot is observed when there is no anti-windup
     :width: 600
 ```
 
-From the disturbance suppression simulation results, it is evident that the overshoot and convergence are significantly improved when the simple clamping method is employed.
+The simulation results show that the overshoot and convergence are significantly improved when the simple clamping method is employed.
 
 ### Advanced Clamping
 
-Now, the advanced version of clamping is introduced as shown below the block diagram.
+Now, the advanced version of clamping is introduced as shown in the block diagram below.
 
 ```{image} images/anti-windup-advanced-clamping.svg
     :align: center
     :width: 70%
 ```
 
-In the advanced clamping method, the behavior itself is essentially similar to that of simple clamping. However, it includes an additional condition as a trigger of anti-windup, i.e., clamping occurs only when the signs of the `Error` and `preSat` are the same. Here is the workflow of the advanced clamping:
+In the advanced clamping method, the behavior itself is essentially similar to that of simple clamping. However, it includes an additional condition as a trigger of anti-windup so that the integrator does not clamp if further integration would reduce windup. That is, the integrator will not clamp if the sign of `Error` is opposite to the sign of `preSat`.
 
-**Step 1.** Compare the `preSat` and `postSat`. If these values are not equal, i.e., the manipulated variable reaches saturation, the block outputs 1. If they are equal, then no saturation takes place, and the block outputs 0 -- this is the same purpose of the simple clamping.
+The implementation of advanced clamping can be understood as a set of sequential steps as follows:
+
+**Step 1.** Compare the `preSat` and `postSat`. If these values are not equal, i.e., the manipulated variable reaches saturation, the block outputs 1. If they are equal, then no saturation takes place, and the block outputs 0 -- this is the same behavior as the simple clamping method.
 
 **Step 2.** Compare the sign of the `preSat` and the `Error`. And then, if both signs are equal, the block outputs 1. If not, the block outputs 0 -- this is the additional condition necessary for advanced clamping.
 
-**Step 3.** The anti-windup output denoted as tracking-signal `TR` becomes 1 to clamp the integrator only if both outputs of **Step 1.** and **Step 2.** are 1. In other words, the integrator clamps integration if the output is saturating AND the `Error` is the same sign as the `preSat`.
+**Step 3.** The anti-windup output denoted as tracking-signal `TR` becomes 1 to clamp the integrator only if both outputs of **Step 1** and **Step 2** are 1.
 
-If the `TR` is 1, the input of the integrator becomes 0 as the switch is triggered, i.e., the integrator will effectively shut down the integration during the windup condition.
+If `TR` is 1, the input of the integrator becomes 0 as the switch is triggered, i.e., the integrator will effectively shut down the integration during the windup condition.
 
-Here is a Simulink simulation of the no anti-windup, simple clamping, and advanced clamping.
+The previously presented simulation of command tracking is repeated with advanced clamping, with results shown below.
 
 ```{image} images/output-advanced-c.svg
     :align: center
@@ -180,11 +188,11 @@ Here is a Simulink simulation of the no anti-windup, simple clamping, and advanc
     :width: 600
 ```
 
-Notice that the above assumptions cause the simple and advanced clamping to behave identical in this example.
+Notice that the above assumptions cause the simple and advanced clamping to behave identically in this example.
 
-Based on this, a highly specific scenario is now introduced where advanced clamping demonstrates better performance. Here is simulation scenario to demonstrate the superiority of advanced clamping than simple clamping:
+To demonstrate the performance advantage of advanced clamping, a highly specific scenario is introduced. For this simulation, the proportional gain $K_\text{p}$ is artificially reduced to an exceptionally low value ($K_\text{p}= 0.0001 \times 2\pi \times 10$). The scenario simulates the following:
 
-1. A `Disturbance` with amplitude of 3 is applied at 0.5 seconds, causing the system to saturate.
+1. A `Disturbance` with an amplitude of 3 is applied at 0.5 seconds, causing the system to saturate.
 2. Once the `Output` has stabilized at 0, a positive reference of 1 is commanded at 5 seconds.
 
 Here are simulation results based on the above scenarios:
@@ -209,9 +217,13 @@ Here are simulation results based on the above scenarios:
     :width: 600
 ```
 
-As indicated in `Output` plot, the advanced clamping performs better, whereas the simple clamping can no longer track the reference. Interestingly, the simple clamping can be even worse than having no anti-windup in this example. _However_, this can be observed only if the proportional gain of $K_\text{p}$ is very small ($= 0.0001 \times 2\pi \times 10$ in this case).
+As indicated in the `Output` plot, the advanced clamping method performs well. Conversely, the simple clamping method fails to track the reference entirely and performs even worse than having no anti-windup in this edge-case scenario.
 
-Significant differences in the advanced clamping only appear when the system saturates **AND** signs are different from error vs control output, which is uncommon since the difference in signs usually moves out immediately. In this example, the `Error` suddenly becomes positive at 5 seconds, while the `preSat` remains negative due to low P gain. This brakes the equal sign condition (i.e., `Error` does not have the same sign as the `preSat`) and unclamps the integrator.  Because setting a significantly low P gain is generally undesirable, this suggests that the additional effort to implement the advanced clamping is probably not worth for the typical motor control systems.
+Significant differences in the advanced clamping only appear when the system is saturated **and** the `Error` and `preSat` signals have opposite signs. In this example, `Error` suddenly becomes positive at 5 seconds. However, because we set $K_\text{p}$ to an artificially low value, the immediate proportional response ($K_\text{p} \times \mathrm{Error}$) is too weak to overcome the integrator's output. As a result, `preSat` remains negative. This breaks the equal sign condition (i.e., `Error` does not have the same sign as the `preSat`), which causes the advanced clamping logic to unclamp the integrator, allowing the system to recover.
+
+While very significant improvements in performance are observed in the waveforms above through the use of advanced clamping, this result was obtained by setting an exceptionally low $K_\text{p}$ gain. In systems with standard proportional gains, a change in the error's direction likely produces an instantaneous proportional response large enough to eliminate the drawbacks of simple clamping.
+
+Example system where advanced clamping may be important are current regulators for electric machines that have very low inductance $L$ relative to resistance $R$. The typical control tuning for motors involves selecting $K_\text{p}$ and $K_\text{i}$ to cancel the plant's $RL$ pole, resulting in the relationship $K_\text{p} = \tfrac{L}{R}K_\text{i}$. Machines that are likely to exhibit exceedingly low inductances typically have coreless, slotless, or PCB stators and are being increasingly developed in ultra-lightweight applications, such as electric aircraft.
 
 ### Back-tracking
 
