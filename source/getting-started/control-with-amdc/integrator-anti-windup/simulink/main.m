@@ -12,7 +12,7 @@ stop = 1.5;  % Reference end time [s]
 
 d_ref = 0;  % Disturbance
 d_start = 0.2;  % Disturbance start time [s]
-d_stop = 0.3;  % Disturbance end time [s]
+d_stop = 0.4;  % Disturbance end time [s]
 
 upper_limit = 10;  % Upper limit
 lower_limit = -10;  % Lower limit
