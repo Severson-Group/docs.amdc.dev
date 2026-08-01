@@ -4,32 +4,34 @@ This article introduces the concept of integrator windup in control systems and 
 
 Integrator windup can occur when a controller with an integrator faces limitations on the manipulated variables. The effectiveness of an anti-windup strategy depends on both the duration and the extent of actuator saturation. Since perfect anti-windup is unachievable, it is important to analyze anti-windup techniques under expected actuator saturation scenarios. To help readers understand this, an [example Simulink model is provided](../integrator-anti-windup/simulink/) in this article to demonstrate how such scenarios can be studied.
 
-## Exploring Windup Phenomena in Integrators
+## Windup Phenomena in Integrators
+
+A generalized control system is now introduced and used to explain the phenomonom of integrator windup. This control system is progressively refined in later sections to introduce anti-windup techniques.
 
 ### Block Diagram with Saturation
 
-Generally, the primary components of a control diagram are the controller and plant. The controller provides a manipulated variable to actuate the plant model. However, in practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the `Saturation` block, demonstrating the physical limitations of the actuator input.
+The primary components of a control diagram are the controller and plant. The controller's output actuates the plant and is referred to as the "manipulated variable" in this article. In practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram considering the `Saturation` block, demonstrating the physical limitations of the actuator input.
 
 ```{image} images/control-diagram-sat.svg
     :align: center
 ```
 
-In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. Note the saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
+In this example, a simple plant model of 1/(s+1) is employed, with the saturation block located before the plant. The saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
 
 1. Current regulation:
-    - Plant input: Voltage command
+    - Manipulated variable: Voltage
     - Plant output: Current
-    - Physical limitation: The realistic command voltage to the plant is restricted by the capability of the DC power supply
+    - Physical limitation: The power amplifier's voltage to the plant is restricted by its DC power supply
 
 2. Speed control:
-    - Plant input: $q$-axis current (torque) command
+    - Manipulated variable: Torque ($q$-axis current)
     - Output: Rotational speed of the electric machinery
-    - Physical limitation: The practical command current to the plant is limited by the motor's current (torque) rating.
+    - Physical limitation: The torque provided to the plant is limited by the motor's torque (or power electronic amplifier current) rating.
 
 3. Temperature control:
-    - Plant input: Heat
-    - Output: Resulting system temperature
-    - Physical limitation: The heater’s power rating (e.g., 1 kW) limits the actuator.
+    - Manipulated variable: Heat
+    - Output: System temperature
+    - Physical limitation: The heater’s power rating (e.g., 1 kW).
 
 The PI controller is employed to achieve the desired system response. In this article, the PI gains are set to achieve a first order response with a bandwidth of 10 Hz, i.e., $K_\text{p} = 2\pi \times 10$, and $K_\text{i} = 2\pi \times 10$.
 
