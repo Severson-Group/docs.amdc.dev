@@ -47,6 +47,6 @@ jobs:
         # The above command will fail if no changes were present, so we ignore that.
     - name: Push documentation changes
       run: |
-         git push origin 'gh-actions' # push to remote branch
+         git push origin 'gh-pages' # push to remote branch
     # ===============================
 
