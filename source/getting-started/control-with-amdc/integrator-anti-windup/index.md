@@ -66,7 +66,7 @@ The input to the saturation block (`preSat`) is the unsaturated manipulated vari
 
 #### Disturbance Suppression with Actuator Limitations
 
-Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.3 seconds. The disturbance causes the plant output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.
+Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than `Limit = 10`) is injected at 0.2 seconds and ends at 0.4 seconds. The disturbance causes the plant output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.
 
 ```{image} images/Disturbance.svg
     :align: center
