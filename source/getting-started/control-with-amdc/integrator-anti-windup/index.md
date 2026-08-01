@@ -1,8 +1,8 @@
 # Integrator Anti-Windup
 
-This article describes how to evaluate performance of anti-windup. A windup might occur when a controller with an integrator faces limitations on the manipulated variables, leading to degraded system response and stability.
+This article introduces the concept of integrator windup in control systems and techniques that can be implemented in the AMDC to mitigate performance degradation due to actuator saturation.
 
-The effectiveness of an anti-windup strategy depends on both the duration and the extent of saturation of the windup. Since perfect anti-windup is unachievable, it is important to simulate realistic windup and anti-windup behaviors to examine specific scenarios that are likely to occur in practice. To help readers understand this, an example of Simulink model (available [here](../integrator-anti-windup/simulink/)) is provided in this article to demonstrate how such scenarios can be simulated and how anti-windup strategies can address them.
+Integrator windup can occur when a controller with an integrator faces limitations on the manipulated variables. The effectiveness of an anti-windup strategy depends on both the duration and the extent of actuator saturation. Since perfect anti-windup is unachievable, it is important to analyze anti-windup techniques under expected actuator saturation scenarios. To help readers understand this, an [example Simulink model is provided](../integrator-anti-windup/simulink/) in this article to demonstrate how such scenarios can be studied.
 
 ## Exploring Windup Phenomena in Integrators
 
