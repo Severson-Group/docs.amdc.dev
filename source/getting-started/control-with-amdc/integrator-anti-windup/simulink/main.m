@@ -27,7 +27,8 @@ Ki = wb;  % I gain
 Kb = Ki/Kp;  % Back-calculation coefficient
 
 % Select anti-windup methods that you want to simulate
-advanced_clamping_special = 1;  % Use special parameters to make advanced clamping better
+% Set to 1 to use special parameters that make advanced clamping better
+advanced_clamping_special = 0;
 
 if advanced_clamping_special == 1
     Tsim = 1e-3;  % Simulation sampling time [s]
@@ -50,10 +51,12 @@ if advanced_clamping_special == 1
     
     Kp = 0.0001*wb;  % P gain
     Ki = wb;  % I gain
+
+    Kb = Ki/Kp;
 end
 
 if advanced_clamping_special == 1
-    sim_scenario = "Advanced clamping";
+    sim_scenario = ["No anti-windup","Simple clamping","Advanced clamping"];
 else
     sim_scenario = ["No anti-windup","Simple clamping","Advanced clamping","Back-tracking"];
 end
