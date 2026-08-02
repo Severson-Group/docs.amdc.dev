@@ -43,12 +43,12 @@ This section provides an overview of practical challenges due to actuator input 
 
 Command tracking simulation results are shown below, where two scenarios are compared: one “without saturation block" (red line) and one “with the saturation block" (blue line). Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as `Limit = 10`.
 
-```{image} images/Output-sat-c.svg
+```{image} images/output-sat-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout-sat-c.svg
+```{image} images/i-out-sat-c.svg
     :align: center
     :width: 600
 ```
@@ -125,7 +125,7 @@ The Simulink simulation of tracking a step command introduced earlier is now rep
     :width: 600
 ```
 
-```{image} images/Iout-simple-c.svg
+```{image} images/i-out-simple-c.svg
     :align: center
     :width: 600
 ```
@@ -183,7 +183,7 @@ The previously presented simulation of command tracking is repeated with advance
     :width: 600
 ```
 
-```{image} images/Iout-advanced-c.svg
+```{image} images/i-out-advanced-c.svg
     :align: center
     :width: 600
 ```
@@ -247,12 +247,12 @@ The simulations presented earlier in this article are now re-considered with the
     :width: 600
 ```
 
-```{image} images/Output-back-c.svg
+```{image} images/output-back-c.svg
     :align: center
     :width: 600
 ```
 
-```{image} images/Iout-back-c.svg
+```{image} images/i-out-back-c.svg
     :align: center
     :width: 600
 ```
