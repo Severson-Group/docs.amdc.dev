@@ -1,0 +1,660 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="Hardware Overview" href="../../../hardware/index.html"><link rel="prev" title="Encoder Feedback" href="../encoder-fb/index.html">
+        <link rel="canonical" href="https://docs.amdc.dev/getting-started/control-with-amdc/integrator-anti-windup/index.html">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.png"><!-- Generated with Sphinx 6.2.1 and Furo 2025.09.25 -->
+        <title>Integrator Anti-Windup - AMDC Platform</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e16e651d7fd517c2d9c0f5aedb8a5fa585fb6437" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=c2381d17322d81725993bfddb61bde80003e8cc4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">AMDC Platform</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">AMDC Platform</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">GitHub Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Hardware">AMDC-Hardware</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Severson-Group/AMDC-Firmware">AMDC-Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../onboarding.html">Onboarding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/meet-amdc/index.html">Meet the AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/blink/index.html">Blink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/hw-commands/index.html">Hardware Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/vsi/index.html">Voltage Source Inverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/profiling-tasks/index.html">Profiling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/timing-manager/index.html">Timing &amp; Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../advanced-tutorials/index.html">Advanced Tutorials</a><input aria-label="Toggle navigation of Advanced Tutorials" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/custom-control-rate/index.html">Custom Control Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-tutorials/fpga-ip-core/index.html">Custom FPGA IP Core</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guide/index.html">User Guide</a><input aria-label="Toggle navigation of User Guide" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/host-interface/index.html">Host Interface</a><input aria-label="Toggle navigation of Host Interface" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/host-interface/python-wrapper.html">Python Wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guide/logging/index.html">Signal Logging</a><input aria-label="Toggle navigation of Signal Logging" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/buffered.html">Buffered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user-guide/logging/streaming.html">Streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/injection/index.html">Signal Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/task-profiling.html">Task Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/math-benchmarks/math-benchmarks.html">Math Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guide/amds-interface/index.html">AMDS Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Control with AMDC</a><input aria-label="Toggle navigation of Control with AMDC" checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../current-sensor-cal/index.html">Current Sensor Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoder-fb/index.html">Encoder Feedback</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Integrator Anti-Windup</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/index.html">Hardware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware/obtaining-hardware.html">Obtaining Hardware</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/subsystems/index.html">Subsystems</a><input aria-label="Toggle navigation of Subsystems" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/picozed.html">PicoZed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/analog.html">Analog Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/encoder.html">Encoder Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-distribution.html">Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/power-stack.html">Power Stack Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/subsystems/expansion-port.html">Expansion Port</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../hardware/revisions/index.html">PCB Revisions</a><input aria-label="Toggle navigation of PCB Revisions" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../hardware/revisions/firmware-upgrades-per-hardware-target.html">Firmware Upgrades Per Hardware Target</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-d/index.html">REV D Hardware</a><input aria-label="Toggle navigation of REV D Hardware" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-bring-up.html">REV D Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-errata.html">REV D Errata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-d/rev-d-pin-mapping.html">REV D Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-e/index.html">REV E Hardware</a><input aria-label="Toggle navigation of REV E Hardware" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-bring-up.html">REV E Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-e/rev-e-pin-mapping.html">REV E Pin Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../hardware/revisions/rev-f/index.html">REV F Hardware</a><input aria-label="Toggle navigation of REV F Hardware" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-bring-up.html">REV F Bring-Up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../hardware/revisions/rev-f/rev-f-pin-mapping.html">REV F Pin Mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Firmware</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/index.html">Firmware Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firmware/development/index.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/arch/index.html">Architecture</a><input aria-label="Toggle navigation of Architecture" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../firmware/arch/drivers/index.html">Drivers</a><input aria-label="Toggle navigation of Drivers" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/gpio-mux.html">GPIO Port Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/status-mux.html">Inverter Status Mux Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/encoder.html">Encoder Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../firmware/arch/drivers/eddy-current-sensor.html">Eddy Current Sensor Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/timing-manager.html">Timing Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/arch/user-apps.html">User Apps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../firmware/xilinx-tools/index.html">Xilinx Tools</a><input aria-label="Toggle navigation of Xilinx Tools" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/installing-xilinx-tools.html">Installing Xilinx Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/building-and-running-firmware.html">Building and Running Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/flashing.html">Flashing AMDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-private-repo.html">Create Private Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/create-user-app.html">Create Custom User App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/dual-core.html">Dual Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../firmware/xilinx-tools/low-level-debugging.html">Low-Level Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Accessories</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/amds/index.html">AMDS</a><input aria-label="Toggle navigation of AMDS" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/amds-in-action/index.html">AMDS in Action</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/firmware/index.html">Firmware</a><input aria-label="Toggle navigation of Firmware" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/firmware/daisy-chain.html">AMDS Daisy Chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/firmware/building-and-running-firmware.html">Building and Running Firmware</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/amds/mainboard/index.html">Mainboard</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../accessories/amds/sensor-cards/index.html">Sensor Cards</a><input aria-label="Toggle navigation of Sensor Cards" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/high-voltage/index.html">High Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/low-voltage/index.html">Low Voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../accessories/amds/sensor-cards/current/index.html">Current</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/uinverter/index.html">μInverter</a><input aria-label="Toggle navigation of μInverter" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/hardware-design.html">Hardware Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/uinverter/rl-est/index.html">RL Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../accessories/dac/index.html">DAC</a><input aria-label="Toggle navigation of DAC" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accessories/dac/pcb-electrical-tests.html">PCB Electrical Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accessories/test-board/index.html">TestBoard</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribution/index.html">Developers</a></li>
+</ul>
+
+</div>
+<h4>Versions</h4>
+<ul style="display:flex; flex-direction:column-reverse">
+  <li style="flex: 0 0 auto;"><a href="../../../../v1.0/index.html">v1.0</a></li>
+  <li style="flex: 0 0 auto;"><a href="../../../../v1.1/index.html">v1.1</a></li>
+  <li style="flex: 0 0 auto;"><a href="../../../../v1.2/index.html">v1.2</a></li>
+  <li style="flex: 0 0 auto;"><a href="../../../../v1.3/index.html">v1.3</a></li>
+  <li style="flex: 0 0 auto;"><a href="../../../../v1.4/index.html">v1.4</a></li>
+  <li><a href="index.html">Latest</a></li>
+</ul>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/blob/main/source/getting-started/control-with-amdc/integrator-anti-windup/index.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Severson-Group/docs.amdc.dev/edit/main/source/getting-started/control-with-amdc/integrator-anti-windup/index.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="integrator-anti-windup">
+<h1>Integrator Anti-Windup<a class="headerlink" href="#integrator-anti-windup" title="Permalink to this heading">¶</a></h1>
+<p>This article introduces the concept of integrator windup in control systems and techniques that can be implemented in the AMDC to mitigate performance degradation due to actuator saturation.</p>
+<p>Integrator windup can occur when a controller with an integrator faces limitations on the manipulated variables. The effectiveness of an anti-windup strategy depends on both the duration and the extent of actuator saturation. Since perfect anti-windup is unachievable, it is important to analyze anti-windup techniques under expected actuator saturation scenarios. To help readers understand this, an <a class="reference external" href="https://github.com/Severson-Group/docs.amdc.dev/tree/main/source/getting-started/control-with-amdc/integrator-anti-windup/simulink/">example Simulink model is provided</a> in this article to demonstrate how such scenarios can be studied.</p>
+<section id="windup-phenomena-in-integrators">
+<h2>Windup Phenomena in Integrators<a class="headerlink" href="#windup-phenomena-in-integrators" title="Permalink to this heading">¶</a></h2>
+<p>A generalized control system is now introduced and used to explain the phenomenon of integrator windup. This control system is progressively refined in later sections to introduce anti-windup techniques.</p>
+<section id="block-diagram-with-saturation">
+<h3>Block Diagram with Saturation<a class="headerlink" href="#block-diagram-with-saturation" title="Permalink to this heading">¶</a></h3>
+<p>The primary components of a control diagram are the controller and plant. The controller’s output actuates the plant and is referred to as the “manipulated variable” in this article. In practice, manipulated variables are limited by the actuator’s capability. The figure below illustrates a practical block diagram representation, where the actuator limitations are modeled with a <code class="docutils literal notranslate"><span class="pre">Saturation</span></code> block.</p>
+<img alt="../../../_images/control-diagram-sat.svg" class="align-center" src="../../../_images/control-diagram-sat.svg" /><p>In this example, a simple plant model of <span class="math notranslate nohighlight">\(1/(s+1)\)</span> is employed, with the saturation block located before the plant. The saturation block produces an output signal bounded to the upper saturation value of <code class="docutils literal notranslate"><span class="pre">+Limit</span></code> and lower saturation value of <code class="docutils literal notranslate"><span class="pre">-Limit</span></code>. This type of first order system is found in many physical systems where the AMDC is used. Examples include:</p>
+<ol class="arabic simple">
+<li><p>Current regulation:</p>
+<ul class="simple">
+<li><p>Manipulated variable: Voltage</p></li>
+<li><p>Plant output: Current</p></li>
+<li><p>Physical limitation: The power amplifier’s voltage to the plant is restricted by its DC power supply</p></li>
+</ul>
+</li>
+<li><p>Speed control:</p>
+<ul class="simple">
+<li><p>Manipulated variable: Torque (<span class="math notranslate nohighlight">\(q\)</span>-axis current)</p></li>
+<li><p>Output: Rotational speed of the electric machinery</p></li>
+<li><p>Physical limitation: The torque provided to the plant is limited by the motor’s torque (or power electronic amplifier current) rating.</p></li>
+</ul>
+</li>
+<li><p>Temperature control:</p>
+<ul class="simple">
+<li><p>Manipulated variable: Heat</p></li>
+<li><p>Output: System temperature</p></li>
+<li><p>Physical limitation: The heater’s power rating (e.g., 1 kW).</p></li>
+</ul>
+</li>
+</ol>
+<p>The PI controller is employed to achieve the desired system response. In this article, the PI gains are set to achieve a first order response with a bandwidth of 10 Hz, i.e., <span class="math notranslate nohighlight">\(K_\text{p} = 2\pi \times 10\)</span>, and <span class="math notranslate nohighlight">\(K_\text{i} = 2\pi \times 10\)</span>.</p>
+</section>
+<section id="technical-challenges-with-windup">
+<h3>Technical Challenges with Windup<a class="headerlink" href="#technical-challenges-with-windup" title="Permalink to this heading">¶</a></h3>
+<p>This section provides an overview of practical challenges due to actuator input limitations to command tracking and disturbance rejection and introduces the definition of integrator windup. The system depicted in the block diagram above is simulated to demonstrate two windup scenarios. The objective of this analysis is to evaluate the impact of the actuator limitation (modeled with the saturation block in the diagram) on the output performance.</p>
+<section id="command-tracking-with-actuator-limitations">
+<h4>Command Tracking with Actuator Limitations<a class="headerlink" href="#command-tracking-with-actuator-limitations" title="Permalink to this heading">¶</a></h4>
+<p>Command tracking simulation results are shown below, where two scenarios are compared: one “without saturation block” (red line) and one “with the saturation block” (blue line). Assume a step command of 1 is generated as a reference at 0.2 seconds and the plant has a known input saturation limit defined as <code class="docutils literal notranslate"><span class="pre">Limit</span> <span class="pre">=</span> <span class="pre">10</span></code>.</p>
+<a class="reference internal image-reference" href="../../../_images/output-sat-c.svg"><img alt="../../../_images/output-sat-c.svg" class="align-center" src="../../../_images/output-sat-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/i-out-sat-c.svg"><img alt="../../../_images/i-out-sat-c.svg" class="align-center" src="../../../_images/i-out-sat-c.svg" width="600" /></a>
+<p>As observed in the top figure, the command tracks correctly when no saturation block is present (no actuator limitations), whereas overshoot occurs when the saturation block is included (the practical scenario). The bottom figure illustrates the output of the integrator <code class="docutils literal notranslate"><span class="pre">Iout</span></code>. With the saturation block, <code class="docutils literal notranslate"><span class="pre">Iout</span></code> becomes larger than that without the saturation block.</p>
+<p>Let us examine why this phenomenon occurs by analyzing the manipulated variable before and after the saturation block.</p>
+<a class="reference internal image-reference" href="../../../_images/preSat-postSat.svg"><img alt="../../../_images/preSat-postSat.svg" class="align-center" src="../../../_images/preSat-postSat.svg" width="600" /></a>
+<p>The input to the saturation block (<code class="docutils literal notranslate"><span class="pre">preSat</span></code>) is the unsaturated manipulated variable. This instantaneously exceeds 60, which is beyond the saturation range of 10. In contrast, the manipulated variable after the saturation block (<code class="docutils literal notranslate"><span class="pre">postSat</span></code>) is limited to 10. As demonstrated in this example, the controller disregards the presence of the saturation block because it has no information about real-world saturation. Consequently, the PI controller continues to try to increase the manipulated variable as long as the error is nonzero. If this error is continuously accumulated, the system exhibits delayed convergence, a condition known as integrator windup.</p>
+</section>
+<section id="disturbance-suppression-with-actuator-limitations">
+<h4>Disturbance Suppression with Actuator Limitations<a class="headerlink" href="#disturbance-suppression-with-actuator-limitations" title="Permalink to this heading">¶</a></h4>
+<p>Disturbances can degrade the system performance by introducing unexpected dynamics. Let us examine how disturbances affect the behavior of the integrator. In this scenario, the reference command is set as 0 and a disturbance of 15 (i.e., higher value than <code class="docutils literal notranslate"><span class="pre">Limit</span> <span class="pre">=</span> <span class="pre">10</span></code>) is injected at 0.2 seconds and ends at 0.4 seconds. The disturbance causes the plant output variable to deviate from the reference until the controller takes sufficient action via the manipulated variable.</p>
+<a class="reference internal image-reference" href="../../../_images/disturbance.svg"><img alt="../../../_images/disturbance.svg" class="align-center" src="../../../_images/disturbance.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/output-sat-d.svg"><img alt="../../../_images/output-sat-d.svg" class="align-center" src="../../../_images/output-sat-d.svg" width="600" /></a>
+<p>In the transient response of <code class="docutils literal notranslate"><span class="pre">Output</span></code>, when the disturbance ends it is observed that with the saturation block, there is a larger negative overshoot and slower convergence to 0 compared to the case without the saturation block. This is because the integrator continues to integrate error caused by the disturbance despite its accumulate value not resulting in changes to the manipulated variable.</p>
+</section>
+</section>
+</section>
+<section id="anti-windup-techniques">
+<h2>Anti-Windup Techniques<a class="headerlink" href="#anti-windup-techniques" title="Permalink to this heading">¶</a></h2>
+<p>To avoid integrator windup, anti-windup techniques are now introduced. The block diagram incorporating an integrator with anti-windup is shown in the figure below.</p>
+<img alt="../../../_images/control-diagram-overview.svg" class="align-center" src="../../../_images/control-diagram-overview.svg" /><p>The goal of anti-windup methods is to configure the integrator so that it does not integrate to grow the manipulated variable beyond what the actuator is capable of realizing. In terms of the block diagram, this means that if the manipulated variable reaches the specified <code class="docutils literal notranslate"><span class="pre">Limit</span></code> of the saturation block, the integrator stops integrating.</p>
+<p>There are multiple ways to implement integrator anti-windup. The following two common methods are introduced in this article:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#clamping"><strong>Clamping</strong></a>: Turn off the integrator to stop further accumulation of the value. This can be divided into two methods, i.e., <a class="reference internal" href="#simple-clamping">simple clamping</a> and <a class="reference internal" href="#advanced-clamping">advanced clamping</a>.</p></li>
+<li><p><a class="reference internal" href="#back-tracking"><strong>Back-tracking</strong></a>: Subtract a specific value from the integrator.</p></li>
+</ol>
+<p>These two methods are now explained in detail.</p>
+<section id="clamping">
+<h3>Clamping<a class="headerlink" href="#clamping" title="Permalink to this heading">¶</a></h3>
+<p>Clamping is a straightforward anti-windup strategy where the integrator is “clamped” to prevent it from exceeding a certain limitation. This article presents two implementations that differ based on the logic determining when the integrator clamps.</p>
+</section>
+<section id="simple-clamping">
+<h3>Simple Clamping<a class="headerlink" href="#simple-clamping" title="Permalink to this heading">¶</a></h3>
+<p>The “simple” version of clamping stops integrating when <code class="docutils literal notranslate"><span class="pre">preSat</span></code> <span class="math notranslate nohighlight">\(\neq\)</span> <code class="docutils literal notranslate"><span class="pre">postSat</span></code>. The contents of the <code class="docutils literal notranslate"><span class="pre">Integrator</span> <span class="pre">with</span> <span class="pre">anti-windup</span></code> block are shown below for this method.</p>
+<a class="reference internal image-reference" href="../../../_images/anti-windup-simple-clamping.svg"><img alt="../../../_images/anti-windup-simple-clamping.svg" class="align-center" src="../../../_images/anti-windup-simple-clamping.svg" width="70%" /></a>
+<p>The Simulink simulation of tracking a step command introduced earlier is now repeated with simple clamping. Results are shown below:</p>
+<section id="command-tracking">
+<h4>Command Tracking<a class="headerlink" href="#command-tracking" title="Permalink to this heading">¶</a></h4>
+<a class="reference internal image-reference" href="../../../_images/output-simple-c.svg"><img alt="../../../_images/output-simple-c.svg" class="align-center" src="../../../_images/output-simple-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/postSat-simple-c.svg"><img alt="../../../_images/postSat-simple-c.svg" class="align-center" src="../../../_images/postSat-simple-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/i-out-simple-c.svg"><img alt="../../../_images/i-out-simple-c.svg" class="align-center" src="../../../_images/i-out-simple-c.svg" width="600" /></a>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Output</span></code> waveforms, an overshoot is observed when there is no anti-windup. However, with the simple clamping method, the overshoot is eliminated.</p>
+<p>The reasons for this improvement can be understood by studying the <code class="docutils literal notranslate"><span class="pre">postSat</span></code> and <code class="docutils literal notranslate"><span class="pre">Iout</span></code> waveforms. In <code class="docutils literal notranslate"><span class="pre">postSat</span></code>, the manipulated variables are saturated at 10, which causes <code class="docutils literal notranslate"><span class="pre">Iout</span></code> to rapidly increase when there is no anti-windup. However, the simple clamping technique prevents the integrator from accumulating a value beyond the saturation block limit. This leaves the controller ready to respond rapidly when the error decreases toward zero.</p>
+</section>
+<section id="disturbance-suppression">
+<h4>Disturbance Suppression<a class="headerlink" href="#disturbance-suppression" title="Permalink to this heading">¶</a></h4>
+<p>The previously considered disturbance scenario is also simulated for simple clamping.</p>
+<a class="reference internal image-reference" href="../../../_images/disturbance.svg"><img alt="../../../_images/disturbance.svg" class="align-center" src="../../../_images/disturbance.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/output-simple-d.svg"><img alt="../../../_images/output-simple-d.svg" class="align-center" src="../../../_images/output-simple-d.svg" width="600" /></a>
+<p>The simulation results show that the overshoot and convergence are significantly improved when the simple clamping method is employed.</p>
+</section>
+</section>
+<section id="advanced-clamping">
+<h3>Advanced Clamping<a class="headerlink" href="#advanced-clamping" title="Permalink to this heading">¶</a></h3>
+<p>Now, the advanced version of clamping is introduced as shown in the block diagram below.</p>
+<a class="reference internal image-reference" href="../../../_images/anti-windup-advanced-clamping.svg"><img alt="../../../_images/anti-windup-advanced-clamping.svg" class="align-center" src="../../../_images/anti-windup-advanced-clamping.svg" width="70%" /></a>
+<p>In the advanced clamping method, the behavior itself is essentially similar to that of simple clamping. However, it includes an additional condition as a trigger of anti-windup so that the integrator does not clamp if further integration would reduce windup. That is, the integrator will not clamp if the sign of <code class="docutils literal notranslate"><span class="pre">Error</span></code> is opposite to the sign of <code class="docutils literal notranslate"><span class="pre">preSat</span></code>.</p>
+<p>The implementation of advanced clamping can be understood as a set of sequential steps as follows:</p>
+<p><strong>Step 1.</strong> Compare the <code class="docutils literal notranslate"><span class="pre">preSat</span></code> and <code class="docutils literal notranslate"><span class="pre">postSat</span></code>. If these values are not equal, i.e., the manipulated variable reaches saturation, the block outputs 1. If they are equal, then no saturation takes place, and the block outputs 0 – this is the same behavior as the simple clamping method.</p>
+<p><strong>Step 2.</strong> Compare the sign of the <code class="docutils literal notranslate"><span class="pre">preSat</span></code> and the <code class="docutils literal notranslate"><span class="pre">Error</span></code>. And then, if both signs are equal, the block outputs 1. If not, the block outputs 0 – this is the additional condition necessary for advanced clamping.</p>
+<p><strong>Step 3.</strong> The anti-windup output denoted as tracking-signal <code class="docutils literal notranslate"><span class="pre">TR</span></code> becomes 1 to clamp the integrator only if both outputs of <strong>Step 1</strong> and <strong>Step 2</strong> are 1.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">TR</span></code> is 1, the input of the integrator becomes 0 as the switch is triggered, i.e., the integrator will effectively shut down the integration during the windup condition.</p>
+<p>The previously presented simulation of command tracking is repeated with advanced clamping, with results shown below.</p>
+<a class="reference internal image-reference" href="../../../_images/output-advanced-c.svg"><img alt="../../../_images/output-advanced-c.svg" class="align-center" src="../../../_images/output-advanced-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/postSat-advanced-c.svg"><img alt="../../../_images/postSat-advanced-c.svg" class="align-center" src="../../../_images/postSat-advanced-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/i-out-advanced-c.svg"><img alt="../../../_images/i-out-advanced-c.svg" class="align-center" src="../../../_images/i-out-advanced-c.svg" width="600" /></a>
+<p>Notice that the above assumptions cause the simple and advanced clamping to behave identically in this example.</p>
+<p>To demonstrate the performance advantage of advanced clamping, a highly specific scenario is introduced. For this simulation, the proportional gain <span class="math notranslate nohighlight">\(K_\text{p}\)</span> is artificially reduced to an exceptionally low value (<span class="math notranslate nohighlight">\(K_\text{p}= 0.0001 \times 2\pi \times 10\)</span>). The scenario simulates the following:</p>
+<ol class="arabic simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">Disturbance</span></code> with an amplitude of 3 is applied at 0.5 seconds, causing the system to saturate.</p></li>
+<li><p>Once the <code class="docutils literal notranslate"><span class="pre">Output</span></code> has stabilized at 0, a positive reference of 1 is commanded at 5 seconds.</p></li>
+</ol>
+<p>Here are simulation results based on the above scenarios:</p>
+<a class="reference internal image-reference" href="../../../_images/disturbance-advanced-better.svg"><img alt="../../../_images/disturbance-advanced-better.svg" class="align-center" src="../../../_images/disturbance-advanced-better.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/output-advanced-better.svg"><img alt="../../../_images/output-advanced-better.svg" class="align-center" src="../../../_images/output-advanced-better.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/error-advanced-better.svg"><img alt="../../../_images/error-advanced-better.svg" class="align-center" src="../../../_images/error-advanced-better.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/preSat-advanced-better.svg"><img alt="../../../_images/preSat-advanced-better.svg" class="align-center" src="../../../_images/preSat-advanced-better.svg" width="600" /></a>
+<p>As indicated in the <code class="docutils literal notranslate"><span class="pre">Output</span></code> plot, the advanced clamping method performs well. Conversely, the simple clamping method fails to track the reference entirely and performs even worse than having no anti-windup in this edge-case scenario.</p>
+<p>Significant differences in the advanced clamping only appear when the system is saturated <strong>and</strong> the <code class="docutils literal notranslate"><span class="pre">Error</span></code> and <code class="docutils literal notranslate"><span class="pre">preSat</span></code> signals have opposite signs. In this example, <code class="docutils literal notranslate"><span class="pre">Error</span></code> suddenly becomes positive at 5 seconds. However, because we set <span class="math notranslate nohighlight">\(K_\text{p}\)</span> to an artificially low value, the immediate proportional response (<span class="math notranslate nohighlight">\(K_\text{p} \times \mathrm{Error}\)</span>) is too weak to overcome the integrator’s output. As a result, <code class="docutils literal notranslate"><span class="pre">preSat</span></code> remains negative. This breaks the equal sign condition (i.e., <code class="docutils literal notranslate"><span class="pre">Error</span></code> does not have the same sign as the <code class="docutils literal notranslate"><span class="pre">preSat</span></code>), which causes the advanced clamping logic to unclamp the integrator, allowing the system to recover.</p>
+<p>While very significant improvements in performance are observed in the waveforms above through the use of advanced clamping, this result was obtained by setting an exceptionally low <span class="math notranslate nohighlight">\(K_\text{p}\)</span> gain. In systems with standard proportional gains, a change in the error’s direction likely produces an instantaneous proportional response large enough to eliminate the drawbacks of simple clamping.</p>
+<p>Example systems where advanced clamping may be important are current regulators for electric machines that have very low inductance <span class="math notranslate nohighlight">\(L\)</span> relative to resistance <span class="math notranslate nohighlight">\(R\)</span>. The typical control tuning for motors involves selecting <span class="math notranslate nohighlight">\(K_\text{p}\)</span> and <span class="math notranslate nohighlight">\(K_\text{i}\)</span> to cancel the plant’s <span class="math notranslate nohighlight">\(RL\)</span> pole, resulting in the relationship <span class="math notranslate nohighlight">\(K_\text{p} = \tfrac{L}{R}K_\text{i}\)</span>. Machines that are likely to exhibit exceedingly low inductances typically have coreless, slotless, or PCB stators and are being increasingly developed in ultra-lightweight applications, such as electric aircraft.</p>
+</section>
+<section id="back-tracking">
+<h3>Back-tracking<a class="headerlink" href="#back-tracking" title="Permalink to this heading">¶</a></h3>
+<p>The idea of back-tracking method is to use a feedback loop to unwind the internal integrator when the manipulated variable hits the <code class="docutils literal notranslate"><span class="pre">Limit</span></code>. The block diagram of the integrator with the back-tracking method is shown below.</p>
+<a class="reference internal image-reference" href="../../../_images/anti-windup-back-tracking.svg"><img alt="../../../_images/anti-windup-back-tracking.svg" class="align-center" src="../../../_images/anti-windup-back-tracking.svg" width="70%" /></a>
+<p>For example, if saturation occurs, <code class="docutils literal notranslate"><span class="pre">TR</span></code> is calculated as <code class="docutils literal notranslate"><span class="pre">TR</span> <span class="pre">=</span> <span class="pre">Kb(postSat-preSat)</span></code> and added into the integrator to avoid the windup, where <span class="math notranslate nohighlight">\(K_\text{b}\)</span> is a feedback gain of the back-tracking. In contrast, if the saturation does not occur, <code class="docutils literal notranslate"><span class="pre">preSat</span></code> and <code class="docutils literal notranslate"><span class="pre">postSat</span></code> must be equal, and <code class="docutils literal notranslate"><span class="pre">TR</span></code> is 0, i.e., the anti-windup is deactivated.</p>
+<p>The selection of <span class="math notranslate nohighlight">\(K_\text{b}\)</span> is nuanced and depends upon the specific event being managed. Making an incorrect choice for <span class="math notranslate nohighlight">\(K_\text{b}\)</span> can lead to inferior performance as compared to the clamping method. In practice, the feedback gain of <span class="math notranslate nohighlight">\(K_\text{b}\)</span> is often determined by trial and error, depending on the user’s requirements, such as the allowable overshoot and desired response speed. Reference <a class="reference internal" href="#aw-ref-1">[1]</a> shows an example of how to determine <span class="math notranslate nohighlight">\(K_\text{b}\)</span> that is known as a <code class="docutils literal notranslate"><span class="pre">conditioned</span> <span class="pre">PI</span> <span class="pre">controller</span></code>. Here, <span class="math notranslate nohighlight">\(K_\text{b} = K_\text{i}/K_\text{p}\)</span>. For detailed information, refer to <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/000510988790029X">this paper</a>.</p>
+<p>The simulations presented earlier in this article are now re-considered with the back-tracking anti-windup method. In these simulations, <span class="math notranslate nohighlight">\(K_\text{b} = K_\text{i}/K_\text{p}\)</span>.</p>
+<section id="id1">
+<h4>Command Tracking<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+<a class="reference internal image-reference" href="../../../_images/postSat-back-c.svg"><img alt="../../../_images/postSat-back-c.svg" class="align-center" src="../../../_images/postSat-back-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/output-back-c.svg"><img alt="../../../_images/output-back-c.svg" class="align-center" src="../../../_images/output-back-c.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/i-out-back-c.svg"><img alt="../../../_images/i-out-back-c.svg" class="align-center" src="../../../_images/i-out-back-c.svg" width="600" /></a>
+<p>From the <code class="docutils literal notranslate"><span class="pre">Output</span></code> waveform, it is evident that the back-tracking technique marginally improves the response over clamping.</p>
+</section>
+<section id="id2">
+<h4>Disturbance Suppression<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
+<a class="reference internal image-reference" href="../../../_images/disturbance.svg"><img alt="../../../_images/disturbance.svg" class="align-center" src="../../../_images/disturbance.svg" width="600" /></a>
+<a class="reference internal image-reference" href="../../../_images/output-back-d.svg"><img alt="../../../_images/output-back-d.svg" class="align-center" src="../../../_images/output-back-d.svg" width="600" /></a>
+<p>The disturbance suppression results demonstrate that both the clamping and the back-tracking methods improved performance over having no anti-windup. Interestingly, for this example, the clamping methods yield better performance. However, this is not a general result and careful tuning of <span class="math notranslate nohighlight">\(K_\text{b}\)</span> can likely offer enhanced back-tracking performance.</p>
+</section>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple" id="aw-ref-1">
+<li><p>R. Hanus, M. Kinnaert, and J-L. Henrotte, “Conditioning technique, a general anti-windup and bumpless transfer method,” in Automatica 23, no. 6, pp. 729-739, 1987, doi: <a class="reference external" href="https://doi.org/10.1016/0005-1098(87)90029-X">10.1016/0005-1098(87)90029-X</a>.</p></li>
+</ol>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="../../../hardware/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Hardware Overview</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../encoder-fb/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Encoder Feedback</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2026, Electric Machinery and Levitation Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74WCSDC0D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-74WCSDC0D0');
+</script>
+
+<div class="google-analytics-tracking-info">
+This page uses <a href="https://analytics.google.com/">Google Analytics</a> to collect statistics. Disable by blocking JavaScript from www.google-analytics.com.
+</div>
+
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Integrator Anti-Windup</a><ul>
+<li><a class="reference internal" href="#windup-phenomena-in-integrators">Windup Phenomena in Integrators</a><ul>
+<li><a class="reference internal" href="#block-diagram-with-saturation">Block Diagram with Saturation</a></li>
+<li><a class="reference internal" href="#technical-challenges-with-windup">Technical Challenges with Windup</a><ul>
+<li><a class="reference internal" href="#command-tracking-with-actuator-limitations">Command Tracking with Actuator Limitations</a></li>
+<li><a class="reference internal" href="#disturbance-suppression-with-actuator-limitations">Disturbance Suppression with Actuator Limitations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#anti-windup-techniques">Anti-Windup Techniques</a><ul>
+<li><a class="reference internal" href="#clamping">Clamping</a></li>
+<li><a class="reference internal" href="#simple-clamping">Simple Clamping</a><ul>
+<li><a class="reference internal" href="#command-tracking">Command Tracking</a></li>
+<li><a class="reference internal" href="#disturbance-suppression">Disturbance Suppression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-clamping">Advanced Clamping</a></li>
+<li><a class="reference internal" href="#back-tracking">Back-tracking</a><ul>
+<li><a class="reference internal" href="#id1">Command Tracking</a></li>
+<li><a class="reference internal" href="#id2">Disturbance Suppression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
