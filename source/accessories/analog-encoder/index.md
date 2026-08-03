@@ -2,7 +2,9 @@
 
 This file outlines the use of the Analog Encoder Interface Board. The Analog Encoder Interface Board is intended to amplify signals from an analog encoder (sin/cos outputs) to be able to measure rotor position with using the analog input ports of the AMDC.
 
-<img alt="image" src="image/aei-top-view.webp">
+```{image} images/aei-top-view.webp
+:height: 25em
+```
 
 ## Relevant Hardware Versions
 
@@ -34,8 +36,9 @@ The goal of the board is to condition the input signals to quantities that are e
 
 The following block diagram illustrates how this board conditions sin/cos position signals for use by the AMDC:
 
-<p align="center">
-<img alt="image" src="image/circuit-block-diagram.svg">
+```{image} images/circuit-block-diagram.svg
+:align: center
+```
 
 The blue box shows the functionality of the Analog Encoder Interface Board. It removes the DC offset of each signal in the differential pair of encoder outputs and amplifies each signal by a gain of 10.
 

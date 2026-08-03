@@ -50,6 +50,7 @@ AMDC Platform Documentation
    accessories/uinverter/index
    DAC <accessories/dac/index>
    accessories/test-board/index
+   Analog Encoder <accessories/analog-encoder/index>
 
 .. toctree::
    :hidden:
