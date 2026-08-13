@@ -28,6 +28,11 @@ Each injection point can be visualized like this:
 
 .. image:: images/inj-point.svg
     :align: center
+    :class: only-light
+
+.. image:: images/inj-point-dark.svg
+    :align: center
+    :class: only-dark
 
 Each :code:`Function Generator` block in the stack implements one type of function: constant, white noise, triangle, square, chirp, sine, etc.
 The output is formed via the mux selecting either: (i) just the function generator output, or (ii) a sum/difference of the function generator output with the input signal.
@@ -45,6 +50,11 @@ Consider the following (typical) control structure:
 
 .. image:: images/control-diagram.svg
     :align: center
+    :class: only-light
+
+.. image:: images/control-diagram-dark.svg
+    :align: center
+    :class: only-dark
 
 The :code:`Controller` tries to regulate the :code:`Output` to match the :code:`Reference`.
 The :code:`Controller Output` is applied to the :code:`Plant`, along with the :code:`Disturbance`.
@@ -56,6 +66,11 @@ Use Case 1: References
 
 .. image:: images/control-diagram-inj-ref.svg
     :align: center
+    :class: only-light
+
+.. image:: images/control-diagram-inj-ref-dark.svg
+    :align: center
+    :class: only-dark
 
 The first use case is to place an injection point supplying the :code:`Reference` signal.
 Doing so allows generic signals to be commanded to the system, such as constants, noise, etc.
@@ -67,6 +82,10 @@ Use Case 2: Controller Output
 
 .. image:: images/control-diagram-inj-ctrl-output.svg
     :align: center
+    :class: only-light
+.. image:: images/control-diagram-inj-ctrl-output-dark.svg
+    :align: center
+    :class: only-dark
 
 By inserting an injection point for the :code:`Controller Output`, the injection can be used to either add a simulated disturbance, or to replace the controller and apply open-loop inputs to the `Plant`.
 
@@ -223,6 +242,7 @@ Per the :code:`help` output, the :code:`inj` sub-commands are:
 - :code:`chirp <name> <set|add|sub> <gain> <freqMin> <freqMax> <period>` - Inject chirp
 - :code:`triangle <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject triangle
 - :code:`square <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject square
+- :code:`ramp <name> <set|add|sub> <valueMin> <valueMax> <period>` - Inject ramp
 
 Start by typing :code:`inj list` to see all registered injection points.
 
@@ -564,7 +584,69 @@ The duty cycle is 50%.
 
 The :code:`period` parameter is in seconds.
 
+~~~~~~~~~~~~~~~~~~~~~~
+Ramp Injection
+~~~~~~~~~~~~~~~~~~~~~~
 
+Example :code:`ramp` injection where the :code:`valueMin = 0.3`, :code:`valueMax = 0.8`, and :code:`period = 0.5`:
+
+.. plot::
+    :context: close-figs
+    :class: align-plot-left
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    t_step = 1e-3
+    tt = np.arange(0, 1, t_step)
+    yy = np.zeros_like(tt)
+
+    period = 0.5
+    minValue = 0.3
+    maxValue = 0.8
+
+    my_slope = (maxValue-minValue) / (period)
+
+    t_local = 0
+    for idx,t in enumerate(tt):
+        yy[idx] = my_slope * (t_local % period) + minValue
+
+        t_local += t_step
+        if (t_local > period):
+            t_local = 0
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5,3))
+    ax.plot(tt, yy)
+
+    ax.set_ylim(0, 1)
+
+    ax.set_xlabel("Time (sec)")
+    ax.set_ylabel("Injected Signal")
+
+    anno_lw = 2
+
+    # Add annotations
+    ax.plot([0, 1], [maxValue, maxValue], color='black', linewidth=anno_lw, linestyle='dashed')
+    ax.text(0, minValue + 0.06, "valueMin", bbox=dict(facecolor='white', alpha=0.8))
+    ax.plot([0, 1], [minValue, minValue], color='black', linewidth=anno_lw, linestyle='dashed')
+    ax.text(0, maxValue + 0.06, "valueMax", bbox=dict(facecolor='white', alpha=0.8))
+
+    # Add period label
+    ax.plot([0, period], [0.1, 0.1], color='black', linewidth=anno_lw)
+    ax.plot([0, 0], [0.1-0.02, 0.1+0.02], color='black', linewidth=anno_lw)
+    ax.plot([period, period], [0.1-0.02, 0.1+0.02], color='black', linewidth=anno_lw)
+    ax.text(period/2, 0.1 + 0.06, "period",  ha="center", bbox=dict(facecolor='white', alpha=0.8))
+
+    fig.tight_layout()
+
+    fig.show()
+
+**Syntax:** :code:`inj ramp <name> <set|add|sub> <valueMin> <valueMax> <period>`
+
+Injects a sawtooth wave ranging from the min value to the max value, over the period.
+The waveform starts at the min value.
+
+The :code:`period` parameter is in seconds.
 
 
 .. raw:: html

@@ -21,7 +21,12 @@ The mainboard is specifically designed to interface directly to the [GPIO expans
 
 The eight sensor cards transmit data to the STM32 MCU using standard SPI protocol. The sensor cards are grouped into four pairs of daisy chain connections. See the following block diagram.
 
-![](images/Measurementboard_REVD.svg)
+```{image} images/Measurementboard_REVD.svg
+:class: only-light
+```
+```{image} images/Measurementboard_REVD-dark.svg
+:class: only-dark
+```
 
 ![](images/Motherboard_3d.png)
 

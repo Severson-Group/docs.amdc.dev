@@ -8,10 +8,9 @@ Following these instructions will get the AMDC firmware environment up and runni
 Firmware development environment needs a few things:
 
 - Xilinx Vivado 2019.1 and SDK (if you don't have these, [follow these steps to install them](installing-xilinx-tools.md))
-- `em.avnet.com:picozed_7030_fmc2:part0:1.1` board definition
-    1. Go [here](https://github.com/Severson-Group/AMDC-Firmware/issues/10#issuecomment-847993684)
-    2. Download the zip file and unzip it
-    3. Move the resulting folder (`picozed_*`) to `C:\Xilinx\Vivado\2019.1\data\boards\board_files\...`
+- `elev.umn.edu:AMDC:part0:1.1` board definition
+    1. Download [this](./downloads/AMDC.zip) file and unzip it.
+    2. Move the resulting folder (`AMDC`) to `C:\Xilinx\Vivado\2019.1\data\boards\board_files\...`
 
 ## Cloning from GitHub
 

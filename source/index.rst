@@ -50,7 +50,13 @@ AMDC Platform Documentation
    accessories/uinverter/index
    DAC <accessories/dac/index>
    accessories/test-board/index
+   Analog Encoder <accessories/analog-encoder/index>
 
+.. toctree::
+   :hidden:
+   :caption: Contribution
+
+   contribution/index
 
 Welcome to the AMDC Platform documentation.
 This is an ever-growing collection of knowledge about the AMDC.
