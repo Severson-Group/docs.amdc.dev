@@ -41,6 +41,7 @@ To measure a wide range of currents, an open-aperture current sensor is preferre
 |:--------------------------------------------|-------------------:|--------------------:|
 | Primary nominal RMS current                 | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
 | Primary current, measuring range            |         $\pm$ 70 A |         $\pm$ 150 A |
+| Burden resistor range                       | 135 - 150 $\Omega$ |     0 - 33 $\Omega$ |
 | Turns ratio _N_<sub>1</sub>/_N_<sub>2</sub> |             1/1000 |              1/2000 |
 | Accuracy                                    |        $\pm$ 0.65% |         $\pm$ 0.45% |
 | Linearity                                   |            < 0.15% |             < 0.15% |
@@ -52,18 +53,27 @@ The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, th
 
 #### Burden Resistor (_R_<sub>_BURDEN_</sub>)
 
-A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. For a sensing range of 70A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
+A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
 
 _V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</sub> _R_<sub>_BURDEN_</sub>
 
-_R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$
+_R_<sub>_BURDEN_</sub>  = (_V_<sub>_BURDEN_</sub>/_I_<sub>_PRIMARY_</sub>)*(_N_<sub>2</sub>/_N_<sub>1</sub>)
+
+where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns
+
+
+
+
 
 The LA 55-P datasheet specifies the burden resistor value must be between 135 $\Omega$ and 155 $\Omega$ so a 150 $\Omega$ resistor was selected.
+
+The LA 100-P datasheet specifies the burden resistor value must be between 0 $\Omega$ and 33 $\Omega$ so a 28 $\Omega$ resistor was selected.
+
 
 
 ### Current Sensor Gain
 
-The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A].
+The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A].
 
 To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
 
@@ -73,7 +83,6 @@ For a sensing range of 150A, the burden resistance, _R_<sub>_BURDEN_</sub> was c
 
 _R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7 $\Omega$
 
-The LA 100-P datasheet specifies the burden resistor value must be between 0 $\Omega$ and 33 $\Omega$ so a 28 $\Omega$ resistor was selected.
 
 #### Current Sensor Gain
 
