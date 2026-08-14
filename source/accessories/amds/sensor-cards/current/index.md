@@ -63,7 +63,7 @@ where _N_<sub>1</sub> is the primary turns (the number of turns the user passes 
 
 ### Current Sensor Gain
 
-The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 increases the gain by a factor of 10, which allows currents 10 times lower to be measured with the same output voltage range.
+The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 allows currents 10 times lower to be measured with the same output voltage range.
 
 ### Voltage Reference (LDO)
 
@@ -97,8 +97,6 @@ $$
 
 The resistor values can be calculated from solving these expressions analytically. However, the algebra gets quite complicated. Instead, these values were computed using the [TI analog engineer's calculator](https://www.ti.com/tool/ANALOG-ENGINEER-CALC).
 
-The final design is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$.
-
 ```{attention}
 As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2V to 4.5V for best performance. The user is advised to consider their required current measurement range with the [final voltage expressions](#voltage-relationship) to select an appropriate number of [primary turns](#current-sensor-gain).
 ```
@@ -127,6 +125,10 @@ $$
 I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
 $$
 
+##### LA 55-P
+
+The final design is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$.
+
 ##### Revision A, B
 
 In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
@@ -142,6 +144,14 @@ In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 4.5V, 
 $$
 I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
+
+#### LA 100-P
+
+##### Revision A, B
+
+##### Revision C
+
+#### Table
 
 ### Connectors
 
