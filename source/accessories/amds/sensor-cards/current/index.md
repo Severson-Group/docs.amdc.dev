@@ -43,7 +43,6 @@ To measure a wide range of currents, an open-aperture current sensor is preferre
 | Primary current, measuring range                                 |         $\pm$ 70 A |         $\pm$ 150 A |
 | Burden resistor range                                            | 135 - 155 $\Omega$ |     0 - 33 $\Omega$ |
 | Secondary turns, _N_<sub>2</sub>                                 |               1000 |                2000 |
-| Turns ratio for _N_<sub>1</sub>, _N_<sub>1</sub>/_N_<sub>2</sub> |             1/1000 |              1/2000 |
 | Accuracy                                                         |        $\pm$ 0.65% |         $\pm$ 0.45% |
 | Linearity                                                        |            < 0.15% |             < 0.15% |
 | Bandwidth                                                        |            200 kHz |             200 kHz |
@@ -124,11 +123,7 @@ $$
 I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
 $$
 
-### Design
-
-This section presents the relationship between input and ADC voltage for each sensor configuration.
-
-##### LA 55-P
+#### LA 55-P Configurations
 
 The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$. For a sensing range of 70 A, the burden resistance _R_<sub>_BURDEN_</sub> can be calculated as _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$.
 
@@ -148,15 +143,15 @@ $$
 I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
 
-#### LA 100-P
+#### Proposed LA 100-P Configuration
 
-The final design for LA 100-P is implemented so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\mathrm{BURDEN}}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2Ω, $R_{\rm a}$ = 1.24kΩ, $R_{\rm b}$ = 2.87kΩ, $R_{\rm c}$ = 1.21kΩ, resulting in: The proposed component values result in the following relationship:
+The proposed LA 100-P configuration is designed so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\mathrm{BURDEN}}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2Ω, $R_{\rm a}$ = 1.24kΩ, $R_{\rm b}$ = 28.7kΩ, $R_{\rm c}$ = 1.21kΩ. The proposed component values result in the following relationship:
 
 $$
 I_{\text{PRIMARY}} = 59.9995 \times (V_{\text{ADC, RevA,B}} - 2.4999) \qquad {\rm [A]}
 $$
 
-##### Summary of Sensor Configurations
+#### Summary of Sensor Configurations
 
 Finally, a table summarizes the parameters and resulting relationships for all sensor configurations.
 
