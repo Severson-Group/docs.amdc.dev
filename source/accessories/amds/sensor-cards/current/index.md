@@ -22,35 +22,38 @@ The current measurement card was designed to the following specifications:
 5. SPI output to interface with the sensor motherboard
 
 ## Block Diagram
+
 The high level block diagram of the current sensor card is shown below:
 
 ```{image} images/current-sensor-blockdiagram.svg
 :class: only-light
 ```
+
 ```{image} images/current-sensor-blockdiagram-dark.svg
 :class: only-dark
 ```
 
 ### Current Sensor
 
-The LEM LA 55-P and LA 100-P current sensors with an open aperture and PC pins are introduced in this article. The open aperture was selected because it allows the measurement range to be easily scaled down by adding turns to the primary conductor. These sensors provide an excellent bandwidth of 200 kHz and a low-impedance current output, which is inherently more immune to noise than a high-impedance voltage output. The following section describes how to determine the burden resistor and current sensor gain for the LA 55-P and LA 100-P sensors.
+To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins, and therefore introduced in this article. The following section describes how to determine the burden resistor and current sensor gain for these two sensors.
 
 ### LA 55-P
 
 The LA 55-P is a closed loop compensated hall effect transducer that has measurement range of +/- 55A (rms), an accuracy of +/-0.65%, and linearity of <0.15%.
 
 #### Burden Resistor (_R_<sub>_BURDEN_</sub>)
+
 A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. For a sensing range of 70A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
 
 _V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</sub> _R_<sub>_BURDEN_</sub>
 
-_R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143Ω 
+_R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$
 
-The LA 55-P datasheet specifies the burden resistor value must be between 135Ω and 155Ω so a 150Ω resistor was selected.
+The LA 55-P datasheet specifies the burden resistor value must be between 135 $\Omega$ and 155 $\Omega$ so a 150 $\Omega$ resistor was selected.
 
 ### Current Sensor Gain
 
-The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A]. 
+The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A].
 
 To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
 
@@ -66,13 +69,13 @@ The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, th
 
 For a sensing range of 150A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
 
-_R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7 $\Omega$ 
+_R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7 $\Omega$
 
-The LA 100-P datasheet specifies the burden resistor value must be between 0Î© and 33Î© so a 28Î© resistor was selected.
+The LA 100-P datasheet specifies the burden resistor value must be between 0 $\Omega$ and 33 $\Omega$ so a 28 $\Omega$ resistor was selected.
 
 #### Current Sensor Gain
 
-The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A]. 
+The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A].
 
 ### Voltage Reference (LDO)
 
@@ -85,6 +88,7 @@ A non-inverting level translation circuit is implemented using Op Amps as shown 
 ```{image} images/current-sensor-opamp-stage.svg
 :class: only-light
 ```
+
 ```{image} images/current-sensor-opamp-stage-dark.svg
 :class: only-dark
 ```
@@ -112,6 +116,7 @@ As the op-amp output voltage approaches the supply rails, it tends to distort an
 ```
 
 ### First Order Anti-Aliasing Filter
+
 A first order RC filter is implemented on the output of the op amp circuit. The cutoff frequency was set at 48kHz and the following equations was used for the computation:
 
 $$f_c = \frac{1}{2\pi RC} $$
@@ -143,6 +148,7 @@ I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA,B}} - 2.4922) \qquad {\r
 $$
 
 ##### Revision C
+
 In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
