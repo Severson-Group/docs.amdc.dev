@@ -35,17 +35,18 @@ The high level block diagram of the current sensor card is shown below:
 
 ### Current Sensor
 
-To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins, and therefore introduced in this article. The following tables summarize key specifications of these sensors:
+To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins. The following tables summarize key specifications of these sensors:
 
-| Parameters                                  |            LA 55-P |            LA 100-P |
-|:--------------------------------------------|-------------------:|--------------------:|
-| Primary nominal RMS current                 | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
-| Primary current, measuring range            |         $\pm$ 70 A |         $\pm$ 150 A |
-| Burden resistor range                       | 135 - 150 $\Omega$ |     0 - 33 $\Omega$ |
-| Turns ratio _N_<sub>1</sub>/_N_<sub>2</sub> |             1/1000 |              1/2000 |
-| Accuracy                                    |        $\pm$ 0.65% |         $\pm$ 0.45% |
-| Linearity                                   |            < 0.15% |             < 0.15% |
-| Bandwidth                                   |            200 kHz |             200 kHz |
+| Parameters                                                       |            LA 55-P |            LA 100-P |
+|:-----------------------------------------------------------------|-------------------:|--------------------:|
+| Primary nominal RMS current                                      | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
+| Primary current, measuring range                                 |         $\pm$ 70 A |         $\pm$ 150 A |
+| Burden resistor range                                            | 135 - 155 $\Omega$ |     0 - 33 $\Omega$ |
+| Secondary turns, _N_<sub>2</sub>                                 |               1000 |                2000 |
+| Turns ratio for _N_<sub>1</sub>, _N_<sub>1</sub>/_N_<sub>2</sub> |             1/1000 |              1/2000 |
+| Accuracy                                                         |        $\pm$ 0.65% |         $\pm$ 0.45% |
+| Linearity                                                        |            < 0.15% |             < 0.15% |
+| Bandwidth                                                        |            200 kHz |             200 kHz |
 
 ```{note}
 The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor. The rest of this document is specific to the LA 100-P variant.
@@ -59,15 +60,15 @@ _V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</s
 
 _R_<sub>_BURDEN_</sub>  = (_V_<sub>_BURDEN_</sub>/_I_<sub>_PRIMARY_</sub>)*(_N_<sub>2</sub>/_N_<sub>1</sub>)
 
-where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns
+where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. The selected burden resistor must remain within the range in the sensor datasheet.
 
-### Current Sensor Gain
+#### Current Sensor Gain
 
-The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 allows currents 10 times lower to be measured with the same output voltage range.
+The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain across the burden resistor is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. The measurement range can be reduced by increasing the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 allows currents 10 times lower to be measured with the same output voltage range.
 
 ### Voltage Reference (LDO)
 
-The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
+The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5 V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5 V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
 
 ### Op Amp Stage
 
@@ -111,9 +112,7 @@ $$f_c = \frac{1}{2\pi RC} $$
 
 ### Analog to Digital Converter
 
-A single-ended ADC was selected. The ADC used is the Texas Instruments [ADS8860](https://www.ti.com/product/ADS8860). It is a pseudo-differential input, SPI output, SAR ADC. 
-The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
-The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
+A single-ended ADC was selected. The ADC used is the Texas Instruments [ADS8860](https://www.ti.com/product/ADS8860). It is a pseudo-differential input, SPI output, SAR ADC. The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
 
 #### Relationship Between Input and ADC voltage
 
