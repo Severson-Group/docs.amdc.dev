@@ -124,9 +124,13 @@ $$
 I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
 $$
 
+### Design
+
+This section presents the relationship between input and ADC voltage for each sensor configuration.
+
 ##### LA 55-P
 
-The final design is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$.
+The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$. For a sensing range of 70 A, the burden resistance _R_<sub>_BURDEN_</sub> can be calculated as _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$.
 
 ##### Revision A, B
 
@@ -146,11 +150,25 @@ $$
 
 #### LA 100-P
 
-##### Revision A, B
+The final design for LA 100-P is implemented so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\mathrm{BURDEN}}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2Ω, $R_{\rm a}$ = 1.24kΩ, $R_{\rm b}$ = 2.87kΩ, $R_{\rm c}$ = 1.21kΩ, resulting in: The proposed component values result in the following relationship:
 
-##### Revision C
+$$
+I_{\text{PRIMARY}} = 59.9995 \times (V_{\text{ADC, RevA,B}} - 2.4999) \qquad {\rm [A]}
+$$
 
-#### Table
+##### Summary of Sensor Configurations
+
+Finally, a table summarizes the parameters and resulting relationships for all sensor configurations.
+
+| Parameter             | LA 55-P, Rev. A/B | LA 55-P, Rev. C | LA 100-P |
+|:----------------------|------------------:|----------------:|---------:|
+| $N_1$                 |                 1 |               1 |        3 |
+| $N_2$                 |              1000 |            1000 |     2000 |
+| $V_{\mathrm{REF}}$    |               5 V |           4.5 V |      5 V |
+| $R_{\mathrm{BURDEN}}$ |             150 Ω |           150 Ω |   23.2 Ω |
+| $R_a$                 |             10 kΩ |           10 kΩ |  1.24 kΩ |
+| $R_b$                 |           8.45 kΩ |         10.7 kΩ |  28.7 kΩ |
+| $R_c$                 |           4.64 kΩ |         4.12 kΩ |  1.21 kΩ |
 
 ### Connectors
 
@@ -163,13 +181,13 @@ $$
 A user may want to change some of the passive components based on the range required and the RC filter cutoff frequency desired. The footprints of passive components that may need to be replaced i.e, the burden resistor (`R5`), the resistors in the Op Amp stage, and the RC filter components is provided here for quick reference. Note that these footprints are imperial codes and **not metric codes**.
 
 | Component | Footprint |
-| ---- | ----- |
-| R3   |  0603|
-| R4   | 0603 |
-| R5 | 2512 |
-| R6 | 0603 |
-| R8 | 0603 |
-| C5 | 0603 |
+|-----------|-----------|
+| R3        | 0603      |
+| R4        | 0603      |
+| R5        | 2512      |
+| R6        | 0603      |
+| R8        | 0603      |
+| C5        | 0603      |
 
 ## Datasheets
 
