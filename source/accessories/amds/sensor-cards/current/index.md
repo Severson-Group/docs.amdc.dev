@@ -61,35 +61,9 @@ _R_<sub>_BURDEN_</sub>  = (_V_<sub>_BURDEN_</sub>/_I_<sub>_PRIMARY_</sub>)*(_N_<
 
 where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns
 
-
-
-
-
-The LA 55-P datasheet specifies the burden resistor value must be between 135 $\Omega$ and 155 $\Omega$ so a 150 $\Omega$ resistor was selected.
-
-The LA 100-P datasheet specifies the burden resistor value must be between 0 $\Omega$ and 33 $\Omega$ so a 28 $\Omega$ resistor was selected.
-
-
-
 ### Current Sensor Gain
 
-The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A].
-
-To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
-
-#### Burden Resistor (_R_<sub>_BURDEN_</sub>)
-
-For a sensing range of 150A, the burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
-
-_R_<sub>_BURDEN_</sub>  = (2 V/150 A)*(2000/1) = 26.7 $\Omega$
-
-
-#### Current Sensor Gain
-
-The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A].
-
-
-
+The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 increases the gain by a factor of 10, which allows currents 10 times lower to be measured with the same output voltage range.
 
 ### Voltage Reference (LDO)
 
