@@ -35,11 +35,20 @@ The high level block diagram of the current sensor card is shown below:
 
 ### Current Sensor
 
-To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins, and therefore introduced in this article. The following section describes how to determine the burden resistor and current sensor gain for these two sensors.
+To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins, and therefore introduced in this article. The following tables summarize key specifications of these sensors:
 
-### LA 55-P
+| Parameters                                  |            LA 55-P |            LA 100-P |
+|:--------------------------------------------|-------------------:|--------------------:|
+| Primary nominal RMS current                 | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
+| Primary current, measuring range            |         $\pm$ 70 A |         $\pm$ 150 A |
+| Turns ratio _N_<sub>1</sub>/_N_<sub>2</sub> |             1/1000 |              1/2000 |
+| Accuracy                                    |        $\pm$ 0.65% |         $\pm$ 0.45% |
+| Linearity                                   |            < 0.15% |             < 0.15% |
+| Bandwidth                                   |            200 kHz |             200 kHz |
 
-The LA 55-P is a closed loop compensated hall effect transducer that has measurement range of +/- 55A (rms), an accuracy of +/-0.65%, and linearity of <0.15%.
+```{note}
+The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor. The rest of this document is specific to the LA 100-P variant.
+```
 
 #### Burden Resistor (_R_<sub>_BURDEN_</sub>)
 
@@ -51,19 +60,12 @@ _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$
 
 The LA 55-P datasheet specifies the burden resistor value must be between 135 $\Omega$ and 155 $\Omega$ so a 150 $\Omega$ resistor was selected.
 
+
 ### Current Sensor Gain
 
 The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A].
 
 To use the sensor in a lower current range, the user can increase the number of primary turns without the need to modify any other parts of the circuit. As an example, to sense currents in the range of +/- 7 A, _N_<sub>1</sub> = 10 can be used.
-
-### LA 100-P
-
-The LA 100-P is a closed loop compensated hall effect transducer that has measurement range of +/- 150A (rms), an accuracy of +/-0.45%, and linearity of <0.15%.
-
-```{note}
-The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor. The rest of this document is specific to the LA 100-P variant.
-```
 
 #### Burden Resistor (_R_<sub>_BURDEN_</sub>)
 
@@ -76,6 +78,9 @@ The LA 100-P datasheet specifies the burden resistor value must be between 0 $\O
 #### Current Sensor Gain
 
 The LA 100-P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current - voltage gain of 1/75 [V/A].
+
+
+
 
 ### Voltage Reference (LDO)
 
@@ -135,7 +140,7 @@ From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the ge
 
 ##### General Expression
 
-$$ 
+$$
 I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
 $$
 
