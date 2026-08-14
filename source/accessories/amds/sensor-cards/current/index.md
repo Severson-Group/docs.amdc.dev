@@ -51,7 +51,7 @@ The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, th
 
 #### Burden Resistor ($R_{\rm BURDEN}$)
 
-A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance was calculated using the following equations:
+A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance was calculated using the following equation:
 
 $$
 R_{\rm BURDEN}  = \frac{V_{\rm BURDEN}}{I_{\rm PRIMARY}} \frac{N_2}{N_1}
@@ -124,7 +124,7 @@ $$
 
 #### LA 55-P Configurations
 
-The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70$ A results in $V_{\rm out} \approx 0$ V and $I_{\rm PRIMARY} = 70$ A results in $V_{\rm out} \approx 5$ V. For a sensing range of 70 A, the burden resistance $R_{\rm BURDEN}$ can be calculated as $R_{\rm BURDEN}$  = (10 V/70 A)*(1000/1) = 143 $\Omega$.
+The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70$ A results in $V_{\rm out} \approx 0$ V and $I_{\rm PRIMARY} = 70$ A results in $V_{\rm out} \approx 5$ V.
 
 ##### Revision A, B
 
@@ -154,15 +154,17 @@ $$
 
 Finally, the table below summarizes the parameters and resulting relationships for all sensor configurations:
 
-| Parameter        | LA 55-P, Rev. A/B | LA 55-P, Rev. C |       LA 100-P |
-|:-----------------|------------------:|----------------:|---------------:|
-| $N_1$            |                 1 |               1 |              3 |
-| $N_2$            |              1000 |            1000 |           2000 |
-| $V_{\rm REF}$    |               5 V |           4.5 V |            5 V |
-| $R_{\rm BURDEN}$ |     150  $\Omega$ |   150  $\Omega$ | 23.2  $\Omega$ |
-| $R_a$            |      10 k$\Omega$ |    10 k$\Omega$ | 1.24 k$\Omega$ |
-| $R_b$            |    8.45 k$\Omega$ |  10.7 k$\Omega$ | 28.7 k$\Omega$ |
-| $R_c$            |    4.64 k$\Omega$ |  4.12 k$\Omega$ | 1.21 k$\Omega$ |
+| Parameter                 | LA 55-P, Rev. A/B | LA 55-P, Rev. C |       LA 100-P |
+|:--------------------------|------------------:|----------------:|---------------:|
+| $N_1$                     |                 1 |               1 |              3 |
+| $N_2$                     |              1000 |            1000 |           2000 |
+| $V_{\rm REF}$             |               5 V |           4.5 V |            5 V |
+| $R_{\rm BURDEN}$          |     150  $\Omega$ |   150  $\Omega$ | 23.2  $\Omega$ |
+| $R_a$                     |      10 k$\Omega$ |    10 k$\Omega$ | 1.24 k$\Omega$ |
+| $R_b$                     |    8.45 k$\Omega$ |  10.7 k$\Omega$ | 28.7 k$\Omega$ |
+| $R_c$                     |    4.64 k$\Omega$ |  4.12 k$\Omega$ | 1.21 k$\Omega$ |
+| Current sensor gain [A/V] |           29.2579 |         29.4146 |        59.9995 |
+| Current sensor offset     |            2.4922 |         22.5126 |         2.4999 |
 
 ### Connectors
 
