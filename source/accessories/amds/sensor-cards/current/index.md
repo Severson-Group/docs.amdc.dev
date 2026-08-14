@@ -1,7 +1,6 @@
 # Current
 
-This document describes the design considerations and implementation details for the current card.
-A block diagram is presented and each component is discussed in detail. Specifications of each component are provided based on the datasheet.
+This document describes the design considerations and implementation details for the current card. A block diagram is presented and each component is discussed in detail. Specifications of each component are provided based on the datasheet.
 
 ## Relevant Hardware Versions
 
@@ -37,37 +36,41 @@ The high level block diagram of the current sensor card is shown below:
 
 To measure a wide range of currents, an open-aperture current sensor is preferred because it allows the measurement range to be adjusted for lower currents by passing multiple turns of the primary conductor through the aperture. A low-impedance current output is also inherently more immune to noise than a high-impedance voltage output. The LEM LA 55-P and LA 100-P current sensors offer these features with PC pins. The following tables summarize key specifications of these sensors:
 
-| Parameters                                                       |            LA 55-P |            LA 100-P |
-|:-----------------------------------------------------------------|-------------------:|--------------------:|
-| Primary nominal RMS current                                      | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
-| Primary current, measuring range                                 |         $\pm$ 70 A |         $\pm$ 150 A |
-| Burden resistor range                                            | 135 - 155 $\Omega$ |     0 - 33 $\Omega$ |
-| Secondary turns, _N_<sub>2</sub>                                 |               1000 |                2000 |
-| Accuracy                                                         |        $\pm$ 0.65% |         $\pm$ 0.45% |
-| Linearity                                                        |            < 0.15% |             < 0.15% |
-| Bandwidth                                                        |            200 kHz |             200 kHz |
+| Parameters                       |            LA 55-P |            LA 100-P |
+|:---------------------------------|-------------------:|--------------------:|
+| Primary nominal RMS current      | 50 A<sub>rms</sub> | 100 A<sub>rms</sub> |
+| Primary current, measuring range |         $\pm$ 70 A |         $\pm$ 150 A |
+| Burden resistor range            | 135 - 155 $\Omega$ |     0 - 33 $\Omega$ |
+| Secondary turns, $N_2$           |               1000 |                2000 |
+| Accuracy                         |        $\pm$ 0.65% |         $\pm$ 0.45% |
+| Linearity                        |            < 0.15% |             < 0.15% |
+| Bandwidth                        |            200 kHz |             200 kHz |
 
 ```{note}
-The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor. The rest of this document is specific to the LA 100-P variant.
+The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, that users must be careful about when ordering. The sensor gains of each of these variants are different, which has implications for the choice of the burden resistor.
 ```
 
-#### Burden Resistor (_R_<sub>_BURDEN_</sub>)
+#### Burden Resistor ($R_{\rm BURDEN}$)
 
-A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance, _R_<sub>_BURDEN_</sub> was calculated using the following equation
+A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance was calculated using the following equations:
 
-_V_<sub>_BURDEN_</sub>  = (_N_<sub>1</sub>/_N_<sub>2</sub>) _I_<sub>_PRIMARY_</sub> _R_<sub>_BURDEN_</sub>
+$$
+V_{\rm BURDEN}  = \frac{N_1}{N_2} I_{\rm PRIMARY} R_{\rm BURDEN}
+$$
 
-_R_<sub>_BURDEN_</sub>  = (_V_<sub>_BURDEN_</sub>/_I_<sub>_PRIMARY_</sub>)*(_N_<sub>2</sub>/_N_<sub>1</sub>)
+$$
+R_{\rm BURDEN}  = \frac{V_{\rm BURDEN}}{I_{\rm PRIMARY}} \frac{N_2}{N_1}
+$$
 
-where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. The selected burden resistor must remain within the range in the sensor datasheet.
+where $N_1$ is the primary turns (the number of turns the user passes through the sensor's window) and $N_2$ is the secondary turns. The selected burden resistor must remain within the range in the sensor datasheet.
 
 #### Current Sensor Gain
 
-The LEM current sensor has a conversion ratios of _N_<sub>1</sub>:_N_<sub>2</sub>. The current-voltage gain across the burden resistor is given by _N_<sub>1</sub>/_N_<sub>2</sub> _R_<sub>_BURDEN_</sub>. The measurement range can be reduced by increasing the number of primary turns without the need to modify any other parts of the circuit. For example, increasing _N_<sub>1</sub> from 1 to 10 allows currents 10 times lower to be measured with the same output voltage range.
+The LEM current sensor has a conversion ratios of $N_1$:$N_2$. The current-voltage gain across the burden resistor is given by $N_1$/$N_2$ $R_{\rm BURDEN}$. The measurement range can be reduced by increasing the number of primary turns without the need to modify any other parts of the circuit. For example, increasing $N_1$ from 1 to 10 allows currents 10 times lower to be measured with the same output voltage range.
 
 ### Voltage Reference (LDO)
 
-The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5 V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5 V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
+The voltage reference, $V_{\rm REF}$ is needed for the ADC. As 5 V is readily available, and the LDO will have a minimum drop out voltage,  $V_{\rm REF}$ = 4.5 V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5 V input and provide a 4.5 V reference output. This has an accuracy of 0.1% and low noise of 3 $\mu \rm{V}_{\rm{pp}}/\rm{V}$.
 
 ### Op Amp Stage
 
@@ -81,7 +84,7 @@ A non-inverting level translation circuit is implemented using Op Amps as shown 
 :class: only-dark
 ```
 
-This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of 0-$V_{\rm REF}$.
+This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of $0-V_{\rm REF}$.
 
 The output voltage for this circuit can be solved as:
 
@@ -98,14 +101,16 @@ $$
 The resistor values can be calculated from solving these expressions analytically. However, the algebra gets quite complicated. Instead, these values were computed using the [TI analog engineer's calculator](https://www.ti.com/tool/ANALOG-ENGINEER-CALC).
 
 ```{attention}
-As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2V to 4.5V for best performance. The user is advised to consider their required current measurement range with the [final voltage expressions](#voltage-relationship) to select an appropriate number of [primary turns](#current-sensor-gain).
+As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2 V to 4.5 V for best performance. The user is advised to consider their required current measurement range with the [Relationship Between Input and ADC voltage](#relationship-between-input-and-adc-voltage) to select an appropriate number of [primary turns](#current-sensor-gain).
 ```
 
 ### First Order Anti-Aliasing Filter
 
-A first order RC filter is implemented on the output of the op amp circuit. The cutoff frequency was set at 48kHz and the following equations was used for the computation:
+A first order RC filter is implemented on the output of the op amp circuit. The cutoff frequency was set at 48 kHz and the following equations was used for the computation:
 
-$$f_c = \frac{1}{2\pi RC} $$
+$$
+f_c = \frac{1}{2\pi RC}
+$$
 
 **Note:** The cutoff frequency can easily be changed by swapping out `R3`.
 
@@ -120,16 +125,16 @@ From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the ge
 ##### General Expression
 
 $$
-I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
+I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right]
 $$
 
 #### LA 55-P Configurations
 
-The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$. For a sensing range of 70 A, the burden resistance _R_<sub>_BURDEN_</sub> can be calculated as _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143 $\Omega$.
+The final design for LA 55-P is implemented so that $I_{\rm PRIMARY} = -70$ A results in $V_{\rm out} \approx 0$ V and $I_{\rm PRIMARY} = 70$ A results in $V_{\rm out} \approx 5$ V. For a sensing range of 70 A, the burden resistance $R_{\rm BURDEN}$ can be calculated as $R_{\rm BURDEN}$  = (10 V/70 A)*(1000/1) = 143 $\Omega$.
 
 ##### Revision A, B
 
-In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
+In this design, $N_1$:$N_2$ = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150 $\Omega$, $R_{\rm a}$ = 10 k$\Omega$, $R_{\rm b}$ = 8.45 k$\Omega$, $R_{\rm c}$ = 4.64 k$\Omega$, resulting in:
 
 $$
 I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA,B}} - 2.4922) \qquad {\rm [A]}
@@ -137,7 +142,7 @@ $$
 
 ##### Revision C
 
-In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
+In this design, $N_1$:$N_2$ = 1:1000, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150 $\Omega$, $R_{\rm a}$ = 10 k$\Omega$, $R_{\rm b}$ = 10.7 k$\Omega$, $R_{\rm c}$ = 4.12 k$\Omega$, resulting in:
 
 $$
 I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
@@ -145,31 +150,31 @@ $$
 
 #### Proposed LA 100-P Configuration
 
-The proposed LA 100-P configuration is designed so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\mathrm{BURDEN}}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed _N_<sub>1</sub>:_N_<sub>2</sub> = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2Ω, $R_{\rm a}$ = 1.24kΩ, $R_{\rm b}$ = 28.7kΩ, $R_{\rm c}$ = 1.21kΩ. The proposed component values result in the following relationship:
+The proposed LA 100-P configuration is designed so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\rm BURDEN}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed $N_1$:$N_2$ = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2 $\Omega$, $R_{\rm a}$ = 1.24 k$\Omega$, $R_{\rm b}$ = 28.7 k$\Omega$, $R_{\rm c}$ = 1.21 k$\Omega$. The proposed component values result in the following relationship:
 
 $$
-I_{\text{PRIMARY}} = 59.9995 \times (V_{\text{ADC, RevA,B}} - 2.4999) \qquad {\rm [A]}
+I_{\text{PRIMARY}} = 59.9995 \times (V_{\text{ADC}} - 2.4999) \qquad {\rm [A]}
 $$
 
 #### Summary of Sensor Configurations
 
 Finally, a table summarizes the parameters and resulting relationships for all sensor configurations.
 
-| Parameter             | LA 55-P, Rev. A/B | LA 55-P, Rev. C | LA 100-P |
-|:----------------------|------------------:|----------------:|---------:|
-| $N_1$                 |                 1 |               1 |        3 |
-| $N_2$                 |              1000 |            1000 |     2000 |
-| $V_{\mathrm{REF}}$    |               5 V |           4.5 V |      5 V |
-| $R_{\mathrm{BURDEN}}$ |             150 Ω |           150 Ω |   23.2 Ω |
-| $R_a$                 |             10 kΩ |           10 kΩ |  1.24 kΩ |
-| $R_b$                 |           8.45 kΩ |         10.7 kΩ |  28.7 kΩ |
-| $R_c$                 |           4.64 kΩ |         4.12 kΩ |  1.21 kΩ |
+| Parameter        | LA 55-P, Rev. A/B | LA 55-P, Rev. C |       LA 100-P |
+|:-----------------|------------------:|----------------:|---------------:|
+| $N_1$            |                 1 |               1 |              3 |
+| $N_2$            |              1000 |            1000 |           2000 |
+| $V_{\rm REF}$    |               5 V |           4.5 V |            5 V |
+| $R_{\rm BURDEN}$ |     150  $\Omega$ |   150  $\Omega$ | 23.2  $\Omega$ |
+| $R_a$            |      10 k$\Omega$ |    10 k$\Omega$ | 1.24 k$\Omega$ |
+| $R_b$            |    8.45 k$\Omega$ |  10.7 k$\Omega$ | 28.7 k$\Omega$ |
+| $R_c$            |    4.64 k$\Omega$ |  4.12 k$\Omega$ | 1.21 k$\Omega$ |
 
 ### Connectors
 
 - There are two screw terminals `P5` and `P6` to connect the conductor in which the current is to be measured
 - A screw terminal block `P1` is used to connect the +-15V supply for the current sensor
-- A BNC terminal is available to directly measure the output across the burden resistor _R_<sub>_BURDEN_</sub>
+- A BNC terminal is available to directly measure the output across the burden resistor $R_{\rm BURDEN}$
 
 ## Footprints
 
