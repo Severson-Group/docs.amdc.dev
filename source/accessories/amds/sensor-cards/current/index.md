@@ -27,7 +27,6 @@ The high level block diagram of the current sensor card is shown below:
 ```{image} images/current-sensor-blockdiagram.svg
 :class: only-light
 ```
-
 ```{image} images/current-sensor-blockdiagram-dark.svg
 :class: only-dark
 ```
@@ -55,10 +54,6 @@ The LA 100 series has three variants, LA 100-P, LA 100-P/SP13, and LA 100-TP, th
 A burden resistor (`R5`) is used to convert the current output of the sensor to a voltage. The burden resistance was calculated using the following equations:
 
 $$
-V_{\rm BURDEN}  = \frac{N_1}{N_2} I_{\rm PRIMARY} R_{\rm BURDEN}
-$$
-
-$$
 R_{\rm BURDEN}  = \frac{V_{\rm BURDEN}}{I_{\rm PRIMARY}} \frac{N_2}{N_1}
 $$
 
@@ -79,7 +74,6 @@ A non-inverting level translation circuit is implemented using Op Amps as shown 
 ```{image} images/current-sensor-opamp-stage.svg
 :class: only-light
 ```
-
 ```{image} images/current-sensor-opamp-stage-dark.svg
 :class: only-dark
 ```
@@ -148,9 +142,9 @@ $$
 I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
 
-#### Proposed LA 100-P Configuration
+#### LA 100-P Configuration
 
-The proposed LA 100-P configuration is designed so that $I_{\rm PRIMARY} = -150A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 150A$ results in $V_{\rm out} \approx 5V$. Using the LA 100-P requires changing $R_{\rm BURDEN}$, $R_a$, $R_b$, and $R_c$. To achieve this, the proposed $N_1$:$N_2$ = 1:2000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 23.2 $\Omega$, $R_{\rm a}$ = 1.24 k$\Omega$, $R_{\rm b}$ = 28.7 k$\Omega$, $R_{\rm c}$ = 1.21 k$\Omega$. The proposed component values result in the following relationship:
+The proposed LA 100-P configuration is designed so that $I_{\rm PRIMARY} = -150$ A results in $V_{\rm out} \approx 0$ V and $I_{\rm PRIMARY} = 150$ A results in $V_{\rm out} \approx 5$ V. Using the LA 100-P requires changing $R_{\rm BURDEN}$, $R_a$, $R_b$, and $R_c$. The proposed configuration uses $N_1$:$N_2$ = 3:2000, $V_{\rm REF}$ = 5 V, $R_{\rm BURDEN}$ = 23.2 $\Omega$, $R_{\rm a}$ = 1.24 k$\Omega$, $R_{\rm b}$ = 28.7 k$\Omega$, $R_{\rm c}$ = 1.21 k$\Omega$. These component values result in the following relationship:
 
 $$
 I_{\text{PRIMARY}} = 59.9995 \times (V_{\text{ADC}} - 2.4999) \qquad {\rm [A]}
@@ -158,7 +152,7 @@ $$
 
 #### Summary of Sensor Configurations
 
-Finally, a table summarizes the parameters and resulting relationships for all sensor configurations.
+Finally, the table below summarizes the parameters and resulting relationships for all sensor configurations:
 
 | Parameter        | LA 55-P, Rev. A/B | LA 55-P, Rev. C |       LA 100-P |
 |:-----------------|------------------:|----------------:|---------------:|
@@ -173,7 +167,7 @@ Finally, a table summarizes the parameters and resulting relationships for all s
 ### Connectors
 
 - There are two screw terminals `P5` and `P6` to connect the conductor in which the current is to be measured
-- A screw terminal block `P1` is used to connect the +-15V supply for the current sensor
+- A screw terminal block `P1` is used to connect the $\pm 15$ V supply for the current sensor
 - A BNC terminal is available to directly measure the output across the burden resistor $R_{\rm BURDEN}$
 
 ## Footprints
