@@ -277,7 +277,7 @@ This tuning ensures a pole zero cancellation in the closed transfer function, re
 ## References
 
 (enc-ref-1)=
-1. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
+1. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
 
 (enc-ref-2)=
-2. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
+2. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
