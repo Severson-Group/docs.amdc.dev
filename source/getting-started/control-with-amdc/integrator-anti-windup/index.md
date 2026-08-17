@@ -14,6 +14,11 @@ The primary components of a control diagram are the controller and plant. The co
 
 ```{image} images/control-diagram-sat.svg
     :align: center
+    :class: only-light
+```
+```{image} images/control-diagram-sat-dark.svg
+    :align: center
+    :class: only-dark
 ```
 
 In this example, a simple plant model of $1/(s+1)$ is employed, with the saturation block located before the plant. The saturation block produces an output signal bounded to the upper saturation value of `+Limit` and lower saturation value of `-Limit`. This type of first order system is found in many physical systems where the AMDC is used. Examples include:
@@ -86,6 +91,11 @@ To avoid integrator windup, anti-windup techniques are now introduced. The block
 
 ```{image} images/control-diagram-overview.svg
     :align: center
+    :class: only-light
+```
+```{image} images/control-diagram-overview-dark.svg
+    :align: center
+    :class: only-dark
 ```
 
 The goal of anti-windup methods is to configure the integrator so that it does not integrate to grow the manipulated variable beyond what the actuator is capable of realizing. In terms of the block diagram, this means that if the manipulated variable reaches the specified `Limit` of the saturation block, the integrator stops integrating.
@@ -109,6 +119,12 @@ The "simple" version of clamping stops integrating when `preSat` $\neq$ `postSat
 ```{image} images/anti-windup-simple-clamping.svg
     :align: center
     :width: 70%
+    :class: only-light
+```
+```{image} images/anti-windup-simple-clamping-dark.svg
+    :align: center
+    :width: 70%
+    :class: only-dark
 ```
 
 The Simulink simulation of tracking a step command introduced earlier is now repeated with simple clamping. Results are shown below:
@@ -157,6 +173,12 @@ Now, the advanced version of clamping is introduced as shown in the block diagra
 ```{image} images/anti-windup-advanced-clamping.svg
     :align: center
     :width: 70%
+    :class: only-light
+```
+```{image} images/anti-windup-advanced-clamping-dark.svg
+    :align: center
+    :width: 70%
+    :class: only-dark
 ```
 
 In the advanced clamping method, the behavior itself is essentially similar to that of simple clamping. However, it includes an additional condition as a trigger of anti-windup so that the integrator does not clamp if further integration would reduce windup. That is, the integrator will not clamp if the sign of `Error` is opposite to the sign of `preSat`.
@@ -232,6 +254,12 @@ The idea of back-tracking method is to use a feedback loop to unwind the interna
 ```{image} images/anti-windup-back-tracking.svg
     :align: center
     :width: 70%
+    :class: only-light
+```
+```{image} images/anti-windup-back-tracking-dark.svg
+    :align: center
+    :width: 70%
+    :class: only-dark
 ```
 
 For example, if saturation occurs, `TR` is calculated as `TR = Kb(postSat-preSat)` and added into the integrator to avoid the windup, where $K_\text{b}$ is a feedback gain of the back-tracking. In contrast, if the saturation does not occur, `preSat` and `postSat` must be equal, and `TR` is 0, i.e., the anti-windup is deactivated.
