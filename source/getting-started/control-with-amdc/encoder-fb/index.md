@@ -126,7 +126,7 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes use of an encoder offset value, `theta_off`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `theta_off`.
+The example code shown above makes use of an encoder offset value, `theta_off`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `theta_off`. The procedure described in this section has also been published in [[1]](#enc-ref-1).
 
 #### Determine the approximate offset
 
