@@ -245,7 +245,7 @@ Note that this low pass filter approach will always produce a lagging speed esti
 
 ### Observer Approach
 
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#enc-ref-1), which implements a mechanical model of the rotor as shown below.
+To obtain a no-lag estimate of the rotor speed, users may create an observer [[2]](#enc-ref-2), which implements a mechanical model of the rotor as shown below.
 
 ```{image} resources/observer-figure.svg
 :alt: Observer Figure
