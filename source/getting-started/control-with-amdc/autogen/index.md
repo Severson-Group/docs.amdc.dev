@@ -8,13 +8,13 @@ To apply the controller built in Simulink to the AMDC platform, we need Automati
 
 ## Development Approach with Simulink and AMDC
 
-The figure below shows the Simulink + AMDC workflow. The Simulink + AMDC workflow separates control development into two domains; the Simulink model represents the control algorithm, while the AMDC is responsible for executing this logic at a fixed time interval using real sensor data:
+The figure below shows the Simulink + AMDC workflow. The Simulink + AMDC workflow separates control development into two domains:
 
 - **Design domain (Simulink):**  
   The control algorithm is developed and validated using a graphical model.
 
 - **Execution domain (AMDC):**  
-  The generated C code is executed in real time on the embedded controller.
+  The generated C code is executed in real time on the embedded controller at a fixed time interval.
 
 ```{image} resources/block-diagram.svg
 :height: 10em
@@ -32,7 +32,7 @@ Structure the Simulink model into three subsystems, as follows:
 2. **Plant:** Use this subsystem to represent the physical system for simulation  
 3. **Controller:** Place the control algorithm to be deployed in this subsystem  
 
-Within the AMDC domain, the deployed controller is implemented in the DSP user apps. The user apps communicate with the FPGA-based sensor and PWM interfaces. See the related article for more information on [User Apps](../../../firmware/arch/index.md#user-apps) and [PWM interface](https://docs.amdc.dev/getting-started/tutorials/vsi/index.html).
+Within the AMDC domain, the deployed controller is implemented in the DSP user app. The user app communicate with the FPGA-based sensor and PWM interfaces. See the related articles for more information on [User Apps](../../../firmware/arch/index.md#user-apps) and [PWM interface](https://docs.amdc.dev/getting-started/tutorials/vsi/index.html).
 
 ### Recommended Workflow
 
