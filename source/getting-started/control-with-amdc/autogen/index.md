@@ -8,7 +8,7 @@ To apply the controller developed in Simulink to the AMDC platform, we use Simul
 
 ## Development Approach with Simulink and AMDC
 
-The figure below shows the Simulink + AMDC workflow. The Simulink + AMDC workflow separates control development into two domains:
+The figure below shows the Simulink + AMDC workflow, which separates control development into two domains:
 
 - **Design domain (Simulink):**  
   The control algorithm is developed and validated using a graphical model.
