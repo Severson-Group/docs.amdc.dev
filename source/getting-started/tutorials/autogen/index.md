@@ -21,16 +21,16 @@ This tutorial goes over:
 The first step is to organize your repository. Create a new `autogen` folder and `vsi` folder folder in your repository, as shown below:
 
 ```markdown
-research repo/
-|-- firmware/
-     |-- AMDC-Firmware/          <= AMDC-Firmware as submodule
-     |-- project-firmware/       
-         |-- usr/                <= Your private user C code
-             | -- controller/    <= Your private user app
-                 | -- autogen/   <= Now create this folder
-|-- modeling/
-|    |-- simulink/
-|        |-- vsi/                <= Now create this folder
+research-repo/
+├── firmware/
+│   ├── AMDC-Firmware/           <= AMDC-Firmware as submodule
+│   └── project-firmware/
+│       └── usr/                 <= Your private user C code
+│           └── controller/      <= Your private user app
+│               └── autogen/     <= Now create this folder
+└── modeling/
+    └── simulink/
+        └── vsi/                 <= Now create this folder
 ```
 
 ## Install Required MATLAB/Simulink Toolbox
