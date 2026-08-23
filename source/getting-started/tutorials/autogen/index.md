@@ -14,7 +14,7 @@ This tutorial goes over:
 
 1. Working AMDC hardware
 2. Completion of the ["Voltage Source Inverter" tutorial](../vsi/index.md)
-3. Read ["Control with AMDC Using Simulink Autogen" article](../../control-with-amdc/autogen/index.md) to understand an overview of Autogen  
+3. Read ["Control with AMDC Using Simulink Simulink Code Generation" article](../../control-with-amdc/autogen/index.md) to understand an overview of Autogen  
 
 ## File Organization
 
