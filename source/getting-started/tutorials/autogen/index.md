@@ -18,7 +18,7 @@ This tutorial goes over:
 
 ## File Organization
 
-The first step is to organize your repository. Create a new `autogen` folder and `vsi` folder folder in your repository, as shown below:
+The first step is to organize your repository. Create a new `autogen` folder and `vsi` folder in your repository, as shown below:
 
 ```markdown
 research-repo/
