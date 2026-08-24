@@ -8,6 +8,11 @@ The AMDC and AMDS allow up to three AMDS boards to be daisy chained together on 
 
 ```{image} images/daisy-chain.svg
 :width: 100%
+:class: only-light
+```
+```{image} images/daisy-chain-dark.svg
+:width: 100%
+:class: only-dark
 ```
 
 Each AMDS can run the same firmware, and does not need to know it is in a daisy chain. To each AMDS, the board "downstream" from it (i.e., the board with a lower number in the image above) appears as `master`.

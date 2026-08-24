@@ -126,7 +126,7 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes use of an encoder offset value, `theta_off`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides a procedure to determine `theta_off`.
+The example code shown above makes use of an encoder offset value, `theta_off`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides two brief procedures to determine `theta_off`. Readers are referred to Section 5.2 of [[1]](#enc-ref-1) for a more comprehensive description of these procedures.
 
 #### Determine the approximate offset
 
@@ -245,7 +245,7 @@ Note that this low pass filter approach will always produce a lagging speed esti
 
 ### Observer Approach
 
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#enc-ref-1), which implements a mechanical model of the rotor as shown below.
+To obtain a no-lag estimate of the rotor speed, users may create an observer [[2]](#enc-ref-2), which implements a mechanical model of the rotor as shown below.
 
 ```{image} resources/observer-figure.svg
 :alt: Observer Figure
@@ -277,4 +277,7 @@ This tuning ensures a pole zero cancellation in the closed transfer function, re
 ## References
 
 (enc-ref-1)=
-1. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
+1. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
+
+(enc-ref-2)=
+2. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
