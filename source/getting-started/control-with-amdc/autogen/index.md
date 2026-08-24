@@ -1,4 +1,4 @@
-# Control with AMDC Using Simulink Code Generation
+# Firmware Development Using Simulink Code Generation
 
 ## Background
 
