@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="200.66165mm"
-   height="44.615456mm"
-   viewBox="0 0 200.66166 44.615456"
+   width="204.60902mm"
+   height="51.359169mm"
+   viewBox="0 0 204.60903 51.35917"
    version="1.1"
    id="svg8"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
@@ -193,18 +193,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="212.5"
-     inkscape:cy="-45.357142"
+     inkscape:zoom="1.979899"
+     inkscape:cx="472.24631"
+     inkscape:cy="-21.465741"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-global="false"
-     inkscape:window-width="2880"
-     inkscape:window-height="1514"
-     inkscape:window-x="2869"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1"
+     inkscape:window-width="2041"
+     inkscape:window-height="1008"
+     inkscape:window-x="3339"
+     inkscape:window-y="257"
+     inkscape:window-maximized="0"
      inkscape:document-rotation="0"
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
@@ -213,8 +213,8 @@
     <inkscape:grid
        type="xygrid"
        id="grid4114"
-       originx="45.315136"
-       originy="-22.154944"
+       originx="46.001571"
+       originy="-15.411228"
        spacingy="1"
        spacingx="1"
        units="mm"
@@ -235,7 +235,14 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(45.315124,-22.154943)">
+     transform="translate(46.001559,-15.411229)">
+    <rect
+       id="rect10-1-6-94"
+       width="197.98898"
+       height="22.189079"
+       x="-39.523865"
+       y="20.193785"
+       style="fill:#ffffff;stroke:#008000;stroke-width:0.284683;stroke-miterlimit:4;stroke-dasharray:1.70809, 0.284683;stroke-dashoffset:0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.208355;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
        d="M 63.450629,27.999998 H 109.36036"
@@ -329,8 +336,8 @@
        y="45.31345"
        style="fill:#ffffff;stroke:#ff00ff;stroke-width:0.197952;stroke-miterlimit:4;stroke-dasharray:1.18771, 0.197952;stroke-dashoffset:0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.208355;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-8)"
-       d="M 93.796235,58.582529 H 107.49063"
+       style="fill:none;stroke:#000000;stroke-width:0.163208;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-8)"
+       d="m 99.087908,58.582529 h 8.402722"
        id="path46-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -421,7 +428,18 @@
          x="-40.734005"
          y="57.962215"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.41111px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
-         id="tspan14-2">Sensor</tspan></text>
+         id="tspan14-2">Sensors</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.41111px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-33.435337"
+       y="17.860693"
+       id="text1263-1-9-6-3-6-8"><tspan
+         sodipodi:role="line"
+         x="-33.435337"
+         y="17.860693"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.41111px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         id="tspan14-2-2">Simulink</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.206549;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-5-5)"
        d="m 28.925294,58.484726 h 10.53019"
@@ -553,7 +571,7 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.41111px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
          id="tspan7-2">Algorithm</tspan></text>
     <rect
-       style="fill:#00ffff;fill-opacity:1;stroke:#000000;stroke-width:0.232328;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.232328;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1587-0-2-4-6-2"
        width="11.009809"
        height="23.240355"
@@ -577,7 +595,7 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.41111px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
          id="tspan11">Input Driver</tspan></text>
     <rect
-       style="fill:#00ffff;fill-opacity:1;stroke:#000000;stroke-width:0.232328;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.232328;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1587-0-2-4-6-2-5"
        width="11.009809"
        height="23.240355"
