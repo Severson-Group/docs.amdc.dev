@@ -26,7 +26,12 @@ Notice how each task is independent -- they all run at different frequencies and
 
 #### Example
 
-![tasks-example](images/tasks-example.svg)
+```{image} images/tasks-example.svg
+:class: only-light
+```
+```{image} images/tasks-example-dark.svg
+:class: only-dark
+```
 
 In the above diagram, three tasks are shown operating over time (referred to as T1, T2, and T3). T3, shown in red, operates every time slice and consumes nearly half the quantum. T2, shown in green, operates at half the frequency of T3 and consumes less computation time. Finally, T1, shown in blue, runs at a third the rate of T3 and only for little bursts of time.
 
@@ -79,7 +84,12 @@ int main(int argc, char **argv);
 
 When the user types a command into the terminal, a complex set of operations is set in motion (see implementation in `sys/commands.c`). Below is a diagram of the flow of each character the user types. When developing user applications that include commands, the developer does not need to worry about the following information, as they simply implement the commmand handler (shown in green below). For completeness, the following discussion is presented as explanation for how the user-supplied command handler is (eventually) called.
 
-![cmd-flow](images/cmd-flow.svg)
+```{image} images/cmd-flow.svg
+:class: only-light
+```
+```{image} images/cmd-flow-dark.svg
+:class: only-dark
+```
 
 What happens when a character is entered into the terminal? The user terminal reads the input character and sends it to the driver on their PC which talks with the USB-UART device on AMDC. The character is then sent over the physical medium to the AMDC hardware. The UART hardware peripherial buffers incoming characters in a small FIFO (first-in, first-out) structure (referred to as simply FIFO).
 

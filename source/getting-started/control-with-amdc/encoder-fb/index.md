@@ -17,9 +17,16 @@ The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.
 :alt: Motor Cross-Section with Encoder Angles
 :width: 350px
 :align: right
+:class: only-light
+```
+```{image} resources/motor-cross-section-dark.svg
+:alt: Motor Cross-Section with Encoder Angles
+:width: 350px
+:align: right
+:class: only-dark
 ```
 
-This document assumes the configuration shown to the right, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
+This document assumes the configuration shown to the right, where the control code expects a measurement of the angle of the rotor's north pole relative to the phase $u$ magnetic axis, labeled as a mechanical angle $\theta_{\rm m}$. The encoder provides $\theta_{\rm enc}$, which is the number of counts since the last z-pulse. The user's code needs to convert $\theta_{\rm enc}$ (in units of counts) into $\theta_{\rm m}$ (likely in units of radians) and handle an offset angle $\theta_{\rm off}$ between the encoder's 0 position and the phase $u$ axis.
 
 ### Configuring the encoder
 
@@ -47,15 +54,26 @@ The AMDC provides a convenience function that can be used as an alternate to `en
 
 The recommended approach to reading the shaft position from the encoder is illustrated in the figure below:
 
-<img src="resources/EncoderCodeBlockDiagram.svg" width="100%" align="center"/>
+```{image} resources/encoder-code-flow.svg
+:alt: Encoder Code Block Diagram.svg
+:width: 75%
+:align: center
+:class: only-light
+```
+```{image} resources/encoder-code-flow-dark.svg
+:alt: Encoder Code Block Diagram.svg
+:width: 75%
+:align: center
+:class: only-dark
+```
 
-First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
+First, the AMDC [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module function `encoder_get_position()` is used to obtain the encoder's count $\theta_{\rm enc}$ since the last z-pulse.
 
 ```{tip}
 The [`drv/encoder`](/firmware/arch/drivers/encoder.md) driver module also has a function called `encoder_get_steps()` which returns the encoder's count since power-on. One rotation direction increments, the other decrements. This value does not wrap around (it ignores `encoder_set_counts_per_rev()` and the z-pulse). Users are advised to use `encoder_get_position()`, which does wrap around and tracks the z-pulse.
 ```
 
-Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This is done by 1) removing the offset and 2) converting counts into radians. For the the angles defined as shown in the image above, this is simply calculated as
+Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This is done by 1) removing the offset and 2) converting counts into radians. For the angles defined as shown in the image above, this is simply calculated as
 
 $$
 \theta_{\rm m} = \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left( \theta_{\rm enc} - \theta_{\rm off} \right)
@@ -73,7 +91,7 @@ The user can experimentally determine whether the encoder count increases with c
 
 Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the $\theta_{\rm m}$. This can be accomplished in C by using the `mod` function. This is shown in the final block in the diagram.
 
-Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already know; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
+Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already known; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
 ```C
 double task_get_theta_m(void)
 {
@@ -108,37 +126,110 @@ double task_get_theta_m(void)
 
 ### Finding the offset
 
-The example code shown above makes uses of an encoder offset value, `enc_theta_m_offset`. It is necessary for the user to find this offset experimentally for their machine. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. 
+The example code shown above makes use of an encoder offset value, `theta_off`. For synchronous machines, this offset is the count value measured by the encoder when the d-axis of the rotor is aligned with the phase U winding axis of the stator. This value typically needs to be found experimentally for each motor/encoder pair because it depends on how the encoder was aligned when it was coupled to the motor's shaft. This section provides two brief procedures to determine `theta_off`. Readers are referred to Section 5.2 of [[1]](#enc-ref-1) for a more comprehensive description of these procedures.
 
-To determine the appropriate offset value, eliminate any source of load torque on the shaft and apply a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). This should cause the rotor to align with the phase U winding axis. The offset value can now be obtained as `enc_theta_m_offset = encoder_get_position()`. Alternately, the user may also inject a current along the d-axis using the AMDC [Signal Injection](https://docs.amdc.dev/getting-started/user-guide/injection/index.html) module. While injecting d-axis current, the user must ensure that the rotor position is set to zero in the control code. 
+#### Determine the approximate offset
 
-After obtaining the offset, the user needs to set the variable `enc_theta_m_offset` to the appropriate value in the `task_get_theta_m()` function. 
+```{image} resources/torque-plot.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-light
+```
+```{image} resources/torque-plot-dark.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-dark
+```
 
-To ensure that the obtained encoder offset is correct, the user may perform additional validation. For a permanent magnet synchronous motor, this can be done as follows:
+The approximate encoder offset can be found by taking advantage of the motor having the torque characteristic shown on the right. This depicts shaft torque as the shaft is rotated counter-clockwise and corresponds to [the image at the start of the section](#rotor-position); positive torque is in the counter-clockwise direction.
 
-1. Spin the motor up-to a steady speed under no load conditions
-1. Measure the d-axis voltage commanded by the current regulator
-1. Repeat the experiment for a few different rotor speeds
-1. Plot the d-axis voltage against the rotor speed
-1. The d-axis voltage should be close to zero for all speeds, if the offset is tuned correctly
-1. In-case there is an error in the offset value, a significant speed dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
+The following simple procedure can be used without any feedback control:
 
+1. Set the `theta_off` to 0 in the control code `task_get_theta_m()`.
+2. Eliminate any source of load torque on the shaft.
+3. Power on the AMDC and rotate the rotor manually by one revolution (so that the encoder z-pulse is detected).
+4. Align the rotor with the phase U winding axis by applying a large current vector at 0 degrees ($I_u = I_0$, $I_v = I_w = -\frac{1}{2} I_0$). This could be accomplished by:
+    1) Using a DC power supply, or
+    2) Injecting a current command on the d-axis using the AMDC [Signal Injection](/getting-started/user-guide/injection/index.rst) module with `theta_m` fixed to 0.
+5. Record the current encoder position and use this as the offset value: `theta_off = encoder_get_position();`.
+6. Update the variable `theta_off` to the appropriate value in `task_get_theta_m()`.
 
+#### Determine precise offset
+
+Friction and cogging torque in the motor can decrease the accuracy of the estimate in [Finding the offset](#finding-the-offset). A more precise offset can be found by fine-tuning the `theta_off` value while using closed-loop control to rotate the shaft at different speeds and monitoring the observed d-axis voltage.
+
+```{image} resources/reference-frame.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-light
+```
+```{image} resources/reference-frame-dark.svg
+:alt: Torque Variation with Rotor Angle
+:width: 250px
+:align: right
+:class: only-dark
+```
+
+The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
+
+- $\hat{\theta}_\mathrm{e}$ is the incorrect eletrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
+- the $\gamma$-$\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
+- the $\mathrm{d}$-$\mathrm{q}$ vectors and $\theta_\mathrm{e}$ angle depict the actual $\mathrm{d}$-$\mathrm{q}$ frame of the motor.
+
+Note that ${\theta}_{\mathrm{e}} = p {\theta}_{\mathrm{m}}$ is the electrical angle where $p$ is the number of pole-pairs of the motor and $\omega_\mathrm{e} = \dot{\theta}_{\mathrm{e}}$ is the electrical angular velocity with units of radians per second.
+
+The voltage vector of the motor terminals $\vec{V}$ is shown in red and can be expressed in complex vector form as follows:
+
+$$
+\vec{V} = R \vec{i} + L \frac{d\vec{i}}{dt} + j \omega_\mathrm{e} \lambda_{\mathrm{pm}} e^{j{\theta}_\mathrm{e}}
+$$
+
+This voltage vector can be converted into the $\gamma$-$\delta$ reference frame as follows.
+
+$$
+v_{\gamma} + j\ v_{\delta} = \vec{V} e^{-j\hat{\theta}_\mathrm{e}}
+$$
+
+When the current commands are set to $\vec{i} = 0$, $v_{\gamma}$ can be expressed as follows.
+
+$$
+\left. v_{\gamma} \right|_{\vec{i}=0} = -\omega_\mathrm{e} \lambda_{\mathrm{pm}} \sin(\theta_\mathrm{e} - \hat{\theta}_\mathrm{e})
+$$
+
+If there is no estimation error (i.e., $\theta_\mathrm{e} - \hat{\theta}_\mathrm{e} = 0$), the $\gamma$-$\delta$ frame aligns with the $\mathrm{d}$-$\mathrm{q}$ and the $v_\mathrm{d}$ value seen by the controller should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_\gamma=v_\mathrm{d} = 0$.
+
+1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
+2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `theta_off` obtained in [Finding the offset](#finding-the-offset).
+3. Sweep `theta_off` over a small range around the initial estimate (e.g., ±5 counts). For each value, monitor the d-axis voltage and find the `theta_off` value that makes the d-axis voltage closest to 0 V. Identify this by observing when the sign of the d-axis voltage changes.
+4. Repeat step 3 at multiple rotor speeds. At each speed, record the `theta_off` value that minimizes the d-axis voltage.
+5. Take the average of the collected `theta_off` values from step 4 to determine the final encoder offset value.
+6. Plot the d-axis voltage with the final offset against the different rotor speeds. The d-axis voltage should be close to zero for all speeds if the offset is tuned correctly.
+7. In case there is an error in the offset value, a significant speed-dependent voltage will appear on the d-axis voltage. In this case, the user may have to re-measure the encoder offset.
+
+An example of the results is shown in the plot below. After the calibration process, the updated encoder offset results in the d-axis voltage being closer to 0 across different speeds compared to the previous value.
+
+```{image} resources/encoder-offset.svg
+:alt: Torque Variation with Rotor Angle
+:width: 300px
+:align: center
+```
 
 ## Computing Speed from Position
 
-The user needs to compute a rotor speed signal from the obtained position signal to be used in the control algorithm. There are several ways to do this. 
+Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying acuracy and implementation complexity, and the most common approaches are now presented.
 
 ### Difference Equation Approach
 
-A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_{raw}$.
+A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_\mathrm{raw}$.
 
 $$
-\Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s} 
+\Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s}
 $$
 
-
-Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder. 
+Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder.
 
 ### Low Pass Filter Approach
 
@@ -148,31 +239,45 @@ $$
  \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
 $$
 
-Here, $T_{\rm s}$ is the control sample rate and $\omega_b$ is the low pass filter bandwidth. The user must select this bandwidth to obtain a sufficiently clean speed signal.  The optimal bandwidth to use is going to vary based on the motor system. Typically, a bandwidth of 10 Hz is a reasonable starting point. This can be reduced if the speed signal remains too noisy, or increased for higher speed controls. 
+Here, $T_{\rm s}$ is the control sample rate and $\omega_b$ is the low pass filter bandwidth. The user must select this bandwidth to obtain a sufficiently clean speed signal.  The optimal bandwidth to use is going to vary based on the motor system. Typically, a bandwidth of 10 Hz is a reasonable starting point. This can be reduced if the speed signal remains too noisy, or increased for higher speed controls.
 
 Note that this low pass filter approach will always produce a lagging speed estimate due to phase delay in the filter transfer function. This may be unacceptable higher performance motor control algorithms.
 
 ### Observer Approach
 
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[1]](#1), which implements a mechanical model of the rotor as shown below. 
+To obtain a no-lag estimate of the rotor speed, users may create an observer [[2]](#enc-ref-2), which implements a mechanical model of the rotor as shown below.
 
-<img src="./resources/ObserverFigure.svg" width="100%" align="center"/>
-
+```{image} resources/observer-figure.svg
+:alt: Observer Figure
+:width: 600px
+:align: center
+:class: only-light
+```
+```{image} resources/observer-figure-dark.svg
+:alt: Observer Figure
+:width: 600px
+:align: center
+:class: only-dark
+```
 
 The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this observer, the user needs to know the system parameters:
 - `J`: the inertia of the rotor  
-- `b` the damping coefficient of the rotor. 
+- `b` the damping coefficient of the rotor.
 
-It is also necessary to provide the electromechanical torque, $T_{em}$ as input to the mechanical model. 
+It is also necessary to provide the electromechanical torque, $T_\mathrm{em}$ as input to the mechanical model.
 
 The `PI` portion of the observer closes the loop on the speed, with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
+
 $$
-K_p = \omega_{sf}b, K_i = \omega_{sf}J
+K_\mathrm{p} = \omega_\mathrm{sf}b, K_\mathrm{i} = \omega_\mathrm{sf}J
 $$
 
 This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  An observer bandwidth of 10 Hz is typical of most systems, but similar to the low pass filter approach, users may need to alter this based on the unique aspects of their system.
 
+## References
 
-# References
-<a id="1"></a> 1.  R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: 10.1109/28.85485. keywords: {Servomechanisms;Optical feedback;Optical signal processing;Transducers;Signal resolution;Velocity measurement;Position control;Feedback loop;Velocity control;Noise reduction}
+(enc-ref-1)=
+1. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
 
+(enc-ref-2)=
+2. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).

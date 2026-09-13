@@ -21,7 +21,15 @@ As mentioned above, the analog input to the AMDC should be bipolar differential 
 
 ## Block Diagram / External Connections
 
-![](images/amdc-analog.svg)
+```{image} images/amdc-analog.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-analog-dark.svg
+:align: center
+:class: only-dark
+```
 
 ### Analog connectors
 The analog signal chain of the AMDC can receive up to 8 bipolar differential analog inputs (16 signals in total – 8 positive and 8 negative). There are 4 analog connectors, each receiving up to 2 differential inputs. There are also [ESD protection devices](http://www.smc-diodes.com/propdf/SMDA03C%20THRU%20SMDA24C%20N0297%20REV.B.pdf) located on the `Analog Pn` and `Analog Nn` signals immediately after the connectors to protect the sensitive analog electronics.
@@ -50,7 +58,15 @@ More detailed information on the analog connectors can be found in the [datashee
 ### Difference amplifiers
 Analog input signals should be conditioned before being sampled by the ADC. The first stage of this conditioning is to decrease the voltage level. These are implemented using 4 [INA2143UA](http://www.ti.com/lit/ds/symlink/ina143.pdf) difference amplifier chips. Each chip has two op amps (8 op amps in total), each of which receives one differential analog input. These ICs require a ±15V supply which they receive from the AMDC. Each op amp is configured as the non-inverting amplifier shown below:
 
-![](images/amdc-analog_op_amp.svg)
+```{image} images/amdc-analog_op_amp.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-analog_op_amp-dark.svg
+:align: center
+:class: only-dark
+```
 
 The relationship between the amplifier input and output is as follows: $ V_i = V_\text{REF} + 0.1 (V_i^+ - V_i^-) $
 
@@ -61,7 +77,16 @@ More detailed information on the operating conditions of the op amp can be found
 ### Low-Pass Filters (LPFs)
 After the analog input voltage levels are decreased (stage one), stage two uses low-pass filters to prevent high-frequency noise from reaching the ADCs that could otherwise result in aliasing. To implement this, simple first-order RC filters are used for each analog input:
 
-![](images/amdc-analog_lpf.svg)
+
+```{image} images/amdc-analog_lpf.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-analog_lpf-dark.svg
+:align: center
+:class: only-dark
+```
 
 The cutoff frequency of the filter is selected based on the resistance and capacitance values:
 

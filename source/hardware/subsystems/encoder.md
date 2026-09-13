@@ -17,7 +17,16 @@ There are two design requirements that must be met for the encoder subsystem of 
 
 ## Block Diagram
 
-![](images/amdc-encoder.svg)
+
+```{image} images/amdc-encoder.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-encoder-dark.svg
+:align: center
+:class: only-dark
+```
 
 ### 1. Encoders
 
@@ -35,7 +44,16 @@ Encoder frequency calculations are now provided to evaluate whether an example e
 
 To show what is meant by pulses and counts, an example plot of the _A_ and _B_ quadrature signals is presented below:
 
-![](images/amdc-encoder_input_signals.svg)
+
+```{image} images/amdc-encoder_input_signals.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-encoder_input_signals-dark.svg
+:align: center
+:class: only-dark
+```
 
 `PPR` describes the number of high pulses on either _A_ or _B_ over a single revolution. This is equivalent to cycles or periods per revolution. `CPR` usually denotes the counts per revolution, which represents the number of quadrature decoded states between _A_ and _B_. The plot above shows that there are 4 states per square wave period, therefore, `CPR` = 4 * `PPR`.  
 
@@ -65,6 +83,7 @@ To view the mapping between the AMDC schematic labels, PicoZed pins, and Zynq-70
 The location of these encoder connectors on the AMDC is shown below:
 
 ![](images/amdc-encoder-input-highlighted.svg)
+
 
 ### 3. Differential to Single-Ended Conversion
 

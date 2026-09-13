@@ -24,7 +24,12 @@ The current measurement card was designed to the following specifications:
 ## Block Diagram
 The high level block diagram of the current sensor card is shown below:
 
-![](images/current-sensor-blockdiagram.svg)
+```{image} images/current-sensor-blockdiagram.svg
+:class: only-light
+```
+```{image} images/current-sensor-blockdiagram-dark.svg
+:class: only-dark
+```
 
 ### Current Sensor
 LEM LA 55-P current sensor is selected for this design, as it is the only sensor available from LEM with an open aperture and PC pins that can measure +/-55A. 
@@ -42,6 +47,7 @@ _R_<sub>_BURDEN_</sub>  = (10 V/70 A)*(1000/1) = 143Ω
 
 The LA 55-P datasheet specifies the burden resistor value must be between 135Ω and 155Ω so a 150Ω resistor was selected.
 
+(current-sensor-gain)=
 ### Current Sensor Gain
 The LA 55P has a conversion ratio of _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, where _N_<sub>1</sub> is the primary turns (the number of turns the user passes through the sensor's window) and _N_<sub>2</sub> is the secondary turns. With the chosen _R_<sub>_BURDEN_</sub> and _N_<sub>1</sub> = 1, the current sense circuitry has a current-voltage gain of 1/7 [V/A]. 
 
@@ -50,11 +56,17 @@ To use the sensor in a lower current range, the user can increase the number of 
 ### Voltage Reference (LDO)
 The voltage reference, _V_<sub>_REF_</sub> is needed for the ADC. As 5V is readily available, and the LDO will have a minimum drop out voltage,  _V_<sub>_REF_</sub> = 4.5V was chosen (beginning with board revision C). The LDO selected was `REF5045` from Texas Instruments, which can take a 5V input and provide a 4.5V reference output. This has an accuracy of 0.1% and low noise of 3μVpp/V.
 
+(op-amp-stage)=
 ### Op Amp Stage
 
 A non-inverting level translation circuit is implemented using Op Amps as shown here:
 
-![](images/current-sensor-opamp-stage.svg)
+```{image} images/current-sensor-opamp-stage.svg
+:class: only-light
+```
+```{image} images/current-sensor-opamp-stage-dark.svg
+:class: only-dark
+```
 
 This circuit is used to translate the voltage across the burden resistor, which is bipolar (voltage span includes both positive and negative voltages), to the ADC input range of 0-$V_{\rm REF}$.
 
@@ -75,7 +87,7 @@ The resistor values can be calculated from solving these expressions analyticall
 The final design is implemented so that $I_{\rm PRIMARY} = -70A$ results in $V_{\rm out} \approx 0V$ and $I_{\rm PRIMARY} = 70A$ results in $V_{\rm out} \approx 5V$.
 
 ```{attention}
-As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2V to 4.5V for best performance. The user is advised to consider their required current measurement range with the [final voltage expressions](final-primary-current-to-adc-input-voltage-relationship) to select an appropriate number of [primary turns](current-sensor-gain).
+As the op-amp output voltage approaches the supply rails, it tends to distort and behave nonlinearly. It is recommended to limit the output voltage to stay within 0.2V to 4.5V for best performance. The user is advised to consider their required current measurement range with the [final voltage expressions](#voltage-relationship) to select an appropriate number of [primary turns](#current-sensor-gain).
 ```
 
 ### First Order Anti-Aliasing Filter
@@ -91,25 +103,31 @@ A single-ended ADC was selected. The ADC used is the Texas Instruments [ADS8860]
 The maximum data throughput for a single chip is 1 MSPS but decreases by a factor of N for N devices in the daisy-chain. 
 The input voltage range is 0-$V_{\rm REF}$. The positive input pin of the ADC `AINP` is connected to the output of the low pass filter, and the negative input pin `AINN` is connected to `GND`.
 
-#### Final Primary Current-to-ADC Input Voltage Relationship
+(voltage-relationship)=
+#### Relationship Between Input and ADC voltage
 
-From the equations provided in the [Op Amp Stage](op-amp-stage) section, the relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{out}}$ can be calculated for each revision of the current sensor board as follows:
+From the equations provided in the [Op Amp Stage](#op-amp-stage) section, the general relationship between the measured current $I_{\rm PRIMARY}$ and the input voltage of ADC $V_{\text{ADC}}$ can be calculated, and the relationship for each revision of the current sensor board is provided below:
 
-##### Revision B
+##### General Expression
 
-In this design, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
+$$ 
+I_{\text{PRIMARY}} = \frac{N_2}{N_1} \left[ \frac{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}}{ R_{a} R_{b} R_{c} R_{\text{BURDEN}}} \right] \left[ V_{\text{ADC}} - \frac{ R_{a} R_{b} (R_{a} + R_{\text{BURDEN}}) }{ ( R_{a} R_{b} + R_{a} R_{c} + R_{b} R_{c} )(R_{a} + R_{\text{BURDEN}}) - R_{b} R_{c} R_{\text{BURDEN}}} V_{\text{REF}} \right] 
+$$
+
+##### Revision A, B
+
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 8.45kΩ, $R_{\rm c}$ = 4.64kΩ, resulting in:
 
 $$
-V_{\text{out, RevB}} = 2.4922 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = 29.2579 \times (V_{\text{ADC, RevA,B}} - 2.4922) \qquad {\rm [A]}
 $$
 
 ##### Revision C
-In this design, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
+In this design, _N_<sub>1</sub>:_N_<sub>2</sub> = 1:1000, $V_{\rm REF}$ = 4.5V, $R_{\rm BURDEN}$ = 150Ω, $R_{\rm a}$ = 10kΩ, $R_{\rm b}$ = 10.7kΩ, $R_{\rm c}$ = 4.12kΩ, resulting in:
 
 $$
-V_{\text{out, RevC}} = 2.5126 + 0.034 I_{\text{PRIMARY}} \qquad { \rm [V]}
+I_{\text{PRIMARY}} = 29.4146 \times (V_{\text{ADC, RevC}} - 2.5126) \qquad \mathrm{[A]}
 $$
-
 
 ### Connectors
 - There are two screw terminals `P5` and `P6` to connect the conductor in which the current is to be measured

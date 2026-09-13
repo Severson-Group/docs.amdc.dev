@@ -33,7 +33,23 @@ source inverter, the control algorithm etc. was kept identical between both test
 block diagram showing the test setup under both conditions, as well as pictures of the hardware setup, are provided below. The difference between the 
 test setups have been made apparent in both sets of figures.
 
-![](images/woAMDS.svg) ![](images/withAMDS.svg)
+```{image} images/woAMDS.svg
+:class: only-light
+:align: left
+```
+```{image} images/withAMDS.svg
+:class: only-light
+:align: right
+```
+```{image} images/woAMDS-dark.svg
+:class: only-dark
+:align: left
+```
+```{image} images/withAMDS-dark.svg
+:class: only-dark
+:align: right
+```
+
 <br>
 <br>
 

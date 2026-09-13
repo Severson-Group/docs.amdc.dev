@@ -16,6 +16,14 @@ A good software system has many layers of abstraction. The client of one subsyst
 :figwidth: 100%
 :width: 600px
 :align: left
+:class: only-light
+```
+```{figure} images/block-diagram-dark.svg
+:alt: block-diagram
+:figwidth: 100%
+:width: 600px
+:align: left
+:class: only-dark
 ```
 
 

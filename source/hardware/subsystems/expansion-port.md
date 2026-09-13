@@ -26,7 +26,15 @@ The design requirements for the isoSPI and differential I/O (D_IO) interface are
 
 ## Block Diagram / External Connections
 
-![](images/amdc-isoSPI.svg)
+```{image} images/amdc-isoSPI.svg
+:align: center
+:class: only-light
+```
+
+```{image} images/amdc-isoSPI-dark.svg
+:align: center
+:class: only-dark
+```
 
 ### 1. DB-15 Connector
 

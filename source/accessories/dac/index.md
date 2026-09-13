@@ -23,6 +23,11 @@ The AMDC DAC expansion board was designed with the following requirements:
 
 ```{image} images/amdc-dac.svg
 :width: 100%
+:class: only-light
+```
+```{image} images/amdc-dac-dark.svg
+:width: 100%
+:class: only-dark
 ```
 
 ### AMDC Connector
@@ -93,6 +98,11 @@ The DAC output voltage ranges between 0V and _V_<sub>_REF_</sub> and must be sca
 
 ```{image} images/amdc-dac_op_amp.svg
 :width: 500px
+:class: only-light
+```
+```{image} images/amdc-dac_op_amp-dark.svg
+:width: 500px
+:class: only-dark
 ```
 
 The equation for the output voltage is as follows:
@@ -107,6 +117,11 @@ After the analog output voltage levels are scaled to the desired range of +/- 10
 
 ```{image} images/amdc-dac_lpf.svg
 :width: 375px
+:class: only-light
+```
+```{image} images/amdc-dac_lpf-dark.svg
+:width: 375px
+:class: only-dark
 ```
 
 The cutoff frequency is achieved based on  the resistance and capacitance values of the filter:

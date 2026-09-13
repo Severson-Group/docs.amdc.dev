@@ -10,7 +10,14 @@ Current sensors are transducers which produce an output signal (either current o
 
 A method is now provided to calibrate the current sensors in a motor drive. An example of the assumed system for a three phase motor is shown in the figure below.
 
-![Current Sensor Configuration](resources/current_sensor_drawing.svg)
+```{image} resources/current_sensor_drawing.svg
+:align: center
+:class: only-light
+```
+```{image} resources/current_sensor_drawing-dark.svg
+:align: center
+:class: only-dark
+```
 
 Typically, each phase has a current sensor associated with it that needs to be calibrated. This method assumes that the signal measured by the AMDC for each sensor is a voltage that must be converted into a current value.
 
