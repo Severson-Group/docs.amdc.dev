@@ -5,7 +5,8 @@ The AMDC Platform provides a versatile and open foundation for establishing high
 | Control Topic | Aim / Goal / Outcome |
 | --- | --- |
 | [Current Sensor Calibration](current-sensor-cal/index.md) | Approach and tools to calibrate current sensor gain and offset. |
-| [Encoder Feedback](encoder-fb/index.md) | How to use the AMDC's encoder interface to get accurate position and speed data. |
+| [Encoder Feedback](encoder-fb/index.md) | How to use the AMDC's encoder interface to get accurate position data. |
+| [Computing Speed from Position](computing-speed-from-position/index.md) | How to accurately compute speed from position. |
 | [Integrator Anti-Windup](integrator-anti-windup/index.md) | Anti-Windup performance evaluation. |
 
 ```{toctree}
@@ -13,5 +14,6 @@ The AMDC Platform provides a versatile and open foundation for establishing high
 
 Current Sensor Calibration <current-sensor-cal/index>
 Encoder Feedback <encoder-fb/index>
+Computing Speed from Position <computing-speed-from-position/index>
 Integrator Anti-Windup <integrator-anti-windup/index>
 ```
