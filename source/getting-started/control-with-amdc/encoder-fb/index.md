@@ -19,6 +19,7 @@ The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.
 :align: right
 :class: only-light
 ```
+
 ```{image} resources/motor-cross-section-dark.svg
 :alt: Motor Cross-Section with Encoder Angles
 :width: 350px
@@ -60,6 +61,7 @@ The recommended approach to reading the shaft position from the encoder is illus
 :align: center
 :class: only-light
 ```
+
 ```{image} resources/encoder-code-flow-dark.svg
 :alt: Encoder Code Block Diagram.svg
 :width: 75%
@@ -77,13 +79,17 @@ Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This i
 
 $$
 \theta_{\rm m} = \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left( \theta_{\rm enc} - \theta_{\rm off} \right)
-$$ (eq:convCCW)
+$$
 
 In this case, a counter-clockwise rotation of the rotor causes the $\theta_{\rm enc}$ to increase. However, in some teststands a clockwise rotation causes $\theta_{\rm enc}$ to increment. For these encoders, $\theta_{\rm m}$ is calculated as
 
 $$
-\theta_{\rm m} &= \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left({\scriptstyle \rm COUNTS\_PER\_REV} - \theta_{\rm enc} + \theta_{\rm off} \right) \\ &= 2\pi - \theta_{\rm m, CCW}
-$$ (eq:convCW)
+\begin{aligned}
+\theta_{\rm m}
+&= \frac{2\pi}{\mathrm{COUNTS\_PER\_REV}}\left(\mathrm{COUNTS\_PER\_REV} - \theta_{\rm enc} + \theta_{\rm off}\right) \\
+&= 2\pi - \theta_{\rm m,CCW}
+\end{aligned}
+$$
 
 ```{tip}
 The user can experimentally determine whether the encoder count increases with counter-clockwise rotation of the shaft by rotating the shaft and using [logging](/getting-started/user-guide/logging/index.md) to observe the trend of $\theta_{\rm enc}$.
@@ -92,6 +98,7 @@ The user can experimentally determine whether the encoder count increases with c
 Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the $\theta_{\rm m}$. This can be accomplished in C by using the `mod` function. This is shown in the final block in the diagram.
 
 Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already known; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
+
 ```C
 double task_get_theta_m(void)
 {
@@ -175,7 +182,7 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 
 The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
 
-- $\hat{\theta}_\mathrm{e}$ is the incorrect eletrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
+- $\hat{\theta}_\mathrm{e}$ is the incorrect electrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
 - the $\gamma$-$\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
 - the $\mathrm{d}$-$\mathrm{q}$ vectors and $\theta_\mathrm{e}$ angle depict the actual $\mathrm{d}$-$\mathrm{q}$ frame of the motor.
 
@@ -219,7 +226,7 @@ An example of the results is shown in the plot below. After the calibration proc
 
 ## Computing Speed from Position
 
-Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying acuracy and implementation complexity, and the most common approaches are now presented.
+Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying accuracy and implementation complexity, and the most common approaches are now presented.
 
 ### Difference Equation Approach
 
