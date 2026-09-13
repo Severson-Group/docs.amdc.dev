@@ -182,7 +182,7 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 
 The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
 
-- $\hat{\theta}_\mathrm{e}$ is the incorrect eletrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
+- $\hat{\theta}_\mathrm{e}$ is the incorrect electrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
 - the $\gamma$-$\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
 - the $\mathrm{d}$-$\mathrm{q}$ vectors and $\theta_\mathrm{e}$ angle depict the actual $\mathrm{d}$-$\mathrm{q}$ frame of the motor.
 
@@ -226,7 +226,7 @@ An example of the results is shown in the plot below. After the calibration proc
 
 ## Computing Speed from Position
 
-Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying acuracy and implementation complexity, and the most common approaches are now presented.
+Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying accuracy and implementation complexity, and the most common approaches are now presented.
 
 ### Difference Equation Approach
 
