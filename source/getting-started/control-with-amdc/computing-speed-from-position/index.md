@@ -2,7 +2,7 @@
 
 ## Background
 
-Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying accuracy and implementation complexity, and the most common approaches are now presented.
+Most motor control applications require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying accuracy and implementation complexity, and the most common approaches are now presented.
 
 ### Difference Equation Approach
 
