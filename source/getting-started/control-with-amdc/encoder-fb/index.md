@@ -6,8 +6,8 @@ Encoders are used to determine the rotor position and speed, and are the typical
 
 For more information:
 
-- on how encoders work and are interfaced with the AMDC, see the [encoder hardware subsystem page](/hardware/subsystems/encoder.md);
-- on the driver functionality included with the AMDC firmware, see the [encoder driver architecture page](/firmware/arch/drivers/encoder.md).
+- on how encoders work and are interfaced with the AMDC, see the [encoder hardware subsystem page](../../../hardware/subsystems/encoder.md);
+- on the driver functionality included with the AMDC firmware, see the [encoder driver architecture page](../../../firmware/arch/drivers/encoder.md).
 
 ## Rotor Position
 
@@ -19,6 +19,7 @@ The AMDC supports [incremental encoders with quadrature ABZ outputs](https://en.
 :align: right
 :class: only-light
 ```
+
 ```{image} resources/motor-cross-section-dark.svg
 :alt: Motor Cross-Section with Encoder Angles
 :width: 350px
@@ -60,6 +61,7 @@ The recommended approach to reading the shaft position from the encoder is illus
 :align: center
 :class: only-light
 ```
+
 ```{image} resources/encoder-code-flow-dark.svg
 :alt: Encoder Code Block Diagram.svg
 :width: 75%
@@ -77,13 +79,17 @@ Next, the user should calculate $\theta_{\rm m}$ from $\theta_{\rm enc}$. This i
 
 $$
 \theta_{\rm m} = \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left( \theta_{\rm enc} - \theta_{\rm off} \right)
-$$ (eq:convCCW)
+$$
 
 In this case, a counter-clockwise rotation of the rotor causes the $\theta_{\rm enc}$ to increase. However, in some teststands a clockwise rotation causes $\theta_{\rm enc}$ to increment. For these encoders, $\theta_{\rm m}$ is calculated as
 
 $$
-\theta_{\rm m} &= \tfrac{2\pi}{\rm COUNTS\_PER\_REV} \left({\scriptstyle \rm COUNTS\_PER\_REV} - \theta_{\rm enc} + \theta_{\rm off} \right) \\ &= 2\pi - \theta_{\rm m, CCW}
-$$ (eq:convCW)
+\begin{aligned}
+\theta_{\rm m}
+&= \frac{2\pi}{\mathrm{COUNTS\_PER\_REV}}\left(\mathrm{COUNTS\_PER\_REV} - \theta_{\rm enc} + \theta_{\rm off}\right) \\
+&= 2\pi - \theta_{\rm m,CCW}
+\end{aligned}
+$$
 
 ```{tip}
 The user can experimentally determine whether the encoder count increases with counter-clockwise rotation of the shaft by rotating the shaft and using [logging](/getting-started/user-guide/logging/index.md) to observe the trend of $\theta_{\rm enc}$.
@@ -92,6 +98,7 @@ The user can experimentally determine whether the encoder count increases with c
 Finally, the user must ensure that angle is within the bounds of $0$ and $2\pi$ by appropriately wrapping the $\theta_{\rm m}$. This can be accomplished in C by using the `mod` function. This is shown in the final block in the diagram.
 
 Here is example code to convert the encoder to angular position in radians (note that this assumes the encoder offset $\theta_{\rm off}$ is already known; a procedure to determine this is described in the next [subsection](#finding-the-offset)):
+
 ```C
 double task_get_theta_m(void)
 {
@@ -136,6 +143,7 @@ The example code shown above makes use of an encoder offset value, `theta_off`. 
 :align: right
 :class: only-light
 ```
+
 ```{image} resources/torque-plot-dark.svg
 :alt: Torque Variation with Rotor Angle
 :width: 250px
@@ -166,6 +174,7 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 :align: right
 :class: only-light
 ```
+
 ```{image} resources/reference-frame-dark.svg
 :alt: Torque Variation with Rotor Angle
 :width: 250px
@@ -175,7 +184,7 @@ Friction and cogging torque in the motor can decrease the accuracy of the estima
 
 The correct offset is determined by considering how errors in the measured rotor angle impact the current controller's understanding of the $\mathrm{d}-\mathrm{q}$ reference frame. This is depicted in the figure on the right, where:
 
-- $\hat{\theta}_\mathrm{e}$ is the incorrect eletrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
+- $\hat{\theta}_\mathrm{e}$ is the incorrect electrical angle (due to error in offset $\theta_\mathrm{off}$) that the controller is using
 - the $\gamma$-$\delta$ vectors indicate where the controller mistakenly understands the $\mathrm{d}$-$\mathrm{q}$ frame to be located based on $\hat{\theta}_\mathrm{e}$
 - the $\mathrm{d}$-$\mathrm{q}$ vectors and $\theta_\mathrm{e}$ angle depict the actual $\mathrm{d}$-$\mathrm{q}$ frame of the motor.
 
@@ -201,7 +210,7 @@ $$
 
 If there is no estimation error (i.e., $\theta_\mathrm{e} - \hat{\theta}_\mathrm{e} = 0$), the $\gamma$-$\delta$ frame aligns with the $\mathrm{d}$-$\mathrm{q}$ and the $v_\mathrm{d}$ value seen by the controller should be zero. Based on this fact, the following procedure describes how to determine the encoder offset by finding the condition where $v_\gamma=v_\mathrm{d} = 0$.
 
-1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](/getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](/getting-started/user-guide/logging/index.md) to accomplish this.
+1. Configure the AMDC for closed-loop speed and DQ current control, and configure the operating environment to allow for quick edits to `theta_off` and for measuring the d-axis voltage commanded by the current regulator. Consider [adding a custom command](../../../getting-started/tutorials/vsi/index.md#command-template-c-code) and using [logging](../../../getting-started/user-guide/logging/index.md) to accomplish this.
 2. Command the motor to rotate at a steady speed under no-load conditions. Use the estimated `theta_off` obtained in [Finding the offset](#finding-the-offset).
 3. Sweep `theta_off` over a small range around the initial estimate (e.g., ±5 counts). For each value, monitor the d-axis voltage and find the `theta_off` value that makes the d-axis voltage closest to 0 V. Identify this by observing when the sign of the d-axis voltage changes.
 4. Repeat step 3 at multiple rotor speeds. At each speed, record the `theta_off` value that minimizes the d-axis voltage.
@@ -217,67 +226,8 @@ An example of the results is shown in the plot below. After the calibration proc
 :align: center
 ```
 
-## Computing Speed from Position
-
-Most motor control applications also require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying acuracy and implementation complexity, and the most common approaches are now presented.
-
-### Difference Equation Approach
-
-A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_\mathrm{raw}$.
-
-$$
-\Omega_\text{raw}[k] = \frac{\theta_m[k] - \theta_m[k-1]}{T_s}
-$$
-
-Unfortunately, using this approach results in noise in $\Omega_\text{raw}$ due to the derivative operation and the digital nature of the incremental encoder.
-
-### Low Pass Filter Approach
-
-To solve this, _a low pass filter_ may be applied to this signal. This is shown below to obtain a filtered speed, $\Omega_\text{lpf}$.
-
-$$
- \Omega_\text{lpf}[k] =  \Omega_\text{raw}[k](1 - e^{\omega_b T_s}) + \Omega_\text{lpf}[k-1]e^{\omega_b T_s}
-$$
-
-Here, $T_{\rm s}$ is the control sample rate and $\omega_b$ is the low pass filter bandwidth. The user must select this bandwidth to obtain a sufficiently clean speed signal.  The optimal bandwidth to use is going to vary based on the motor system. Typically, a bandwidth of 10 Hz is a reasonable starting point. This can be reduced if the speed signal remains too noisy, or increased for higher speed controls.
-
-Note that this low pass filter approach will always produce a lagging speed estimate due to phase delay in the filter transfer function. This may be unacceptable higher performance motor control algorithms.
-
-### Observer Approach
-
-To obtain a no-lag estimate of the rotor speed, users may create an observer [[2]](#enc-ref-2), which implements a mechanical model of the rotor as shown below.
-
-```{image} resources/observer-figure.svg
-:alt: Observer Figure
-:width: 600px
-:align: center
-:class: only-light
-```
-```{image} resources/observer-figure-dark.svg
-:alt: Observer Figure
-:width: 600px
-:align: center
-:class: only-dark
-```
-
-The estimate of rotor speed is denoted by $\Omega_\text{sf}$. To implement this observer, the user needs to know the system parameters:
-- `J`: the inertia of the rotor  
-- `b` the damping coefficient of the rotor.
-
-It is also necessary to provide the electromechanical torque, $T_\mathrm{em}$ as input to the mechanical model.
-
-The `PI` portion of the observer closes the loop on the speed, with $\Omega_\text{raw}$ being the reference input. The recommended tuning approach is as follows:
-
-$$
-K_\mathrm{p} = \omega_\mathrm{sf}b, K_\mathrm{i} = \omega_\mathrm{sf}J
-$$
-
-This tuning ensures a pole zero cancellation in the closed transfer function, resulting in a unity transfer function for speed tracking under ideal parameter estimates of `J` and `b`.  An observer bandwidth of 10 Hz is typical of most systems, but similar to the low pass filter approach, users may need to alter this based on the unique aspects of their system.
-
 ## References
 
 (enc-ref-1)=
-1. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
 
-(enc-ref-2)=
-2. R. D. Lorenz and K. W. Van Patten, "High-resolution velocity estimation for all-digital, AC servo drives," in IEEE Transactions on Industry Applications, vol. 27, no. 4, pp. 701-705, July-Aug. 1991, doi: [10.1109/28.85485](https://doi.org/10.1109/28.85485).
+1. D. Sung, T. Noguchi, A. Upadhyaya, S.-G. Kang, and E. L. Severson, "System Identification and Sensor Calibration Methods for Commissioning Bearingless Machine Control Systems," in Actuators, vol. 15, no. 7, Art. no. 388, 2026, doi: [10.3390/act15070388](https://doi.org/10.3390/act15070388).
