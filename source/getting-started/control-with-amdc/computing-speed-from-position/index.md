@@ -4,6 +4,10 @@
 
 Most motor control applications require the user to compute rotor speed. This is typically done by processing the position signal. There are several ways to calculate speed from position, of varying accuracy and implementation complexity. This article presents the most common approaches.
 
+## Position Signal from Encoder
+
+See this article. Insert image of continuous and discrete time encoder signal. Point out that the continuous time is triangle waveform, while the discrete time has step waveform, which should cause the higher speed if we use the difference equation approach. This happens because of resolution of encoder.
+
 ### Difference Equation Approach
 
 A simple, but naive, way to do this would be to compute the discrete time derivative of the position signal in the controller as shown below. This can be referred to as $\Omega_\mathrm{raw}$.
