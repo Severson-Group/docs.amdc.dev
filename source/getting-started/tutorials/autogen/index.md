@@ -6,8 +6,8 @@
 
 This tutorial goes over:
 
-- Organization of your repository to store the Simulink Autogen codebase
-- Creation a Simulink simulation model to generate Autogen code
+- Organization of your repository to store code generated from Simulink
+- Creation of a Simulink simulation model to generate C code
 - Control implementation using the AMDC hardware
 
 ## Tutorial Requirements
@@ -23,19 +23,19 @@ The first step is to organize your repository. Create a new `autogen` folder and
 ```markdown
 research-repo/
 ├── firmware/
-│   ├── AMDC-Firmware/           <= AMDC-Firmware as submodule
+│   ├── AMDC-Firmware/           <= [Existing] AMDC-Firmware as submodule
 │   └── project-firmware/
-│       └── usr/                 <= Your private user C code
-│           └── controller/      <= Your private user app
-│               └── autogen/     <= Now create this folder
+│       └── usr/                 <= [Existing] Your private user C code
+│           └── controller/      <= [Existing] Your private user app
+│               └── autogen/     <= [New] Create this folder
 └── modeling/
     └── simulink/
-        └── vsi/                 <= Now create this folder
+        └── vsi/                 <= [New] Create this folder
 ```
 
 ## Install Required MATLAB/Simulink Toolbox
 
-To develop control code using Simulink Autogen, the following software components are required:
+To develop C code using Simulink, the following software components are required:
 
 - [Simulink Coder](https://www.mathworks.com/help/rtw/index.html)  
 - [Embedded Coder](https://www.mathworks.com/help/ecoder/index.html)
@@ -44,7 +44,7 @@ Additional toolboxes may be required depending on the specific control design.
 
 ## Create a Simulink Model
 
-The next step is to create a Simulink model that can be used for Autogen. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
+The next step is to create a Simulink model that can be used to generate C code. In this example, you will replace the C code in the VSI app developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) with Autogen code to calculate the duty ratios.
 
 1. In `simulink/vsi` folder, create a new MATLAB file named `setup.m`.
 2. In `setup.m`, copy-paste the following MATLAB code:
@@ -139,6 +139,7 @@ delete(fullfile(dst_dir, '*.c'));
 delete(fullfile(dst_dir, '*.h'));
 
 % Copy only .c and .h files in autogen folder
+% copyfile(fullfile(matlabroot, 'simulink', 'include', 'solver_zc.h'), dst_dir); %uncomment if your compiler alerts you that solver_zc.h is missing.
 copyfile(fullfile(build_dir, '*.c'), dst_dir);
 copyfile(fullfile(build_dir, '*.h'), dst_dir);
 ```
@@ -152,9 +153,17 @@ These files define the controller as a callable function with input and output s
 
 4. Open the SDK, and make sure that the `autogen` folder appears under the `Project Explorer`. If it does not, refresh the project.
 
+```{tip}
+If your C build fails with a missing `solver_zc.h` error (which can happen even in purely discrete models that use edge-triggered resets or triggered subsystems), this is because Embedded Coder does not copy this header into the model build folder automatically. Add the following line to your MATLAB copy script to pull it directly from your MATLAB installation:
+
+```matlab
+copyfile(fullfile(matlabroot, 'simulink', 'include', 'solver_zc.h'), dst_dir);
+```
+```
+
 ## Integration with AMDC
 
-Now, the user needs to update the user C code developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) to incorporate the Autogen code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes the developed code at a fixed sampling interval, and the following items need to be included:
+Now, the user needs to update the user C code developed in the ["Voltage Source Inverter" tutorial](../vsi/index.md) to incorporate the generated code generated from Simulink. Specifically, this requires modifying `task_controller_clear`, `task_controller_init`, and `task_controller_callback` functions. Within the callback function, the control task executes the developed code at a fixed sampling interval, and the following items need to be included:
 
 1. Populate inputs, such as constant values or sampled sensor data. The input variables are defined with `_U` suffix (e.g.,  `generate_duty_U`).
 2. Call the controller step function
@@ -229,10 +238,10 @@ In this example, the input `theta` is generated within the C code. However, this
 
 ## Running the AMDC
 
-We are now ready to run the new control code with Autogen! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md).
+We are now ready to run the new control code! Try running the control task by typing `ctrl init`. You should obtain the same results as in the ["Voltage Source Inverter" tutorial](../vsi/index.md).
 
 ## Conclusion
 
 **Congratulations!**
 
-You have now built an updated user app with Autogen code for the voltage source inverter. These techniques can be extended for many other control problems, e.g., current regulation, motion control, or even more advanced controller. By modifying the Simulink model and continuously generating C code, you can effectively develop new control algorithms.
+You have now built an updated user app with code generated from Simulink for the voltage source inverter. These techniques can be extended for many other control problems, e.g., current regulation, motion control, or even more advanced controllers. By modifying the Simulink model and continuously generating C code, you can effectively develop new control algorithms.
